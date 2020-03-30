@@ -1,9 +1,9 @@
-import { createAggregateFunction } from '@alife/dvt-aggregation'
 import {
   applyTransforms,
   buildDrillTree,
   buildRecordMap,
   commonTransforms,
+  createAggregateFunction,
   DrillNode,
   isLeafNode,
   simpleEncode,

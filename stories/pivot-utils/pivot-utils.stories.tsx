@@ -1,13 +1,12 @@
-import { createAggregateFunction } from '@alife/dvt-aggregation'
 import {
   BaseTable,
-  buildRecordMatrix,
   buildDrillTree,
+  buildRecordMatrix,
   convertDrillTreeToCrossTree,
+  createAggregateFunction,
   CrossTable,
   CrossTableLeftMetaColumn,
   DrillNode,
-  simpleEncode,
 } from '@alife/dvt-table'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'

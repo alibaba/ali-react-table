@@ -1,4 +1,4 @@
-export { createAggregateFunction } from '@alife/dvt-aggregation'
+export { createAggregateFunction } from 'dvt-aggregation'
 
 export { buildRecordMatrix, BuildRecordMatrixConfig, buildRecordMap } from './builders'
 export { default as buildDrillTree, BuildDrillTreeOptions } from './buildDrillTree'

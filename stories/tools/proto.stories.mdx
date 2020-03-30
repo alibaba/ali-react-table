@@ -1,0 +1,99 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+
+<Meta title="工具 / proto" />
+
+# proto
+
+在实际开发中过程中，一个表格可能包含了大量维度和指标（在盒马内部，50+ 列的明细表格十分常见），此时为表格的书写对应的列配置就需要花费我们大量的时间。大部分情况下，不同的列往往具有相同的宽度、相同的对齐方向、相同的格式化渲染方法，避免相同配置重复声明，可以有效减少开发工作量。dvt-table 导出了 `proto` 来简化这些重复配置的书写。
+
+注：本页文档中，「原型」指的是使用 proto 创建出来的函数，而不是指 JavaScript 中的函数原型。
+
+## 创建对象原型
+
+`proto.object(baseObject)` 是一个工厂方法，接受一个基础对象 `baseRecord`，返回一个函数；调用该函数时，将以 `baseRecord` 为「原型」并根据输入的参数来创建一个新的对象。
+
+在下面的例子中，我们创建了 `columnProto`，并用 `columnProto` 来生成其他的列，避免书写相同的默认配置。
+
+```js
+import { proto } from '@alife/dvt-table'
+
+const columnProto = proto.object({ width: 120, align: 'right' })
+
+const col1 = columnProto({})
+// 参数为空对象，则所有字段都来自于 baseRecord
+// { width: 120, align: 'right' }
+
+const col2 = columnProto({ width: 150 })
+// 参数提供了 width 字段，其他字段来自于 baseRecord
+// { width: 150, align: 'right' }
+
+const col3 = columnProto({ code: 'code-1', align: 'left', lock: false })
+// { code: 'code-1', align: 'left', lock: false, width: 120 }
+```
+
+## 创建数组原型
+
+`proto.array(baseRecord)` 与 `proto.object` 非常类似，也会生成一个函数，但函数的输入参数为一个数组。该函数被调用时，会遍历输入的数组，并根据 baseRecord 来生成对象。
+
+```js
+import { proto } from '@alife/dvt-table'
+
+const columnProto = proto.array({ width: 120, align: 'right', format: amount })
+
+const columns = columnProto([
+  { code: 'code-1' },
+  { code: 'code-2' },
+  { code: 'code-3', width: 200 },
+  { code: 'code-4', align: 'left' },
+])
+// [
+//   { code: 'code-1', width: 120, align: 'right', format: amount },
+//   { code: 'code-2', width: 120, align: 'right', format: amount },
+//   { code: 'code-3', width: 200, align: 'right', format: amount },
+//   { code: 'code-4', width: 120, align: 'left',  format: amount }
+// ]
+```
+
+## 嵌套原型
+
+在生成对象原型或数组原型时，baseRecord 中的字段值(`subProto`)也可以为一个对象原型或数组原型，生成新对象时 `subProto` 将被调用用于对应字段的值。
+
+```js
+const columnProto = proto.array({
+  width: 120,
+  align: 'right',
+  features: proto.object({ defaultVisible: true }),
+})
+
+const columns = columnProto([
+  { code: 'code-1' },
+  { code: 'code-2', features: { defaultVisible: false } },
+  { code: 'code-3', features: { sortable: true } },
+])
+// [
+//   { code: 'code-1', width: 120, align: 'right', features: { defaultVisible: true } },
+//   { code: 'code-2', width: 120, align: 'right', features: { defaultVisible: false } },
+//   { code: 'code-3', width: 200, align: 'right', features: { defaultVisible: true, sortable: true } },
+// ]
+```
+
+## `proto.string` 与 `proto.number`
+
+有的时候某个字段并没有默认值，但我们又希望创建出来的对象必须包含某个对象，此时可以使用 `proto.string` 或 `proto.number` 来创建原型。
+
+```js
+const columnProto = proto.array({
+  code: proto.string,
+  width: proto.number,
+  align: 'right',
+})
+
+// 调用 columnProto 时，输入参数中的 code 字段必须为字符串，width 字段必须为数字
+const columns = columnProto([
+  { code: 'code-1', width: 100 },
+  { code: 'code-2', width: 120, features: { defaultVisible: false } },
+  { code: 'code-3', width: 120, features: { sortable: true } },
+])
+```
+
+此外，`proto.notNull` 用于确保输入参数中某个字段不能为 null/undefine。

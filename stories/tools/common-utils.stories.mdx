@@ -1,0 +1,39 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+
+<Meta title="工具 / 通用工具函数" />
+
+dvt-table 导出了一部分内部的工具函数，方便上层调用。
+
+## `buildTree`
+
+主要用途：从平铺的数据中构建出树状结构。
+
+```typescript
+function buildTree<ID extends string, PID extends string, T extends { [key in ID | PID]: string }>(
+  idProp: ID,
+  parentIdProp: PID,
+  items: T[],
+): WithChildren<T>[]
+
+type WithChildren<T> = T & { children?: WithChildren<T>[] }
+```
+
+根据 `idProp` 与 `parentIdProp` 从对象数组中构建对应的树；当 `A[parentIdProp] === B[idProp]` 时，对象 A 会被移动到对象 B 的 children；当一个对象的 parentIdProp 不与其他对象的 idProp 字段相等时，该对象被作为树的顶层节点。
+
+## `exportTableAsExcel`
+
+主要用途：将表格导出为 Excel 文件。
+
+## `isLeafNode`
+
+主要用途：判断一个节点是否为叶子节点
+
+## `layeredSort`
+
+主要用途：层级排序
+
+对树状结构的数据进行排序。layeredSort 是一个递归的过程，针对树上的每一个父节点，该函数都会重新对其子节点数组（children) 进行排序.
+
+## `smartCompare`
+
+主要用途：比较字符串（字典序）或是数字（自然序）

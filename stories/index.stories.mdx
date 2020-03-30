@@ -1,0 +1,41 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import pkg from '../package.json'
+import ReactJson from 'react-json-view'
+
+<Meta title="基本信息" />
+
+# @alife/dvt-table
+
+[TODO 待添加]
+
+<p>{pkg.description}</p>
+
+## 安装
+
+`tnpm install @alife/dvt-table`
+
+## 特点
+
+- 高性能，内置虚拟滚动，数据量较大时自动开启
+- 简单灵活的 API，高度的可定制性
+- 实用的表格特性：表头吸顶 & 左侧/右侧锁列
+
+## 兼容性说明
+
+表格用到了大量较新的浏览器 API，目前阶段只兼容较新版本的 Chrome/Firefox/Safari
+
+## 相关链接
+
+[TODO 待添加]
+
+## 版本说明
+
+- <span>当前文档对应的版本：{pkg.version}， 注意该版本和 NPM 上 latest 版本的差别</span>
+- [TODO 待添加] 上面部署的是 dev 分支的文档
+  - dev 分支上的内容比较新，可能包含了尚未发布到 NPM latest 的内容
+- [TODO 待添加] 上面部署的是 master 分支的文档
+  - master 分支则对应 NPM 上 latest 的版本
+
+## package.json （仅供参考）
+
+<ReactJson src={pkg} name="package.json" enableClipboard={false} collapsed={0} />

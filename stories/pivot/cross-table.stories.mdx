@@ -1,0 +1,165 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+
+<Meta title="交叉与透视 / 交叉表" />
+
+# 交叉表
+
+交叉表是一个比较底层的 React 组件，仅提供相应表格结构的渲染能力。注意交叉表...
+
+- **_没有_** 透视能力
+- **_没有_** 收拢展开功能
+
+## 主要特性
+
+- 不依赖特定组件库，可独立使用
+- 简单、一致的 API 与渲染模型：**`左树 + 上树 => 表格`**
+- 高性能：数据量较大时，自动开启虚拟滚动
+
+## 基本用法
+
+在简单的场景下，交叉表的用法很简单：
+
+- 通过 `leftTree` 描述表格左侧的树状结构；
+- 通过 `topTree` 描述表格上方的树状结构；
+- 通过 `getValue` 来定义每个单元格的内容；
+- 交叉表组件会根据 leftTree/topTree 来渲染表格结构，并调用 `getValue` 获取单元格的内容
+
+```js
+<CrossTable
+  // 推荐为交叉表设置一个默认列宽
+  defaultColumnWidth={100}
+  leftTree={leftTree}
+  topTree={topTree}
+  getValue={(leftNode, topNode) => {
+    // 自定义的取数逻辑，针对每个单元格都会调用一次
+    // leftNode 表示当前单元格对应的左侧树节点，topNode 是对应的上方树节点
+  }}
+  render={(value, leftNode, topNode) => {
+    // 可选的 自定义的渲染逻辑
+    return value
+  }}
+/>
+```
+
+<Preview>
+  <Story id="交叉表-示例--基本用法" />
+</Preview>
+
+## leftTree 的结构
+
+交叉表左侧的树（leftTree）是一个树节点的数组，每个树节点的结构如下：
+
+```typescript
+/** 交叉表左侧或上方的树节点基类 */
+interface CrossTreeNode {
+  key: string
+  value: string
+  title?: ReactNode
+  data?: any
+  hidden?: boolean
+  children?: CrossTreeNode[]
+}
+
+/** 交叉表左侧树状结构的树节点 */
+interface LeftCrossTreeNode extends CrossTreeNode {
+  children?: CrossTreeNode[]
+}
+```
+
+- 主要属性：
+  - `key` 用于在树中唯一标记一个节点；
+  - `value` 表示节点中的文本值；
+  - `children` 为子节点数组；
+- 可选属性：
+  - `title` 若非空，被渲染在页面中时，节点内容将由 title 提供
+    - 在不是页面渲染的情况下（例如导出到文件），title 将被忽略
+  - `hidden` 表示是否隐藏节点
+  - `data` 为附加在节点上的数据
+    - `data` 中可以放任何内容
+    - 放在节点中的数据，可在渲染单元格时取出，用于决定渲染结果
+
+## topTree 的结构
+
+topTree 的结构与 leftTree 类似，但其树节点的配置较为丰富，结构如下：
+
+```typescript
+/** 交叉表上方树状结构的树节点
+ * 列的名称现由 value 字段提供，故从 ArtColumnStaticPart 移除了 name 字段 */
+interface TopCrossTreeNode extends CrossTreeNode, Omit<ArtColumnStaticPart, 'name'> {
+  children?: TopCrossTreeNode[]
+}
+```
+
+上方的树节点继承（extends）了左侧树节点的结构，拥有相同的 key/value/data/title/hidden/children 字段。
+
+交叉表底层使用了 `BaseTable` 进行渲染，而 `BaseTable` 中主要的表格配置是放在每一列之上的。在 topTree 中，每个叶子节点都对应的了表格中的一列，所以每个节点除了包含 key/value/data/children 之外，还包含了部分列配置（即 `ArtColumnStaticPart`）。`ArtColumnStaticPart` 的结构如下：
+
+- `name` 列的名称；注意因为树节点已经含有 value 字段，故 name 字段在 TopCrossTreeNode 中是不起作用的）
+- `code` 在数据中的字段 code；注意交叉表使用自定义的 getValue/render 进行取值或渲染，会屏蔽掉 code 的默认取值方式
+- `title` 列标题，如果该字段非空，在渲染时会覆盖 value 字段
+- `width` 列的宽度
+- `align` 单元格中的文本或内容的 对其方向
+- `hidden` 是否锁列；**不推荐**为交叉表的数据列设置隐藏
+- `lock` 是否锁列；**不推荐**为交叉表的数据列设置锁列
+- `features` 功能开关
+
+## 其他 props
+
+交叉表的底层依赖了 `BaseTable`，故两者的 props 大部分是相同的。两者的不同点具体如下：
+
+- 交叉表没有 dataSource 和 columns
+  - 表格结构由 leftTree 和 rightTree 提供，而单元格内容由 getValue 提供
+  - 单元格渲染内容可使用 render 进行自定义；单元格的 props（即表格内的 td 元素）可使用 getCellProps 进行自定义
+- 交叉表没有 primaryKey
+  - 交叉表左侧树中每个节点都有一个唯一的 key 值，故不再需要上层指定 primaryKey
+- 其他新增的 props
+  - 交叉表使用 leftMetaColumns 来描述 leftTree 所处的列的配置
+    - 交叉表渲染时，左侧的树会占据表格的前几列，并自动设置 lock=true，leftMetaColumns 可用于自定义这些列
+  - leftTotalNode：当 leftTree 为空时，leftTotalNode 用于渲染「总计行」，避免表格中没有数据行
+  - topTotalNode：当 topTree 为空时，topTotalNode 用于渲染「总计列」，避免表格中没有数据列
+
+交叉表的 props 具体如下：
+
+```typescript
+interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' | 'primaryKey'> {
+  leftTree: LeftCrossTreeNode[]
+  topTree: TopCrossTreeNode[]
+  leftMetaColumns?: CrossTableLeftMetaColumn[]
+  leftTotalNode?: LeftCrossTreeNode
+  topTotalNode?: TopCrossTreeNode
+
+  getValue(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
+
+  render?(
+    value: any,
+    leftNode: LeftCrossTreeNode,
+    topNode: TopCrossTreeNode,
+    leftDepth: number,
+    topDepth: number,
+  ): ReactNode
+
+  getCellProps?(
+    value: any,
+    leftNode: LeftCrossTreeNode,
+    topNode: TopCrossTreeNode,
+    leftDepth: number,
+    topDepth: number,
+  ): React.TdHTMLAttributes<HTMLTableDataCellElement>
+}
+
+export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden' | 'lock'> {
+  /** 自定义渲染方法 */
+  render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
+
+  /** 自定义的获取单元格 props 的方法 */
+  getCellProps?(leftNode: LeftCrossTreeNode, leftDepth: number): React.TdHTMLAttributes<HTMLTableCellElement>
+}
+```
+
+不要被长长的 TypeScript 类型代码吓到，交叉表的 props 其实和 BaseTable 差别不大。
+
+## 复杂场景下的交叉表
+
+交叉表的左树/上树的结构被设计为 `{ key, value, children }` 的简单结构，方便上层调用者能够从不同的数据源中生成 leftTree/topTree。
+
+在复杂场景下，需要上层根据业务需求手动生成 leftTree/topTree/getValue。ali-react-table 也提供了一定的透视能力，可在交叉表的基础上实现前端聚合的透视表，可供使用和参考。

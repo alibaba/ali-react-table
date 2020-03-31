@@ -50,13 +50,6 @@ export interface ArtColumn extends ArtColumnStaticPart, ArtColumnDynamicPart {
   children?: ArtColumn[]
 }
 
-export type Transform<T> = (input: T) => T
-
-export type TableTransform = Transform<{
-  columns: ArtColumn[]
-  dataSource: any[]
-}>
-
 /** SpanRect 用于描述合并单元格的边界
  * 注意 top/left 为 inclusive，而 bottom/right 为 exclusive */
 export interface SpanRect {

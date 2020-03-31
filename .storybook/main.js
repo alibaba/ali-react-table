@@ -2,27 +2,20 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 const baseTable = ['base-table/base-table.stories.mdx', 'base-table/base-table.stories.tsx']
 
-const bizUtils = [
-  'biz-utils/biz-utils.stories.mdx',
-  'biz-utils/biz-utils-transforms.stories.mdx',
-  'biz-utils/biz-utils-common-transforms.stories.mdx',
-  'biz-utils/biz-utils-operation-bar.stories.mdx',
-  'biz-utils/biz-utils-components.stories.mdx',
-  'biz-utils/examples/**/*.stories.tsx',
+const biz = [
+  'biz/biz.stories.mdx',
+  'biz/biz-transforms.stories.mdx',
+  'biz/biz-common-transforms.stories.mdx',
+  'biz/biz-operation-bar.stories.mdx',
+  'biz/biz-components.stories.mdx',
+  'biz/examples/**/*.stories.tsx',
 ]
 
-const crossTable = [
-  // 交叉表文档与示例
-  'cross-table/cross-table.stories.mdx',
-  'cross-table/cross-table.stories.tsx',
-]
-
-const pivotUtils = []
-
-const lab = [
-  'lab/lab.stories.mdx',
-  'pivot-utils/pivot-utils.stories.mdx',
-  'pivot-utils/pivot-utils.stories.tsx',
+const pivot = [
+  'pivot/cross-table.stories.mdx',
+  'pivot/cross-table.stories.tsx',
+  'pivot/pivot-utils.stories.mdx',
+  'pivot/pivot-utils.stories.tsx',
 ]
 
 module.exports = {
@@ -33,15 +26,13 @@ module.exports = {
     'index.stories.mdx',
     'changelog.stories.mdx',
     ...baseTable,
-    ...bizUtils,
-    ...crossTable,
-    ...pivotUtils,
+    ...biz,
+    ...pivot,
     'tools/**/*.stories.mdx',
     'examples/**/*.stories.tsx',
-    ...lab,
-  ].map(file => `../stories/${file}`),
+  ].map((file) => `../stories/${file}`),
 
-  webpack: async config => {
+  webpack: async (config) => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [

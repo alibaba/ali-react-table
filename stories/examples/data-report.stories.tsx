@@ -1,13 +1,6 @@
-import {
-  applyTransforms,
-  BaseTable,
-  buildDrillTree,
-  buildRecordMap,
-  commonTransforms,
-  DrillNode,
-  ArtColumn,
-  isLeafNode,
-} from 'ali-react-table'
+import { ArtColumn, BaseTable, isLeafNode } from 'ali-react-table'
+import { applyTransforms, commonTransforms } from 'ali-react-table/biz'
+import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
 import { getAppTrafficData } from '../assets/cdn-data'
@@ -68,7 +61,7 @@ export function 示例() {
   })
 
   useEffect(() => {
-    getAppTrafficData().then(data => {
+    getAppTrafficData().then((data) => {
       console.log('明细数据:', data)
       const codes = ['city_name', 'shop_name']
       const topTree = buildDrillTree(data, codes)

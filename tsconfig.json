@@ -13,7 +13,9 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "ali-react-table": ["src/ali-react-table.ts"]
+      "ali-react-table": ["src/ali-react-table.ts"],
+      "ali-react-table/pivot": ["src/pivot/pivot.ts"],
+      "ali-react-table/biz": ["src/biz/biz.ts"]
     }
   },
   "include": ["src/**/*", "stories/**/*"]

@@ -1,6 +1,7 @@
 import { Button, Checkbox, Dialog, Input, Overlay } from '@alifd/next'
-import { ArtColumn, SortItem } from 'ali-react-table'
 import { DragVertical16, Filter16, Settings16 } from '@carbon/icons-react'
+import { ArtColumn } from 'ali-react-table'
+import { SortItem } from 'ali-react-table/biz'
 import cx from 'classnames'
 import produce, { Draft } from 'immer'
 import React, { useEffect, useState } from 'react'
@@ -44,7 +45,7 @@ export function immerReducer(draft: Draft<PivotState>, action: Action, state: Pi
       draft.filters[action.dimCode] = Array.from(new Set(pre.concat(action.values)))
     } else {
       const removeSet = new Set(action.values)
-      draft.filters[action.dimCode] = draft.filters[action.dimCode].filter(v => !removeSet.has(v))
+      draft.filters[action.dimCode] = draft.filters[action.dimCode].filter((v) => !removeSet.has(v))
     }
   } else if (action.type === 'change-sorts') {
     draft.sorts = action.sorts
@@ -121,12 +122,12 @@ interface CheckDimListProps {
 }
 
 export function CheckedDimList({ style, className, meta, state, dispatch }: CheckDimListProps) {
-  const dimMap = new Map(meta.dimensions.map(dim => [dim.code, dim]))
+  const dimMap = new Map(meta.dimensions.map((dim) => [dim.code, dim]))
 
   return (
     <CheckedDimListDiv style={style} className={className}>
       <DragDropContext
-        onDragEnd={result => {
+        onDragEnd={(result) => {
           if (!result.destination) {
             return
           }
@@ -205,7 +206,7 @@ function CheckedDimFilterPopup({
   const search = rawSearch.trim()
 
   const filtered = allValues
-    .map(value => {
+    .map((value) => {
       if (search === '') {
         return { value, title: value }
       }
@@ -240,7 +241,7 @@ function CheckedDimFilterPopup({
             <li key={value}>
               <Checkbox
                 checked={set.has(value)}
-                onChange={checked => dispatch({ type: 'filter', dimCode, value, checked })}
+                onChange={(checked) => dispatch({ type: 'filter', dimCode, value, checked })}
               >
                 {title}
               </Checkbox>
@@ -256,7 +257,7 @@ function CheckedDimFilterPopup({
             dispatch({
               type: 'batch-filter',
               dimCode,
-              values: filtered.map(v => v.value),
+              values: filtered.map((v) => v.value),
               checked: true,
             })
           }}
@@ -270,7 +271,7 @@ function CheckedDimFilterPopup({
             dispatch({
               type: 'batch-filter',
               dimCode,
-              values: filtered.map(v => v.value),
+              values: filtered.map((v) => v.value),
               checked: false,
             })
           }}
@@ -354,7 +355,7 @@ export function DataDimColumnTitle({
     return prevState
   })
 
-  const dimMap = new Map(meta.dimensions.map(dim => [dim.code, dim]))
+  const dimMap = new Map(meta.dimensions.map((dim) => [dim.code, dim]))
 
   const onOk = () => {
     dispatch({
@@ -388,14 +389,14 @@ export function DataDimColumnTitle({
                 选择维度（{state.dimCodes.length}/{meta.dimensions.length}）
               </div>
               <ul className="ind-list">
-                {meta.dimensions.map(dim => (
+                {meta.dimensions.map((dim) => (
                   <li key={dim.code}>
                     <Checkbox
                       className="ind-item clickable-ind-item"
                       checked={state.dimCodes.includes(dim.code)}
-                      onChange={checked => {
-                        setState(prev =>
-                          produce(prev, draft => {
+                      onChange={(checked) => {
+                        setState((prev) =>
+                          produce(prev, (draft) => {
                             if (checked) {
                               draft.dimCodes.push(dim.code)
                             } else {
@@ -415,12 +416,12 @@ export function DataDimColumnTitle({
             <IndicatorsPartDiv style={{ borderLeft: '1px solid var(--border-color)' }}>
               <div className="title">已选（{state.dimCodes.length}）</div>
               <DragDropContext
-                onDragEnd={result => {
+                onDragEnd={(result) => {
                   if (result.destination == null) {
                     return
                   }
-                  setState(prev =>
-                    produce(prev, draft => {
+                  setState((prev) =>
+                    produce(prev, (draft) => {
                       const i = result.source.index
                       const j = result.destination.index
                       const [code] = draft.dimCodes.splice(i, 1)

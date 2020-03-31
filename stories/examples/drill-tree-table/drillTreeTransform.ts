@@ -10,7 +10,7 @@ import {
   SortItem,
   SortOrder,
   TableTransform,
-} from '@alife/dvt-table'
+} from 'ali-react-table'
 
 export function drillTreeTransform({
   nameProp,

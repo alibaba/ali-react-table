@@ -1,4 +1,4 @@
-import { DvtTableColumn, SpanRect } from '../interfaces'
+import { ArtColumn, SpanRect } from '../interfaces'
 import { ROW_KEY } from './constants'
 import { LeftCrossTreeNode } from './interfaces'
 
@@ -12,16 +12,16 @@ export interface CrossTableRenderRow {
   nodes: LeftCrossTreeNode[]
 }
 
-export interface CrossTableLeftColumn extends DvtTableColumn {
+export interface CrossTableLeftColumn extends ArtColumn {
   columnType: 'left'
   children?: never
 }
 
-export interface CrossTableDataColumn extends DvtTableColumn {
+export interface CrossTableDataColumn extends ArtColumn {
   columnType: 'data'
 }
 
-export interface CrossTableDataParentColumn extends DvtTableColumn {
+export interface CrossTableDataParentColumn extends ArtColumn {
   columnType: 'data-parent'
   children: (CrossTableDataParentColumn | CrossTableDataColumn)[]
 }

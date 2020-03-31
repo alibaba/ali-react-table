@@ -1,6 +1,6 @@
 import { collectNodes, isLeafNode } from '../common-utils'
 import { getTreeDepth } from '../common-utils/internals'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 import { VirtualEnum } from './interfaces'
 import { BaseTableProps, BaseTableState } from './table'
 import { AUTO_VIRTUAL_THRESHOLD } from './utils'
@@ -13,9 +13,9 @@ function resolveVirtualEnabled(virtualEnum: VirtualEnum, defaultValue: boolean) 
 }
 
 /** 检查列配置 & 设置默认宽度 & 剔除隐藏的列 */
-function processColumns(columns: DvtTableColumn[], defaultColumnWidth: number) {
-  function dfs(columns: DvtTableColumn[]): DvtTableColumn[] {
-    const result: DvtTableColumn[] = []
+function processColumns(columns: ArtColumn[], defaultColumnWidth: number) {
+  function dfs(columns: ArtColumn[]): ArtColumn[] {
+    const result: ArtColumn[] = []
 
     for (let column of columns) {
       if (column.width == null) {
@@ -45,7 +45,7 @@ function processColumns(columns: DvtTableColumn[], defaultColumnWidth: number) {
   return dfs(columns)
 }
 
-function getLeftNestedLockCount(columns: DvtTableColumn[]) {
+function getLeftNestedLockCount(columns: ArtColumn[]) {
   let nestedCount = 0
 
   for (const col of columns) {
@@ -57,7 +57,7 @@ function getLeftNestedLockCount(columns: DvtTableColumn[]) {
   }
   return nestedCount
 
-  function isLock(col: DvtTableColumn): boolean {
+  function isLock(col: ArtColumn): boolean {
     if (isLeafNode(col)) {
       return col.lock
     } else {

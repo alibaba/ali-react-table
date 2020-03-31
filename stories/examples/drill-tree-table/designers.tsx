@@ -1,5 +1,5 @@
 import { Button, Checkbox, Dialog, Input, Overlay } from '@alifd/next'
-import { DvtTableColumn, SortItem } from '@alife/dvt-table'
+import { ArtColumn, SortItem } from 'ali-react-table'
 import { DragVertical16, Filter16, Settings16 } from '@carbon/icons-react'
 import cx from 'classnames'
 import produce, { Draft } from 'immer'
@@ -52,7 +52,7 @@ export function immerReducer(draft: Draft<PivotState>, action: Action, state: Pi
 }
 
 export type PivotMeta = {
-  indicators: Array<DvtTableColumn & { code: string; expression?: string }>
+  indicators: Array<ArtColumn & { code: string; expression?: string }>
   dimensions: Array<{ code: string; name: string }>
   dimValues: { [dimCode: string]: string[] }
 }

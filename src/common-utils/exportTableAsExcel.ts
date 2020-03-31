@@ -1,5 +1,5 @@
 import XLSX_NS from 'xlsx'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 import collectNodes from './collectNodes'
 import { getTreeDepth, safeGetValue } from './internals'
 import isLeafNode from './isLeafNode'
@@ -25,7 +25,7 @@ function sanitizeCellDatum(value: any): XlsxCellDatum {
   }
 }
 
-/** 兼容 DvtTableColumn 的 Excel 导出函数。
+/** 兼容 ArtColumn 的 Excel 导出函数。
  * 该函数会调用 `column.getValue`（如果该方法不为空的话）来获取表格中每个单元格的数据.
  *
  * * biz features: 当 `col.features.noExport` 为 true 时，导出文件时将忽略该列
@@ -35,7 +35,7 @@ function sanitizeCellDatum(value: any): XlsxCellDatum {
 export default function exportTableAsExcel(
   xlsxPackage: typeof XLSX_NS,
   dataSource: any[],
-  columns: DvtTableColumn[],
+  columns: ArtColumn[],
   filename: string,
 ) {
   const sheet = xlsxPackage.utils.aoa_to_sheet([])
@@ -56,7 +56,7 @@ export default function exportTableAsExcel(
   function addTopHeaders(origin: CellAddress) {
     dfs(columns, 0, 0)
 
-    function dfs(cols: DvtTableColumn[], startDx: number, startDy: number) {
+    function dfs(cols: ArtColumn[], startDx: number, startDy: number) {
       const start = move(origin, startDx, startDy)
       let offsetX = 0
 

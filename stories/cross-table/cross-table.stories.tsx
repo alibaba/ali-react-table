@@ -1,4 +1,4 @@
-import { CrossTable, LeftCrossTreeNode, TopCrossTreeNode } from '@alife/dvt-table'
+import { CrossTable, LeftCrossTreeNode, TopCrossTreeNode } from 'ali-react-table'
 import React from 'react'
 
 export default { title: '交叉表 / 示例' }

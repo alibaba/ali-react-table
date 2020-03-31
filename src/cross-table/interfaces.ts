@@ -1,13 +1,13 @@
 import React, { ReactNode } from 'react'
-import { DvtTableStaticColumnConfig } from '../interfaces'
+import { ArtColumnStaticPart } from '../interfaces'
 
-export interface CrossTableIndicator extends DvtTableStaticColumnConfig {
+export interface CrossTableIndicator extends ArtColumnStaticPart {
   code: string
   expression?: string
 }
 
-// hidden 和 lock 是固定的，故从 DvtTableStaticColumnConfig 中排除
-export interface CrossTableLeftMetaColumn extends Omit<DvtTableStaticColumnConfig, 'hidden' | 'lock'> {
+// hidden 和 lock 是固定的，故从 ArtColumnStaticPart 中排除
+export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden' | 'lock'> {
   /** 自定义渲染方法 */
   render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
 
@@ -30,7 +30,7 @@ export interface LeftCrossTreeNode extends CrossTreeNode {
 }
 
 /** 交叉表上方树状结构的树节点
- * 列的名称现由 value 字段提供，故从 DvtTableStaticColumnConfig 移除了 name 字段 */
-export interface TopCrossTreeNode extends CrossTreeNode, Omit<DvtTableStaticColumnConfig, 'name'> {
+ * 列的名称现由 value 字段提供，故从 ArtColumnStaticPart 移除了 name 字段 */
+export interface TopCrossTreeNode extends CrossTreeNode, Omit<ArtColumnStaticPart, 'name'> {
   children?: TopCrossTreeNode[]
 }

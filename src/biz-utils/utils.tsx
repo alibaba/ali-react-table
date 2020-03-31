@@ -1,9 +1,9 @@
 import { isLeafNode } from '../common-utils'
-import { DvtTableColumn, TableTransform, Transform } from '../interfaces'
+import { ArtColumn, TableTransform, Transform } from '../interfaces'
 
 type NormalizeAsArrayInput<T> = null | T | T[]
 
-function normalizeAsArray(input: NormalizeAsArrayInput<DvtTableColumn>): DvtTableColumn[] {
+function normalizeAsArray(input: NormalizeAsArrayInput<ArtColumn>): ArtColumn[] {
   if (input == null) {
     return []
   } else if (Array.isArray(input)) {
@@ -15,18 +15,18 @@ function normalizeAsArray(input: NormalizeAsArrayInput<DvtTableColumn>): DvtTabl
 
 export function transformColumn(
   fn: (
-    field: DvtTableColumn,
+    field: ArtColumn,
     columnContext: { range: { start: number; end: number } },
-  ) => NormalizeAsArrayInput<DvtTableColumn>,
+  ) => NormalizeAsArrayInput<ArtColumn>,
 ): TableTransform {
   return ({ columns, dataSource }) => ({ dataSource, columns: dfs(columns, 0).result })
 
   function dfs(
-    columns: DvtTableColumn[],
+    columns: ArtColumn[],
     parentStartColIndex: number,
-  ): { flatColCount: number; result: DvtTableColumn[] } {
+  ): { flatColCount: number; result: ArtColumn[] } {
     let flatColCount = 0
-    const result: DvtTableColumn[] = []
+    const result: ArtColumn[] = []
 
     for (const col of columns) {
       const startColIndex = parentStartColIndex + flatColCount

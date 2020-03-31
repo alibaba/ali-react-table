@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { isLeafNode } from '../../common-utils'
 import { safeRender } from '../../common-utils/internals'
-import { DvtTableColumn, TableTransform } from '../../interfaces'
+import { ArtColumn, TableTransform } from '../../interfaces'
 
 const ExpansionCell = styled.div`
   display: flex;
@@ -59,7 +59,7 @@ export default function treeMode({
       return result
     }
 
-    function processColumns(columns: DvtTableColumn[]) {
+    function processColumns(columns: ArtColumn[]) {
       if (columns.length === 0) {
         return columns
       }

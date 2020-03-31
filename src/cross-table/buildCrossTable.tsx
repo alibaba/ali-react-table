@@ -3,7 +3,7 @@ import React from 'react'
 import { BaseTableProps } from '../base-table'
 import { isLeafNode } from '../common-utils'
 import { getTreeDepth } from '../common-utils/internals'
-import { DvtTableColumn, SpanRect } from '../interfaces'
+import { ArtColumn, SpanRect } from '../interfaces'
 import { CrossTableClasses, ROW_KEY } from './constants'
 import { CrossTableProps } from './cross-table'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
@@ -61,7 +61,7 @@ export default function buildCrossTable(
       function leftHeaderGetCellPropsFactory(
         metaCol: CrossTableLeftMetaColumn,
         colIndex: number,
-      ): DvtTableColumn['getCellProps'] {
+      ): ArtColumn['getCellProps'] {
         return (_value: any, row: CrossTableRenderRow, rowIndex: number) => {
           const node = row.nodes[colIndex]
           const customProps = metaCol.getCellProps?.(node, colIndex)
@@ -76,7 +76,7 @@ export default function buildCrossTable(
       function leftHeaderGetSpanRectFactory(
         metaCol: CrossTableLeftMetaColumn,
         colIndex: number,
-      ): DvtTableColumn['getSpanRect'] {
+      ): ArtColumn['getSpanRect'] {
         return (_value: any, row: CrossTableRenderRow) => row.rects[colIndex]
       }
 

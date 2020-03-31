@@ -1,5 +1,5 @@
 import { Button, Checkbox } from '@alifd/next'
-import { BaseTable, Classes, DvtTableColumn, SpanRect } from '@alife/dvt-table'
+import { BaseTable, Classes, ArtColumn, SpanRect } from 'ali-react-table'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { amount, time } from '../assets/format'
@@ -10,7 +10,7 @@ export default { title: '基础表格 / 示例' }
 
 export function 基本用法() {
   const { isLoading, dataSource } = useProvinceDataSource()
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150 },
     { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right' },
     { code: 'suspectedCount', name: '疑似', width: 100, render: amount, align: 'right' },
@@ -56,7 +56,7 @@ export function 自定义表格样式() {
 export function 自定义表格样式2() {
   /*
   import styled from 'styled-components'
-  import { BaseTable, Classes } from '@alife/dvt-table'
+  import { BaseTable, Classes } from 'ali-react-table'
 
   const ZebraBaseTable = styled(BaseTable)`
      --row-hover-color: none;
@@ -196,7 +196,7 @@ export function Props组合() {
 
 export function 默认列宽() {
   const { isLoading, dataSource } = useProvinceDataSource()
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份' },
     { code: 'confirmedCount', name: '确诊', render: amount, align: 'right' },
     { code: 'suspectedCount', name: '疑似', render: amount, align: 'right' },
@@ -412,7 +412,7 @@ export function 虚拟滚动与单元格合并() {
 
 export function 自定义单元格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150 },
     {
       code: 'confirmedCount',

@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactNode, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { STYLED_VERSION } from '../base-table/utils'
 import { isLeafNode } from '../common-utils'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 
 const TreeDiv = styled.div`
   .group {
@@ -68,7 +68,7 @@ export interface CustomColumnsDialogProps {
   enforceCheckedCodes?: string[]
   checkedCodes: string[]
   onChangeCheckedCodes(cols: string[]): void
-  columns: DvtTableColumn[]
+  columns: ArtColumn[]
   components: any
   drawerProps?: any
 
@@ -136,7 +136,7 @@ export default function CustomColumnsDialog({
 
   if (process.env.NODE_ENV !== 'production' && STYLED_VERSION === 'v3' && drawerComponentProp == null) {
     console.warn(
-      'dvt-table 自定义列对话框组件在配合 styled-components@3 使用时，' +
+      'ali-react-table 自定义列对话框组件在配合 styled-components@3 使用时，' +
         '请从上层传入 drawerComponent 以提供经过样式处理的 Drawer 组件\n' +
         '\n' +
         'const StyledDrawer = CustomColumnsDialog.makeStyledDrawer(Drawer)\n' +
@@ -181,7 +181,7 @@ export default function CustomColumnsDialog({
     }
   }
 
-  function dfs(columns: DvtTableColumn[]) {
+  function dfs(columns: ArtColumn[]) {
     let lineCount = 0
     let tempLine: ReactNode[] = []
     const nodes: ReactNode[] = []

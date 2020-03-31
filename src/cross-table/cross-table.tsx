@@ -7,7 +7,7 @@ import { CrossTableClasses, ROW_KEY } from './constants'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
 
 export const StyledBaseTableForCrossTable: ComponentType<BaseTableProps> = styled(BaseTable)`
-  // 使 dvt next table 默认的 hover 效果失效
+  // 使 art-table 默认的 hover 效果失效
   .${Classes.tableBody} tr.hovered {
     background-color: inherit;
   }

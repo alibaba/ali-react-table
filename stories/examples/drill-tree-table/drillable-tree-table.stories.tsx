@@ -1,4 +1,4 @@
-import { applyTransforms, BaseTable, simpleEncode, SortItem } from '@alife/dvt-table'
+import { applyTransforms, BaseTable, simpleEncode, SortItem } from 'ali-react-table'
 import produce from 'immer'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'

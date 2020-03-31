@@ -13,7 +13,7 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@alife/dvt-table": ["src/dvt-table.ts"]
+      "ali-react-table": ["src/ali-react-table.ts"]
     }
   },
   "include": ["src/**/*", "stories/**/*"]

@@ -7,7 +7,7 @@ import {
   CrossTable,
   CrossTableLeftMetaColumn,
   DrillNode,
-} from '@alife/dvt-table'
+} from 'ali-react-table'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
 import { PivotTableBasedOnCrossTable as _PivotTableBasedOnCrossTable } from '../examples/pivot-table-on-cross-table.stories'

@@ -1,18 +1,18 @@
 import * as fusion from '@alifd/next'
 import { Balloon, Button } from '@alifd/next'
+import { EarthFilled16 } from '@carbon/icons-react'
 import {
   applyTransforms,
   BaseTable,
   collectNodes,
   commonTransforms,
   CustomColumnsDialog,
-  DvtTableColumn,
+  ArtColumn,
   exportTableAsExcel,
   proto,
   SortItem,
   useOperationBar,
-} from '@alife/dvt-table'
-import { EarthFilled16 } from '@carbon/icons-react'
+} from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import ReactJson from 'react-json-view'
 import { getAppTrafficData } from '../../assets/cdn-data'
@@ -23,7 +23,7 @@ import { testProvColumns, useProvinceDataSource } from '../../assets/ncov19-asse
 export default { title: '表格功能拓展 / 基本示例' }
 
 export function 树状表格() {
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     {
       name: '数据维度',
       lock: true,
@@ -66,7 +66,7 @@ export function 树状表格() {
 export function 多列排序() {
   const { isLoading, dataSource } = useProvinceDataSource()
 
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
     { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right', features: { sortable: true } },
     { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right', features: { sortable: true } },
@@ -103,7 +103,7 @@ export function 多列排序() {
 export function 表格排序_单列() {
   const { isLoading, dataSource } = useProvinceDataSource()
 
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
     { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right', features: { sortable: true } },
     { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right', features: { sortable: true } },
@@ -206,7 +206,7 @@ export function 列气泡提示() {
 
   const [sorts, onChangeSorts] = useState<SortItem[]>([])
 
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     {
       code: 'provinceName',
       name: '省份',
@@ -263,7 +263,7 @@ export function 列气泡提示() {
 }
 
 export function 树状模式与层级排序() {
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     {
       name: '数据维度',
       lock: true,
@@ -309,16 +309,16 @@ export function 树状模式与层级排序() {
 }
 
 export function 自定义列对话框组件() {
-  const defaultVisibleIndProto = proto.array<DvtTableColumn>({
+  const defaultVisibleIndProto = proto.array<ArtColumn>({
     features: { defaultVisible: true },
   })
 
-  const defaultHiddenIntProto = proto.array<DvtTableColumn>({
+  const defaultHiddenIntProto = proto.array<ArtColumn>({
     features: { defaultVisible: false },
   })
 
   // 列配置
-  const columns: DvtTableColumn[] = [
+  const columns: ArtColumn[] = [
     {
       name: '商品信息',
       children: defaultVisibleIndProto([

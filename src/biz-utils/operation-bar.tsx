@@ -2,7 +2,7 @@ import { Column16, Download16 } from '@carbon/icons-react'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { collectNodes } from '../common-utils'
-import { DvtTableColumn, TableTransform } from '../interfaces'
+import { ArtColumn, TableTransform } from '../interfaces'
 import { visible } from './common-transforms'
 import CustomColumnsDialog from './CustomColumnsDialog'
 
@@ -65,7 +65,7 @@ export function useOperationBar({
   actionColor = '#23a3ff',
 }: {
   features: TableOperationFeature[]
-  columns: DvtTableColumn[]
+  columns: ArtColumn[]
   components: any
   actionColor?: string
 }) {
@@ -92,7 +92,7 @@ export function useOperationBar({
       if (process.env.NODE_ENV !== 'production') {
         if (codeGroups.enforceVisible.length === 0 && codeGroups.defaultVisible.length === 0) {
           console.warn(
-            'dvt-table <CustomColumnsDialog /> 表格缺少默认可见列，请通过 column.features.defaultVisible ' +
+            'ali-react-table <CustomColumnsDialog /> 表格缺少默认可见列，请通过 column.features.defaultVisible ' +
               '或 column.features.enforceVisible 来设置默认可见的列',
             columns,
           )

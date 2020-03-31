@@ -1,4 +1,4 @@
-import { BaseTable, DvtTableColumn } from '@alife/dvt-table'
+import { BaseTable, ArtColumn } from 'ali-react-table'
 import React from 'react'
 import { cols, useAllDataSource } from '../assets/ncov19-assets'
 
@@ -56,7 +56,7 @@ export function 滚动容器为指定高度的div() {
 
 export function 双向虚拟滚动() {
   const { dataSource, isLoading } = useAllDataSource()
-  const repeatedColumns: DvtTableColumn[] = []
+  const repeatedColumns: ArtColumn[] = []
 
   for (let i = 0; i < 1000; i++) {
     for (const col of cols.indCols) {

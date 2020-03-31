@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react'
 
-export type ColumnAlign = 'left' | 'center' | 'right'
+export type ArtColumnAlign = 'left' | 'center' | 'right'
 
-export interface DvtTableStaticColumnConfig {
+export interface ArtColumnStaticPart {
   /** 列的名称 */
   name: string
 
@@ -16,7 +16,7 @@ export interface DvtTableStaticColumnConfig {
   width?: number
 
   /** 单元格中的文本或内容的 对其方向 */
-  align?: ColumnAlign
+  align?: ArtColumnAlign
 
   /** 是否隐藏 */
   hidden?: boolean
@@ -31,7 +31,7 @@ export interface DvtTableStaticColumnConfig {
   features?: { [key: string]: any }
 }
 
-export interface DvtTableDynamicColumnConfig {
+export interface ArtColumnDynamicPart {
   /** 自定义取数方法 */
   getValue?(record: any, rowIndex: number): any
 
@@ -45,15 +45,15 @@ export interface DvtTableDynamicColumnConfig {
   getSpanRect?(value: any, record: any, rowIndex: number): SpanRect
 }
 
-export interface DvtTableColumn extends DvtTableStaticColumnConfig, DvtTableDynamicColumnConfig {
+export interface ArtColumn extends ArtColumnStaticPart, ArtColumnDynamicPart {
   /** 该列的子节点 */
-  children?: DvtTableColumn[]
+  children?: ArtColumn[]
 }
 
 export type Transform<T> = (input: T) => T
 
 export type TableTransform = Transform<{
-  columns: DvtTableColumn[]
+  columns: ArtColumn[]
   dataSource: any[]
 }>
 

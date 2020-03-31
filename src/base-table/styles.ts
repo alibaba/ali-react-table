@@ -1,16 +1,16 @@
 import styled from 'styled-components'
 
-const prefix = 'dvt-'
+const prefix = 'art-'
 
-// dvtTableWrapper modifiers: use-outer-border
-// dvtTable modifiers: lock empty sticky has-header
+// artTableWrapper modifiers: use-outer-border
+// artTable modifiers: lock empty sticky has-header
 
 export const Classes = {
   /** BaseTable 表格组件的外层包裹 div */
-  dvtTableWrapper: `${prefix}table-wrapper`,
+  artTableWrapper: `${prefix}table-wrapper`,
 
   /** BaseTable 主要内容 div；包含 3 个 left/main/right section */
-  dvtTable: `${prefix}table`,
+  artTable: `${prefix}table`,
 
   lockShadow: `${prefix}lock-shadow`,
 
@@ -105,7 +105,7 @@ export type BaseTableCSSVariables = Partial<{
   '--header-cell-border-right': string
 }>
 
-const DvtTableWrapper = styled.div`
+const ArtTableWrapper = styled.div`
   --color: #333;
   --bgcolor: white;
   --header-color: #5a6c84;
@@ -140,7 +140,7 @@ const DvtTableWrapper = styled.div`
     box-sizing: border-box;
   }
 
-  // 表格外边框由 dvt-table-wrapper 提供，而不是由单元格提供
+  // 表格外边框由 art-table-wrapper 提供，而不是由单元格提供
   &.use-outer-border {
     border: 1px solid var(--border-color);
 
@@ -188,7 +188,7 @@ const EmptyTableCell = styled.td`
   }
 `
 
-const DvtTable = styled.div`
+const ArtTable = styled.div`
   // 表格的主要样式
   cursor: default;
   color: var(--color);
@@ -362,8 +362,8 @@ const StickyScroll = styled.div`
 `
 
 export const Styled = {
-  DvtTableWrapper,
-  DvtTable,
+  ArtTableWrapper,
+  ArtTable,
   MainSection,
   LeftSection,
   RightSection,

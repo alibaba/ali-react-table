@@ -4,7 +4,7 @@ import React, { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { collectNodes, isLeafNode, layeredSort, smartCompare } from '../../common-utils'
 import { safeGetValue } from '../../common-utils/internals'
-import { DvtTableColumn, TableTransform } from '../../interfaces'
+import { ArtColumn, TableTransform } from '../../interfaces'
 import { SortItem, SortOrder } from '../interfaces'
 
 type IconComponent = typeof CarbonIcons.Number_116
@@ -51,7 +51,7 @@ const NumberIconMap: { [key: number]: IconComponent } = {
 
 const EmptyIcon: IconComponent = () => null
 
-function hasAnySortableColumns(cols: DvtTableColumn[]): boolean {
+function hasAnySortableColumns(cols: ArtColumn[]): boolean {
   return cols.some(col => Boolean(col.features?.sortable) || (!isLeafNode(col) && hasAnySortableColumns(col.children)))
 }
 
@@ -91,7 +91,7 @@ export default function sort({
     if (process.env.NODE_ENV !== 'production') {
       if (!hasAnySortableColumns(columns)) {
         console.warn(
-          'dvt-table commonTransform.sort 缺少可排序的列，请通过 column.features.sortable 来指定哪些列可排序',
+          'ali-react-table commonTransform.sort 缺少可排序的列，请通过 column.features.sortable 来指定哪些列可排序',
           columns,
         )
       }
@@ -150,10 +150,10 @@ export default function sort({
       }
     }
 
-    function processColumns(columns: DvtTableColumn[]) {
+    function processColumns(columns: ArtColumn[]) {
       return columns.map(dfs)
 
-      function dfs(col: DvtTableColumn): DvtTableColumn {
+      function dfs(col: ArtColumn): ArtColumn {
         const result = { ...col }
 
         if (col.code && (col.features?.sortable || sortMap.has(col.code))) {

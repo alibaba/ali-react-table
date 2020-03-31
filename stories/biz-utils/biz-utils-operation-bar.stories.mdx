@@ -4,11 +4,11 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 # 表格操作栏
 
-dvt-table 提供了一个简单的表格操作栏组件，并实现了一些常见的表格操作。
+ali-react-table 提供了一个简单的表格操作栏组件，并实现了一些常见的表格操作。
 
 ## `hooks useOperationBar`
 
-`useOperationBar` 是对常见表格操作栏功能的封装。「表格功能」可分为 UI 和逻辑两部分，在 dvt-table 中这两个部分是耦合在一起的，useOperationBar 内部同时实现了逻辑与相应的 UI。
+`useOperationBar` 是对常见表格操作栏功能的封装。「表格功能」可分为 UI 和逻辑两部分，在 ali-react-table 中这两个部分是耦合在一起的，useOperationBar 内部同时实现了逻辑与相应的 UI。
 
 `useOperationBar(options)` 的具体 API 如下：
 
@@ -58,7 +58,7 @@ function MyComponent() {
   - 一般来说大部分的列都应当是默认可见的，此时推荐使用 `proto` 工具来简化重复配置声明
 - `{ type: 'export'; onExport(): void }`
   - 数据导出
-  - 注意 onExport 需要自己实现，一般情况下可以调用 dvt-table 提供的工具方法 `exportTableAsExcel` 来将数据导出到 Excel 文件
+  - 注意 onExport 需要自己实现，一般情况下可以调用 ali-react-table 提供的工具方法 `exportTableAsExcel` 来将数据导出到 Excel 文件
 - `{ type: 'separator' }`
   - 分隔符，没有逻辑，只影响工具栏的布局样式
 - `{ type: 'toggle'; key: string; title: ReactNode; transform?(checked: boolean): TableTransform }`
@@ -83,7 +83,7 @@ function MyComponent() {
 ```typescript
 /* 这是一份 `真实世界的例子` 的示例代码，不能直接运行 */
 import * as fusion from '@alifd/next'
-import { useOperationBar, applyTransforms, BaseTable } from '@alife/dvt-table'
+import { useOperationBar, applyTransforms, BaseTable } from 'ali-react-table'
 
 function MyComponent({ inputDataSource, inputColumns }) {
   const operationBar = useOperationBar({

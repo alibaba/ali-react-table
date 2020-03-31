@@ -1,5 +1,5 @@
-import { createAggregateFunction } from '@alife/dvt-table'
-import { buildRecordMatrix, buildDrillTree, convertDrillTreeToCrossTree, CrossTable, DrillNode } from '@alife/dvt-table'
+import { createAggregateFunction } from 'ali-react-table'
+import { buildRecordMatrix, buildDrillTree, convertDrillTreeToCrossTree, CrossTable, DrillNode } from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../assets/cdn-data'
 import { amount, lfl, ratio } from '../assets/format'

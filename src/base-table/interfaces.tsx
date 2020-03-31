@@ -1,5 +1,5 @@
 import React from 'react'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 
 export type TableSide = 'main' | 'left' | 'right'
 export type VirtualEnum = false | true | 'auto'
@@ -26,8 +26,8 @@ export interface HorizontalRenderRange {
 export type TRNodeList = NodeListOf<HTMLTableRowElement>
 
 export interface TableDoms {
-  dvtTableWrapper: HTMLDivElement
-  dvtTable: HTMLDivElement
+  artTableWrapper: HTMLDivElement
+  artTable: HTMLDivElement
   mainSection: HTMLDivElement
   mainHeader: HTMLDivElement
   mainBody: HTMLDivElement
@@ -43,4 +43,4 @@ export interface TableDoms {
 
 export type HozWrappedCol =
   | { type: 'blank'; blankSide: 'left' | 'right'; width: number }
-  | { type: 'normal'; colIndex: number; col: DvtTableColumn }
+  | { type: 'normal'; colIndex: number; col: ArtColumn }

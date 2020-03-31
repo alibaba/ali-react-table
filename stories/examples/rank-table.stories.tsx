@@ -1,4 +1,4 @@
-import { BaseTable } from '@alife/dvt-table'
+import { BaseTable } from 'ali-react-table'
 import React from 'react'
 import styled from 'styled-components'
 import { amount, lfl } from '../assets/format'
@@ -10,12 +10,12 @@ const StyledBaseTable = styled(BaseTable)`
   --header-bgcolor: none;
   --row-height: 36px;
 
-  .dvt-table-header {
+  .art-table-header {
     border-top: 1px solid #dfe3e8;
     border-bottom: 1px solid #dfe3e8;
   }
 
-  .dvt-table-header-cell {
+  .art-table-header-cell {
     height: 48px;
   }
 `

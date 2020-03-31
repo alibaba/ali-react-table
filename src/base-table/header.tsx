@@ -2,7 +2,7 @@ import cx from 'classnames'
 import React from 'react'
 import { isLeafNode } from '../common-utils'
 import { getTreeDepth } from '../common-utils/internals'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 import { HorizontalRenderRange, TableSide } from './interfaces'
 import { Classes } from './styles'
 import { BaseTableState } from './table'
@@ -27,7 +27,7 @@ type ColWithRenderInfo =
   | {
       type: 'normal'
       colIndex: number
-      col: DvtTableColumn
+      col: ArtColumn
       colSpan: number
       isLeaf: boolean
       width: number
@@ -36,15 +36,15 @@ type ColWithRenderInfo =
 
 type IndexedCol = {
   colIndex: number
-  col: DvtTableColumn
+  col: ArtColumn
   children?: IndexedCol[]
 }
 
 /** 根据当前横向虚拟滚动 对 nested.center 进行过滤，结果只保留当前视野内可见的那些列配置 */
-function filterNestedCenter(centerNested: DvtTableColumn[], hoz: HorizontalRenderRange, leftFlatCount: number) {
+function filterNestedCenter(centerNested: ArtColumn[], hoz: HorizontalRenderRange, leftFlatCount: number) {
   return dfs(centerNested, leftFlatCount).filtered
 
-  function dfs(cols: DvtTableColumn[], startColIndex: number) {
+  function dfs(cols: ArtColumn[], startColIndex: number) {
     let leafCount = 0
 
     const filtered: IndexedCol[] = []
@@ -119,10 +119,10 @@ function calculateLeveledAndFlat(inputNested: IndexedCol[], rowCount: number) {
 }
 
 /** 包装列配置，附加上 colIndex 属性 */
-function attachColIndex(inputNested: DvtTableColumn[], colIndexOffset: number) {
+function attachColIndex(inputNested: ArtColumn[], colIndexOffset: number) {
   return dfs(inputNested, colIndexOffset).result
 
-  function dfs(input: DvtTableColumn[], startColIndex: number) {
+  function dfs(input: ArtColumn[], startColIndex: number) {
     const result: IndexedCol[] = []
 
     let leafCount = 0

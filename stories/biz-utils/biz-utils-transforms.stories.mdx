@@ -6,13 +6,13 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 `BaseTable` 基于 dataSource 和 column 渲染表格，对 dataSource/columns 进行一些包装和替换，可以实现丰富的表格特性：包括排序、树状模式、过滤等。
 
-dvt-table 基于 `TableTransform` 来对 BaseTable 进行功能增强。我们首先来看一下 `Transform<T>` 与 `TableTransform` 的接口：
+ali-react-table 基于 `TableTransform` 来对 BaseTable 进行功能增强。我们首先来看一下 `Transform<T>` 与 `TableTransform` 的接口：
 
 ```typescript
 type Transform<T> = (input: T) => T
 
 type TableTransform = Transform<{
-  columns: DvtTableColumn[]
+  columns: ArtColumn[]
   dataSource: any[]
 }>
 ```
@@ -26,7 +26,7 @@ type TableTransform = Transform<{
 biz--utils 导出了 applyTransforms 方法来应用多个 transform 🌟：
 
 ```jsx
-import { BaseTable, applyTransforms } from '@alife/dvt-table'
+import { BaseTable, applyTransforms } from 'ali-react-table'
 
 const renderData = applyTransforms(
   // 输入放在第一个参数
@@ -43,7 +43,7 @@ return <BaseTable datasource={renderData.dataSource} columns={renderData.columns
 
 ## 常见的 transform
 
-dvt-table 提供了一些常见的 transform 用于实现常见的业务需求（详见文档的下一页），实现自定义 transform 之前可以先看下 commonTransform 是否满足你的需求。
+ali-react-table 提供了一些常见的 transform 用于实现常见的业务需求（详见文档的下一页），实现自定义 transform 之前可以先看下 commonTransform 是否满足你的需求。
 
 ## 自定义 transform
 
@@ -63,13 +63,13 @@ function doubleDataSourceTransform({ columns, dataSource }) {
 
 ### `transformColumn`
 
-实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 dvt-table 提供了 `transformColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
+实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 ali-react-table 提供了 `transformColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
 
 ```typescript
-function transformColumn(fn: (column: DvtTableColumn) => null | DvtTableColumn | DvtTableColumn[]): TableTransform
+function transformColumn(fn: (column: ArtColumn) => null | ArtColumn | ArtColumn[]): TableTransform
 ```
 
-返回 `null` 时，对应的列将被移除；返回 `DvtTableColumn` 或一个数组时，返回的结果会替换对应的列。
+返回 `null` 时，对应的列将被移除；返回 `ArtColumn` 或一个数组时，返回的结果会替换对应的列。
 
 下面是一些利用 `transformColumn` 实现的 transform：
 

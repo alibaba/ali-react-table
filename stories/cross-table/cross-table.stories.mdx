@@ -84,15 +84,15 @@ topTree 的结构与 leftTree 类似，但其树节点的配置较为丰富，�
 
 ```typescript
 /** 交叉表上方树状结构的树节点
- * 列的名称现由 value 字段提供，故从 DvtTableStaticColumnConfig 移除了 name 字段 */
-interface TopCrossTreeNode extends CrossTreeNode, Omit<DvtTableStaticColumnConfig, 'name'> {
+ * 列的名称现由 value 字段提供，故从 ArtColumnStaticPart 移除了 name 字段 */
+interface TopCrossTreeNode extends CrossTreeNode, Omit<ArtColumnStaticPart, 'name'> {
   children?: TopCrossTreeNode[]
 }
 ```
 
 上方的树节点继承（extends）了左侧树节点的结构，拥有相同的 key/value/data/title/hidden/children 字段。
 
-交叉表底层使用了 `BaseTable` 进行渲染，而 `BaseTable` 中主要的表格配置是放在每一列之上的。在 topTree 中，每个叶子节点都对应的了表格中的一列，所以每个节点除了包含 key/value/data/children 之外，还包含了部分列配置（即 `DvtTableStaticColumnConfig`）。`DvtTableStaticColumnConfig` 的结构如下：
+交叉表底层使用了 `BaseTable` 进行渲染，而 `BaseTable` 中主要的表格配置是放在每一列之上的。在 topTree 中，每个叶子节点都对应的了表格中的一列，所以每个节点除了包含 key/value/data/children 之外，还包含了部分列配置（即 `ArtColumnStaticPart`）。`ArtColumnStaticPart` 的结构如下：
 
 - `name` 列的名称；注意因为树节点已经含有 value 字段，故 name 字段在 TopCrossTreeNode 中是不起作用的）
 - `code` 在数据中的字段 code；注意交叉表使用自定义的 getValue/render 进行取值或渲染，会屏蔽掉 code 的默认取值方式
@@ -147,7 +147,7 @@ interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' 
   ): React.TdHTMLAttributes<HTMLTableDataCellElement>
 }
 
-export interface CrossTableLeftMetaColumn extends Omit<DvtTableStaticColumnConfig, 'hidden' | 'lock'> {
+export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden' | 'lock'> {
   /** 自定义渲染方法 */
   render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
 
@@ -162,4 +162,4 @@ export interface CrossTableLeftMetaColumn extends Omit<DvtTableStaticColumnConfi
 
 交叉表的左树/上树的结构被设计为 `{ key, value, children }` 的简单结构，方便上层调用者能够从不同的数据源中生成 leftTree/topTree。
 
-在复杂场景下，需要上层根据业务需求手动生成 leftTree/topTree/getValue。dvt-table 也提供了一定的透视能力，可在交叉表的基础上实现前端聚合的透视表，可供使用和参考。
+在复杂场景下，需要上层根据业务需求手动生成 leftTree/topTree/getValue。ali-react-table 也提供了一定的透视能力，可在交叉表的基础上实现前端聚合的透视表，可供使用和参考。

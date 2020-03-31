@@ -5,7 +5,7 @@ import typescript from 'rollup-plugin-typescript2'
 const external = Object.keys(pkg.dependencies).concat(['rxjs/operators'])
 
 const config = output => ({
-  input: 'src/dvt-table.ts',
+  input: 'src/ali-react-table.ts',
   output,
   plugins: [
     typescript({

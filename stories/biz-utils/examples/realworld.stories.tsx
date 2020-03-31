@@ -3,12 +3,12 @@ import {
   applyTransforms,
   BaseTable,
   commonTransforms,
-  DvtTableColumn,
+  ArtColumn,
   exportTableAsExcel,
   proto,
   transformColumn,
   useOperationBar,
-} from '@alife/dvt-table'
+} from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../../assets/cdn-data'
 import { amount, ratio } from '../../assets/format'
@@ -18,7 +18,7 @@ export default { title: '表格功能拓展 / 复杂示例' }
 
 export function 实际页面示例() {
   // 例如 proto 创建若干列配置的「原型」，方便后续书写列配置
-  const groupProto = proto.array<DvtTableColumn>({
+  const groupProto = proto.array<ArtColumn>({
     name: proto.string,
     children: proto.array({
       name: proto.string,
@@ -27,23 +27,23 @@ export function 实际页面示例() {
     }),
   })
 
-  const appIndProto = proto.array<DvtTableColumn>({
+  const appIndProto = proto.array<ArtColumn>({
     width: 120,
     align: 'right',
     features: { defaultVisible: true, lfl: true },
   })
 
-  const rateIndProto = proto.array<DvtTableColumn>({
+  const rateIndProto = proto.array<ArtColumn>({
     width: 120,
     align: 'right',
     render: ratio,
     features: { defaultVisible: true, lfl: true },
   })
 
-  const cateFieldProto = proto.array<DvtTableColumn>({ width: 120 })
+  const cateFieldProto = proto.array<ArtColumn>({ width: 120 })
 
   // 列配置
-  const columns: DvtTableColumn[] = groupProto([
+  const columns: ArtColumn[] = groupProto([
     {
       name: '商品信息',
       features: { flatten: true },

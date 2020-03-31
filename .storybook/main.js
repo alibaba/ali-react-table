@@ -20,7 +20,6 @@ const crossTable = [
 const pivotUtils = []
 
 const lab = [
-  // dvt-table 实验室
   'lab/lab.stories.mdx',
   'pivot-utils/pivot-utils.stories.mdx',
   'pivot-utils/pivot-utils.stories.tsx',

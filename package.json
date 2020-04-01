@@ -3,9 +3,9 @@
   "version": "0.12.0-snapshot",
   "description": "高性能 React 表格组件",
   "sideEffects": false,
-  "module": "lib/ali-react-table.esm.js",
-  "main": "lib/ali-react-table.js",
-  "types": "lib/ali-react-table.d.ts",
+  "module": "dist/ali-react-table.esm.js",
+  "main": "dist/ali-react-table.js",
+  "types": "dist/ali-react-table.d.ts",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,13 +18,13 @@
   },
   "scripts": {
     "storybook": "start-storybook -p 2333",
-    "build": "rimraf dist/ && build-storybook -c .storybook -o dist/",
-    "build-package": "rimraf lib/ && rollup --config rollup.config.js",
-    "preversion": "tnpm run build-package",
-    "prepublishOnly": "tnpm run build-package"
+    "build-storybook": "rimraf storybook-dist/ && build-storybook -c .storybook -o storybook-dist/",
+    "build": "rimraf dist/ && rollup --config rollup.config.js",
+    "preversion": "npm run build",
+    "prepublishOnly": "npm run build"
   },
   "files": [
-    "lib",
+    "dist",
     "docs"
   ],
   "prettier": {

@@ -1,4 +1,5 @@
 node_modules/
+storybook-dist/
 .out
 build/
 dist/

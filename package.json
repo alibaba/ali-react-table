@@ -25,7 +25,8 @@
   },
   "files": [
     "dist",
-    "docs"
+    "biz",
+    "pivot"
   ],
   "prettier": {
     "printWidth": 120,

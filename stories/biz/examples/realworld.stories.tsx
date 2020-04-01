@@ -1,6 +1,13 @@
 import * as fusion from '@alifd/next'
-import { ArtColumn, BaseTable, exportTableAsExcel, proto } from 'ali-react-table'
-import { applyTransforms, commonTransforms, transformColumn, useOperationBar } from 'ali-react-table/biz'
+import { ArtColumn, BaseTable } from 'ali-react-table'
+import {
+  applyTransforms,
+  commonTransforms,
+  exportTableAsExcel,
+  proto,
+  transformColumn,
+  useOperationBar,
+} from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../../assets/cdn-data'
 import { amount, ratio } from '../../assets/format'

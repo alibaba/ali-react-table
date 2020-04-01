@@ -53,9 +53,12 @@ export interface ArtColumn extends ArtColumnStaticPart, ArtColumnDynamicPart {
 /** SpanRect 用于描述合并单元格的边界
  * 注意 top/left 为 inclusive，而 bottom/right 为 exclusive */
 export interface SpanRect {
-  // top/bottom/left/right are all INCLUSIVE
   top: number
   bottom: number
   left: number
   right: number
+}
+
+export interface AbstractTreeNode {
+  children?: AbstractTreeNode[]
 }

@@ -1,6 +1,6 @@
-import { isLeafNode, simpleEncode } from 'ali-react-table'
+import { isLeafNode } from 'ali-react-table'
 import { applyTransforms, commonTransforms, SortItem, SortOrder, TableTransform } from 'ali-react-table/biz'
-import { buildDrillTree, buildRecordMap, createAggregateFunction, DrillNode } from 'ali-react-table/pivot'
+import { buildDrillTree, buildRecordMap, createAggregateFunction, DrillNode, simpleEncode } from 'ali-react-table/pivot'
 
 export function drillTreeTransform({
   nameProp,

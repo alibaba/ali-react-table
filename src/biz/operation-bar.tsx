@@ -38,10 +38,6 @@ const OperationBarDiv: any = styled.div`
     cursor: pointer;
     padding: 4px;
 
-    &:hover {
-      outline: 1px dashed var(--action-color);
-    }
-
     > .icon {
       fill: currentColor;
       margin-right: 2px;

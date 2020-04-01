@@ -1,4 +1,4 @@
-import { AbstractTreeNode } from './interfaces'
+import { AbstractTreeNode } from '../interfaces'
 import isLeafNode from './isLeafNode'
 
 /** 遍历所有节点，并将节点收集到一个数组中.

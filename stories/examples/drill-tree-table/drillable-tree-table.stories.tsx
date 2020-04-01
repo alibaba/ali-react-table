@@ -1,5 +1,6 @@
-import { BaseTable, simpleEncode } from 'ali-react-table'
+import { BaseTable } from 'ali-react-table'
 import { applyTransforms, SortItem } from 'ali-react-table/biz'
+import { simpleEncode } from 'ali-react-table/pivot'
 import produce from 'immer'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'

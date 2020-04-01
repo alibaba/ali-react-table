@@ -1,4 +1,4 @@
-import { AbstractTreeNode } from '../../common-utils/interfaces'
+import { AbstractTreeNode } from 'ali-react-table'
 import isLeafNode from '../../common-utils/isLeafNode'
 
 /** 对树状结构的数据进行排序.

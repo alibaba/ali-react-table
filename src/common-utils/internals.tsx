@@ -1,6 +1,5 @@
 import React from 'react'
-import { ArtColumn } from '../interfaces'
-import { AbstractTreeNode } from './interfaces'
+import { AbstractTreeNode, ArtColumn } from '../interfaces'
 import isLeafNode from './isLeafNode'
 
 export function safeGetValue(column: ArtColumn, record: any, rowIndex: number) {

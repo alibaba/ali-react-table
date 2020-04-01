@@ -15,40 +15,49 @@ function normalizeAsArray(input: NormalizeAsArrayInput<ArtColumn>): ArtColumn[] 
 }
 
 export default function transformColumn(
-  fn: (field: ArtColumn, columnContext: { range: { start: number; end: number } }) => NormalizeAsArrayInput<ArtColumn>,
+  fn: (
+    field: ArtColumn,
+    ctx: { range: { start: number; end: number }; dataSource: any[] },
+  ) => NormalizeAsArrayInput<ArtColumn>,
 ): TableTransform {
-  return ({ columns, dataSource }) => ({ dataSource, columns: dfs(columns, 0).result })
+  return ({ columns, dataSource }) => {
+    return { dataSource, columns: dfs(columns, 0).result }
 
-  function dfs(columns: ArtColumn[], parentStartColIndex: number): { flatColCount: number; result: ArtColumn[] } {
-    let flatColCount = 0
-    const result: ArtColumn[] = []
+    function dfs(columns: ArtColumn[], parentStartColIndex: number): { flatColCount: number; result: ArtColumn[] } {
+      let flatColCount = 0
+      const result: ArtColumn[] = []
 
-    for (const col of columns) {
-      const startColIndex = parentStartColIndex + flatColCount
+      for (const col of columns) {
+        const startColIndex = parentStartColIndex + flatColCount
 
-      let unNormalized
-      if (isLeafNode(col)) {
-        unNormalized = fn(col, { range: { start: startColIndex, end: startColIndex + 1 } })
-        flatColCount += 1
-      } else {
-        const dfsResult = dfs(col.children, startColIndex)
-        unNormalized = fn(
-          {
-            ...col,
-            children: dfsResult.result,
-          },
-          {
-            range: {
-              start: startColIndex,
-              end: startColIndex + dfsResult.flatColCount,
+        let unNormalized
+        if (isLeafNode(col)) {
+          unNormalized = fn(col, {
+            range: { start: startColIndex, end: startColIndex + 1 },
+            dataSource,
+          })
+          flatColCount += 1
+        } else {
+          const dfsResult = dfs(col.children, startColIndex)
+          unNormalized = fn(
+            {
+              ...col,
+              children: dfsResult.result,
             },
-          },
-        )
-        flatColCount += dfsResult.flatColCount
+            {
+              range: {
+                start: startColIndex,
+                end: startColIndex + dfsResult.flatColCount,
+              },
+              dataSource,
+            },
+          )
+          flatColCount += dfsResult.flatColCount
+        }
+        result.push(...normalizeAsArray(unNormalized))
       }
-      result.push(...normalizeAsArray(unNormalized))
-    }
 
-    return { result, flatColCount }
+      return { result, flatColCount }
+    }
   }
 }

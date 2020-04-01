@@ -1,3 +1,4 @@
+export { default as autoRowSpan } from './autoRowSpan'
 export { default as buildTree } from './buildTree'
 export { default as columnHover } from './columnHover'
 export { default as flatten } from './flatten'

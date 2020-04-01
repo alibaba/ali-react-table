@@ -1,16 +1,6 @@
-import {
-  applyTransforms,
-  buildDrillTree,
-  buildRecordMap,
-  commonTransforms,
-  createAggregateFunction,
-  DrillNode,
-  isLeafNode,
-  simpleEncode,
-  SortItem,
-  SortOrder,
-  TableTransform,
-} from '@alife/dvt-table'
+import { isLeafNode } from 'ali-react-table'
+import { applyTransforms, commonTransforms, SortItem, SortOrder, TableTransform } from 'ali-react-table/biz'
+import { buildDrillTree, buildRecordMap, createAggregateFunction, DrillNode, simpleEncode } from 'ali-react-table/pivot'
 
 export function drillTreeTransform({
   nameProp,
@@ -42,11 +32,11 @@ export function drillTreeTransform({
   encode?(path: string[]): string
 }): TableTransform {
   const openKeySet = new Set(treeMode.openKeys)
-  const codes = dimensions.map(dim => dim.code)
+  const codes = dimensions.map((dim) => dim.code)
   const aggregate = createAggregateFunction(indicators)
   const isExpand = (key: string) => openKeySet.has(key)
 
-  return input => {
+  return (input) => {
     const data = input.dataSource
 
     const leftDrillTree = buildDrillTree(data, codes, {
@@ -69,7 +59,7 @@ export function drillTreeTransform({
     return dfs(drillTree)
 
     function dfs(nodes: DrillNode[]): any[] {
-      return nodes.map(node => ({
+      return nodes.map((node) => ({
         [treeMode.primaryKey]: node.key,
         [nameProp]: node.value,
         ...recordMap.get(node.key),

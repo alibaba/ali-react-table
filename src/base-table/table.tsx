@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode } from 'react'
 import { noop, Subscription } from 'rxjs'
 import { distinctUntilChanged, filter, map } from 'rxjs/operators'
 import { safeGetCellProps, safeGetRowKey, safeGetValue, safeRender } from '../common-utils/internals'
-import { DvtTableColumn } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 import EmptyTable from './empty'
 import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
@@ -42,7 +42,7 @@ export interface BaseTableProps {
   /** 表格展示的数据源 */
   dataSource: any[]
   /** 表格的列配置 */
-  columns: DvtTableColumn[]
+  columns: ArtColumn[]
 
   /** 是否开启虚拟滚动 */
   useVirtual?: VirtualEnum | { horizontal?: VirtualEnum; vertical?: VirtualEnum; header?: VirtualEnum }
@@ -81,16 +81,16 @@ export interface BaseTableProps {
 
 export interface BaseTableState {
   flat: {
-    left: DvtTableColumn[]
-    center: DvtTableColumn[]
-    right: DvtTableColumn[]
-    main: DvtTableColumn[]
+    left: ArtColumn[]
+    center: ArtColumn[]
+    right: ArtColumn[]
+    main: ArtColumn[]
   }
   nested: {
-    left: DvtTableColumn[]
-    right: DvtTableColumn[]
-    main: DvtTableColumn[]
-    center: DvtTableColumn[]
+    left: ArtColumn[]
+    right: ArtColumn[]
+    main: ArtColumn[]
+    center: ArtColumn[]
   }
 
   /** 是否要展示自定义滚动条(stickyScroll) */
@@ -135,8 +135,8 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   static getDerivedStateFromProps = getDerivedStateFromProps
 
   private store = new ItemSizeStore()
-  private dvtTableRef = React.createRef<HTMLDivElement>()
-  private dvtTableWrapperRef = React.createRef<HTMLDivElement>()
+  private artTableRef = React.createRef<HTMLDivElement>()
+  private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
   private rootSubscription = new Subscription()
 
@@ -480,7 +480,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       )
     }
 
-    function renderCell(record: any, rowIndex: number, column: DvtTableColumn, colIndex: number) {
+    function renderCell(record: any, rowIndex: number, column: ArtColumn, colIndex: number) {
       if (spanManager.testSkip(rowIndex, colIndex)) {
         return null
       }
@@ -558,15 +558,15 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     const { dataSource, className, style, hasHeader, useOuterBorder, isLoading, isStickyHead } = this.props
 
     const styleWrapper = (node: ReactNode) => {
-      const wrapperClassName = cx(Classes.dvtTableWrapper, className, {
+      const wrapperClassName = cx(Classes.artTableWrapper, className, {
         'use-outer-border': useOuterBorder,
       })
-      const dvtTableWrapperProps = {
+      const artTableWrapperProps = {
         className: wrapperClassName,
         style,
-        [STYLED_REF_PROP]: this.dvtTableWrapperRef,
+        [STYLED_REF_PROP]: this.artTableWrapperRef,
       }
-      return <Styled.DvtTableWrapper {...dvtTableWrapperProps}>{node}</Styled.DvtTableWrapper>
+      return <Styled.ArtTableWrapper {...artTableWrapperProps}>{node}</Styled.ArtTableWrapper>
     }
 
     const withStickyScroll = (node: ReactNode) => (
@@ -588,7 +588,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       return <Loading visible={isLoading}>{node}</Loading>
     }
 
-    const tableClass = cx(Classes.dvtTable, {
+    const tableClass = cx(Classes.artTable, {
       sticky: isStickyHead,
       empty: dataSource.length === 0,
       lock: this.isLock(),
@@ -597,20 +597,20 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
 
     const renderRange = this.getRenderRange()
 
-    const dvtTableProps = {
+    const artTableProps = {
       className: tableClass,
-      [STYLED_REF_PROP]: this.dvtTableRef,
+      [STYLED_REF_PROP]: this.artTableRef,
     }
 
-    const dvtTable = (
-      <Styled.DvtTable {...dvtTableProps}>
+    const artTable = (
+      <Styled.ArtTable {...artTableProps}>
         {this.renderLeftSection(renderRange)}
         {this.renderMainSection(renderRange)}
         {this.renderRightSection(renderRange)}
-      </Styled.DvtTable>
+      </Styled.ArtTable>
     )
 
-    return styleWrapper(withStickyScroll(loadingWrapper(dvtTable)))
+    return styleWrapper(withStickyScroll(loadingWrapper(artTable)))
   }
 
   private renderLeftSection(renderRange: FullRenderRange) {
@@ -676,7 +676,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     // 故这里使用 requestAnimationFrame 等到下一个动画帧
     const rafId = requestAnimationFrame(() => {
       let resolvedFlowRoot
-      const wrapper = this.dvtTableWrapperRef.current
+      const wrapper = this.artTableWrapperRef.current
 
       if (flowRoot === 'auto') {
         const computedStyle = getComputedStyle(wrapper)
@@ -728,15 +728,15 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
 
   /** 更新 DOM 节点的引用，方便其他方法直接操作 DOM */
   private updateDoms() {
-    const dvtTableWrapper = this.dvtTableWrapperRef.current
-    const dvtTable = this.dvtTableRef.current
-    const mainSection = query(dvtTable, Classes.mainSection)
-    const leftSection = query(dvtTable, Classes.leftSection)
-    const rightSection = query(dvtTable, Classes.rightSection)
+    const artTableWrapper = this.artTableWrapperRef.current
+    const artTable = this.artTableRef.current
+    const mainSection = query(artTable, Classes.mainSection)
+    const leftSection = query(artTable, Classes.leftSection)
+    const rightSection = query(artTable, Classes.rightSection)
 
     this.doms = {
-      dvtTableWrapper,
-      dvtTable,
+      artTableWrapper,
+      artTable,
       mainSection,
       mainHeader: query(mainSection, Classes.tableHeader),
       mainBody: query(mainSection, Classes.tableBody),
@@ -746,8 +746,8 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       rightSection,
       rightHeader: query(rightSection, Classes.tableHeader),
       rightBody: query(rightSection, Classes.tableBody),
-      stickyScroll: query(dvtTableWrapper, Classes.stickyScroll),
-      stickyScrollItem: query(dvtTableWrapper, Classes.stickyScrollItem),
+      stickyScroll: query(artTableWrapper, Classes.stickyScroll),
+      stickyScrollItem: query(artTableWrapper, Classes.stickyScrollItem),
     }
   }
 
@@ -828,7 +828,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
 
     const { dataSource } = this.props
     const { needRenderLock } = this.state
-    const { mainBody, dvtTable } = this.doms
+    const { mainBody, artTable } = this.doms
 
     if (this.isLock() && dataSource.length > 0) {
       const firstRow = query<HTMLTableRowElement>(mainBody, Classes.tableRow)
@@ -839,7 +839,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       const sumOfColWidth = Array.from(firstRow.cells).reduce((sum, cell) => {
         return sum + cell.offsetWidth
       }, 0)
-      nextNeedRenderLock = sumOfColWidth > dvtTable.clientWidth
+      nextNeedRenderLock = sumOfColWidth > artTable.clientWidth
     } else {
       nextNeedRenderLock = false
     }

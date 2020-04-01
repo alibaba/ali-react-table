@@ -1,9 +1,16 @@
-import { createAggregateFunction } from '@alife/dvt-table'
-import { buildRecordMatrix, buildDrillTree, convertDrillTreeToCrossTree, CrossTable, DrillNode } from '@alife/dvt-table'
+import {
+  buildDrillTree,
+  buildRecordMatrix,
+  convertDrillTreeToCrossTree,
+  createAggregateFunction,
+  CrossTable,
+  DrillNode,
+} from 'ali-react-table/pivot'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../assets/cdn-data'
 import { amount, lfl, ratio } from '../assets/format'
-import MinimumPivotTableDesigner from '../pivot-utils/MinimumPivotTableDesigner'
+import { FusionStyles } from '../assets/fusion-style'
+import MinimumPivotTableDesigner from '../pivot/MinimumPivotTableDesigner'
 
 export default { title: '示例 / 基于 CrossTable 的透视表' }
 
@@ -17,7 +24,7 @@ const dimensions = [
   { code: 'three', name: '三级类目' },
 ]
 
-const dimMap = new Map(dimensions.map(dim => [dim.code, dim]))
+const dimMap = new Map(dimensions.map((dim) => [dim.code, dim]))
 
 const indicators = [
   {
@@ -80,7 +87,7 @@ export function PivotTableBasedOnCrossTable() {
   const [{ data, isLoading }, setState] = useState({ isLoading: true, data: [] as any[] })
 
   useEffect(() => {
-    getIncomeData().then(data => setState({ data, isLoading: false }))
+    getIncomeData().then((data) => setState({ data, isLoading: false }))
   }, [])
 
   const [indicatorSide, onChangeIndicatorSide] = useState('top')
@@ -93,7 +100,7 @@ export function PivotTableBasedOnCrossTable() {
   const leftExpandKeySet = new Set(leftExpandKeys)
   const leftDrillTree = buildDrillTree(data, leftCodes, {
     includeTopWrapper: true,
-    isExpand: !supportsExpand ? undefined : key => leftExpandKeySet.has(key),
+    isExpand: !supportsExpand ? undefined : (key) => leftExpandKeySet.has(key),
   })
   const [leftTreeRoot] = convertDrillTreeToCrossTree(leftDrillTree, {
     indicators: indicatorSide === 'left' ? indicators : null,
@@ -107,7 +114,7 @@ export function PivotTableBasedOnCrossTable() {
   const topExpandKeySet = new Set(topExpandKeys)
   const topDrillTree = buildDrillTree(data, topCodes, {
     includeTopWrapper: true,
-    isExpand: !supportsExpand ? undefined : key => topExpandKeySet.has(key),
+    isExpand: !supportsExpand ? undefined : (key) => topExpandKeySet.has(key),
   })
   const [topTreeRoot] = convertDrillTreeToCrossTree(topDrillTree, {
     indicators: indicatorSide === 'top' ? indicators : null,
@@ -138,6 +145,7 @@ export function PivotTableBasedOnCrossTable() {
 
   return (
     <div style={{ minWidth: 800 }}>
+      <FusionStyles />
       <MinimumPivotTableDesigner
         showSupportsExpandToggle
         supportsExpand={supportsExpand}
@@ -156,7 +164,7 @@ export function PivotTableBasedOnCrossTable() {
         isLoading={isLoading}
         defaultColumnWidth={100}
         useVirtual={true}
-        leftMetaColumns={leftCodes.map(code => dimMap.get(code))}
+        leftMetaColumns={leftCodes.map((code) => dimMap.get(code))}
         leftTree={leftTreeRoot.children}
         leftTotalNode={leftTreeRoot} // 当 leftTree 为空时，leftTotalNode 用于渲染总计行
         topTree={topTreeRoot.children}

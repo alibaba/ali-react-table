@@ -1,0 +1,9 @@
+{
+  "name": "ali-react-table/biz",
+  "private": true,
+  "sideEffects": false,
+  "module": "../dist/ali-react-table-biz.esm.js",
+  "main": "../dist/ali-react-table-biz.js",
+  "types": "../dist/ali-react-table-biz.d.ts",
+  "license": "MIT"
+}

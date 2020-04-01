@@ -1,13 +1,6 @@
-import {
-  applyTransforms,
-  BaseTable,
-  buildDrillTree,
-  buildRecordMap,
-  commonTransforms,
-  DrillNode,
-  DvtTableColumn,
-  isLeafNode,
-} from '@alife/dvt-table'
+import { ArtColumn, BaseTable, isLeafNode } from 'ali-react-table'
+import { applyTransforms, commonTransforms } from 'ali-react-table/biz'
+import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
 import { getAppTrafficData } from '../assets/cdn-data'
@@ -18,7 +11,7 @@ const amount = (v: any) => Number(v).toFixed(2)
 const ratio = (v: any) => `${(Number(v) * 100).toFixed(2)}%`
 
 export function 示例() {
-  const indicatorTree: DvtTableColumn[] = [
+  const indicatorTree: ArtColumn[] = [
     {
       name: 'APP指标',
       code: 'app_qty_pbt',
@@ -53,7 +46,7 @@ export function 示例() {
     },
   ]
 
-  const mainCol: DvtTableColumn = {
+  const mainCol: ArtColumn = {
     name: '指标',
     width: 200,
     lock: true,
@@ -64,11 +57,11 @@ export function 示例() {
 
   const [state, setState] = useState({
     isLoading: true,
-    columns: [] as DvtTableColumn[],
+    columns: [] as ArtColumn[],
   })
 
   useEffect(() => {
-    getAppTrafficData().then(data => {
+    getAppTrafficData().then((data) => {
       console.log('明细数据:', data)
       const codes = ['city_name', 'shop_name']
       const topTree = buildDrillTree(data, codes)
@@ -94,8 +87,8 @@ export function 示例() {
 
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 
-  function convertDrillTreeToColumns(recordMap: Map<string, any>, nodes: DrillNode[]): DvtTableColumn[] {
-    const result: DvtTableColumn[] = []
+  function convertDrillTreeToColumns(recordMap: Map<string, any>, nodes: DrillNode[]): ArtColumn[] {
+    const result: ArtColumn[] = []
     for (const node of nodes) {
       result.push({
         name: node.value,

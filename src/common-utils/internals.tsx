@@ -1,9 +1,8 @@
 import React from 'react'
-import { DvtTableColumn } from '../interfaces'
-import { AbstractTreeNode } from './interfaces'
+import { AbstractTreeNode, ArtColumn } from '../interfaces'
 import isLeafNode from './isLeafNode'
 
-export function safeGetValue(column: DvtTableColumn, record: any, rowIndex: number) {
+export function safeGetValue(column: ArtColumn, record: any, rowIndex: number) {
   if (column.getValue) {
     return column.getValue(record, rowIndex)
   }
@@ -27,7 +26,7 @@ export function safeGetRowKey(
   return key
 }
 
-export function safeGetCellProps(column: DvtTableColumn, record: any, rowIndex: number) {
+export function safeGetCellProps(column: ArtColumn, record: any, rowIndex: number) {
   if (column.getCellProps) {
     const value = safeGetValue(column, record, rowIndex)
     return column.getCellProps(value, record, rowIndex) || {}
@@ -35,7 +34,7 @@ export function safeGetCellProps(column: DvtTableColumn, record: any, rowIndex: 
   return {}
 }
 
-export function safeRender(column: DvtTableColumn, record: any, rowIndex: number) {
+export function safeRender(column: ArtColumn, record: any, rowIndex: number) {
   const value = safeGetValue(column, record, rowIndex)
   if (column.render) {
     return column.render(value, record, rowIndex)

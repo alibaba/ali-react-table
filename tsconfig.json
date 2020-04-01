@@ -13,7 +13,9 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@alife/dvt-table": ["src/dvt-table.ts"]
+      "ali-react-table": ["src/ali-react-table.ts"],
+      "ali-react-table/pivot": ["src/ali-react-table-pivot.ts"],
+      "ali-react-table/biz": ["src/ali-react-table-biz.ts"]
     }
   },
   "include": ["src/**/*", "stories/**/*"]

@@ -1,12 +1,10 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
-<Meta title="工具 / dvt-aggregation" />
+<Meta title="工具 / 聚合函数生成器" />
 
-# dvt-aggregation
+# 聚合函数生成器
 
 简单又实用的聚合函数生成器 `createAggregateFunction`，该生成器接受一个指标配置数组，返回这些指标对应的聚合函数。
-
-该生成器可以从 @alife/dvt-table 引入，也可以从单独的 NPM 包中（@alife/dvt-aggregation）引入。
 
 ## 支持的特性
 
@@ -17,9 +15,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 ## 示例
 
 ```typescript
-import { createAggregateFunction } from '@alife/dvt-aggregation'
-// 也可以从 dvt-table 引入
-// import { createAggregateFunction } from '@alife/dvt-table'
+// import { createAggregateFunction } from 'ali-react-table'
 
 const indicators = [
   { code: 'target', name: '目标收入', expression: 'SUM(target)' },

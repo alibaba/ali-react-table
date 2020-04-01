@@ -1,4 +1,6 @@
-import { applyTransforms, BaseTable, simpleEncode, SortItem } from '@alife/dvt-table'
+import { BaseTable } from 'ali-react-table'
+import { applyTransforms, SortItem } from 'ali-react-table/biz'
+import { simpleEncode } from 'ali-react-table/pivot'
 import produce from 'immer'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -77,8 +79,8 @@ export function 示例() {
 
   const dimValues = useMemo(() => {
     return Object.fromEntries(
-      dimensions.map(dim => {
-        return [dim.code, _.uniq(data.map(d => d[dim.code]))]
+      dimensions.map((dim) => {
+        return [dim.code, _.uniq(data.map((d) => d[dim.code]))]
       }),
     )
   }, [data, dimensions])
@@ -92,8 +94,8 @@ export function 示例() {
       setState({
         ...state,
         filters: Object.fromEntries(
-          dimensions.map(dim => {
-            return [dim.code, _.uniq(data.map(d => d[dim.code]))]
+          dimensions.map((dim) => {
+            return [dim.code, _.uniq(data.map((d) => d[dim.code]))]
           }),
         ),
       })
@@ -103,22 +105,22 @@ export function 示例() {
   const [state, setState] = useState<PivotState>({
     dimCodes: ['planet', 'area', 'season'],
     openKeys: [simpleEncode([])],
-    filters: Object.fromEntries(dimensions.map(dim => [dim.code, meta.dimValues[dim.code]])),
-    indCodes: indicators.map(ind => ind.code),
+    filters: Object.fromEntries(dimensions.map((dim) => [dim.code, meta.dimValues[dim.code]])),
+    indCodes: indicators.map((ind) => ind.code),
     sorts: [],
   })
 
   const dispatch = useCallback((action: Action) => {
-    setState(prev =>
-      produce(prev, draft => {
+    setState((prev) =>
+      produce(prev, (draft) => {
         immerReducer(draft, action, prev)
       }),
     )
   }, [])
 
   const filteredData = (() => {
-    const checkedValuesMap = new Map(dimensions.map(dim => [dim.code, new Set(state.filters[dim.code])]))
-    return data.filter(d => dimensions.every(dim => checkedValuesMap.get(dim.code).has(d[dim.code])))
+    const checkedValuesMap = new Map(dimensions.map((dim) => [dim.code, new Set(state.filters[dim.code])]))
+    return data.filter((d) => dimensions.every((dim) => checkedValuesMap.get(dim.code).has(d[dim.code])))
   })()
 
   const renderData = applyTransforms(
@@ -141,18 +143,18 @@ export function 示例() {
         primaryKey: 'key',
         openKeys: state.openKeys,
         onChangeOpenKeys(nextKeys: string[]) {
-          setState(prev => ({ ...prev, openKeys: nextKeys }))
+          setState((prev) => ({ ...prev, openKeys: nextKeys }))
         },
       },
       sort: {
         mode: 'single',
         sorts: state.sorts,
         onChangeSorts(nextSorts: SortItem[]) {
-          setState(prev => ({ ...prev, sorts: nextSorts }))
+          setState((prev) => ({ ...prev, sorts: nextSorts }))
         },
       },
-      dimensions: state.dimCodes.map(dimCode => meta.dimensions.find(dim => dimCode === dim.code)),
-      indicators: state.indCodes.map(indCode => meta.indicators.find(ind => indCode === ind.code)),
+      dimensions: state.dimCodes.map((dimCode) => meta.dimensions.find((dim) => dimCode === dim.code)),
+      indicators: state.indCodes.map((indCode) => meta.indicators.find((ind) => indCode === ind.code)),
     }),
   )
 

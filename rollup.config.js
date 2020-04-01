@@ -4,9 +4,7 @@ import typescript from 'rollup-plugin-typescript2'
 
 const external = Object.keys(pkg.dependencies).concat(['rxjs/operators'])
 
-const config = output => ({
-  input: 'src/dvt-table.ts',
-  output,
+const config = (arg) => ({
   plugins: [
     typescript({
       tsconfig: 'tsconfig.rollup.json',
@@ -19,15 +17,18 @@ const config = output => ({
   treeshake: {
     moduleSideEffects: false,
   },
+  ...arg,
 })
+
+const input = ['src/ali-react-table.ts', 'src/ali-react-table-biz.ts', 'src/ali-react-table-pivot.ts']
 
 export default [
   config({
-    file: pkg.module,
-    format: 'esm',
+    input: input,
+    output: { dir: 'dist', format: 'esm', entryFileNames: '[name].esm.js' },
   }),
   config({
-    file: pkg.main,
-    format: 'cjs',
+    input: input,
+    output: { dir: 'dist', format: 'cjs', entryFileNames: '[name].js' },
   }),
 ]

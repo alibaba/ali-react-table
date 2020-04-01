@@ -4,7 +4,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 # proto
 
-在实际开发中过程中，一个表格可能包含了大量维度和指标（在盒马内部，50+ 列的明细表格十分常见），此时为表格的书写对应的列配置就需要花费我们大量的时间。大部分情况下，不同的列往往具有相同的宽度、相同的对齐方向、相同的格式化渲染方法，避免相同配置重复声明，可以有效减少开发工作量。dvt-table 导出了 `proto` 来简化这些重复配置的书写。
+在实际开发中过程中，一个表格可能包含了大量维度和指标（在盒马内部，50+ 列的明细表格十分常见），此时为表格的书写对应的列配置就需要花费我们大量的时间。大部分情况下，不同的列往往具有相同的宽度、相同的对齐方向、相同的格式化渲染方法，避免相同配置重复声明，可以有效减少开发工作量。ali-react-table 导出了 `proto` 来简化这些重复配置的书写。
 
 注：本页文档中，「原型」指的是使用 proto 创建出来的函数，而不是指 JavaScript 中的函数原型。
 
@@ -15,7 +15,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 在下面的例子中，我们创建了 `columnProto`，并用 `columnProto` 来生成其他的列，避免书写相同的默认配置。
 
 ```js
-import { proto } from '@alife/dvt-table'
+import { proto } from 'ali-react-table'
 
 const columnProto = proto.object({ width: 120, align: 'right' })
 
@@ -36,7 +36,7 @@ const col3 = columnProto({ code: 'code-1', align: 'left', lock: false })
 `proto.array(baseRecord)` 与 `proto.object` 非常类似，也会生成一个函数，但函数的输入参数为一个数组。该函数被调用时，会遍历输入的数组，并根据 baseRecord 来生成对象。
 
 ```js
-import { proto } from '@alife/dvt-table'
+import { proto } from 'ali-react-table'
 
 const columnProto = proto.array({ width: 120, align: 'right', format: amount })
 

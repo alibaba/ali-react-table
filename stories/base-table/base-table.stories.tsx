@@ -1,5 +1,5 @@
 import { Button, Checkbox } from '@alifd/next'
-import { BaseTable, Classes, ArtColumn, SpanRect } from 'ali-react-table'
+import { ArtColumn, BaseTable, Classes, SpanRect } from 'ali-react-table'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { amount, time } from '../assets/format'
@@ -109,7 +109,7 @@ export function Props组合() {
       <Row>
         <Checkbox
           checked={config.hasHeader}
-          onChange={v => {
+          onChange={(v) => {
             setConfig({ ...config, hasHeader: v })
           }}
         >
@@ -118,7 +118,7 @@ export function Props组合() {
         <Checkbox
           style={{ marginLeft: 32 }}
           checked={config.isLoading}
-          onChange={v => {
+          onChange={(v) => {
             setConfig({ ...config, isLoading: v })
           }}
         >
@@ -127,7 +127,7 @@ export function Props组合() {
         <Checkbox
           style={{ marginLeft: 32 }}
           checked={config.useOuterBorder}
-          onChange={v => {
+          onChange={(v) => {
             setConfig({ ...config, useOuterBorder: v })
           }}
         >
@@ -138,7 +138,7 @@ export function Props组合() {
       <Row>
         <span>data size:</span>
         <Button.Group>
-          {[0, 3, 10].map(size => (
+          {[0, 3, 10].map((size) => (
             <Button
               key={size}
               type={config.dataSize === size ? 'primary' : 'normal'}
@@ -162,7 +162,7 @@ export function Props组合() {
       <Row>
         <span>table height:</span>
         <Button.Group>
-          {['auto', 200, 400, 600].map(h => (
+          {['auto', 200, 400, 600].map((h) => (
             <Button
               key={h}
               type={config.height === h ? 'primary' : 'normal'}
@@ -244,7 +244,7 @@ export function 左侧与右侧锁列() {
       style={{ width: 600, height: 400, overflow: 'auto' }}
       isLoading={isLoading}
       useOuterBorder
-      dataSource={dataSource.flatMap(d => d.children)}
+      dataSource={dataSource.flatMap((d) => d.children)}
       columns={[cols.lockProvCol, cols.cityName, ...cols.indCols, cols.lockTimeCol]}
     />
   )
@@ -377,7 +377,7 @@ export function 虚拟滚动与单元格合并() {
 
   let lastTop = 0
   const rectMap = new Map<string, SpanRect>()
-  dataSource.forEach(d => {
+  dataSource.forEach((d) => {
     rectMap.set(d.provinceName, {
       left: 0,
       right: 1,
@@ -390,7 +390,7 @@ export function 虚拟滚动与单元格合并() {
   return (
     <BaseTable
       isLoading={isLoading}
-      dataSource={dataSource.slice(0, 3).flatMap(d => d.children)}
+      dataSource={dataSource.slice(0, 3).flatMap((d) => d.children)}
       useVirtual={true}
       columns={[
         {

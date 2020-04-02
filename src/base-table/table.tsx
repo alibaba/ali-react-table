@@ -73,9 +73,6 @@ export interface BaseTableProps {
    * https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context */
   flowRoot?: 'auto' | 'self' | (() => HTMLElement | typeof window) | HTMLElement | typeof window
 
-  /** @deprecated 推荐使用 getRowProps 了设置 onClick 回调。 onRowClick 会在下个版本中删除 */
-  onRowClick?(record: any, rowIndex: number, event: React.MouseEvent<HTMLTableRowElement>): void
-
   getRowProps?(record: any, rowIndex: number): React.HTMLAttributes<HTMLTableRowElement>
 }
 
@@ -123,7 +120,6 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     isStickyHead: true,
     stickyTop: 0,
     stickyBottom: 0,
-    onRowClick: noop,
     useVirtual: 'auto',
     hasHeader: true,
     isLoading: false,
@@ -341,7 +337,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     }
 
     const rightBlankCount = flat.center.length - leftIndex - centerCount
-    const rightBlank = sum(flat.center.slice(flat.center.length - rightBlankCount).map(col => col.width))
+    const rightBlank = sum(flat.center.slice(flat.center.length - rightBlankCount).map((col) => col.width))
     return {
       leftIndex: leftIndex,
       leftBlank,
@@ -388,7 +384,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   ) {
     const { onRowEnterOrLeave } = this
     const { vertical: ver, horizontal: hoz } = renderRange
-    const { isLoading, dataSource, getRowProps, primaryKey, onRowClick, emptyContent } = this.props
+    const { isLoading, dataSource, getRowProps, primaryKey, emptyContent } = this.props
     const { flat } = this.state
     const colCount = flat.main.length
     const leftFlatCount = flat.left.length
@@ -397,7 +393,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
 
     const colgroup = (
       <colgroup>
-        {wrappedCols.map(wrapped => {
+        {wrappedCols.map((wrapped) => {
           if (wrapped.type === 'blank') {
             return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />
           }
@@ -465,12 +461,11 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
           {...rowProps}
           className={rowClass}
           key={safeGetRowKey(primaryKey, record, rowIndex)}
-          onClick={e => onRowClick(record, rowIndex, e)}
           data-rowindex={rowIndex}
           onMouseEnter={() => onRowEnterOrLeave(rowIndex, 'enter')}
           onMouseLeave={() => onRowEnterOrLeave(rowIndex, 'leave')}
         >
-          {wrappedCols.map(wrapped => {
+          {wrappedCols.map((wrapped) => {
             if (wrapped.type === 'blank') {
               return <td key={wrapped.blankSide} />
             }
@@ -547,7 +542,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     const rightLockRow = this.doms.rightBody?.querySelector(rowSelector)
 
     const method = kind === 'enter' ? 'add' : 'remove'
-    ;[mainRow, leftLockRow, rightLockRow].forEach(row => {
+    ;[mainRow, leftLockRow, rightLockRow].forEach((row) => {
       if (row) {
         row.classList[method]('hovered')
       }
@@ -706,7 +701,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
         }),
       )
       this.rootSubscription.add(
-        sizeAndOffset$.subscribe(sizeAndOffset => {
+        sizeAndOffset$.subscribe((sizeAndOffset) => {
           this.setState(sizeAndOffset)
         }),
       )
@@ -761,7 +756,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     const virtualTop = this.doms.mainBody.querySelector<HTMLDivElement>(`.${Classes.virtualBlank}.top`)
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
-    queryAll<HTMLTableRowElement>(this.doms.mainBody, Classes.tableRow).forEach(tr => {
+    queryAll<HTMLTableRowElement>(this.doms.mainBody, Classes.tableRow).forEach((tr) => {
       const rowIndex = Number(tr.dataset.rowindex)
       this.store.updateItem(rowIndex, tr.offsetTop + virtualTopHeight, tr.offsetHeight)
     })

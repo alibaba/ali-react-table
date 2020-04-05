@@ -4,6 +4,10 @@ import { SpanRect } from '../../interfaces'
 import { TableTransform } from '../interfaces'
 import { transformColumn } from '../utils'
 
+function isIdentity(x: any, y: any) {
+  return x === y
+}
+
 export default function autoRowSpan(): TableTransform {
   return transformColumn((col, { dataSource, range }) => {
     if (!col.features?.autoRowSpan) {
@@ -14,12 +18,8 @@ export default function autoRowSpan(): TableTransform {
       return col
     }
 
-    const shouldMergeCell =
-      typeof col.features.autoRowSpan === 'function'
-        ? col.features.autoRowSpan
-        : (v1: any, v2: any) => {
-            return v1 === v2
-          }
+    const isFunc = typeof col.features.autoRowSpan === 'function'
+    const shouldMergeCell = isFunc ? col.features.autoRowSpan : isIdentity
 
     const spanRects: SpanRect[] = []
     let lastBottom = 0

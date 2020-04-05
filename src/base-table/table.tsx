@@ -487,8 +487,8 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       if (column.getSpanRect) {
         const value = safeGetValue(column, record, rowIndex)
         const spanRect = column.getSpanRect(value, record, rowIndex)
-        colSpan = spanRect.right - colIndex
-        rowSpan = spanRect.bottom - rowIndex
+        colSpan = spanRect == null ? 1 : spanRect.right - colIndex
+        rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
       } else {
         if (cellProps.colSpan != null) {
           colSpan = cellProps.colSpan

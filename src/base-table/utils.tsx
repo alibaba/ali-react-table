@@ -6,7 +6,7 @@ import StateObservable from './helpers/StateObservable'
 import { TRNodeList } from './interfaces'
 
 /** styled-components 类库的版本，ali-react-table 同时支持 v3 和 v5 */
-export const STYLED_VERSION = (styledComponents as any).injectGlobal != null ? 'v3' : 'v5'
+export const STYLED_VERSION = (styledComponents as any).createGlobalStyle != null ? 'v5' : 'v3'
 
 export const STYLED_REF_PROP = STYLED_VERSION === 'v3' ? 'innerRef' : 'ref'
 

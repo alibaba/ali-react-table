@@ -23,26 +23,26 @@ const renderData = applyTransforms(
 
 ### flatten 「压平」分组
 
-- `flatten()`
+- `commonTransforms.flatten()`
   - 当分组的 `features.flatten` 为 true 时，将分组「压平」；即移除父节点，并将子节点数组展开后放在原来父节点的位置上
   - 这是一个只会对 `columns` 进行更新的 transform
 
 ### orderField 序号列
 
-- `orderField(startOrder?: number)`：序号列
+- `commonTransforms.orderField(startOrder?: number)`：序号列
   - 当列的 `features.order` 为 true 时，覆盖该列的 `getValue` 方法，使其总是展示序号
   - 这是一个只会对 `columns` 进行更新的 transform
 
 ### buildTree 构建树状结构
 
-- `buildTree(idProp: string, parentIdProp: string)`：构建树状结构
+- `commonTransforms.buildTree(idProp: string, parentIdProp: string)`：构建树状结构
   - 根据数据中的 id/parentId 字段，将 dataSource 转换为树状结构
   - 树状结构下，父节点的 children 数组中包含对其子节点的引用
   - 这是一个仅会更新 `dataSource` 的 transform；注意该 transform 不会影响表格渲染
 
 ### treeMode 使用树状结构来渲染表格
 
-- `treeMode(options?: TreeModeOptions)`：使用树状结构来渲染表格
+- `commonTransforms.treeMode(options?: TreeModeOptions)`：使用树状结构来渲染表格
 
   - 该 transform 会同时对 dataSource 和 columns 进行更新
   - 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
@@ -62,7 +62,7 @@ type TreeModeOptions = {
 
 ### sort 表格排序
 
-- `sort(options: SortOptions)`：表格排序
+- `commonTransforms.sort(options: SortOptions)`：表格排序
   - 该 transform 会同时对 dataSource 和 columns 进行更新
   - 该 transform 会根据 options.sorts 来排序 dataSource
     - `options.mode=multiple` （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
@@ -90,7 +90,7 @@ type SortOptions = {
 
 ### columnHover 列高亮
 
-- `columnHover(options: ColumnHoverOptions)`：列高亮
+- `commonTransforms.columnHover(options: ColumnHoverOptions)`：列高亮
   - 这是一个只会对 `columns` 进行更新的 transform
   - 如果某一列的 colIndex 与 options.hoverColIndex 匹配，该 transform 会将该列单元格的背景色设置为 `options.hoverColor`，默认为 `'#f5f5f5'`
 
@@ -104,7 +104,7 @@ type ColumnHoverOptions = {
 
 ### tips 提示气泡
 
-- `tips(components: { Balloon: any })`：提示气泡
+- `commonTransforms.tips(components: { Balloon: any })`：提示气泡
   - 这是一个只会对 `columns` 进行更新的 transform
   - 在列标题旁边展示一个 ℹ 符号，鼠标悬停时展示提示气泡，气泡内容由 `columns.features.tips` 提供
 
@@ -116,7 +116,7 @@ type ColumnHoverOptions = {
 
 ### visible 调整可见列
 
-- `visible(visibleCodes: string[]): TableTransform`
+- `commonTransforms.visible(visibleCodes: string[]): TableTransform`
   - **该 transform 不常用，一般情况下直接使用 表格操作栏 提供的自定义列功能即可**
   - 根据 `visibleCodes` 参数调整列的显示/隐藏状态 `column.hidden`
   - 这是一个只会对 `columns` 进行更新的 transform

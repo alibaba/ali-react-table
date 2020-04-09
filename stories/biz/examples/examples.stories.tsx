@@ -199,6 +199,99 @@ export function 列高亮() {
   )
 }
 
+export function 列的范围高亮() {
+  const appIndProto = proto.array<ArtColumn>({ align: 'right' })
+  const rateIndProto = proto.array<ArtColumn>({ align: 'right', render: ratio })
+
+  // 列配置
+  const columns: ArtColumn[] = [
+    {
+      name: '维度',
+      children: [
+        {
+          name: '商品信息',
+          children: [
+            { code: 'sku_code', name: 'SKU code' },
+            { code: 'sku_name', name: 'SKU名称' },
+          ],
+        },
+        {
+          name: '机构信息',
+          children: [
+            { code: 'city_name', name: '城市' },
+            { code: 'shop_name', name: '门店', features: { defaultVisible: true } },
+          ],
+        },
+        {
+          name: '类目信息',
+          children: [
+            { code: 'merge_cate_level1_name', name: '一级类目' },
+            { code: 'merge_cate_level2_name', name: '二级类目' },
+            { code: 'merge_cate_level3_name', name: '三级类目' },
+          ],
+        },
+      ],
+    },
+    {
+      name: '指标',
+      children: [
+        {
+          name: 'APP指标',
+          children: appIndProto([
+            { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio },
+            { code: 'app_trd_amt_1d', name: 'APP成交金额', render: amount },
+            { code: 'app_qty_pbt', name: 'APP件单价' },
+            { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总' },
+            { code: 'app_trd_usr_cnt_1d', name: 'APP成交用户数' },
+            { code: 'appout_shop_num', name: '缺货门店数', render: amount },
+            { code: 'all_time_len', name: '店均缺货时长', render: amount },
+            { code: 'bad_rmk_rate', name: '订单差评率', render: ratio },
+          ]),
+        },
+        {
+          name: '转换率',
+          children: rateIndProto([
+            { code: 'all_imp2pay_rate', name: '整体曝光至成交转化率' },
+            { code: 'search_imp2pay_rate', name: '搜索曝光至成交转化率' },
+            { code: 'classis_imp2pay_rate', name: '分类曝光至成交转化率' },
+            { code: 'cart_imp2pay_rate', name: '购物车曝光至成交转化率' },
+            { code: 'my_page_imp2pay_rate', name: '我的曝光至成交转化率' },
+            { code: 'pq_act_imp2pay_rate', name: '活动页曝光至成交转化率' },
+            { code: 'other_imp2pay_rate', name: '其他曝光至成交转化率' },
+          ]),
+        },
+      ],
+    },
+  ]
+
+  const [state, setState] = useState({ isLoading: true, data: [] as any[] })
+
+  useEffect(() => {
+    getAppTrafficData().then((data) => {
+      setState({ isLoading: false, data: data.slice(0, 8) })
+    })
+  }, [])
+
+  const [hoverColIndexRange, onChangeHoverColIndexRange] = useState({ start: 0, end: 0 })
+
+  const renderData = applyTransforms(
+    { columns, dataSource: state.data },
+    commonTransforms.columnRangeHover({
+      hoverColIndexRange,
+      onChangeHoverColIndexRange,
+    }),
+  )
+
+  return (
+    <BaseTable
+      defaultColumnWidth={120}
+      dataSource={renderData.dataSource}
+      columns={renderData.columns}
+      isLoading={state.isLoading}
+    />
+  )
+}
+
 export function 列气泡提示() {
   const { isLoading, dataSource } = useProvinceDataSource()
 

@@ -1,7 +1,7 @@
 import * as CarbonIcons from '@carbon/icons-react'
 import React from 'react'
 import styled from 'styled-components'
-import { isLeafNode } from '../../common-utils'
+import { isLeafNode as standardIsLeafNode } from '../../common-utils'
 import { safeRender } from '../../common-utils/internals'
 import { ArtColumn } from '../../interfaces'
 import { TableTransform } from '../interfaces'
@@ -23,11 +23,13 @@ export default function treeMode({
   openKeys,
   primaryKey,
   indentSize = 16,
+  isLeafNode = standardIsLeafNode,
 }: {
   primaryKey: string
   openKeys: string[]
-  onChangeOpenKeys(nextKeys: string[]): void
+  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
   indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 }): TableTransform {
   const openKeySet = new Set(openKeys)
 
@@ -42,18 +44,19 @@ export default function treeMode({
       dfs(input, 0)
 
       function dfs(nodes: any[], depth: number) {
+        if (nodes == null) {
+          return
+        }
         for (const node of nodes) {
           const rowKey = node[primaryKey]
-          if (isLeafNode(node)) {
-            const treeMeta = { depth, isLeaf: true, expanded: false, rowKey }
-            result.push({ [treeMetaSymbol]: treeMeta, ...node })
-          } else {
-            const expanded = openKeySet.has(rowKey)
-            const treeMeta = { depth, isLeaf: false, expanded, rowKey }
-            result.push({ [treeMetaSymbol]: treeMeta, ...node })
-            if (expanded) {
-              dfs(node.children, depth + 1)
-            }
+          const expanded = openKeySet.has(rowKey)
+
+          const isLeaf = isLeafNode(node, { depth, expanded, rowKey })
+          const treeMeta = { depth, isLeaf, expanded, rowKey }
+          result.push({ [treeMetaSymbol]: treeMeta, ...node })
+
+          if (!isLeaf && expanded) {
+            dfs(node.children, depth + 1)
           }
         }
       }
@@ -84,7 +87,13 @@ export default function treeMode({
           return (
             <ExpansionCell
               style={{ marginLeft }}
-              onClick={() => onChangeOpenKeys(openKeys.filter((key) => key !== rowKey))}
+              onClick={() => {
+                onChangeOpenKeys(
+                  openKeys.filter((key) => key !== rowKey),
+                  rowKey,
+                  'collapse',
+                )
+              }}
             >
               <CarbonIcons.CaretDown16 style={{ fill: '#999999', flex: '0 0 16px' }} />
               {content}
@@ -92,7 +101,12 @@ export default function treeMode({
           )
         } else {
           return (
-            <ExpansionCell style={{ marginLeft }} onClick={() => onChangeOpenKeys([...openKeys, rowKey])}>
+            <ExpansionCell
+              style={{ marginLeft }}
+              onClick={() => {
+                onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
+              }}
+            >
               <CarbonIcons.CaretRight16 style={{ fill: '#999999', flex: '0 0 16px' }} />
               {content}
             </ExpansionCell>

@@ -147,7 +147,6 @@ export function 实际页面示例() {
         dataSource={renderData.dataSource}
         columns={renderData.columns}
         isLoading={state.isLoading}
-        stickyTop={32}
       />
     </div>
   )

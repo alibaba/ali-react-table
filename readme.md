@@ -2,8 +2,6 @@
 
 [![NPM Package](https://img.shields.io/npm/v/ali-react-table.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
 
-<p style={{ color: 'darkred', fontSize: 32, lineHeight: 2 }}>开源文档仍在不断建设中</p>
-
 高性能 React 表格组件. https://ali-react-table.js.org/
 
 ## 安装

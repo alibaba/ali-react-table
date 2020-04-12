@@ -1,11 +1,11 @@
-import { transformColumn } from '../utils'
 import React from 'react'
 import { isLeafNode } from '../../common-utils'
 import { TableTransform } from '../interfaces'
+import { transformColumn } from '../utils'
 
 const EMPTY_RANGE = { start: -1, end: -1 }
 
-type IndexRange = {
+type HoverRange = {
   start: number
   end: number
 }
@@ -15,28 +15,28 @@ type ReactTdAttributes = React.TdHTMLAttributes<HTMLTableDataCellElement>
 export function attachColumnHoverCellProps(
   cellProps: ReactTdAttributes = {},
   {
-    onChangeHoverColIndexRange,
-    hoverColIndexRange,
+    onChangeHoverRange,
+    hoverRange,
     colRange,
     hoverColor,
   }: {
-    onChangeHoverColIndexRange: (nextColIndexRange: IndexRange) => void
-    hoverColIndexRange: IndexRange
-    colRange: IndexRange
+    onChangeHoverRange: (nextColIndexRange: HoverRange) => void
+    hoverRange: HoverRange
+    colRange: HoverRange
     hoverColor: string
   },
 ): ReactTdAttributes {
-  const colIndexMatched = colRange.end > hoverColIndexRange.start && hoverColIndexRange.end > colRange.start
+  const colIndexMatched = colRange.end > hoverRange.start && hoverRange.end > colRange.start
 
   return {
     ...cellProps,
     onMouseEnter(e) {
       cellProps.onMouseEnter?.(e)
-      onChangeHoverColIndexRange(colRange)
+      onChangeHoverRange(colRange)
     },
     onMouseLeave(e) {
       cellProps.onMouseLeave?.(e)
-      onChangeHoverColIndexRange(EMPTY_RANGE)
+      onChangeHoverRange(EMPTY_RANGE)
     },
     style: {
       ...cellProps.style,
@@ -50,13 +50,13 @@ export function attachColumnHoverCellProps(
 export default function columnRangeHover({
   hoverColor = '#f5f5f5',
   headerHoverColor = '#ddd',
-  hoverColIndexRange,
-  onChangeHoverColIndexRange,
+  hoverRange,
+  onChangeHoverRange,
 }: {
   hoverColor?: string
   headerHoverColor?: string
-  hoverColIndexRange: IndexRange
-  onChangeHoverColIndexRange(nextColIndexRange: IndexRange): void
+  hoverRange: HoverRange
+  onChangeHoverRange(nextColIndexRange: HoverRange): void
 }): TableTransform {
   return transformColumn((col, { range: colRange }) => {
     if (!isLeafNode(col)) {
@@ -67,10 +67,10 @@ export default function columnRangeHover({
       return {
         ...col,
         headerCellProps: attachColumnHoverCellProps(col.headerCellProps, {
-          onChangeHoverColIndexRange,
+          onChangeHoverRange,
           hoverColor: headerHoverColor,
-          colRange: colRange,
-          hoverColIndexRange: hoverColIndexRange,
+          colRange,
+          hoverRange,
         }),
       }
     }
@@ -80,20 +80,20 @@ export default function columnRangeHover({
     return {
       ...col,
       headerCellProps: attachColumnHoverCellProps(col.headerCellProps, {
-        onChangeHoverColIndexRange,
+        onChangeHoverRange,
         hoverColor: headerHoverColor,
-        colRange: colRange,
-        hoverColIndexRange: hoverColIndexRange,
+        colRange,
+        hoverRange,
       }),
 
       getCellProps(value: any, record: any, rowIndex: number): ReactTdAttributes {
         const prevCellProps = prevGetCellProps?.(value, record, rowIndex) ?? {}
 
         return attachColumnHoverCellProps(prevCellProps, {
-          onChangeHoverColIndexRange,
+          onChangeHoverRange,
           hoverColor,
           colRange,
-          hoverColIndexRange: hoverColIndexRange,
+          hoverRange,
         })
       },
     }

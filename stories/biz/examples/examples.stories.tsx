@@ -272,13 +272,13 @@ export function 列的范围高亮() {
     })
   }, [])
 
-  const [hoverColIndexRange, onChangeHoverColIndexRange] = useState({ start: 0, end: 0 })
+  const [hoverRange, onChangeHoverRange] = useState({ start: 0, end: 0 })
 
   const renderData = applyTransforms(
     { columns, dataSource: state.data },
     commonTransforms.columnRangeHover({
-      hoverColIndexRange,
-      onChangeHoverColIndexRange,
+      hoverRange,
+      onChangeHoverRange,
     }),
   )
 

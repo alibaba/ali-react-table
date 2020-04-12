@@ -16,7 +16,7 @@ import ReactJson from 'react-json-view'
 import { getAppTrafficData } from '../../assets/cdn-data'
 import { amount, ratio, time } from '../../assets/format'
 import { FusionStyles } from '../../assets/fusion-style'
-import { testProvColumns, useProvinceDataSource } from '../../assets/ncov19-assets'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
 
 export default { title: '表格功能拓展 / 基本示例' }
 
@@ -406,5 +406,37 @@ export function 自定义列对话框组件() {
       />
       <FusionStyles />
     </>
+  )
+}
+
+export function 单元格自动合并() {
+  const { dataSource: cityData, isLoading } = useCityDataSource()
+
+  const renderData = applyTransforms(
+    {
+      dataSource: cityData.slice(0, 4).flatMap((d) => d.children),
+      columns: [
+        {
+          code: 'provinceName',
+          name: '省份',
+          width: 150,
+          features: { autoRowSpan: true },
+        },
+        cols.cityName,
+        ...cols.indCols,
+        {
+          code: 'updateTime',
+          name: '最后更新时间',
+          width: 180,
+          render: time,
+          features: { autoRowSpan: true },
+        },
+      ],
+    },
+    commonTransforms.autoRowSpan(),
+  )
+
+  return (
+    <BaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
   )
 }

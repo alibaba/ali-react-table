@@ -190,11 +190,8 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   private renderTableSection(side: TableSide, renderRange: FullRenderRange) {
     const { hasHeader } = this.props
 
-    // 对于的锁定的列来讲，因为我们对其设置了 overflow: hidden
-    // 导致在它上面的元素不会触发 scroll 事件
-    // 我们监听其 wheel 事件，然后手动更新 scrollTop/scrollLeft
-    const onWheel = side !== 'main' ? this.onWheelInLeftOrRightSection : null
-    const onScroll = side === 'main' ? this.syncBodyScroll : null
+    const onWheel = side !== 'main' ? this.onWheelInOverflowHiddenPart : null
+    const onScroll = side === 'main' ? this.syncScrollFromMainBody : null
 
     return (
       <div className={cx(Classes.tableInner)}>
@@ -209,18 +206,26 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     const { flat, nested, useVirtual } = this.state
 
     return (
-      <div className={cx(Classes.tableHeaderWrapper)} style={{ top: stickyTop }}>
+      <div
+        className={cx(Classes.tableHeaderWrapper)}
+        style={{ top: stickyTop }}
+        onWheel={this.onWheelInOverflowHiddenPart}
+      >
         <TableHeader nested={nested} flat={flat} hoz={hoz} side={side} useVirtual={useVirtual} />
       </div>
     )
   }
 
-  private onWheelInLeftOrRightSection = (e: React.WheelEvent) => {
+  /**
+   * 对于的锁定列和表头，因为我们对其设置了 overflow: hidden，导致在不会触发 scroll 事件。
+   * 我们监听其 wheel 事件，然后手动同步 scrollTop/scrollLeft
+   */
+  private onWheelInOverflowHiddenPart = (e: React.WheelEvent) => {
     const { scrollLeft: x, scrollTop: y } = this.doms.mainBody
     this.syncScroll(x + e.deltaX, y + e.deltaY)
   }
 
-  private syncBodyScroll = () => {
+  private syncScrollFromMainBody = () => {
     const { scrollLeft: x, scrollTop: y } = this.doms.mainBody
     this.syncScroll(x, y)
   }
@@ -255,12 +260,13 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       if (rightBody) {
         rightBody.scrollTop = y
       }
+
       if (this.state.needRenderLock) {
-        if (x === 0) {
+        if (x <= 0) {
           // 滚动条在最左端
           leftSection?.classList.remove(Classes.lockShadow)
           rightSection?.classList.add(Classes.lockShadow)
-        } else if (x === scrollNode.scrollWidth - scrollNode.clientWidth) {
+        } else if (x >= scrollNode.scrollWidth - scrollNode.clientWidth) {
           // 滚动条在最右端
           leftSection?.classList.add(Classes.lockShadow)
           rightSection?.classList.remove(Classes.lockShadow)
@@ -645,7 +651,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>) {
     this.adjustSize()
     this.updateItemSizeStore(prevProps)
-    this.syncBodyScroll()
+    this.syncScrollFromMainBody()
     this.updateStickyScroll()
   }
 

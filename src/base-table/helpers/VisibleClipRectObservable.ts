@@ -1,10 +1,6 @@
 import ResizeObserver from 'resize-observer-polyfill'
 import { fromEvent, Observable } from 'rxjs'
 
-function clamp(min: number, x: number, max: number) {
-  return Math.min(max, Math.max(min, x))
-}
-
 interface SimpleDOMRect {
   readonly top: number
   readonly right: number

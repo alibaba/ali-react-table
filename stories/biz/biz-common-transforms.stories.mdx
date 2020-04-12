@@ -4,7 +4,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 # 常见拓展功能
 
-ali-react-table 中的 commonTransforms 实现了一些常见的 transform，可以满足一部分常见业务需求。使用方式如下：
+ali-react-table/biz 中的 commonTransforms 实现了一些常见的 transform，可以满足一部分常见业务需求。使用方式如下：
 
 ```javascript
 import { applyTransforms, commonTransforms } from 'ali-react-table'
@@ -38,7 +38,8 @@ const renderData = applyTransforms(
 - `commonTransforms.buildTree(idProp: string, parentIdProp: string)`：构建树状结构
   - 根据数据中的 id/parentId 字段，将 dataSource 转换为树状结构
   - 树状结构下，父节点的 children 数组中包含对其子节点的引用
-  - 这是一个仅会更新 `dataSource` 的 transform；注意该 transform 不会影响表格渲染
+  - 这是一个仅会更新 `dataSource` 的 transform
+  - ali-react-table/biz 还导出了一个静态的 buildTree 函数，注意两者之间的差别
 
 ### treeMode 使用树状结构来渲染表格
 
@@ -47,7 +48,7 @@ const renderData = applyTransforms(
   - 该 transform 会同时对 dataSource 和 columns 进行更新
   - 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
   - 该 transform 会根据 options.openKeys 过滤需要展示的表格行，并计算每一行的缩进和展开信息
-  - 缩进信息会存放在输出的 dataSource 中，可以通过 `commonTransform.treeMetaSymbol` 来获取该信息
+  - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[commonTransform.treeMetaSymbol]` 来获取该信息
   - 该 transform 会包裹第一个用于展示数据的列，在渲染时处理缩进并生成展开或收拢的按钮
   - `TreeModeOptions` 的类型定义见下方
 
@@ -55,10 +56,17 @@ const renderData = applyTransforms(
 type TreeModeOptions = {
   primaryKey: string
   openKeys: string[]
-  onChangeOpenKeys(nextKeys: string[]): void
+  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
   indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 }
 ```
+
+- `options.onChangeOpenKeys`: 除了 `nextKeys` 之外，该回调函数还会接受到 `key` 与 `action` 参数，分别表示本次操作「对应的 key」与「操作类型」
+- `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
+  - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状默认下的一些元信息（深度、是否展开等）
+  - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将且其渲染收拢/展开按钮
+  - 该选项配合 `options.onChangeOpenKeys` 可以实现表格展开时动态加载数据的功能
 
 ### sort 表格排序
 

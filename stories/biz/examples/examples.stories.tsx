@@ -193,7 +193,7 @@ export function 列高亮() {
 
   return (
     <div>
-      <FusionStyles />
+      <div>Storybook 下 列高亮可能会引发卡顿，此时可切换到 iframe 模式来查看该 story</div>
       <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
@@ -283,12 +283,15 @@ export function 列的范围高亮() {
   )
 
   return (
-    <BaseTable
-      defaultColumnWidth={120}
-      dataSource={renderData.dataSource}
-      columns={renderData.columns}
-      isLoading={state.isLoading}
-    />
+    <div>
+      <div>Storybook 下 列高亮可能会引发卡顿，此时可切换到 iframe 模式来查看该 story</div>
+      <BaseTable
+        defaultColumnWidth={120}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+        isLoading={state.isLoading}
+      />
+    </div>
   )
 }
 

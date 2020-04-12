@@ -1,4 +1,4 @@
-import { ArtColumn, BaseTable } from 'ali-react-table'
+import { ArtColumn, BaseTable, Classes } from 'ali-react-table'
 import { proto } from 'ali-react-table/biz'
 import * as d3 from 'd3'
 import React from 'react'
@@ -40,17 +40,17 @@ const StyledBaseTable = styled(BaseTable)`
   --border-color: none;
   --header-bgcolor: none;
 
-  .art-table-header {
+  .${Classes.tableHeader} {
     border-top: 1px solid #dfe3e8;
     border-bottom: 1px solid #dfe3e8;
   }
 
-  .art-table-header-cell {
+  .${Classes.tableHeaderCell} {
     height: 48px;
   }
 `
 
-export function RankTable() {
+export function RemainMatrix() {
   const remainCol = proto.array<ArtColumn>({
     align: 'right',
     render: remainRateWithCount,

@@ -1,5 +1,5 @@
 import ResizeObserver from 'resize-observer-polyfill'
-import { fromEvent, Observable } from 'rxjs'
+import { fromEvent, merge, Observable } from 'rxjs'
 
 interface SimpleDOMRect {
   readonly top: number
@@ -20,8 +20,9 @@ function getRect(ele: HTMLElement | typeof window): SimpleDOMRect {
  * 用于监听一个元素的在页面中的「可见范围」的不断变化 */
 export default class VisibleClipRectObservable extends Observable<{ clipRect: SimpleDOMRect; offsetY: number }> {
   constructor(target: HTMLElement, flowRoot: HTMLElement | typeof window) {
-    super(subscriber => {
-      const scrollSubscription = fromEvent(flowRoot, 'scroll').subscribe(callback)
+    super((subscriber) => {
+      const subscription = merge(fromEvent(flowRoot, 'scroll'), fromEvent(flowRoot, 'resize')).subscribe(callback)
+
       const resizeObserver = new ResizeObserver(callback)
       resizeObserver.observe(target)
 
@@ -40,7 +41,7 @@ export default class VisibleClipRectObservable extends Observable<{ clipRect: Si
       }
 
       return () => {
-        scrollSubscription.unsubscribe()
+        subscription.unsubscribe()
         resizeObserver.disconnect()
       }
     })

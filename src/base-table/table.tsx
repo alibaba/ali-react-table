@@ -135,6 +135,7 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
   private rootSubscription = new Subscription()
+  private hoveredTableRows: HTMLTableRowElement[] = []
 
   constructor(props: Readonly<BaseTableProps>) {
     super(props)
@@ -468,8 +469,14 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
           className={rowClass}
           key={safeGetRowKey(primaryKey, record, rowIndex)}
           data-rowindex={rowIndex}
-          onMouseEnter={() => onRowEnterOrLeave(rowIndex, 'enter')}
-          onMouseLeave={() => onRowEnterOrLeave(rowIndex, 'leave')}
+          onMouseEnter={(e) => {
+            onRowEnterOrLeave(rowIndex, 'enter')
+            rowProps?.onMouseEnter?.(e)
+          }}
+          onMouseLeave={(e) => {
+            onRowEnterOrLeave(rowIndex, 'leave')
+            rowProps?.onMouseLeave?.(e)
+          }}
         >
           {wrappedCols.map((wrapped) => {
             if (wrapped.type === 'blank') {
@@ -542,16 +549,24 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
   }
 
   private onRowEnterOrLeave = (rowIndex: number, kind: 'enter' | 'leave') => {
-    const rowSelector = `*[data-rowindex="${rowIndex}"]`
-    const mainRow = this.doms.mainBody.querySelector(rowSelector)
-    const leftLockRow = this.doms.leftBody?.querySelector(rowSelector)
-    const rightLockRow = this.doms.rightBody?.querySelector(rowSelector)
+    // 移除原先的 hover 效果
+    this.hoveredTableRows.forEach((tr) => {
+      tr.classList.remove('hovered')
+    })
+    if (kind === 'leave') {
+      this.hoveredTableRows = []
+      return
+    }
 
-    const method = kind === 'enter' ? 'add' : 'remove'
-    ;[mainRow, leftLockRow, rightLockRow].forEach((row) => {
-      if (row) {
-        row.classList[method]('hovered')
-      }
+    // 添加新的 hover 效果
+    const rowSelector = `*[data-rowindex="${rowIndex}"]`
+    const mainRow = this.doms.mainBody.querySelector<HTMLTableRowElement>(rowSelector)
+    const leftLockRow = this.doms.leftBody?.querySelector<HTMLTableRowElement>(rowSelector)
+    const rightLockRow = this.doms.rightBody?.querySelector<HTMLTableRowElement>(rowSelector)
+
+    this.hoveredTableRows = [mainRow, leftLockRow, rightLockRow].filter(Boolean)
+    this.hoveredTableRows.forEach((tr) => {
+      tr.classList.add('hovered')
     })
   }
 

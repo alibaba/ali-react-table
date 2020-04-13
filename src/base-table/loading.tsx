@@ -1,8 +1,10 @@
+import { Classes } from 'ali-react-table'
 import React, { ReactNode } from 'react'
+import { LOADING_ICON_SIZE } from './utils'
 
-const LoadingIndicator = ({ size }: { size: number }) => (
+const LoadingIndicatorIcon = ({ size }: { size: number }) => (
   <svg
-    className="loading-indicator"
+    className={Classes.loadingIndicatorIcon}
     style={{
       margin: 'auto',
       display: 'block',
@@ -40,17 +42,28 @@ Loading.defaultProps = {
 }
 
 export default function Loading({ visible, children }: { visible: boolean; children: ReactNode }) {
-  const size = 40
   return (
-    <div className="loading-wrapper" style={{ position: 'relative' }}>
+    <div className={Classes.loadingWrapper} style={{ position: 'relative' }}>
       {visible && (
-        <div className="sticky-wrapper" style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}>
-          <div style={{ position: 'sticky', zIndex: 1, top: `calc(50% - ${size / 2}px)`, margin: `${size}px 0` }}>
-            <LoadingIndicator size={size} />
+        <div
+          className={Classes.loadingIndicatorWrapper}
+          style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
+        >
+          <div
+            className={Classes.loadingIndicator}
+            style={{
+              position: 'sticky',
+              zIndex: 1,
+              top: LOADING_ICON_SIZE,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <LoadingIndicatorIcon size={LOADING_ICON_SIZE} />
           </div>
         </div>
       )}
-      <div className="loading-content-wrapper" style={{ filter: visible ? 'blur(1px)' : 'none' }}>
+      <div className={Classes.loadingContentWrapper} style={{ filter: visible ? 'blur(1px)' : 'none' }}>
         {children}
       </div>
     </div>

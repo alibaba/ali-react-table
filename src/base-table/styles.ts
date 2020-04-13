@@ -42,6 +42,12 @@ export const Classes = {
   emptyWrapper: `${prefix}empty-wrapper`,
   emptyImage: `${prefix}empty-image`,
   emptyTips: `${prefix}empty-tips`,
+
+  loadingWrapper: `${prefix}loading-wrapper`,
+  loadingIndicatorWrapper: `${prefix}loading-indicator-wrapper`,
+  loadingIndicator: `${prefix}loading-indicator`,
+  loadingIndicatorIcon: `${prefix}loading-indicator-icon`,
+  loadingContentWrapper: `${prefix}loading-content-wrapper`,
 }
 
 export const Z = {

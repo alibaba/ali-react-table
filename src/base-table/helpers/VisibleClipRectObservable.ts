@@ -16,6 +16,22 @@ function getRect(ele: HTMLElement | typeof window): SimpleDOMRect {
   }
 }
 
+export function getClipRect(target: HTMLElement | typeof window, flowRoot: HTMLElement | typeof window) {
+  const targetRect = getRect(target)
+  const rootRect = getRect(flowRoot)
+
+  return {
+    offsetY: Math.max(0, rootRect.top - targetRect.top),
+    offsetX: Math.max(0, rootRect.left - targetRect.left),
+    clipRect: {
+      left: Math.max(targetRect.left, rootRect.left),
+      top: Math.max(targetRect.top, rootRect.top),
+      right: Math.min(targetRect.right, rootRect.right),
+      bottom: Math.min(targetRect.bottom, rootRect.bottom),
+    },
+  }
+}
+
 /** 基于 ResizeObserver 和 scroll event 封装的 RxJS observable；
  * 用于监听一个元素的在页面中的「可见范围」的不断变化 */
 export default class VisibleClipRectObservable extends Observable<{ clipRect: SimpleDOMRect; offsetY: number }> {
@@ -27,17 +43,7 @@ export default class VisibleClipRectObservable extends Observable<{ clipRect: Si
       resizeObserver.observe(target)
 
       function callback() {
-        const targetRect = getRect(target)
-        const rootRect = getRect(flowRoot)
-        subscriber.next({
-          offsetY: Math.max(0, rootRect.top - targetRect.top),
-          clipRect: {
-            left: Math.max(targetRect.left, rootRect.left),
-            top: Math.max(targetRect.top, rootRect.top),
-            right: Math.min(targetRect.right, rootRect.right),
-            bottom: Math.min(targetRect.bottom, rootRect.bottom),
-          },
-        })
+        subscriber.next(getClipRect(target, flowRoot))
       }
 
       return () => {

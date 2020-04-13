@@ -9,7 +9,7 @@ import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
 import ItemSizeStore from './helpers/ItemSizeStore'
 import SpanManager from './helpers/SpanManager'
-import VisibleClipRectObservable from './helpers/VisibleClipRectObservable'
+import VisibleClipRectObservable, { getClipRect } from './helpers/VisibleClipRectObservable'
 import {
   FullRenderRange,
   HorizontalRenderRange,
@@ -26,6 +26,7 @@ import {
   batchAdjustLeftCellSizes,
   batchAdjustRightCellSizes,
   getScrollbarSize,
+  LOADING_ICON_SIZE,
   OVERSCAN_SIZE,
   query,
   queryAll,
@@ -676,9 +677,21 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     this.initSubscriptions()
   }
 
+  private resolveFlowRoot() {
+    const { flowRoot } = this.props
+    const wrapper = this.artTableWrapperRef.current
+    if (flowRoot === 'auto') {
+      const computedStyle = getComputedStyle(wrapper)
+      return computedStyle.overflowY !== 'visible' ? wrapper : window
+    } else if (flowRoot === 'self') {
+      return wrapper
+    } else {
+      return typeof flowRoot === 'function' ? flowRoot() : flowRoot
+    }
+  }
+
   private initSubscriptions() {
     const { mainBody, stickyScroll } = this.doms
-    const { flowRoot, style = {} } = this.props
 
     this.rootSubscription.add(syncScrollLeft(mainBody, stickyScroll))
     this.rootSubscription.add(
@@ -691,18 +704,8 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
     // 故这里使用 requestAnimationFrame 等到下一个动画帧
     const rafId = requestAnimationFrame(() => {
-      let resolvedFlowRoot
-      const wrapper = this.artTableWrapperRef.current
-
-      if (flowRoot === 'auto') {
-        const computedStyle = getComputedStyle(wrapper)
-        resolvedFlowRoot = computedStyle.overflowY !== 'visible' ? wrapper : window
-      } else if (flowRoot === 'self') {
-        resolvedFlowRoot = wrapper
-      } else {
-        resolvedFlowRoot = typeof flowRoot === 'function' ? flowRoot() : flowRoot
-      }
-      const sizeAndOffset$ = new VisibleClipRectObservable(mainBody, resolvedFlowRoot).pipe(
+      const resoledFlowRoot = this.resolveFlowRoot()
+      const sizeAndOffset$ = new VisibleClipRectObservable(mainBody, resoledFlowRoot).pipe(
         filter(() => {
           const { horizontal, vertical } = this.state.useVirtual
           return horizontal || vertical
@@ -783,7 +786,19 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     })
   }
 
+  private adjustLoadingPosition() {
+    const { mainSection, artTableWrapper } = this.doms
+    const { clipRect } = getClipRect(mainSection, this.resolveFlowRoot())
+    const mainSectionRenderHeight = clipRect.bottom - clipRect.top
+    const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
+    if (loadingIndicator) {
+      loadingIndicator.style.top = `${mainSectionRenderHeight / 2 - LOADING_ICON_SIZE / 2}px`
+      loadingIndicator.style.marginTop = `${mainSectionRenderHeight / 2 - LOADING_ICON_SIZE / 2}px`
+    }
+  }
+
   private adjustSize = () => {
+    this.adjustLoadingPosition()
     this.adjustNeedRenderLock()
     this.adjustSizeOfLockCells()
     this.adjustSizeOfLockBodies()

@@ -1,5 +1,5 @@
-import { Classes } from 'ali-react-table'
 import React, { ReactNode } from 'react'
+import { Classes } from './styles'
 import { LOADING_ICON_SIZE } from './utils'
 
 const LoadingIndicatorIcon = ({ size }: { size: number }) => (

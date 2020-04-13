@@ -36,8 +36,14 @@ function proto(baseRecord: any, ensureArray: boolean | 'auto' = 'auto') {
       return process(arg)
     }
   }
+
   // @ts-ignore
   factory[factorySymbol] = true
+
+  factory.extends = (extRecord: any) => {
+    const extFactory = proto(extRecord, ensureArray)
+    return (arg: any) => factory(extFactory(arg))
+  }
 
   return factory
 }
@@ -71,23 +77,25 @@ proto.notNull[factorySymbol] = true
 proto.object = (baseRecord: any) => proto(baseRecord, false)
 proto.array = (baseRecord: any) => proto(baseRecord, true)
 
-export type DeepPartial<T> = T extends object
-  ? {
-      [key in keyof T]?: DeepPartial<T[key]>
-    }
-  : T
+type SameKeysWith<T> = T extends object ? { [key in keyof T]?: any } : T
 
-export type Proto<T> = (v: DeepPartial<T>) => T
+interface ObjectProto<T> {
+  (v: SameKeysWith<T>): T
+  extends(ext: SameKeysWith<T>): ObjectProto<T>
+}
 
-export type ArrayProto<T> = (items: DeepPartial<T>[]) => T[]
+interface ArrayProto<T> {
+  (items: SameKeysWith<T>[]): T[]
+  extends(extRecord: SameKeysWith<T>): ArrayProto<T>
+}
 
 export interface ProtoStatic {
   string(v: string): string
   number(v: number): number
   notNull<T = any>(v: any): T
 
-  object<O extends object = any>(obj: { [key in keyof O]?: any }): Proto<O>
-  array<T extends object = any>(baseRecord: { [key in keyof T]?: any }): ArrayProto<T>
+  object<O extends object = any>(base: SameKeysWith<O>): ObjectProto<O>
+  array<T extends object = any>(base: SameKeysWith<T>): ArrayProto<T>
 
   readonly empty: unique symbol
 }

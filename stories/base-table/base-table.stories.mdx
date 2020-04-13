@@ -105,11 +105,12 @@ BaseTable 保留了原有表格组件的一些非常实用的特性（表头吸�
     - 表头的横向虚拟滚动默认关闭
   - `boolean` 表示强制开启或关闭虚拟滚动
   - 传入一个对象可以分别指定 横向/纵向/表头 是否开启虚拟滚动
-  - 注意 useVirtual 的默认值是 `'auto'`，故一般来说虚拟滚动不需要手动去开启或关闭
+  - 注意 useVirtual 的默认值是 `'auto'`，一般情况下保持默认即可
 - 只有为所有的列都指定宽度后，表格才会开启水平方向的虚拟滚动
-  - 推荐为表格设置 `defaultColumnWidth`，避免部分列没有宽度的情况
+  - 推荐设置 `defaultColumnWidth`，避免部分列缺失宽度
 - 设置 `style.overflow = 'auto'` 时，必须为表格设置高度或最大高度；
-  - 因为此时表格的外层 div 会被认为是表格所处的 BFC，该 div 的高度将决定表格渲染多少行，故这个 div 的最大高度必须是确定的
+  - 此时表格的外层 div 会被认为是表格所处的 BFC，该 div 的高度将决定表格渲染多少行，故这个 div 的最大高度必须是确定的
+  - 目前暂不支持动态切换 flowRoot，意味着在表格组件加载之后 重新设置 `style.overflow` 将不会起作用
 - 在虚拟滚动开启的情况下，需要使用 `column.getSpanRect` 来设定单元格合并的情况
   - `column.getSpanRect` 返回一个 `SpanRect` 的对象来表示对应单元所处的合并后的位置。
   - `SpanRect` 的具体类型为 `{ left: number, right: number, top: number, bottom: number }`，注意其中 left/top 是 inclusive 的，right/bottom 是 exclusive 的。

@@ -788,13 +788,14 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
 
   private adjustLoadingPosition() {
     const { mainSection, artTableWrapper } = this.doms
-    const { clipRect } = getClipRect(mainSection, this.resolveFlowRoot())
-    const mainSectionRenderHeight = clipRect.bottom - clipRect.top
     const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
-    if (loadingIndicator) {
-      loadingIndicator.style.top = `${mainSectionRenderHeight / 2 - LOADING_ICON_SIZE / 2}px`
-      loadingIndicator.style.marginTop = `${mainSectionRenderHeight / 2 - LOADING_ICON_SIZE / 2}px`
+    if (!loadingIndicator) {
+      return
     }
+    const { clipRect } = getClipRect(mainSection, this.resolveFlowRoot())
+    const height = clipRect.bottom - clipRect.top
+    loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+    loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
   }
 
   private adjustSize = () => {

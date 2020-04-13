@@ -1,6 +1,6 @@
 {
   "name": "ali-react-table",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "高性能 React 表格组件",
   "sideEffects": false,
   "module": "dist/ali-react-table.esm.js",

@@ -1,5 +1,5 @@
 import * as fusion from '@alifd/next'
-import { Balloon, Button } from '@alifd/next'
+import { Balloon, Button, Checkbox, Radio } from '@alifd/next'
 import { EarthFilled16 } from '@carbon/icons-react'
 import { ArtColumn, BaseTable, collectNodes } from 'ali-react-table'
 import {
@@ -438,5 +438,64 @@ export function 单元格自动合并() {
 
   return (
     <BaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
+  )
+}
+
+export function 多选() {
+  const [value, onChange] = useState({ keys: [] as string[], lastKey: '' })
+
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  const renderData = applyTransforms(
+    { dataSource: dataSource.slice(0, 10), columns: testProvColumns },
+    commonTransforms.select({
+      Checkbox,
+      primaryKey: 'provinceName',
+      value,
+      onChange,
+    }),
+  )
+
+  return (
+    <>
+      <FusionStyles />
+      <div style={{ lineHeight: '24px' }}>交互提示：按住 shift 键来快速选择多行</div>
+      <div style={{ lineHeight: '24px' }}>当前选中的 value 为 {value.keys.join(',') || '[空]'}</div>
+      <BaseTable
+        primaryKey="provinceName"
+        isLoading={isLoading}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
+    </>
+  )
+}
+
+export function 单选() {
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  const [value, onChange] = useState('')
+
+  const renderData = applyTransforms(
+    { dataSource: dataSource.slice(0, 10), columns: testProvColumns },
+    commonTransforms.singleSelect({
+      Radio,
+      primaryKey: 'provinceName',
+      value,
+      onChange,
+    }),
+  )
+
+  return (
+    <>
+      <FusionStyles />
+      <div style={{ lineHeight: '24px' }}>当前选中的 value 为 {value || '[空]'}</div>
+      <BaseTable
+        primaryKey="provinceName"
+        isLoading={isLoading}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
+    </>
   )
 }

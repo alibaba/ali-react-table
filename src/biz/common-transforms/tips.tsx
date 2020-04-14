@@ -18,7 +18,11 @@ const HeaderCellWithTips = styled.div`
   }
 `
 
-export default function tips({ Balloon }: { Balloon: any }): TableTransform {
+export interface TipsOptions {
+  Balloon: any
+}
+
+export default function tips({ Balloon }: TipsOptions): TableTransform {
   return transformColumn((col) => {
     if (!col.features?.tips) {
       return col

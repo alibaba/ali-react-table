@@ -63,17 +63,19 @@ const TableHeaderCell = styled.div`
   align-items: center;
 `
 
+export interface SortOptions {
+  orders?: SortOrder[]
+  mode?: 'single' | 'multiple'
+  sorts: SortItem[]
+  onChangeSorts(nextSorts: SortItem[]): void
+}
+
 export default function sort({
   sorts: inputSorts,
   onChangeSorts: inputOnChangeSorts,
   orders = ['desc', 'asc', 'none'],
   mode = 'multiple',
-}: {
-  sorts: SortItem[]
-  onChangeSorts(nextSorts: SortItem[]): void
-  orders?: SortOrder[]
-  mode?: 'single' | 'multiple'
-}): TableTransform {
+}: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
   // 单字段排序的情况下 sorts 中只有第一个排序字段才会生效

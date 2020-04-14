@@ -10,10 +10,10 @@ export function safeGetValue(column: ArtColumn, record: any, rowIndex: number) {
 }
 
 export function safeGetRowKey(
-  primaryKey: string | ((record: any, rowIndex: number) => string | number),
+  primaryKey: string | ((record: any, rowIndex: number) => string),
   record: any,
   rowIndex: number,
-): number | string {
+): string {
   let key
   if (typeof primaryKey === 'string') {
     key = record[primaryKey]

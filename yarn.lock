@@ -2203,13 +2203,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-dom@^16.9.4":
-  version "16.9.6"
-  resolved "https://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.9.6.tgz#9e7f83d90566521cc2083be2277c6712dcaf754c"
-  integrity sha1-nn+D2QVmUhzCCDviJ3xnEtyvdUw=
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-helmet@^5.0.15":
   version "5.0.15"
   resolved "https://registry.npm.taobao.org/@types/react-helmet/download/@types/react-helmet-5.0.15.tgz#af0370617307e9f062c6aee0f1f5588224ce646e"
@@ -6385,7 +6378,7 @@ immer@1.10.0:
   resolved "https://registry.npm.taobao.org/immer/download/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha1-utZ2BbqcgQJ12R4cKkfUWC6YKG0=
 
-"immer@3 || 4 || 5 || 6", "immer@^5.3.6 || ^6.0.1":
+"immer@3 || 4 || 5 || 6", immer@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npm.taobao.org/immer/download/immer-6.0.3.tgz#94d5051cd724668160a900d66d85ec02816f29bd"
   integrity sha1-lNUFHNckZoFgqQDWbYXsAoFvKb0=
@@ -9194,7 +9187,7 @@ react-docgen@^5.0.0:
     node-dir "^0.1.10"
     strip-indent "^3.0.0"
 
-react-dom@^16.8.3, react-dom@^16.9.0:
+react-dom@^16.8.3:
   version "16.13.1"
   resolved "https://registry.npm.taobao.org/react-dom/download/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha1-wb03MxoEhsB47lTEdAcgmTsuDn8=

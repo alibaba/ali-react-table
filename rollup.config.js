@@ -25,10 +25,20 @@ const input = ['src/ali-react-table.ts', 'src/ali-react-table-biz.ts', 'src/ali-
 export default [
   config({
     input: input,
-    output: { dir: 'dist', format: 'esm', entryFileNames: '[name].esm.js' },
+    output: {
+      dir: 'dist',
+      format: 'esm',
+      entryFileNames: '[name].esm.js',
+      chunkFileNames: 'chunks/ali-react-table-[name]-[hash].esm.js',
+    },
   }),
   config({
     input: input,
-    output: { dir: 'dist', format: 'cjs', entryFileNames: '[name].js' },
+    output: {
+      dir: 'dist',
+      format: 'cjs',
+      entryFileNames: '[name].js',
+      chunkFileNames: 'chunks/ali-react-table-[name]-[hash].js',
+    },
   }),
 ]

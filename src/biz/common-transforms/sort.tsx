@@ -1,5 +1,4 @@
 import * as CarbonIcons from '@carbon/icons-react'
-import produce from 'immer'
 import React, { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { collectNodes, isLeafNode } from '../../common-utils'
@@ -132,24 +131,17 @@ export default function sort({
     function toggle(code: string) {
       const sort = sortMap.get(code)
       if (sort == null) {
-        onChangeSorts(
-          produce(sorts, (draft) => {
-            draft.push({ code, order: orders[0] })
-          }),
-        )
+        onChangeSorts(sorts.concat([{ code, order: orders[0] }]))
       } else {
-        const idx = sorts.findIndex((s) => s.code === code)
-        onChangeSorts(
-          produce(sorts, (draft) => {
-            draft.splice(idx + 1, sorts.length - idx + 1)
-            const nextOrder = getNextOrder(sort.order)
-            if (nextOrder === 'none') {
-              draft.pop()
-            } else {
-              draft[idx].order = nextOrder
-            }
-          }),
-        )
+        const index = sorts.findIndex((s) => s.code === code)
+        const nextSorts = sorts.slice(0, index + 1)
+        const nextOrder = getNextOrder(sort.order)
+        if (nextOrder === 'none') {
+          nextSorts.pop()
+        } else {
+          nextSorts[index].order = nextOrder
+        }
+        onChangeSorts(nextSorts)
       }
     }
 

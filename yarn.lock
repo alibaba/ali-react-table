@@ -6385,7 +6385,7 @@ immer@1.10.0:
   resolved "https://registry.npm.taobao.org/immer/download/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha1-utZ2BbqcgQJ12R4cKkfUWC6YKG0=
 
-"immer@3 || 4 || 5 || 6", "immer@^5.3.6 || ^6.0.1":
+"immer@3 || 4 || 5 || 6", immer@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npm.taobao.org/immer/download/immer-6.0.3.tgz#94d5051cd724668160a900d66d85ec02816f29bd"
   integrity sha1-lNUFHNckZoFgqQDWbYXsAoFvKb0=

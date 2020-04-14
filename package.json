@@ -38,11 +38,9 @@
     "@carbon/icons-react": "^10.9.1",
     "@types/carbon__icons-react": "^10.6.0",
     "@types/classnames": "^2.2.9",
-    "@types/react-dom": "^16.9.4",
     "classnames": "^2.2.6",
     "dvt-aggregation": "^0.2.7",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "^6.5.4",
     "styled-components": "^3.4.10 || ^5.0.1"

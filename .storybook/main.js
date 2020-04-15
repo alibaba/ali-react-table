@@ -20,10 +20,7 @@ const pivot = [
 
 module.exports = {
   presets: ['@storybook/addon-docs/preset'],
-  addons: [
-    '@storybook/addon-storysource',
-    // '@storybook/addon-knobs/register'
-  ],
+  addons: ['@storybook/addon-storysource', '@storybook/addon-links/register'],
 
   stories: [
     // 手动引入来控制顺序

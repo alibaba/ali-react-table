@@ -15,8 +15,8 @@ import MinimumPivotTableDesigner from '../pivot/MinimumPivotTableDesigner'
 export default { title: '示例 / 基于 CrossTable 的透视表' }
 
 const dimensions = [
-  { code: 'planet', name: '星球', width: 150 },
-  { code: 'area', name: '地区', width: 150 },
+  { code: 'planet', name: '子公司', width: 150 },
+  { code: 'area', name: '门店', width: 150 },
   { code: 'season', name: '季度' },
   { code: 'month', name: '月份' },
   { code: 'one', name: '一级类目' },

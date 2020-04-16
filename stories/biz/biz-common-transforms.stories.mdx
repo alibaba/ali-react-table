@@ -67,7 +67,7 @@ type TreeModeOptions = {
 - `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
   - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状默认下的一些元信息（深度、是否展开等）
   - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将且其渲染收拢/展开按钮
-  - 该选项配合 `options.onChangeOpenKeys` 可以实现表格展开时动态加载数据的功能
+  - 该选项配合 `options.onChangeOpenKeys` 可以实现 <LinkTo kind="示例 / 异步数据加载树状表格" story="async-loading-tree-table">表格展开时动态加载数据的功能</LinkTo>
 
 ### sort 表格排序
 

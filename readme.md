@@ -35,7 +35,7 @@
 
 ## 兼容性说明
 
-表格用到了大量较新的浏览器 API，目前阶段只兼容较新版本的 Chrome/Firefox/Safari
+表格用到了大量较新的浏览器 API，目前阶段只兼容较新版本的 Chrome/Firefox/Safari，详情请见 [#18](https://github.com/alibaba/ali-react-table/issues/18)
 
 ## 相关链接
 

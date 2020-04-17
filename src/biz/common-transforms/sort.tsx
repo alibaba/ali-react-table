@@ -84,12 +84,22 @@ const TableHeaderCell = styled.div`
 `
 
 export interface SortHeaderCellProps {
+  /** 调用 commonTransforms.sort(...) 时的参数 */
   sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
 
+  /** 在添加排序相关的内容之前 表头原有的渲染内容 */
   children: ReactNode
+
+  /** 当前排序 */
   sortOrder: SortOrder
+
+  /** 多列排序下，sortIndex 指明了当前排序字段起作用的顺序. 当 sortOrder 为 none 时，sortIndex 固定为 -1 */
   sortIndex: number
+
+  /** 当前列的配置 */
   column: ArtColumn
+
+  /** 切换排序的回调 */
   onToggle(): void
 }
 

@@ -1,5 +1,5 @@
 import * as CarbonIcons from '@carbon/icons-react'
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
 import { collectNodes, isLeafNode } from '../../common-utils'
 import { safeGetValue } from '../../common-utils/internals'
@@ -51,6 +51,26 @@ const NumberIconMap: { [key: number]: IconComponent } = {
 
 const EmptyIcon: IconComponent = () => null
 
+function DefaultSortHeaderCell({ children, column, onToggle, sortOrder, sortIndex, sortOptions }: SortHeaderCellProps) {
+  // 通过 justify-content 来与 col.align 保持对齐方向一致
+  const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
+
+  let NumberIcon = EmptyIcon
+  if (sortOptions.mode === 'multiple') {
+    if (NumberIconMap[sortIndex + 1] != null) {
+      NumberIcon = NumberIconMap[sortIndex + 1]
+    }
+  }
+
+  return (
+    <TableHeaderCell onClick={onToggle} style={{ justifyContent }}>
+      {children}
+      <SortIcon style={{ marginLeft: 2, flexShrink: 0 }} size={16} order={sortOrder} />
+      <NumberIcon style={{ fill: '#666', flexShrink: 0 }} />
+    </TableHeaderCell>
+  )
+}
+
 function hasAnySortableColumns(cols: ArtColumn[]): boolean {
   return cols.some(
     (col) => Boolean(col.features?.sortable) || (!isLeafNode(col) && hasAnySortableColumns(col.children)),
@@ -63,17 +83,31 @@ const TableHeaderCell = styled.div`
   align-items: center;
 `
 
+export interface SortHeaderCellProps {
+  sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
+
+  children: ReactNode
+  sortOrder: SortOrder
+  sortIndex: number
+  column: ArtColumn
+  onToggle(): void
+}
+
+export interface SortOptions {
+  sorts: SortItem[]
+  onChangeSorts(nextSorts: SortItem[]): void
+  orders?: SortOrder[]
+  mode?: 'single' | 'multiple'
+  SortHeaderCell?: React.ComponentType<SortHeaderCellProps>
+}
+
 export default function sort({
   sorts: inputSorts,
   onChangeSorts: inputOnChangeSorts,
   orders = ['desc', 'asc', 'none'],
   mode = 'multiple',
-}: {
-  sorts: SortItem[]
-  onChangeSorts(nextSorts: SortItem[]): void
-  orders?: SortOrder[]
-  mode?: 'single' | 'multiple'
-}): TableTransform {
+  SortHeaderCell,
+}: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
   // 单字段排序的情况下 sorts 中只有第一个排序字段才会生效
@@ -86,6 +120,8 @@ export default function sort({
           const len = nextSorts.length
           inputOnChangeSorts(nextSorts.slice(len - 1))
         }
+
+  const sortOptions = { sorts, onChangeSorts, orders, mode }
 
   const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
 
@@ -152,29 +188,26 @@ export default function sort({
         const result = { ...col }
 
         if (col.code && (col.features?.sortable || sortMap.has(col.code))) {
-          let NumberIcon = EmptyIcon
-          let sortIconOrder: SortOrder = 'none'
+          let sortIndex = -1
+          let sortOrder: SortOrder = 'none'
 
           if (sortMap.has(col.code)) {
             const { order, index } = sortMap.get(col.code)
-            sortIconOrder = order
-            if (mode === 'multiple' && NumberIconMap[index + 1] != null) {
-              NumberIcon = NumberIconMap[index + 1]
-            }
+            sortOrder = order
+            sortIndex = index
           }
 
-          // 这里是特意将 code 取出来的，因为 col 是一个 Proxy，不能以闭包变量的形式去访问 col
-          const code = col.code
-          // 排序后生成的 title 通过 justify-content 来与 col.align 保持对齐方向一致
-          const justifyContent = col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start'
-          const prevTitle = col.title ?? col.name
-
+          const SortHeaderCellComponent = SortHeaderCell ?? DefaultSortHeaderCell
           result.title = (
-            <TableHeaderCell onClick={() => toggle(code)} style={{ justifyContent }}>
-              {prevTitle}
-              <SortIcon style={{ marginLeft: 2, flexShrink: 0 }} size={16} order={sortIconOrder} />
-              <NumberIcon style={{ fill: '#666', flexShrink: 0 }} />
-            </TableHeaderCell>
+            <SortHeaderCellComponent
+              onToggle={() => toggle(col.code)}
+              sortOrder={sortOrder}
+              column={col}
+              sortIndex={sortIndex}
+              sortOptions={sortOptions}
+            >
+              {col.title ?? col.name}
+            </SortHeaderCellComponent>
           )
         }
         if (!isLeafNode(col)) {

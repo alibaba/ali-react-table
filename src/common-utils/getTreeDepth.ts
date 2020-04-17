@@ -1,4 +1,4 @@
-import { AbstractTreeNode } from 'ali-react-table'
+import { AbstractTreeNode } from '../interfaces'
 import isLeafNode from './isLeafNode'
 
 /** 获取一棵树的高度/深度 (0-based) */

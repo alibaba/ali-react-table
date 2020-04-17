@@ -10,6 +10,20 @@ ali-react-table/\* 导出了一部分内部的工具函数，方便上层调用�
 
 主要用途：判断一个节点是否为叶子节点
 
+### `getTreeDepth`
+
+获取一棵树的高度/深度
+
+### `collectNodes`
+
+按照一定的规则收集树中的所有节点
+
+API: `function collectNodes<T extends AbstractTreeNode>(nodes: T[], order: 'pre' | 'post' | 'leaf-only'): T[]`
+
+- pre: 前序遍历
+- post: 后续遍历
+- leaf-only: 仅收集叶子节点
+
 ## `ali-react-table/biz` 导出的工具函数
 
 ### `buildTree`

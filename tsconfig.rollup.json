@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "strict": true,
-    "target": "es2019",
+    "target": "ES2015",
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "strictNullChecks": false,

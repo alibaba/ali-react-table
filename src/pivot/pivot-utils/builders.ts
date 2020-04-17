@@ -1,4 +1,5 @@
 import { groupBy, isLeafNode } from '../../common-utils'
+import { fromEntries } from '../../common-utils/others'
 import buildDrillTree from './buildDrillTree'
 import { DrillNode, RecordMatrix } from './interfaces'
 import simpleEncode from './simpleEncode'
@@ -154,10 +155,8 @@ export function buildRecordMatrix({
       if (!isLeafNode(topDrillNode)) {
         const topCode = topCodes[depth]
         ctx.peculiarity.add(topCode)
-        const drillChildDict = Object.fromEntries(topDrillNode.children.map((child) => [child.value, child]))
-        const colChildDictArray = cols.map((col) =>
-          Object.fromEntries(col.children.map((child) => [child.topValue, child])),
-        )
+        const drillChildDict = fromEntries(topDrillNode.children.map((child) => [child.value, child]))
+        const colChildDictArray = cols.map((col) => fromEntries(col.children.map((child) => [child.topValue, child])))
         children = topDrillNode.children.map((item) => {
           const childCols = colChildDictArray.map((colChildDict) => colChildDict[item.value]).filter(Boolean)
           return dfs(ctx, childCols, drillChildDict[item.value], depth + 1)

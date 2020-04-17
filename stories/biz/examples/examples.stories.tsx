@@ -1,15 +1,6 @@
 import * as fusion from '@alifd/next'
 import { Balloon, Button } from '@alifd/next'
-import {
-  WatsonHealthRotate_36032,
-  EarthFilled16,
-  ThumbsDown32,
-  ThumbsUp32,
-  Row32,
-  Row16,
-  ThumbsUp16,
-  ThumbsDown16,
-} from '@carbon/icons-react'
+import { EarthFilled16, Row16, ThumbsDown16, ThumbsUp16 } from '@carbon/icons-react'
 import { ArtColumn, BaseTable, collectNodes } from 'ali-react-table'
 import {
   applyTransforms,

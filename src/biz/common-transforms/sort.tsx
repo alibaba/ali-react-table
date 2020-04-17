@@ -2,7 +2,7 @@ import * as CarbonIcons from '@carbon/icons-react'
 import React, { CSSProperties, ReactNode } from 'react'
 import styled from 'styled-components'
 import { collectNodes, isLeafNode } from '../../common-utils'
-import { safeGetValue } from '../../common-utils/internals'
+import { safeGetValue, safeRenderHeader } from '../../common-utils/internals'
 import { ArtColumn } from '../../interfaces'
 import { SortItem, SortOrder, TableTransform } from '../interfaces'
 import { layeredSort, smartCompare } from '../utils'
@@ -216,7 +216,7 @@ export default function sort({
               sortIndex={sortIndex}
               sortOptions={sortOptions}
             >
-              {col.title ?? col.name}
+              {safeRenderHeader(col)}
             </SortHeaderCellComponent>
           )
         }

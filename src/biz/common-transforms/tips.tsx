@@ -1,6 +1,7 @@
 import { Information16 } from '@carbon/icons-react'
 import React from 'react'
 import styled from 'styled-components'
+import { safeRenderHeader } from '../../common-utils/internals'
 import { TableTransform } from '../interfaces'
 import { transformColumn } from '../utils'
 
@@ -24,14 +25,13 @@ export default function tips({ Balloon }: { Balloon: any }): TableTransform {
       return col
     }
 
-    const prevTitle = col.title ?? col.name
     const justifyContent = col.align === 'right' ? 'flex-end' : col.align === 'center' ? 'center' : 'flex-start'
 
     return {
       ...col,
       title: (
         <HeaderCellWithTips style={{ justifyContent }}>
-          {prevTitle}
+          {safeRenderHeader(col)}
           <Balloon
             closable={false}
             trigger={

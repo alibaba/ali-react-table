@@ -1,4 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
 
 <Meta title="表格功能拓展 / 常见拓展功能" />
 
@@ -70,29 +71,54 @@ type TreeModeOptions = {
 
 ### sort 表格排序
 
-- `commonTransforms.sort(options: SortOptions)`：表格排序
-  - 该 transform 会同时对 dataSource 和 columns 进行更新
-  - 该 transform 会根据 options.sorts 来排序 dataSource
-    - `options.mode=multiple` （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
-    - `options.mode=single` 时表现为单字段排序
-    - 无论是多字段还是单字段排序，`options.sorts` 始终为一个数组
-  - 该 transform 支持树状结构数据的排序，即同一个节点下的子节点才会进行相互比较
-  - 注意排序字段对应的列**必须有 `column.features.sortable = true` 的配置**，否则将会忽略该字段的排序
-    - `features.sortable = true` 时默认为自然序（对于数字）或字典序（对于字符串）
-    - 我们可以通过给 `features.sortable` 传递一个函数来自定义比较规则，该函数将被作为 `Array#sort` 的参数
-  - `options.orders` 可以用来指定排序切换顺序
-    - 默认值为 `['desc', 'asc', 'none']`，即连续点击某一列的表头时，先按降序排序，然后按升序排序，最后取消排序
-    - 如果要传入自定义的 orders，需要满足以下规则：
-      - `none` 不能作为 orders 的第一个元素
-      - `none` 必须在 orders 中
-  - `SortOptions` 类型见下方
+API 接口： `commonTransforms.sort(options: SortOptions): TableTransform`
+
+- 该 transform 会同时对 dataSource 和 columns 进行更新
+- 该 transform 会根据 options.sorts 来排序 dataSource
+  - `options.mode=multiple` （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
+  - `options.mode=single` 时表现为单字段排序
+  - 无论是多字段还是单字段排序，`options.sorts` 始终为一个数组
+- 该 transform 支持树状结构数据的排序，即同一个节点下的子节点才会进行相互比较
+- 注意排序字段对应的列**必须有 `column.features.sortable = true` 的配置**，否则将会忽略该字段的排序
+  - `features.sortable = true` 时默认为自然序（对于数字）或字典序（对于字符串）
+  - 我们可以通过给 `features.sortable` 传递一个函数来自定义比较规则，该函数将被作为 `Array#sort` 的参数
+  - 如果想要使用来自上层的排序又需要保留 排序的相关 UI，可以将 `features.sortable` 设置为 `() => 0`，这样 sort 就不会对 dataSource 排序了
+- `options.orders` 可以用来指定排序切换顺序
+  - 默认值为 `['desc', 'asc', 'none']`，即连续点击某一列的表头时，先按降序排序，然后按升序排序，最后取消排序
+  - 传入自定义的 orders 可以覆盖默认的切换顺序
+- `options.SortHeaderCell` 可以自定义排序表头的内容和样式，用法可以参考 <LinkTo kind="表格功能拓展 / 基本示例" story="自定义样式的排序表头"> 这个示例 </LinkTo>
+- `SortOptions` 类型见下方
 
 ```typescript
 type SortOptions = {
+  // 必传参数
   sorts: Array<{ code: string; order: 'asc' | 'desc' }>
   onChangeSorts(nextSorts: Array<{ code: string; order: 'asc' | 'desc' }>): void
+
+  // 可选参数
   orders?: Array<'asc' | 'desc' | 'none'>
   mode?: 'single' | 'multiple'
+  SortHeaderCell?: React.ComponentType<SortHeaderCellProps>
+}
+
+interface SortHeaderCellProps {
+  /** 调用 commonTransforms.sort(...) 时的参数 */
+  sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
+
+  /** 在添加排序相关的内容之前 表头原有的渲染内容 */
+  children: ReactNode
+
+  /** 当前排序 */
+  sortOrder: SortOrder
+
+  /** 多列排序下，sortIndex 指明了当前排序字段起作用的顺序. 当 sortOrder 为 none 时，sortIndex 为 -1 */
+  sortIndex: number
+
+  /** 当前列的配置 */
+  column: ArtColumn
+
+  /** 切换排序的回调 */
+  onToggle(): void
 }
 ```
 

@@ -1,3 +1,5 @@
+import { flatMap } from '../../common-utils/others'
+
 type WithChildren<T> = T & { children?: WithChildren<T>[] }
 
 /**
@@ -52,9 +54,10 @@ export default function buildTree<ID extends string, PID extends string, T exten
     parentWrapper.children.push(itemWrapper)
     itemWrapper.item = item
   }
-  const topLevelWrappers = Array.from(wrapperMap.values())
-    .filter((wrapper) => wrapper.parent == null)
-    .flatMap((wrapper) => wrapper.children)
+  const topLevelWrappers = flatMap(
+    Array.from(wrapperMap.values()).filter((wrapper) => wrapper.parent == null),
+    (wrapper) => wrapper.children,
+  )
 
   return unwrapRecursively(topLevelWrappers)
 

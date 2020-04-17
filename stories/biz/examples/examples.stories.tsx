@@ -1,6 +1,15 @@
 import * as fusion from '@alifd/next'
 import { Balloon, Button } from '@alifd/next'
-import { EarthFilled16 } from '@carbon/icons-react'
+import {
+  WatsonHealthRotate_36032,
+  EarthFilled16,
+  ThumbsDown32,
+  ThumbsUp32,
+  Row32,
+  Row16,
+  ThumbsUp16,
+  ThumbsDown16,
+} from '@carbon/icons-react'
 import { ArtColumn, BaseTable, collectNodes } from 'ali-react-table'
 import {
   applyTransforms,
@@ -438,5 +447,76 @@ export function 单元格自动合并() {
 
   return (
     <BaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
+  )
+}
+
+function CustomSortHeaderCell({
+  column,
+  sortOptions,
+  sortIndex,
+  children,
+  onToggle,
+  sortOrder,
+}: commonTransforms.SortHeaderCellProps) {
+  // 通过 justify-content 来与 col.align 保持对齐方向一致
+  const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
+
+  return (
+    <div
+      onClick={onToggle}
+      style={{
+        display: 'flex',
+        justifyContent,
+        cursor: 'pointer',
+      }}
+    >
+      {/* 别忘记渲染原来的表头内容 */}
+      {children}
+
+      <span style={{ marginLeft: 4 }}>
+        {sortOrder === 'none' && <Row16 />}
+        {sortOrder === 'asc' && <ThumbsUp16 />}
+        {sortOrder === 'desc' && <ThumbsDown16 />}
+      </span>
+
+      {sortOptions.mode === 'multiple' && sortOrder !== 'none' && (
+        <span style={{ marginLeft: 4 }}>{sortIndex + 1}</span>
+      )}
+    </div>
+  )
+}
+
+export function 自定义样式的排序表头() {
+  const { isLoading, dataSource: data } = useProvinceDataSource()
+
+  const columns: ArtColumn[] = [
+    { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
+    { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'deadCount', name: '死亡', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'updateTime', name: '最后更新时间', width: 180, render: time },
+  ]
+
+  const [sorts, onChangeSorts] = useState<SortItem[]>([{ code: 'confirmedCount', order: 'desc' }])
+
+  const renderData = applyTransforms(
+    { columns, dataSource: data.slice(0, 5) },
+    commonTransforms.sort({
+      sorts,
+      onChangeSorts,
+      SortHeaderCell: CustomSortHeaderCell,
+    }),
+  )
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
+        <div style={{ marginLeft: 8 }}>通过示例 options.SortHeaderCell 可以自定义排序表头的样式/内容</div>
+        <button style={{ marginLeft: 16 }} onClick={() => onChangeSorts([])}>
+          清除排序
+        </button>
+      </div>
+      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+    </div>
   )
 }

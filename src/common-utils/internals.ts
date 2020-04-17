@@ -1,6 +1,8 @@
-import React from 'react'
-import { AbstractTreeNode, ArtColumn } from '../interfaces'
-import isLeafNode from './isLeafNode'
+import { ArtColumn } from '../interfaces'
+
+export function safeRenderHeader(column: ArtColumn) {
+  return column.title ?? column.name
+}
 
 export function safeGetValue(column: ArtColumn, record: any, rowIndex: number) {
   if (column.getValue) {
@@ -40,21 +42,4 @@ export function safeRender(column: ArtColumn, record: any, rowIndex: number) {
     return column.render(value, record, rowIndex)
   }
   return value
-}
-
-/** 获取一棵树的高度/深度 (0-based) */
-export function getTreeDepth(nodes: AbstractTreeNode[]) {
-  let maxDepth = -1
-  dfs(nodes, 0)
-  return maxDepth
-
-  function dfs(columns: AbstractTreeNode[], depth: number) {
-    for (const column of columns) {
-      if (isLeafNode(column)) {
-        maxDepth = Math.max(maxDepth, depth)
-      } else {
-        dfs(column.children, depth + 1)
-      }
-    }
-  }
 }

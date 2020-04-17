@@ -1,7 +1,6 @@
 import cx from 'classnames'
 import React from 'react'
-import { isLeafNode } from '../common-utils'
-import { getTreeDepth } from '../common-utils/internals'
+import { getTreeDepth, isLeafNode } from '../common-utils'
 import { ArtColumn } from '../interfaces'
 import { HorizontalRenderRange, TableSide } from './interfaces'
 import { Classes } from './styles'
@@ -167,7 +166,7 @@ function calculateRenderInfo(
         { type: 'blank', width: hoz.rightBlank, blankSide: 'right' },
         ...rightPart.flat,
       ],
-      leveled: range(rowCount).map(depth => [
+      leveled: range(rowCount).map((depth) => [
         ...leftPart.leveled[depth],
         { type: 'blank', width: hoz.leftBlank, blankSide: 'left' },
         ...centerPart.leveled[depth],
@@ -188,7 +187,7 @@ export default function TableHeader(props: TableHeaderProps) {
   const renderInfo = calculateRenderInfo(props, rowCount)
 
   const tbody = renderInfo.leveled.map((wrappedCols, level) => {
-    const headerCells = wrappedCols.map(wrapped => {
+    const headerCells = wrappedCols.map((wrapped) => {
       if (wrapped.type === 'normal') {
         const headerCellProps = wrapped.col.headerCellProps ?? {}
 
@@ -237,7 +236,7 @@ export default function TableHeader(props: TableHeaderProps) {
     <div className={Classes.tableHeader}>
       <table>
         <colgroup>
-          {renderInfo.flat.map(wrapped => {
+          {renderInfo.flat.map((wrapped) => {
             if (wrapped.type === 'blank') {
               if (wrapped.width > 0) {
                 return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />

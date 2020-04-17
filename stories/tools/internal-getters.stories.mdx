@@ -1,0 +1,31 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+
+<Meta title="工具 / internal getters" />
+
+# Internal Getters
+
+对表格进行封装时，可能需要用到一些表格内部的数据处理方法，使得上层封装的功能和表格内部保持一致。
+
+ali-react-table 导出的内部方法如下：
+
+- safeRenderHeader(column) 获取表头的渲染内容
+- safeGetValue(column, record, rowIndex) 获取单元格的值
+- safeGetRowKey(primaryKey, record, rowIndex) 获取某一行的 key
+- safeGetCellProps(column, record, rowIndex) 获取单元格的 props
+- safeRender（column, record, rowIndex) 获取单元格的渲染内容
+
+使用示例：
+
+```javascript
+import { internals } from 'ali-react-table'
+
+const column = { code: 'hello', name: 'world' }
+const rowIndex = 3
+const record = dataSource[rowIndex]
+
+const cellProps = internals.safeRender(column, record, rowIndex)
+```
+
+每个内部的数据方法的实现其实都很简单，详见 [源码](https://github.com/alibaba/ali-react-table/blob/master/src/common-utils/internals.tsx).
+
+注意在表格的内部实现中，可能并没有实际调用这些内部方法（在表格内部调用这些方法会产生很多的冗余计算），但表格内部的数据处理和这些方法是保持一致的。

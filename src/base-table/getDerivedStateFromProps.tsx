@@ -1,5 +1,4 @@
 import { collectNodes, isLeafNode } from '../common-utils'
-import { getTreeDepth } from '../common-utils/internals'
 import { ArtColumn } from '../interfaces'
 import { VirtualEnum } from './interfaces'
 import { BaseTableProps, BaseTableState } from './table'
@@ -75,7 +74,6 @@ export default function getDerivedStateFromProps(
   const { useVirtual: useVirtualProp, columns: columnsProp, dataSource: dataSourceProp, defaultColumnWidth } = props
 
   const columns = processColumns(columnsProp, defaultColumnWidth)
-  const nestedTreeDepth = getTreeDepth(columns)
 
   const leftNestedLockCount = getLeftNestedLockCount(columns)
 
@@ -95,7 +93,7 @@ export default function getDerivedStateFromProps(
   const centerNested = columns.slice(leftNestedLockCount, columns.length - rightNestedLockCount)
   const rightNested = columns.slice(columns.length - rightNestedLockCount)
 
-  const shouldEnableHozVirtual = mainFlat.length >= AUTO_VIRTUAL_THRESHOLD && mainFlat.every(col => col.width != null)
+  const shouldEnableHozVirtual = mainFlat.length >= AUTO_VIRTUAL_THRESHOLD && mainFlat.every((col) => col.width != null)
   const shouldEnableVerVirtual = dataSourceProp.length >= AUTO_VIRTUAL_THRESHOLD
   const useVirtual =
     typeof useVirtualProp !== 'object'

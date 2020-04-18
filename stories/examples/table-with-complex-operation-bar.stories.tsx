@@ -9,13 +9,13 @@ import {
   useOperationBar,
 } from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
-import { getAppTrafficData } from '../../assets/cdn-data'
-import { amount, ratio } from '../../assets/format'
-import { FusionStyles } from '../../assets/fusion-style'
+import { getAppTrafficData } from '../assets/cdn-data'
+import { amount, ratio } from '../assets/format'
+import { FusionStyles } from '../assets/fusion-style'
 
-export default { title: '表格功能拓展 / 复杂示例' }
+export default { title: '示例 / 表格操作栏示例' }
 
-export function 实际页面示例() {
+export function 表格操作栏示例() {
   // 例如 proto 创建若干列配置的「原型」，方便后续书写列配置
   const groupProto = proto.array<ArtColumn>({
     name: proto.string,
@@ -143,11 +143,7 @@ export function 实际页面示例() {
     <div>
       <FusionStyles />
       <operationBar.view>{operationBar.nodes}</operationBar.view>
-      <BaseTable
-        dataSource={renderData.dataSource}
-        columns={renderData.columns}
-        isLoading={state.isLoading}
-      />
+      <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
     </div>
   )
 

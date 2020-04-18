@@ -18,19 +18,21 @@ export const treeMetaSymbol = Symbol('treeMetaSymbol')
 const ICON_WIDTH = 16
 const BASE_INDENT = 10
 
+export interface TreeModeOptions {
+  primaryKey: string
+  openKeys: string[]
+  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+  indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+}
+
 export default function treeMode({
   onChangeOpenKeys,
   openKeys,
   primaryKey,
   indentSize = 16,
   isLeafNode = standardIsLeafNode,
-}: {
-  primaryKey: string
-  openKeys: string[]
-  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
-  indentSize?: number
-  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
-}): TableTransform {
+}: TreeModeOptions): TableTransform {
   const openKeySet = new Set(openKeys)
 
   return ({ columns, dataSource }) => {

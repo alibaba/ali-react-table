@@ -26,6 +26,6 @@ const record = dataSource[rowIndex]
 const cellProps = internals.safeRender(column, record, rowIndex)
 ```
 
-每个内部的数据方法的实现其实都很简单，详见 [源码](https://github.com/alibaba/ali-react-table/blob/master/src/common-utils/internals.tsx).
+每个内部的数据方法的实现其实都很简单，详见 [源码](https://github.com/alibaba/ali-react-table/blob/master/src/common-utils/internals.ts).
 
 注意在表格的内部实现中，可能并没有实际调用这些内部方法（在表格内部调用这些方法会产生很多的冗余计算），但表格内部的数据处理和这些方法是保持一致的。

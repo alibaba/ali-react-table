@@ -6,7 +6,27 @@ import { amount, time } from '../assets/format'
 import { FusionStyles } from '../assets/fusion-style'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
 
-export default { title: '基础表格 / 示例' }
+export default {
+  title: '基础表格 / 示例',
+  parameters: {
+    docs: {
+      page() {
+        return (
+          <div
+            style={{
+              margin: 'auto',
+              background: 'rgba(0, 0, 0, 0.03)',
+              borderRadius: 10,
+              padding: 30,
+            }}
+          >
+            示例过多，docs page 已在此处禁用，请在页面上方切换到「Canvas」模式
+          </div>
+        )
+      },
+    },
+  },
+}
 
 export function 基本用法() {
   const { isLoading, dataSource } = useProvinceDataSource()

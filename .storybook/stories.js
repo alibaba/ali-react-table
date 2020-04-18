@@ -2,10 +2,9 @@ const baseTable = ['base-table/base-table.stories.mdx', 'base-table/base-table.s
 
 const biz = [
   'biz/biz.stories.mdx',
-  'biz/biz-transforms.stories.mdx',
-  'biz/biz-common-transforms.stories.mdx',
-  'biz/biz-operation-bar.stories.mdx',
-  'biz/biz-components.stories.mdx',
+  'biz/common-transforms/**/*.stories.mdx',
+  'biz/hooks/**/*.stories.mdx',
+  'biz/components/**/*.stories.mdx',
   'biz/examples/**/*.stories.tsx',
 ]
 

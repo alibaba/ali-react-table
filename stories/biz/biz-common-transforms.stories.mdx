@@ -136,6 +136,24 @@ type ColumnHoverOptions = {
 }
 ```
 
+### columnRangeHover 列范围高亮
+
+`commonTransforms.columnRangeHover(options: ColumnRangeHoverOptions)`：列范围高亮
+
+- 这是一个只会对 `columns` 进行更新的 transform
+- 如果某一列的 colIndex 与 `options.hoverColor` 匹配...
+  - 该 transform 会将该列单元格的背景色设置为 `options.hoverColor`，默认为 `'#f5f5f5'`
+  - 该 transform 会将该列表头的背景色设置为 `options.headerHoverColor`，默认为 `'#ddd'`
+
+```typescript
+type ColumnHoverOptions = {
+  hoverColor?: string
+  headerHoverColor?: string
+  hoverRange: { start: number; end: number }
+  onChangeHoverRange(nextColIndexRange: { start: number; end: number }): void
+}
+```
+
 ### tips 提示气泡
 
 - `commonTransforms.tips(components: { Balloon: any })`：提示气泡

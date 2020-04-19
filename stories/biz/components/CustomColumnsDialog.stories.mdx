@@ -1,22 +1,16 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
-<Meta title="表格功能拓展 / 其他 React 组件" />
+<Meta title="表格功能拓展 / React组件 / 自定义列对话框" />
 
-# 其他 React 组件
+# `CustomColumnsDialog`
 
-<p></p>
-
-## `CustomColumnsDialog`
-
-自定义列对话框组件。
-
-### 示例：
+自定义列对话框组件
 
 <Preview>
-  <Story id="表格功能拓展-基本示例--自定义列对话框组件" />
+  <Story id="表格功能拓展-功能拓展示例--自定义列对话框组件" />
 </Preview>
 
-### 必传的 props 列表
+## 必传的 props 列表
 
 | 字段                   | 类型                               | 说明                                |
 | ---------------------- | ---------------------------------- | ----------------------------------- |
@@ -26,7 +20,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 | `columns`              | `ArtColumn[]`                      | 表格的列配置                        |
 | `components`           | `typeof import('@alifd/next')`     | 自定义列对话框使用的组件            |
 
-### 可选的 props 列表
+## 可选的 props 列表
 
 | 字段                  | 类型                  | 说明                       |
 | --------------------- | --------------------- | -------------------------- |
@@ -40,7 +34,7 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 | `showUncheckAll`      | `boolean`             | 是否展示「全不选」按钮     |
 | `drawerComponent`     | `React.ComponentType` | 优先使用的 Drawer 组件     |
 
-### 使用说明
+## 使用说明
 
 - `components` 目前支持 fusion v0/v1（对应 hippo v1/v2），使用时选择其中一个组件库即可。
   - 自定义列对话框并没有用到所有的 fusion/hippo 组件，实际用到的组件如下：Button, Checkbox, PageDialog/Drawer

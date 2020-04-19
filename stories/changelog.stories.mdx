@@ -8,8 +8,15 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 ## unreleased
 
+- **Break Change: BaseTable primaryKey 的计算值只能为 string，移除 props.primaryKey 的默认值**
 - feat: 导出内部的一些数据处理方法；导出 getTreeDepth 方法
 - feat(biz): 添加 commonTransforms.columnRangeHover
+- fix: 修改 TypeScript 的 target 为 ES2015
+
+其他较小的调整：
+
+- feat(biz)： 导出一些 commonTransforms 中的 TS 类型；
+- feat(biz)： commonTransforms.orderField 也可以识别 `features.orderField`
 
 ## v0.12.2 2020-04-17
 

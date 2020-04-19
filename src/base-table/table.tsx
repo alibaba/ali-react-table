@@ -39,7 +39,7 @@ import {
 export interface BaseTableProps {
   ////// 数据部分
   /** 主键 */
-  primaryKey?: string | ((record: any, rowIndex: number) => string | number)
+  primaryKey?: string | ((record: any, rowIndex: number) => string)
   /** 表格展示的数据源 */
   dataSource: any[]
   /** 表格的列配置 */
@@ -124,7 +124,6 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
     useVirtual: 'auto',
     hasHeader: true,
     isLoading: false,
-    primaryKey: 'id',
     getRowProps: noop,
     flowRoot: 'auto',
   }

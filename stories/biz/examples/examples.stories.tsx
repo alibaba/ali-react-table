@@ -18,7 +18,27 @@ import { amount, ratio, time } from '../../assets/format'
 import { FusionStyles } from '../../assets/fusion-style'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
 
-export default { title: '表格功能拓展 / 基本示例' }
+export default {
+  title: '表格功能拓展 / 功能拓展示例',
+  parameters: {
+    docs: {
+      page() {
+        return (
+          <div
+            style={{
+              margin: 'auto',
+              background: 'rgba(0, 0, 0, 0.03)',
+              borderRadius: 10,
+              padding: 30,
+            }}
+          >
+            示例过多，docs page 已在此处禁用，请在页面上方切换到「Canvas」模式
+          </div>
+        )
+      },
+    },
+  },
+}
 
 export function 树状表格() {
   const columns: ArtColumn[] = [
@@ -50,12 +70,14 @@ export function 树状表格() {
 
   const [openKeys, onChangeOpenKeys] = useState(['B2C'])
 
+  // 注意 renderData 要用起来
   const renderData = applyTransforms(
-    // 原始数据，在测试数据中去掉「B2C北京冷冻」，叶子节点和非叶节点并列展示的效果
-    { columns: columns, dataSource: state.data.filter((r) => r.shop_name !== 'B2C北京冷冻') },
+    { columns: columns, dataSource: state.data },
+
     // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
     commonTransforms.buildTree('id', 'parent_id'),
-    commonTransforms.treeMode({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
+
+    commonTransforms.treeMode({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
   )
 
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
@@ -99,7 +121,7 @@ export function 多列排序() {
 }
 
 export function 表格排序_单列() {
-  const { isLoading, dataSource } = useProvinceDataSource()
+  const { isLoading, dataSource: data } = useProvinceDataSource()
 
   const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
@@ -112,7 +134,7 @@ export function 表格排序_单列() {
   const [sorts, onChangeSorts] = useState<SortItem[]>([{ code: 'deadCount', order: 'desc' }])
 
   const renderData = applyTransforms(
-    { columns, dataSource },
+    { columns, dataSource: data.slice(0, 5) },
     commonTransforms.sort({
       sorts,
       onChangeSorts,
@@ -179,12 +201,12 @@ export function 表格操作栏() {
 }
 
 export function 列高亮() {
-  const { isLoading, dataSource } = useProvinceDataSource()
+  const { isLoading, dataSource: data } = useProvinceDataSource()
 
   const [hoverColIndex, onChangeHoverColIndex] = useState(-1)
 
   const renderData = applyTransforms(
-    { columns: testProvColumns, dataSource },
+    { columns: testProvColumns, dataSource: data.slice(0, 5) },
     commonTransforms.columnHover({
       hoverColIndex,
       onChangeHoverColIndex,
@@ -193,7 +215,13 @@ export function 列高亮() {
 
   return (
     <div>
-      <div>Storybook 下 列高亮可能会引发卡顿，此时可切换到 iframe 模式来查看该 story</div>
+      <div>
+        Storybook 下列高亮会导致页面卡顿，推荐
+        <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列高亮" target="_blank">
+          切换到iframe模式来查看该story
+        </a>
+      </div>
+
       <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
@@ -284,7 +312,13 @@ export function 列的范围高亮() {
 
   return (
     <div>
-      <div>Storybook 下 列高亮可能会引发卡顿，此时可切换到 iframe 模式来查看该 story</div>
+      <div>
+        Storybook 下列高亮会导致页面卡顿，推荐
+        <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列的范围高亮" target="_blank">
+          切换到iframe模式来查看该story
+        </a>
+      </div>
+
       <BaseTable
         defaultColumnWidth={120}
         dataSource={renderData.dataSource}
@@ -296,7 +330,7 @@ export function 列的范围高亮() {
 }
 
 export function 列气泡提示() {
-  const { isLoading, dataSource } = useProvinceDataSource()
+  const { isLoading, dataSource: data } = useProvinceDataSource()
 
   const [sorts, onChangeSorts] = useState<SortItem[]>([])
 
@@ -343,7 +377,7 @@ export function 列气泡提示() {
   ]
 
   const renderData = applyTransforms(
-    { columns, dataSource },
+    { columns, dataSource: data.slice(0, 3) },
     commonTransforms.sort({ mode: 'single', sorts, onChangeSorts }),
     commonTransforms.tips({ Balloon }),
   )

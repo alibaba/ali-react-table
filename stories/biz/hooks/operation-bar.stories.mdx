@@ -1,16 +1,14 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
-<Meta title="表格功能拓展 / 表格操作栏" />
+<Meta title="表格功能拓展 / hooks / 表格操作栏" />
 
-# 表格操作栏
+# `hooks useOperationBar`
 
-ali-react-table 提供了一个简单的表格操作栏组件，并实现了一些常见的表格操作。
+ali-react-table/biz 提供了一个简单的表格操作栏组件，并实现了一些常见的表格操作。和 transforms 不同，hooks 可以拥有自己的状态，故 `useOperationBar` 内部维护了若干表格操作栏的状态。
 
-## `hooks useOperationBar`
+## API
 
-`useOperationBar` 是对常见表格操作栏功能的封装。「表格功能」可分为 UI 和逻辑两部分，在 ali-react-table 中这两个部分是耦合在一起的，useOperationBar 内部同时实现了逻辑与相应的 UI。
-
-`useOperationBar(options)` 的具体 API 如下：
+`function useOperationBar(options): { transforms, nodes, view }`
 
 - `options.features` 是一个配置对象的数组，每个对象表示开启一个特性，特性见下方
 - `options.columns`：表格的列配置
@@ -24,8 +22,8 @@ ali-react-table 提供了一个简单的表格操作栏组件，并实现了一�
 
 - `operation.transforms` 是一个 transform 的数组，包含了来自 features 中的所有 transform；
   - 记得使用 `applyTransforms` 来使用这些 transform，不然是不会生效的哟 (￣３￣)a
-- `operation.nodes` 是 features 对应的 ReactNode，是 features 对应的 UI
-- `operation.view` 是一个 React 组件，提供了表格操作栏的容器样式，用法与普通的 div 相同
+- `operation.nodes` 是 features 对应的 UI，用于渲染操作栏中的功能按钮
+- `operation.view` 是一个 React 组件，提供了表格操作栏的**容器样式**，用法与普通的 div 相同
 
 ```js
 function MyComponent() {
@@ -49,7 +47,7 @@ function MyComponent() {
 }
 ```
 
-## features
+## features 特性列表
 
 - `{ type: 'custom-columns' }`
   - 自定义列
@@ -58,17 +56,18 @@ function MyComponent() {
   - 一般来说大部分的列都应当是默认可见的，此时推荐使用 `proto` 工具来简化重复配置声明
 - `{ type: 'export'; onExport(): void }`
   - 数据导出
-  - 注意 onExport 需要自己实现，一般情况下可以调用 ali-react-table 提供的工具方法 `exportTableAsExcel` 来将数据导出到 Excel 文件
+  - 注意 onExport 需要自己实现，一般情况下可以调用 ali-react-table/biz 提供的工具方法 `exportTableAsExcel` 来将数据导出到 Excel 文件
 - `{ type: 'separator' }`
   - 分隔符，没有逻辑，只影响工具栏的布局样式
-- `{ type: 'toggle'; key: string; title: ReactNode; transform?(checked: boolean): TableTransform }`
-  - 在工具栏中添加一个 Checkbox；并根据 Checkbox 勾选状态生成一个 transform
+- ~~`{ type: 'toggle'; key: string; title: ReactNode; transform?(checked: boolean): TableTransform }`~~
+  - ~~在工具栏中添加一个 Checkbox；并根据 Checkbox 勾选状态生成一个 transform~~
+  - 不推荐使用 toggle，请用 custom 代替 toggle
 - `{ type: 'click'; node?: ReactNode; transform?: TableTransform }`
   - 在工具栏中添加一个可点击的文本区域
 - `{ type: 'custom'; node?: ReactNode; transform?: TableTransform }`
   - 自定义的文本内容或 ReactNode
 
-## 示例：真实世界的例子
+## 示例
 
 这个例子展示了一个表格同时使用多个拓展功能的情况：
 
@@ -80,10 +79,12 @@ function MyComponent() {
 
 `useOperationBar` 返回的 transform 与其他 transform 可以组合在一起，一同构建复杂表格。
 
-```typescript
-/* 这是一份 `真实世界的例子` 的示例代码，不能直接运行 */
+```javascript
+/* 这是一份示例代码，不能直接运行 */
+
 import * as fusion from '@alifd/next'
-import { useOperationBar, applyTransforms, BaseTable } from 'ali-react-table'
+import { BaseTable } from 'ali-react-table'
+import { useOperationBar, applyTransforms } from 'ali-react-table/biz'
 
 function MyComponent({ inputDataSource, inputColumns }) {
   const operationBar = useOperationBar({
@@ -120,15 +121,5 @@ function MyComponent({ inputDataSource, inputColumns }) {
 ```
 
 <Preview>
-  <Story id="表格功能拓展-复杂示例--实际页面示例" />
-</Preview>
-
-## 示例：树状模式与层级排序
-
-通过 `commonTransforms.buildTree` 与 `commonTransforms.treeMode`，我们可以从明细数据中创建出树状结构的表格。在下面这个示例中，我们还手动添加了「数据维度」这一列，该列的单元格会根据所在行的层级展示对应的内容。
-
-我们还在树状模式的基础下添加了排序功能，需要注意代码中 `commonTransforms.sort({ sorts, onChangeSorts })` 的位置。
-
-<Preview>
-  <Story id="表格功能拓展-基本示例--树状模式与层级排序" />
+  <Story id="示例-表格操作栏示例--表格操作栏示例" />
 </Preview>

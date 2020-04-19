@@ -5,9 +5,9 @@ import LinkTo from '@storybook/addon-links/react'
 
 # 表格功能拓展
 
-ali-react-table/biz 提供了业务开发中经常需要用到的一些功能，其中的大部分功能采用**统一的拓展机制**进行实现与提供，其他部分功能由导出普通的函数或 React 组件进行提供。
+ali-react-table/biz 提供了业务开发中经常需要用到的一些功能，部分功能采用 **统一的拓展机制** 进行实现与提供，其他功能由导出函数 / React 组件 / React hooks 进行提供。
 
-ali-react-table/biz 提供的常用功能列表如下：
+ali-react-table/biz 提供的常用功能如下：
 
 - <LinkTo kind="表格功能拓展 / 常用功能 / 树状模式" story="page">
     树状模式
@@ -22,14 +22,20 @@ ali-react-table/biz 提供的常用功能列表如下：
     单元格自动合并
   </LinkTo>
 - <LinkTo kind="表格功能拓展 / 常用功能 / 其他功能" story="page">
-    其他功能
+    commonTransforms 中的其他功能
+  </LinkTo>
+- <LinkTo kind="表格功能拓展 / hooks / 表格操作栏" story="page">
+    hooks：表格操作栏（包括自定列功能）
+  </LinkTo>
+- <LinkTo kind="表格功能拓展 / react组件 / 自定义列对话框" story="page">
+    React 组件：自定义列对话框
   </LinkTo>
 
 ## 统一拓展机制
 
 `BaseTable` 基于 dataSource 和 column 渲染表格，对 dataSource/columns 进行一些包装和替换，可以实现丰富的表格特性：包括排序、树状模式、过滤等。
 
-ali-react-table/biz 基于 `TableTransform` 来对 BaseTable 进行功能增强。我们首先来看一下 `Transform<T>` 与 `TableTransform` 的接口：
+ali-react-table/biz 基于 `TableTransform` 来对 BaseTable 进行功能增强。`Transform<T>` 与 `TableTransform` 的接口如下：
 
 ```typescript
 type Transform<T> = (input: T) => T
@@ -69,14 +75,12 @@ return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns
 applyTransforms 只是一个简单的辅助函数，背后的逻辑如下：
 
 ```javascript
-const output = applyTransforms(input, transform_1, transform_2, ...moreTransforms, transform_N)
+const output = applyTransforms(input, transform_1, transform_2, transform_3)
 
 // 上面的代码相当于以下代码：
-
 const temp1 = transform_1(input)
 const temp2 = transform_2(temp1)
-// ... moreTransforms
-const output = transform_N(temp2)
+const output = transform_3(temp2)
 ```
 
 ## 自定义 transform

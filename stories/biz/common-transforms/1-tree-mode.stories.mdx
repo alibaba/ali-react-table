@@ -5,7 +5,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 # 树状模式
 
-本页文档将介绍 ali-react-table/biz 提供的树状模式的相关 API。
+本页文档将介绍 ali-react-table/biz 提供的树状模式的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="">表格功能拓展-功能拓展示例</LinkTo> 查看。
 
 ## buildTree 从列表数据中构建树状数据
 
@@ -22,7 +22,7 @@ ali-react-table/biz 还导出了一个静态的 buildTree 函数，如果你只�
 `commonTransforms.treeMode(options?: TreeModeOptions): TableTransform`
 
 - 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
-- 该 transform 会同时对 dataSource 和 columns 进行更新，根据逻辑如下：
+- 该 transform 会对 dataSource 和 columns 进行更新，根据逻辑如下：
   - 根据 options.openKeys 计算出需要展示的表格行，并计算每一行的缩进和展开信息
     - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[commonTransform.treeMetaSymbol]` 来获取该信息
   - 该 transform 会对 `columns[0]` 进行更新，使其在渲染时处理缩进并绘制树状模式的展开/收拢按钮
@@ -30,7 +30,7 @@ ali-react-table/biz 还导出了一个静态的 buildTree 函数，如果你只�
 `TreeModeOptions` 具体定义：
 
 ```typescript
-type TreeModeOptions = {
+export interface TreeModeOptions {
   primaryKey: string
   openKeys: string[]
   onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
@@ -40,7 +40,8 @@ type TreeModeOptions = {
 }
 ```
 
-- transform 都是纯函数，所需的状态需要由上层提供；故上层需要提供 `options.openKeys` 来告诉 treeMode 哪些行被展开了。
+- **transform 都是纯函数，所需的状态需要由上层提供**
+  - 上层需要提供 `options.openKeys` 来告诉 treeMode 哪些节点是展开的，哪些行节点是收拢的
 - `options.onChangeOpenKeys`: 除了 `nextKeys` 之外，该回调函数还会接受到 `key` 与 `action` 参数，分别表示本次操作「对应的 key」与「操作类型」
 - `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
   - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状默认下的一些元信息（深度、是否展开等）

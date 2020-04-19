@@ -5,12 +5,14 @@ import LinkTo from '@storybook/addon-links/react'
 
 # 排序
 
+本页文档将介绍 ali-react-table/biz 提供的排序的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="">表格功能拓展-功能拓展示例</LinkTo> 查看。
+
 ## sort 表格排序
 
 API 接口： `commonTransforms.sort(options: SortOptions): TableTransform`
 
 ```typescript
-type SortOptions = {
+export interface SortOptions {
   // 必传参数
   sorts: Array<{ code: string; order: 'asc' | 'desc' }>
   onChangeSorts(nextSorts: Array<{ code: string; order: 'asc' | 'desc' }>): void
@@ -22,7 +24,7 @@ type SortOptions = {
 }
 ```
 
-- 该 transform 会同时对 dataSource 和 columns 进行更新
+- 该 transform 会对 dataSource 和 columns 进行更新
 - 该 transform 会根据 options.sorts 来排序 dataSource
   - `options.mode=multiple` （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
   - `options.mode=single` 时表现为单字段排序
@@ -56,7 +58,7 @@ const renderData = applyTransforms(
 ## 进阶用法 —— 自定义比较函数
 
 当为某一列设置 `features.sortable = true` 时，该列默认会按照自然序（对于数字）或字典序（对于字符串）进行排序。
-我们为 `features.sortable` 设置一个函数来自定义某一列的比较规则，该函数将被作为 `Array#sort` 的参数。
+我们可以为 `features.sortable` 设置一个函数来自定义某一列的比较规则，该函数将被作为 `Array#sort` 的参数。
 
 如果只想使用 sort 提供的相关交互和视图，但不想让 sort 改变 dataSource，可以将 `features.sortable` 设置为 `() => 0`，这样 sort 就不会对 dataSource 产生影响了。
 

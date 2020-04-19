@@ -45,8 +45,6 @@ export function attachColumnHoverCellProps(
   }
 }
 
-// TODO 添加点击 保持高亮列的功能？
-
 export default function columnRangeHover({
   hoverColor = '#f5f5f5',
   headerHoverColor = '#ddd',

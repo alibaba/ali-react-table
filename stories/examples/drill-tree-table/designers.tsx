@@ -381,8 +381,6 @@ export function DataDimColumnTitle({
         <Settings16 style={{ fill: 'currentColor' }} />
         <span style={{ marginLeft: 4 }}>设置</span>
         <Dialog closeable={false} title="数据维度配置" visible={visible} onOk={onOk} onCancel={onClose}>
-          {/*<div> TODO 预设的维度</div>*/}
-
           <IndicatorChooseDiv>
             <IndicatorsPartDiv>
               <div className="title">

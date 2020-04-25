@@ -11,6 +11,22 @@ const ExpansionCell = styled.div`
   align-items: center;
   cursor: pointer;
   height: 100%;
+  padding: 0 12px;
+
+  &.leaf {
+    cursor: default;
+  }
+
+  .expansion-icon {
+    fill: #999;
+    flex: 0 0 16px;
+    transition: transform 200ms;
+
+    &.expanded {
+      transform-origin: center center;
+      transform: rotate(90deg);
+    }
+  }
 `
 
 export const treeMetaSymbol = Symbol('treeMetaSymbol')
@@ -81,14 +97,18 @@ export default function treeMode({
         const { depth, isLeaf, rowKey, expanded } = record[treeMetaSymbol]
 
         if (isLeaf) {
-          return <span style={{ marginLeft: BASE_INDENT + depth * indentSize }}>{content}</span>
+          return (
+            <ExpansionCell className="expansion-cell leaf">
+              <span style={{ marginLeft: BASE_INDENT + depth * indentSize }}>{content}</span>
+            </ExpansionCell>
+          )
         }
 
         const marginLeft = -ICON_WIDTH + BASE_INDENT + depth * indentSize
         if (expanded) {
           return (
             <ExpansionCell
-              style={{ marginLeft }}
+              className="expansion-cell expanded"
               onClick={() => {
                 onChangeOpenKeys(
                   openKeys.filter((key) => key !== rowKey),
@@ -97,26 +117,26 @@ export default function treeMode({
                 )
               }}
             >
-              <CarbonIcons.CaretDown16 style={{ fill: '#999999', flex: '0 0 16px' }} />
+              <CarbonIcons.CaretRight16 className="expansion-icon expanded" style={{ marginLeft }} />
               {content}
             </ExpansionCell>
           )
         } else {
           return (
             <ExpansionCell
-              style={{ marginLeft }}
+              className="expansion-cell collapsed"
               onClick={() => {
                 onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
               }}
             >
-              <CarbonIcons.CaretRight16 style={{ fill: '#999999', flex: '0 0 16px' }} />
+              <CarbonIcons.CaretRight16 className="expansion-icon collapsed" style={{ marginLeft }} />
               {content}
             </ExpansionCell>
           )
         }
       }
 
-      const getCellProps = () => ({ style: { paddingTop: 0, paddingBottom: 0 } })
+      const getCellProps = () => ({ style: { padding: 0 } })
 
       return [{ ...firstCol, render, getCellProps }, ...others]
     }

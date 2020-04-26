@@ -9,7 +9,7 @@ export default { title: '示例 / 树状表格中的最近展开标记' }
 
 const StyledBaseTable = styled(BaseTable)`
   .${Classes.tableRow}.last-open {
-    background: rgba(128,243,87,0.32);
+    background: rgba(128, 243, 87, 0.32);
 
     .expansion-icon {
       fill: #4de247;
@@ -27,16 +27,7 @@ const StyledBaseTable = styled(BaseTable)`
 
 export function TreeTableWithLastOpenMark() {
   const columns: ArtColumn[] = [
-    {
-      name: '数据维度',
-      lock: true,
-      width: 200,
-      getValue(record: any) {
-        const meta = record[commonTransforms.treeMetaSymbol]
-        const array = [record.subsidiary_name, record.city_name, record.shop_name]
-        return array[meta.depth]
-      },
-    },
+    { code: 'name', name: '数据维度', lock: true, width: 200 },
     { code: 'shop_name', name: '门店' },
     { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
     { code: 'app_qty_pbt', name: 'APP件单价', align: 'right' },

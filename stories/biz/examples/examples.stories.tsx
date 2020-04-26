@@ -43,16 +43,16 @@ export default {
 export function 树状表格() {
   const columns: ArtColumn[] = [
     {
+      code: 'name',
       name: '数据维度',
       lock: true,
       width: 200,
-      getValue(record: any) {
-        const meta = record[commonTransforms.treeMetaSymbol]
-        if (meta == null) {
-          return <span style={{ color: 'darkred' }}>无法获取树状模式元信息</span>
-        }
-        return meta.depth === 0 ? record.subsidiary_name : meta.depth === 1 ? record.city_name : record.shop_name
-      },
+      // 通过自定义 getValue，可以实现「根据节点深度选取合适的数据字段」
+      // getValue(record: any) {
+      //   const meta = record[commonTransforms.treeMetaSymbol]
+      //   const array = [record.subsidiary_name, record.city_name, record.shop_name]
+      //   return array[meta.depth]
+      // },
     },
     { code: 'shop_name', name: '门店' },
     { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
@@ -392,18 +392,7 @@ export function 列气泡提示() {
 
 export function 树状模式与层级排序() {
   const columns: ArtColumn[] = [
-    {
-      name: '数据维度',
-      lock: true,
-      width: 200,
-      getValue(record: any) {
-        const meta = record[commonTransforms.treeMetaSymbol]
-        if (meta == null) {
-          return <span style={{ color: 'darkred' }}>无法获取树状模式元信息</span>
-        }
-        return meta.depth === 0 ? record.subsidiary_name : meta.depth === 1 ? record.city_name : record.shop_name
-      },
-    },
+    { code: 'name', name: '数据维度', lock: true, width: 200 },
     { code: 'shop_name', name: '门店', features: { sortable: true } },
     { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right', features: { sortable: true } },
     { code: 'app_qty_pbt', name: 'APP件单价', align: 'right', features: { sortable: true } },

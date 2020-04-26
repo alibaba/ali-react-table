@@ -104,11 +104,23 @@ export interface SortHeaderCellProps {
 }
 
 export interface SortOptions {
+  /** 排序字段列表 */
   sorts: SortItem[]
+
+  /** 更新排序字段列表的回调函数 */
   onChangeSorts(nextSorts: SortItem[]): void
+
+  /** 排序切换顺序 */
   orders?: SortOrder[]
+
+  /** 排序模式。单选 single，多选 multiple，默认为多选 */
   mode?: 'single' | 'multiple'
+
+  /** 自定义排序表头 */
   SortHeaderCell?: React.ComponentType<SortHeaderCellProps>
+
+  /** 是否保持 dataSource 不变 */
+  keepDataSource?: boolean
 }
 
 export default function sort({
@@ -117,6 +129,7 @@ export default function sort({
   orders = ['desc', 'asc', 'none'],
   mode = 'multiple',
   SortHeaderCell,
+  keepDataSource,
 }: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
@@ -131,7 +144,7 @@ export default function sort({
           inputOnChangeSorts(nextSorts.slice(len - 1))
         }
 
-  const sortOptions = { sorts, onChangeSorts, orders, mode }
+  const sortOptions = { sorts, onChangeSorts, orders, mode, keepDataSource }
 
   const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
 
@@ -148,6 +161,10 @@ export default function sort({
     return { columns: processColumns(columns), dataSource: processDataSource(dataSource) }
 
     function processDataSource(dataSource: any[]) {
+      if (keepDataSource) {
+        return dataSource
+      }
+
       const sortColumnsMap = new Map(
         collectNodes(columns, 'leaf-only')
           .filter((col) => col.features?.sortable != null)

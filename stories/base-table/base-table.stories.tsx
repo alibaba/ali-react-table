@@ -492,3 +492,32 @@ export function 自定义单元格样式() {
     </div>
   )
 }
+
+export function 自定义表格行props() {
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  const [lastClickRowIndex, setLastClickRowIndex] = useState(2)
+
+  return (
+    <BaseTable
+      isLoading={isLoading}
+      dataSource={dataSource.slice(0, 6)}
+      columns={testProvColumns}
+      getRowProps={(record, rowIndex) => {
+        return {
+          style:
+            rowIndex === lastClickRowIndex
+              ? {
+                  outlineOffset: -2,
+                  outline: '2px solid #333',
+                  background: '#ddd',
+                }
+              : undefined,
+          onClick() {
+            setLastClickRowIndex(rowIndex)
+          },
+        }
+      }}
+    />
+  )
+}

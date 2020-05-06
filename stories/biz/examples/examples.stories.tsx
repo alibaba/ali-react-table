@@ -216,7 +216,7 @@ export function 列高亮() {
   return (
     <div>
       <div>
-        Storybook 下列高亮会导致页面卡顿，推荐
+        如果当前页面出现卡顿，可以
         <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列高亮" target="_blank">
           切换到iframe模式来查看该story
         </a>
@@ -313,7 +313,7 @@ export function 列的范围高亮() {
   return (
     <div>
       <div>
-        Storybook 下列高亮会导致页面卡顿，推荐
+        如果当前页面出现卡顿，可以
         <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列的范围高亮" target="_blank">
           切换到iframe模式来查看该story
         </a>

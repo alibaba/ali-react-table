@@ -41,9 +41,10 @@
 
 ## 兼容性说明
 
-表格用到了大量较新的浏览器 API，目前阶段只兼容较新版本的 Chrome/Firefox/Safari，详情请见 [#18](https://github.com/alibaba/ali-react-table/issues/18)
+表格用到了大量较新的浏览器 API，目前阶段只兼容较新版本的 Chrome/Firefox/Safari，且**只能运行在 PC 端 & React16 环境**下。详情请见 [#18](https://github.com/alibaba/ali-react-table/issues/18)
 
 ## 相关链接
 
 - NPM: https://www.npmjs.com/package/ali-react-table
 - GitHub: https://github.com/alibaba/ali-react-table
+- 表格组件介绍: https://zhuanlan.zhihu.com/p/130755755

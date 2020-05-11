@@ -52,6 +52,7 @@ export default function buildCrossTable(
           ...staticMetaColConfig,
           getCellProps: leftHeaderGetCellPropsFactory(metaCol, index),
           getSpanRect: leftHeaderGetSpanRectFactory(metaCol, index),
+          getValue: leftHeaderGetValueFactory(metaCol, index),
           render: leftHeaderRenderFactory(metaCol, index),
         })
       }
@@ -77,6 +78,13 @@ export default function buildCrossTable(
         colIndex: number,
       ): ArtColumn['getSpanRect'] {
         return (_value: any, row: CrossTableRenderRow) => row.rects[colIndex]
+      }
+
+      function leftHeaderGetValueFactory(metaCol: CrossTableLeftMetaColumn, colIndex: number) {
+        return (row: CrossTableRenderRow, rowIndex: number) => {
+          const node = row.nodes[colIndex]
+          return node.value
+        }
       }
 
       function leftHeaderRenderFactory(metaCol: CrossTableLeftMetaColumn, colIndex: number) {

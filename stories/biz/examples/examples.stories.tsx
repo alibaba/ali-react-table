@@ -639,14 +639,14 @@ export function 拖拽调整列宽() {
   const [sizes, onChangeSizes] = useState(columns.map((col) => col.width))
 
   const renderData = applyTransforms(
-    { columns, dataSource: data },
+    { columns, dataSource: data.slice(0, 5) },
     commonTransforms.columnResize({
       sizes,
       onChangeSizes,
       appendExpander: true,
       disableUserSelectWhenResizing: true,
       minSize: 60,
-      maxSize: 1000,
+      maxSize: 500,
     }),
   )
 

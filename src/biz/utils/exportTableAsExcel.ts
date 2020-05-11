@@ -1,8 +1,37 @@
 import XLSX_NS from 'xlsx'
+import SpanManager from '../../base-table/helpers/SpanManager'
 import { collectNodes, getTreeDepth } from '../../common-utils'
-import { safeGetValue } from '../../common-utils/internals'
+import { safeGetCellProps, safeGetValue } from '../../common-utils/internals'
 import isLeafNode from '../../common-utils/isLeafNode'
-import { ArtColumn } from '../../interfaces'
+import { ArtColumn, SpanRect } from '../../interfaces'
+
+function safeGetSpanRect(column: ArtColumn, record: any, rowIndex: number, colIndex: number): SpanRect {
+  let colSpan = 1
+  let rowSpan = 1
+  if (column.getSpanRect) {
+    const value = safeGetValue(column, record, rowIndex)
+    const spanRect = column.getSpanRect(value, record, rowIndex)
+    colSpan = spanRect == null ? 1 : spanRect.right - colIndex
+    rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
+  } else {
+    const cellProps = safeGetCellProps(column, record, rowIndex)
+    if (cellProps.colSpan != null) {
+      colSpan = cellProps.colSpan
+    }
+    if (cellProps.rowSpan != null) {
+      rowSpan = cellProps.rowSpan
+    }
+  }
+
+  // 注意这里没有考虑「rowSpan/colSpan 不能过大，避免 rowSpan/colSpan 影响因虚拟滚动而未渲染的单元格」
+
+  return {
+    top: rowIndex,
+    bottom: rowIndex + rowSpan,
+    left: colIndex,
+    right: colIndex + colSpan,
+  }
+}
 
 type XlsxCellDatum = string | number | null
 
@@ -83,9 +112,27 @@ export default function exportTableAsExcel(
 
   function addDataPart(origin: CellAddress) {
     const leafColumns = collectNodes(columns, 'leaf-only').filter((col) => !col.features?.noExport)
-    const dataPart = dataSource.map((record, rowIndex) =>
-      leafColumns.map((col) => sanitizeCellDatum(safeGetValue(col, record, rowIndex))),
-    )
+    const spanManager = new SpanManager()
+
+    const dataPart = dataSource.map((record, rowIndex) => {
+      spanManager.stripUpwards(rowIndex)
+
+      return leafColumns.map((col, colIndex) => {
+        if (spanManager.testSkip(rowIndex, colIndex)) {
+          return null
+        }
+
+        const spanRect = safeGetSpanRect(col, record, rowIndex, colIndex)
+        const rowSpan = spanRect.bottom - spanRect.top
+        const colSpan = spanRect.right - spanRect.left
+        if (rowSpan > 1 || colSpan > 1) {
+          spanManager.add(spanRect.top, spanRect.left, colSpan, rowSpan)
+          mergeCells(move(origin, spanRect.left, spanRect.top), colSpan, rowSpan)
+        }
+
+        return sanitizeCellDatum(safeGetValue(col, record, rowIndex))
+      })
+    })
     add(dataPart, origin)
   }
 

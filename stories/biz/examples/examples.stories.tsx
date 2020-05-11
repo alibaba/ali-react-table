@@ -213,18 +213,7 @@ export function 列高亮() {
     }),
   )
 
-  return (
-    <div>
-      <div>
-        如果当前页面出现卡顿，可以
-        <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列高亮" target="_blank">
-          切换到iframe模式来查看该story
-        </a>
-      </div>
-
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
-    </div>
-  )
+  return <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
 }
 
 export function 列的范围高亮() {
@@ -311,21 +300,12 @@ export function 列的范围高亮() {
   )
 
   return (
-    <div>
-      <div>
-        如果当前页面出现卡顿，可以
-        <a href="/iframe.html?id=表格功能拓展-功能拓展示例--列的范围高亮" target="_blank">
-          切换到iframe模式来查看该story
-        </a>
-      </div>
-
-      <BaseTable
-        defaultColumnWidth={120}
-        dataSource={renderData.dataSource}
-        columns={renderData.columns}
-        isLoading={state.isLoading}
-      />
-    </div>
+    <BaseTable
+      defaultColumnWidth={120}
+      dataSource={renderData.dataSource}
+      columns={renderData.columns}
+      isLoading={state.isLoading}
+    />
   )
 }
 

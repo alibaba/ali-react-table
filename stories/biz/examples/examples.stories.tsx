@@ -630,3 +630,32 @@ export function 自定义样式的排序表头() {
     </div>
   )
 }
+
+export function 拖拽调整列宽() {
+  const { isLoading, dataSource: data } = useProvinceDataSource()
+
+  const columns: ArtColumn[] = [cols.provinceName, ...cols.indCols, cols.updateTime]
+
+  const [sizes, onChangeSizes] = useState(columns.map((col) => col.width))
+
+  const renderData = applyTransforms(
+    { columns, dataSource: data },
+    commonTransforms.columnResize({
+      sizes,
+      onChangeSizes,
+      appendExpander: true,
+      disableUserSelectWhenResizing: true,
+      minSize: 60,
+      maxSize: 1000,
+    }),
+  )
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
+        <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
+      </div>
+      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+    </div>
+  )
+}

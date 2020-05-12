@@ -147,7 +147,7 @@ interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' 
   ): React.TdHTMLAttributes<HTMLTableDataCellElement>
 }
 
-export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden' | 'lock'> {
+export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden'> {
   /** 自定义渲染方法 */
   render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
 

@@ -6,8 +6,8 @@ export interface CrossTableIndicator extends ArtColumnStaticPart {
   expression?: string
 }
 
-// hidden 和 lock 是固定的，故从 ArtColumnStaticPart 中排除
-export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden' | 'lock'> {
+// hidden 是固定的，故从 ArtColumnStaticPart 中排除
+export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hidden'> {
   /** 自定义渲染方法 */
   render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
 

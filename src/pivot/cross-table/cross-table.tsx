@@ -36,6 +36,7 @@ export const StyledBaseTableForCrossTable: ComponentType<BaseTableProps> = style
 export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' | 'primaryKey'> {
   leftTree: LeftCrossTreeNode[]
   topTree: TopCrossTreeNode[]
+
   leftTotalNode?: LeftCrossTreeNode
   topTotalNode?: TopCrossTreeNode
   leftMetaColumns?: CrossTableLeftMetaColumn[]

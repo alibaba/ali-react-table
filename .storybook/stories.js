@@ -11,6 +11,8 @@ const biz = [
 const pivot = [
   'pivot/cross-table.stories.mdx',
   'pivot/cross-table.stories.tsx',
+  'pivot/cross-tree-table.stories.mdx',
+  'pivot/cross-tree-table.stories.tsx',
   'pivot/pivot-utils.stories.mdx',
   'pivot/pivot-utils.stories.tsx',
 ]

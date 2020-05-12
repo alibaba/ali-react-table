@@ -11,8 +11,17 @@ import {
   CrossTableDataParentColumn,
   CrossTableLeftColumn,
   CrossTableRenderColumn,
-  CrossTableRenderRow,
 } from './internals'
+
+interface CrossTableRenderRow {
+  [ROW_KEY]: string
+
+  /** 行上所有左侧单元格 的合并信息 */
+  rects: SpanRect[]
+
+  /** 行上所有左侧单元格 上的树节点 */
+  nodes: LeftCrossTreeNode[]
+}
 
 export interface BuildCrossTableOptions {
   leftTree: LeftCrossTreeNode[]

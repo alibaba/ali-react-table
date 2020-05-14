@@ -12,6 +12,8 @@ export interface CrossTreeTableProps extends Omit<BaseTableProps, 'dataSource' |
   defaultOpenKeys?: string[]
   openKeys?: string[]
   onChangeOpenKeys?(nextOpenKeys: string[]): void
+  indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 
   getValue(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
   render?(
@@ -69,6 +71,8 @@ export default class CrossTreeTable extends React.Component<CrossTreeTableProps,
       openKeys: openKeysProp,
       defaultOpenKeys,
       onChangeOpenKeys,
+      indentSize,
+      isLeafNode,
 
       ...others // 透传其他 BaseTable 的 props
     } = this.props
@@ -88,6 +92,8 @@ export default class CrossTreeTable extends React.Component<CrossTreeTableProps,
 
       openKeys,
       onChangeOpenKeys: this.onChangeOpenKeys,
+      indentSize,
+      isLeafNode,
     })
 
     return <BaseTable {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />

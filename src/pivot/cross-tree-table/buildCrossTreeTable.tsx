@@ -1,7 +1,7 @@
 import React from 'react'
 import { BaseTableProps } from '../../base-table'
 import { treeMode } from '../../biz/common-transforms'
-import { isLeafNode } from '../../common-utils'
+import { isLeafNode as standardIsLeafNode } from '../../common-utils'
 import { ArtColumn } from '../../interfaces'
 import {
   BuildCrossTableOptions,
@@ -13,6 +13,7 @@ import {
 
 interface CrossTreeTableRenderRow {
   [ROW_KEY]: string
+  node: LeftCrossTreeNode
   nodes: LeftCrossTreeNode[]
   children?: CrossTreeTableRenderRow[]
 }
@@ -24,16 +25,33 @@ export type BuildCrossTreeTableOptions = Omit<
   primaryColumn: CrossTableLeftMetaColumn
   openKeys: string[]
   onChangeOpenKeys(nextOpenKeys: string[]): void
+  indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 }
-
-// TODO 根据 openKeys 来减少 dataSource 的计算量
 
 export default function buildCrossTreeTable(
   options: BuildCrossTreeTableOptions,
 ): Pick<BaseTableProps, 'columns' | 'dataSource'> {
-  const { leftTree, topTree, primaryColumn, openKeys, onChangeOpenKeys } = options
+  const {
+    leftTree,
+    topTree,
+    primaryColumn,
+    openKeys,
+    onChangeOpenKeys,
+    indentSize,
+    isLeafNode: isLeafNodeOpt = standardIsLeafNode,
+  } = options
 
-  return treeMode({ primaryKey: ROW_KEY, openKeys, onChangeOpenKeys })({
+  return treeMode({
+    primaryKey: ROW_KEY,
+    openKeys,
+    onChangeOpenKeys,
+    indentSize,
+    isLeafNode(row: CrossTreeTableRenderRow, nodeMeta) {
+      // 调用上层 isLeafNodeOpt 时，会从 row.node 中读取该表格行对应的 leftTreeNode
+      return isLeafNodeOpt(row.node, nodeMeta)
+    },
+  })({
     columns: getColumns(),
     dataSource: getDataSource(),
   })
@@ -44,7 +62,7 @@ export default function buildCrossTreeTable(
       {
         ...primaryColumn,
         getValue(row: CrossTreeTableRenderRow) {
-          return row.nodes[row.nodes.length - 1].value
+          return row.node.value
         },
       },
       ...getDataPartColumns(),
@@ -58,7 +76,7 @@ export default function buildCrossTreeTable(
         const result: ArtColumn[] = []
 
         for (const node of nodes) {
-          if (isLeafNode(node)) {
+          if (standardIsLeafNode(node)) {
             result.push(getDataColumn(node, ctx.depth))
           } else {
             const { key, value, children, ...others } = node
@@ -77,7 +95,7 @@ export default function buildCrossTreeTable(
     function getDataColumn(topNode: TopCrossTreeNode, topDepth: number): ArtColumn {
       const columnGetValue = (row: CrossTreeTableRenderRow) => {
         const leftDepth = row.nodes.length - 1
-        const leftNode = row.nodes[leftDepth]
+        const leftNode = row.node
         return options.getValue(leftNode, topNode, leftDepth, topDepth)
       }
       const { key, value, children, ...others } = topNode
@@ -89,7 +107,7 @@ export default function buildCrossTreeTable(
         render(value: any, row: CrossTreeTableRenderRow) {
           if (options.render) {
             const leftDepth = row.nodes.length - 1
-            const leftNode = row.nodes[leftDepth]
+            const leftNode = row.node
             return options.render(value, leftNode, topNode, leftDepth, topDepth)
           }
           return value
@@ -97,7 +115,7 @@ export default function buildCrossTreeTable(
         getCellProps(value, row: CrossTreeTableRenderRow) {
           if (options.getCellProps) {
             const leftDepth = row.nodes.length - 1
-            const leftNode = row.nodes[leftDepth]
+            const leftNode = row.node
             return options.getCellProps(value, leftNode, topNode, leftDepth, topDepth)
           }
         },
@@ -117,16 +135,17 @@ export default function buildCrossTreeTable(
           continue
         }
 
-        if (isLeafNode(node)) {
+        if (standardIsLeafNode(node)) {
           result.push({
             [ROW_KEY]: node.key,
+            node,
             nodes: [...ctx.nodes, node],
           })
         } else {
           const nodes = [...ctx.nodes, node]
           ctx.nodes.push(node)
           const children = dfs(node.children, ctx)
-          result.push({ [ROW_KEY]: node.key, nodes, children })
+          result.push({ [ROW_KEY]: node.key, node, nodes, children })
           ctx.nodes.pop()
         }
       }

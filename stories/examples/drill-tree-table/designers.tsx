@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import { useDeriveState } from './utils'
 
 export interface PivotState {
+  data: any[]
+  isLoading: boolean
   dimCodes: string[]
   indCodes: string[]
   filters: { [dimCode: string]: string[] }

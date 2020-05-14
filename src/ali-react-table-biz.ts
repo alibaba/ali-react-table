@@ -6,3 +6,4 @@ export { default as CustomColumnsDialog, CustomColumnsDialogProps } from './biz/
 export { SortItem, TableTransform, SortOrder, Transform } from './biz/interfaces'
 export { TableOperationFeature, useOperationBar } from './biz/operation-bar'
 export * from './biz/utils'
+export * from './biz/transform-hooks'

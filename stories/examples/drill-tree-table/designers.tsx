@@ -3,62 +3,13 @@ import { DragVertical16, Filter16, Settings16 } from '@carbon/icons-react'
 import { ArtColumn } from 'ali-react-table'
 import { SortItem } from 'ali-react-table/biz'
 import cx from 'classnames'
-import produce, { Draft } from 'immer'
+import produce from 'immer'
+import { toJS } from 'mobx'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
+import { Pivot } from './Pivot'
 import { useDeriveState } from './utils'
-
-export interface PivotState {
-  data: any[]
-  isLoading: boolean
-  dimCodes: string[]
-  indCodes: string[]
-  filters: { [dimCode: string]: string[] }
-  openKeys: string[]
-  sorts: SortItem[]
-}
-
-export type Action =
-  | { type: 'tree-open'; key: string; open: boolean }
-  | { type: 'change-sorts'; sorts: SortItem[] }
-  | { type: 'filter'; dimCode: string; value: any; checked: boolean }
-  | { type: 'change-dim-codes'; dimCodes: string[]; filters?: PivotState['filters'] }
-  | { type: 'batch-filter'; dimCode: string; values: string[]; checked: boolean }
-
-export type Dispatch = (action: Action) => void
-
-export function immerReducer(draft: Draft<PivotState>, action: Action, state: PivotState) {
-  if (action.type === 'filter') {
-    if (action.checked) {
-      draft.filters[action.dimCode].push(action.value)
-    } else {
-      const values = draft.filters[action.dimCode]
-      values.splice(values.indexOf(action.value), 1)
-    }
-  } else if (action.type === 'change-dim-codes') {
-    draft.dimCodes = action.dimCodes
-    if (action.filters) {
-      draft.filters = action.filters
-    }
-  } else if (action.type === 'batch-filter') {
-    if (action.checked) {
-      const pre = state.filters[action.dimCode]
-      draft.filters[action.dimCode] = Array.from(new Set(pre.concat(action.values)))
-    } else {
-      const removeSet = new Set(action.values)
-      draft.filters[action.dimCode] = draft.filters[action.dimCode].filter((v) => !removeSet.has(v))
-    }
-  } else if (action.type === 'change-sorts') {
-    draft.sorts = action.sorts
-  }
-}
-
-export type PivotMeta = {
-  indicators: Array<ArtColumn & { code: string; expression?: string }>
-  dimensions: Array<{ code: string; name: string }>
-  dimValues: { [dimCode: string]: string[] }
-}
 
 const PopupDiv = styled.div`
   padding: 12px;
@@ -116,15 +67,13 @@ const CheckedDimListDiv = styled.div`
 `
 
 interface CheckDimListProps {
-  meta: PivotMeta
-  state: PivotState
-  dispatch: Dispatch
+  pivot: Pivot
   style?: React.CSSProperties
   className?: string
 }
 
-export function CheckedDimList({ style, className, meta, state, dispatch }: CheckDimListProps) {
-  const dimMap = new Map(meta.dimensions.map((dim) => [dim.code, dim]))
+export function CheckedDimList({ style, className, pivot }: CheckDimListProps) {
+  const dimMap = new Map(pivot.allDimensions.map((dim) => [dim.code, dim]))
 
   return (
     <CheckedDimListDiv style={style} className={className}>
@@ -135,18 +84,18 @@ export function CheckedDimList({ style, className, meta, state, dispatch }: Chec
           }
           const i = result.source.index
           const j = result.destination.index
-          const nextCodes = state.dimCodes.slice()
+          const nextCodes = pivot.dimCodes.slice()
           const [code] = nextCodes.splice(i, 1)
           nextCodes.splice(j, 0, code)
-          dispatch({ type: 'change-dim-codes', dimCodes: nextCodes })
+          pivot.changeDimCodes(nextCodes)
         }}
       >
         <Droppable droppableId="dimension-list" direction="horizontal">
           {(dropProvided, snapshot) => (
             <div className="tag-list" ref={dropProvided.innerRef}>
-              {state.dimCodes.map((dimCode, index) => {
-                const allValues = meta.dimValues[dimCode]
-                const values = state.filters[dimCode]
+              {pivot.dimCodes.map((dimCode, index) => {
+                const allValues = pivot.dimValues[dimCode]
+                const values = pivot.filters[dimCode]
 
                 return (
                   <Draggable key={dimCode} draggableId={dimCode} index={index}>
@@ -170,12 +119,7 @@ export function CheckedDimList({ style, className, meta, state, dispatch }: Chec
                         }
                         triggerType="click"
                       >
-                        <CheckedDimFilterPopup
-                          dispatch={dispatch}
-                          allValues={allValues}
-                          values={values}
-                          dimCode={dimCode}
-                        />
+                        <CheckedDimFilterPopup pivot={pivot} allValues={allValues} values={values} dimCode={dimCode} />
                       </Overlay.Popup>
                     )}
                   </Draggable>
@@ -193,13 +137,13 @@ export function CheckedDimList({ style, className, meta, state, dispatch }: Chec
 function CheckedDimFilterPopup({
   allValues,
   values,
-  dispatch,
+  pivot,
   dimCode,
 }: {
   dimCode: string
   allValues: string[]
   values: string[]
-  dispatch: Dispatch
+  pivot: Pivot
 }) {
   const set = new Set(values)
 
@@ -241,10 +185,7 @@ function CheckedDimFilterPopup({
         <ValueList>
           {filtered.map(({ value, title }) => (
             <li key={value}>
-              <Checkbox
-                checked={set.has(value)}
-                onChange={(checked) => dispatch({ type: 'filter', dimCode, value, checked })}
-              >
+              <Checkbox checked={set.has(value)} onChange={(checked) => pivot.filter(dimCode, value, checked)}>
                 {title}
               </Checkbox>
             </li>
@@ -256,12 +197,11 @@ function CheckedDimFilterPopup({
         <Button
           size="small"
           onClick={() => {
-            dispatch({
-              type: 'batch-filter',
+            pivot.batchFilter(
               dimCode,
-              values: filtered.map((v) => v.value),
-              checked: true,
-            })
+              filtered.map((v) => v.value),
+              true,
+            )
           }}
         >
           {search ? '添加到选中' : '全选'}
@@ -270,12 +210,11 @@ function CheckedDimFilterPopup({
           size="small"
           style={{ marginLeft: 8 }}
           onClick={() => {
-            dispatch({
-              type: 'batch-filter',
+            pivot.batchFilter(
               dimCode,
-              values: filtered.map((v) => v.value),
-              checked: false,
-            })
+              filtered.map((v) => v.value),
+              false,
+            )
           }}
         >
           {search ? '从选中中移除' : '全不选'}
@@ -338,33 +277,23 @@ const IndicatorsPartDiv = styled.div`
   }
 `
 
-export function DataDimColumnTitle({
-  meta,
-  state: stateProp,
-  dispatch,
-}: {
-  meta: PivotMeta
-  state: PivotState
-  dispatch: Dispatch
-}) {
+export function PrimaryColumnTitle({ pivot }: { pivot: Pivot }) {
   const [visible, setVisible] = useState(false)
   const onClose = () => setVisible(false)
 
-  const [state, setState] = useDeriveState<PivotState>(stateProp, [visible], ([visible], prevState) => {
+  const pivotClone = toJS(pivot)
+
+  const [state, setState] = useDeriveState(pivotClone, [visible], ([visible], prevState) => {
     if (visible) {
-      return stateProp
+      return pivotClone
     }
     return prevState
   })
 
-  const dimMap = new Map(meta.dimensions.map((dim) => [dim.code, dim]))
+  const dimMap = new Map(pivot.allDimensions.map((dim) => [dim.code, dim]))
 
   const onOk = () => {
-    dispatch({
-      type: 'change-dim-codes',
-      dimCodes: state.dimCodes,
-      filters: meta.dimValues,
-    })
+    pivot.changeDimCodes(state.dimCodes, pivot.dimValues)
     onClose()
   }
 
@@ -386,10 +315,10 @@ export function DataDimColumnTitle({
           <IndicatorChooseDiv>
             <IndicatorsPartDiv>
               <div className="title">
-                选择维度（{state.dimCodes.length}/{meta.dimensions.length}）
+                选择维度（{state.dimCodes.length}/{pivot.allDimensions.length}）
               </div>
               <ul className="ind-list">
-                {meta.dimensions.map((dim) => (
+                {pivot.allDimensions.map((dim) => (
                   <li key={dim.code}>
                     <Checkbox
                       className="ind-item clickable-ind-item"

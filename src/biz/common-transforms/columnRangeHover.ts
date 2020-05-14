@@ -5,7 +5,7 @@ import { transformColumn } from '../utils'
 
 const EMPTY_RANGE = { start: -1, end: -1 }
 
-type HoverRange = {
+export type HoverRange = {
   start: number
   end: number
 }
@@ -45,17 +45,19 @@ export function attachColumnHoverCellProps(
   }
 }
 
+export interface ColumnRangeHoverOptions {
+  hoverColor?: string
+  headerHoverColor?: string
+  hoverRange: HoverRange
+  onChangeHoverRange(nextColIndexRange: HoverRange): void
+}
+
 export default function columnRangeHover({
   hoverColor = '#f5f5f5',
   headerHoverColor = '#ddd',
   hoverRange,
   onChangeHoverRange,
-}: {
-  hoverColor?: string
-  headerHoverColor?: string
-  hoverRange: HoverRange
-  onChangeHoverRange(nextColIndexRange: HoverRange): void
-}): TableTransform {
+}: ColumnRangeHoverOptions): TableTransform {
   return transformColumn((col, { range: colRange }) => {
     if (!isLeafNode(col)) {
       if (headerHoverColor == null) {

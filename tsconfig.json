@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "baseUrl": ".",
+    "experimentalDecorators": true,
     "paths": {
       "ali-react-table": ["src/ali-react-table.ts"],
       "ali-react-table/pivot": ["src/ali-react-table-pivot.ts"],

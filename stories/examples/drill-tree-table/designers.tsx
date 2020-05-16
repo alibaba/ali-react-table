@@ -1,15 +1,12 @@
 import { Button, Checkbox, Dialog, Input, Overlay } from '@alifd/next'
 import { DragVertical16, Filter16, Settings16 } from '@carbon/icons-react'
-import { ArtColumn } from 'ali-react-table'
-import { SortItem } from 'ali-react-table/biz'
 import cx from 'classnames'
 import produce from 'immer'
 import { toJS } from 'mobx'
 import React, { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
-import { Pivot } from './Pivot'
-import { useDeriveState } from './utils'
+import { Pivot } from './models'
 
 const PopupDiv = styled.div`
   padding: 12px;
@@ -281,14 +278,12 @@ export function PrimaryColumnTitle({ pivot }: { pivot: Pivot }) {
   const [visible, setVisible] = useState(false)
   const onClose = () => setVisible(false)
 
-  const pivotClone = toJS(pivot)
-
-  const [state, setState] = useDeriveState(pivotClone, [visible], ([visible], prevState) => {
+  const [state, setState] = useState(() => toJS(pivot))
+  useEffect(() => {
     if (visible) {
-      return pivotClone
+      setState(toJS(pivot))
     }
-    return prevState
-  })
+  }, [visible])
 
   const dimMap = new Map(pivot.allDimensions.map((dim) => [dim.code, dim]))
 

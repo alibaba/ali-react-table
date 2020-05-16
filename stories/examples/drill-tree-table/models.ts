@@ -1,5 +1,4 @@
 import { ArtColumn } from 'ali-react-table'
-import { SortItem } from 'ali-react-table/biz'
 import { buildDrillTree, buildRecordMap, createAggregateFunction } from 'ali-react-table/pivot'
 import _ from 'lodash'
 import { action, computed, observable } from 'mobx'
@@ -8,8 +7,6 @@ export class Pivot {
   @observable isLoading = true
   @observable.ref data: any[] = []
   @observable dimCodes: string[]
-  @observable openKeys: string[]
-  @observable sorts: SortItem[] = []
   @observable allIndicators: ArtColumn[] = []
   @observable allDimensions: Array<{ code: string; name: string }> = []
 
@@ -27,19 +24,10 @@ export class Pivot {
     }
   }
 
-  clone() {
-    return new Pivot(this)
-  }
-
   @computed({ keepAlive: true })
   get aggregate() {
     console.log('create aggregate function!')
     return createAggregateFunction(this.allIndicators as any)
-  }
-
-  @action
-  onChangeOpenKeys(nextKeys: string[]) {
-    this.openKeys = nextKeys
   }
 
   @computed({ keepAlive: true })
@@ -84,11 +72,6 @@ export class Pivot {
       const removeSet = new Set(values)
       this.filters[dimCode] = this.filters[dimCode].filter((v) => !removeSet.has(v))
     }
-  }
-
-  @action
-  changeSorts(sorts: SortItem[]) {
-    this.sorts = sorts
   }
 }
 

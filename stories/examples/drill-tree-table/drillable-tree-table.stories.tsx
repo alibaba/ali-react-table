@@ -1,4 +1,4 @@
-import { CrossTreeTable, simpleEncode } from 'ali-react-table/pivot'
+import { CrossTreeTable } from 'ali-react-table/pivot'
 import _ from 'lodash'
 import * as mobx from 'mobx'
 import { action } from 'mobx'
@@ -8,7 +8,7 @@ import { getIncomeData } from '../../assets/cdn-data'
 import { amount, lfl, ratio } from '../../assets/format'
 import { FusionStyles } from '../../assets/fusion-style'
 import { CheckedDimList, PrimaryColumnTitle } from './designers'
-import { Pivot, PivotView } from './Pivot'
+import { Pivot, PivotView } from './models'
 
 mobx.configure({ enforceActions: 'observed' })
 
@@ -82,7 +82,6 @@ const Inner = observer(() => {
       allDimensions: ALL_DIMS,
       allIndicators: INDICATORS,
       dimCodes: ['planet', 'area', 'season'],
-      openKeys: [simpleEncode([])],
     })
   })
 

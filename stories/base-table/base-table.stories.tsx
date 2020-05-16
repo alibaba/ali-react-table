@@ -485,9 +485,9 @@ export function 自定义单元格样式() {
   return (
     <div>
       <h1>样式说明</h1>
-      <p>红色字体：确诊 > 1000</p>
-      <p>绿色背景：治愈 / 确诊 > 0.3</p>
-      <p>红色背景：死亡 > 0</p>
+      <p>红色字体：确诊 &gt; 1000</p>
+      <p>绿色背景：治愈 / 确诊 &gt; 0.3</p>
+      <p>红色背景：死亡 &gt; 0</p>
       <BaseTable isLoading={isLoading} dataSource={dataSource} columns={columns} />
     </div>
   )

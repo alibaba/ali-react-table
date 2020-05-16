@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import {
   columnHover,
-  ColumnHoverOptions,
   columnRangeHover,
   ColumnRangeHoverOptions,
   columnResize,
   ColumnResizeOptions,
+  HoverRange,
   sort,
   SortOptions,
   treeMode,
@@ -15,16 +15,18 @@ import { SortItem } from './interfaces'
 
 export function useColumnHoverTransform({
   hoverColor,
-}: Omit<ColumnHoverOptions, 'hoverColIndex' | 'onChangeHoverColIndex'> = {}) {
-  const [hoverColIndex, onChangeHoverColIndex] = useState(-1)
+  defaultHoverColIndex = -1,
+}: { hoverColor?: string; defaultHoverColIndex?: number } = {}) {
+  const [hoverColIndex, onChangeHoverColIndex] = useState(defaultHoverColIndex)
   return columnHover({ hoverColor, hoverColIndex, onChangeHoverColIndex })
 }
 
 export function useColumnHoverRangeTransform({
   hoverColor,
   headerHoverColor,
-}: Omit<ColumnRangeHoverOptions, 'hoverRange' | 'onChangeHoverRange'> = {}) {
-  const [hoverRange, onChangeHoverRange] = useState({ start: 0, end: 0 })
+  defaultHoverRange = { start: 0, end: 0 },
+}: Omit<ColumnRangeHoverOptions, 'hoverRange' | 'onChangeHoverRange'> & { defaultHoverRange?: HoverRange } = {}) {
+  const [hoverRange, onChangeHoverRange] = useState(defaultHoverRange)
   return columnRangeHover({ hoverColor, headerHoverColor, hoverRange, onChangeHoverRange })
 }
 
@@ -48,8 +50,8 @@ export function useTreeModeTransform({
   isLeafNode,
   indentSize,
   primaryKey,
-  defaultOpenKeys,
-}: Omit<TreeModeOptions, 'openKeys' | 'onChangeOpenKeys'> & { defaultOpenKeys: string[] }) {
+  defaultOpenKeys = [],
+}: Omit<TreeModeOptions, 'openKeys' | 'onChangeOpenKeys'> & { defaultOpenKeys?: string[] }) {
   const [openKeys, onChangeOpenKeys] = useState(defaultOpenKeys)
   return treeMode({ indentSize, primaryKey, isLeafNode, openKeys, onChangeOpenKeys })
 }

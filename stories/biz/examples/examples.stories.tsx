@@ -9,7 +9,11 @@ import {
   exportTableAsExcel,
   proto,
   SortItem,
+  useColumnHoverRangeTransform,
+  useColumnHoverTransform,
   useOperationBar,
+  useSortTransform,
+  useTreeModeTransform,
 } from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
 import ReactJson from 'react-json-view'
@@ -83,7 +87,35 @@ export function 树状表格() {
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 }
 
-export function 多列排序() {
+export function 树状表格_非受控() {
+  const columns: ArtColumn[] = [
+    { code: 'name', name: '数据维度', lock: true, width: 200 },
+    { code: 'shop_name', name: '门店' },
+    { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
+    { code: 'app_qty_pbt', name: 'APP件单价', align: 'right' },
+    { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总', align: 'right' },
+  ]
+
+  const [state, setState] = useState({ isLoading: true, data: [] as any[] })
+
+  useEffect(() => {
+    getAppTrafficData().then((data) => {
+      setState({ isLoading: false, data })
+    })
+  }, [])
+
+  const treeModeTransform = useTreeModeTransform({ primaryKey: 'id', defaultOpenKeys: ['B2C'] })
+
+  const renderData = applyTransforms(
+    { columns: columns, dataSource: state.data },
+    commonTransforms.buildTree('id', 'parent_id'),
+    treeModeTransform,
+  )
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+}
+
+export function 表格排序_多列() {
   const { isLoading, dataSource } = useProvinceDataSource()
 
   const columns: ArtColumn[] = [
@@ -120,6 +152,40 @@ export function 多列排序() {
   )
 }
 
+export function 表格排序_多列_非受控() {
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  const columns: ArtColumn[] = [
+    { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
+    { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'deadCount', name: '死亡', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'updateTime', name: '最后更新时间', width: 180, render: time },
+  ]
+
+  const renderData = applyTransforms(
+    { columns, dataSource },
+    useSortTransform({
+      defaultSorts: [
+        { code: 'deadCount', order: 'asc' },
+        { code: 'confirmedCount', order: 'desc' },
+      ],
+    }),
+  )
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
+        <div style={{ marginLeft: 8 }}>点击表头的排序图标对表格数据进行排序</div>
+        <button style={{ marginLeft: 16 }} disabled>
+          非受控模式下无法清除排序
+        </button>
+      </div>
+      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+    </div>
+  )
+}
+
 export function 表格排序_单列() {
   const { isLoading, dataSource: data } = useProvinceDataSource()
 
@@ -139,6 +205,35 @@ export function 表格排序_单列() {
       sorts,
       onChangeSorts,
       mode: 'single', // 改为 multiple 可以使用多列排序
+    }),
+  )
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
+        <div style={{ marginLeft: 8 }}>点击表头的排序图标对表格数据进行排序</div>
+      </div>
+      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+    </div>
+  )
+}
+
+export function 表格排序_单列_非受控() {
+  const { isLoading, dataSource: data } = useProvinceDataSource()
+
+  const columns: ArtColumn[] = [
+    { code: 'provinceName', name: '省份', width: 150, features: { sortable: true } },
+    { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'deadCount', name: '死亡', width: 100, render: amount, align: 'right', features: { sortable: true } },
+    { code: 'updateTime', name: '最后更新时间', width: 180, render: time },
+  ]
+
+  const renderData = applyTransforms(
+    { columns, dataSource: data.slice(0, 5) },
+    useSortTransform({
+      mode: 'single',
+      defaultSorts: [{ code: 'deadCount', order: 'desc' }],
     }),
   )
 
@@ -211,6 +306,17 @@ export function 列高亮() {
       hoverColIndex,
       onChangeHoverColIndex,
     }),
+  )
+
+  return <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+
+export function 列高亮_非受控() {
+  const { isLoading, dataSource: data } = useProvinceDataSource()
+
+  const renderData = applyTransforms(
+    { columns: testProvColumns, dataSource: data.slice(0, 5) },
+    useColumnHoverTransform(),
   )
 
   return <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
@@ -298,6 +404,91 @@ export function 列的范围高亮() {
       onChangeHoverRange,
     }),
   )
+
+  return (
+    <BaseTable
+      defaultColumnWidth={120}
+      dataSource={renderData.dataSource}
+      columns={renderData.columns}
+      isLoading={state.isLoading}
+    />
+  )
+}
+
+export function 列的范围高亮_非受控() {
+  const appIndProto = proto.array<ArtColumn>({ align: 'right' })
+  const rateIndProto = proto.array<ArtColumn>({ align: 'right', render: ratio })
+
+  // 列配置
+  const columns: ArtColumn[] = [
+    {
+      name: '维度',
+      children: [
+        {
+          name: '商品信息',
+          children: [
+            { code: 'sku_code', name: 'SKU code' },
+            { code: 'sku_name', name: 'SKU名称' },
+          ],
+        },
+        {
+          name: '机构信息',
+          children: [
+            { code: 'city_name', name: '城市' },
+            { code: 'shop_name', name: '门店', features: { defaultVisible: true } },
+          ],
+        },
+        {
+          name: '类目信息',
+          children: [
+            { code: 'merge_cate_level1_name', name: '一级类目' },
+            { code: 'merge_cate_level2_name', name: '二级类目' },
+            { code: 'merge_cate_level3_name', name: '三级类目' },
+          ],
+        },
+      ],
+    },
+    {
+      name: '指标',
+      children: [
+        {
+          name: 'APP指标',
+          children: appIndProto([
+            { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio },
+            { code: 'app_trd_amt_1d', name: 'APP成交金额', render: amount },
+            { code: 'app_qty_pbt', name: 'APP件单价' },
+            { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总' },
+            { code: 'app_trd_usr_cnt_1d', name: 'APP成交用户数' },
+            { code: 'appout_shop_num', name: '缺货门店数', render: amount },
+            { code: 'all_time_len', name: '店均缺货时长', render: amount },
+            { code: 'bad_rmk_rate', name: '订单差评率', render: ratio },
+          ]),
+        },
+        {
+          name: '转换率',
+          children: rateIndProto([
+            { code: 'all_imp2pay_rate', name: '整体曝光至成交转化率' },
+            { code: 'search_imp2pay_rate', name: '搜索曝光至成交转化率' },
+            { code: 'classis_imp2pay_rate', name: '分类曝光至成交转化率' },
+            { code: 'cart_imp2pay_rate', name: '购物车曝光至成交转化率' },
+            { code: 'my_page_imp2pay_rate', name: '我的曝光至成交转化率' },
+            { code: 'pq_act_imp2pay_rate', name: '活动页曝光至成交转化率' },
+            { code: 'other_imp2pay_rate', name: '其他曝光至成交转化率' },
+          ]),
+        },
+      ],
+    },
+  ]
+
+  const [state, setState] = useState({ isLoading: true, data: [] as any[] })
+
+  useEffect(() => {
+    getAppTrafficData().then((data) => {
+      setState({ isLoading: false, data: data.slice(0, 8) })
+    })
+  }, [])
+
+  const renderData = applyTransforms({ columns, dataSource: state.data }, useColumnHoverRangeTransform())
 
   return (
     <BaseTable
@@ -616,7 +807,11 @@ export function 拖拽调整列宽() {
 
   const columns: ArtColumn[] = [cols.provinceName, ...cols.indCols, cols.updateTime]
 
-  const [sizes, onChangeSizes] = useState(columns.map((col) => col.width))
+  const defaultColumnWidth = 120
+  // 注意 columns 可能是嵌套的结构，这里使用 collectNodes 来获取所有叶子节点
+  // 同时注意部分列的 width 可能为空，此时可以用 defaultColumnWidth 作为列的宽度
+  const defaultSizes = collectNodes(columns, 'leaf-only').map((col) => col.width ?? defaultColumnWidth)
+  const [sizes, onChangeSizes] = useState(defaultSizes)
 
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 5) },
@@ -635,7 +830,12 @@ export function 拖拽调整列宽() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <BaseTable
+        isLoading={isLoading}
+        defaultColumnWidth={defaultColumnWidth}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
     </div>
   )
 }

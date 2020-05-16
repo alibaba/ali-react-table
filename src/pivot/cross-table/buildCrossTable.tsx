@@ -219,7 +219,6 @@ export default function buildCrossTable(
         }
 
         if (isLeafNode(node)) {
-          // TODO 考虑"指标列"的情况，也就是这一列应该在右侧（或底部）对齐的情况
           rect.right = leftHeaderWidth
           rect.bottom = rect.top + 1
           flatRows.push(row)

@@ -830,12 +830,7 @@ export function 拖拽调整列宽() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
-      <BaseTable
-        isLoading={isLoading}
-        defaultColumnWidth={defaultColumnWidth}
-        dataSource={renderData.dataSource}
-        columns={renderData.columns}
-      />
+      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }

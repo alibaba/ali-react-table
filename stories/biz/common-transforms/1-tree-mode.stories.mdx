@@ -48,6 +48,22 @@ export interface TreeModeOptions {
   - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将且其渲染收拢/展开按钮
 - `options.indentSize` 可以配置子节点的缩进宽度。
 
+### treeMode 非受控用法
+
+ali-react-table/biz 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 commonTransforms.treeMode 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
+
+```javascript
+import { useTreeModeTransform } from 'ali-react-table/biz'
+
+function MyComponent() {
+  const treeModeTransform = useTreeModeTransform({ primaryKey: 'id', defaultOpenKeys: ['B2C'] })
+
+  const renderData = applyTransforms({ columns: columns, dataSource: state.data }, treeModeTransform)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
 ## 基本示例
 
 <Preview>

@@ -45,3 +45,20 @@ type ColumnHoverOptions = {
 <Preview>
   <Story id="表格功能拓展-功能拓展示例--列的范围高亮" />
 </Preview>
+
+## 非受控用法
+
+ali-react-table/biz 也提供了非受控的使用方式：useColumnHoverTransform。两者与受控用法类似，但移除了 hoverColIndex/onChangeHoverColIndex，同时增加了 defaultHoverColIndex.
+
+```javascript
+import { useColumnHoverTransform } from 'ali-react-table/biz'
+
+function MyComponent() {
+  const columnHover = useColumnHoverTransform()
+  const renderData = applyTransforms({ columns: inputColumns, dataSource: inputDataSource }, columnHover)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
+非受控列范围高亮 useColumnRangeHoverTransform：useColumnHoverRangeTransform 在受控用法的基础上移除了 hoverRange/onChangeHoverRange，增加了 defaultHoverRange.

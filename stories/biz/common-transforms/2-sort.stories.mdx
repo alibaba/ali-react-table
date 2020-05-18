@@ -43,6 +43,27 @@ export interface SortOptions {
 - 该 transform 会根据 options.sorts 为列的表头渲染对应的排序图标
 - **注意默认情况下，列都是不可排序的。想让某一列支持排序，必须设置 `column.features.sortable = true`**
 
+### sort 非受控用法
+
+ali-react-table/biz 也提供了非受控的使用方式，useSortTransform 是一个自定义 React hooks，其参数与 commonTransforms.sort 类似，但移除了 sorts/onChangeSorts，同时新增了 defaultSorts 参数（默认为空数组）.
+
+```javascript
+import { useSortTransform } from 'ali-react-table/biz'
+
+function MyComponent() {
+  const sortTransform = useSortTransform({
+    defaultSorts: [
+      { code: 'deadCount', order: 'asc' },
+      { code: 'confirmedCount', order: 'desc' },
+    ],
+  })
+
+  const renderData = applyTransforms({ columns: columns, dataSource: state.data }, sortTransform)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
 ## 基本示例
 
 <Preview>

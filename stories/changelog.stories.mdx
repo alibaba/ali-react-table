@@ -1,4 +1,5 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
 
 <Meta title="更新日志" />
 
@@ -6,7 +7,15 @@ import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 
 ## unreleased
 
-- feat: 拖拽调整列宽
+- feat: 拖拽 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="拖拽调整列宽">拖拽调整列宽</LinkTo>
+- feat: 新增 <LinkTo kind="交叉与透视 / 交叉树状表格" story="page">CrossTreeTable</LinkTo>
+- feat: 新增部分 transform 的非受控用法
+  - useColumnHoverTransform
+  - useColumnHoverRangeTransform
+  - useColumnResizeTransform
+  - useSortTransform
+  - useTreeModeTransform
+- feat: 导出 Excel 文件时支持单元格合并
 
 ## v0.13.1 2020-04-26
 

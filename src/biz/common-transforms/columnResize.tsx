@@ -1,10 +1,10 @@
-import { TableTransform } from 'ali-react-table/biz'
 import React from 'react'
 import { fromEvent } from 'rxjs'
 import * as op from 'rxjs/operators'
 import styled from 'styled-components'
 import { safeRenderHeader } from '../../common-utils/internals'
 import isLeafNode from '../../common-utils/isLeafNode'
+import { TableTransform } from '../interfaces'
 import transformColumn from '../utils/transformColumn'
 
 function clamp(min: number, x: number, max: number) {

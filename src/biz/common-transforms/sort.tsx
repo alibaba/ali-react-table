@@ -123,7 +123,7 @@ export interface SortOptions {
   keepDataSource?: boolean
 }
 
-export default function sort({
+export function sort({
   sorts: inputSorts,
   onChangeSorts: inputOnChangeSorts,
   orders = ['desc', 'asc', 'none'],

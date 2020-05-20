@@ -52,7 +52,7 @@ export interface ColumnRangeHoverOptions {
   onChangeHoverRange(nextColIndexRange: HoverRange): void
 }
 
-export default function columnRangeHover({
+export function columnRangeHover({
   hoverColor = '#f5f5f5',
   headerHoverColor = '#ddd',
   hoverRange,

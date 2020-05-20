@@ -2,7 +2,7 @@ import { isLeafNode } from '../../common-utils'
 import { TableTransform } from '../interfaces'
 import { transformColumn } from '../utils'
 
-export default function flatten(): TableTransform {
+export function flatten(): TableTransform {
   return transformColumn((column) => {
     if (isLeafNode(column)) {
       return column

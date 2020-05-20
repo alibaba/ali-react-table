@@ -9,7 +9,7 @@ export interface ColumnHoverOptions {
   onChangeHoverColIndex(nextColIndex: number): void
 }
 
-export default function columnHover({
+export function columnHover({
   hoverColor = '#f5f5f5',
   hoverColIndex,
   onChangeHoverColIndex,

@@ -23,7 +23,7 @@ export interface TipsOptions {
   Balloon: any
 }
 
-export default function tips({ Balloon }: TipsOptions): TableTransform {
+export function tips({ Balloon }: TipsOptions): TableTransform {
   return transformColumn((col) => {
     if (!col.features?.tips) {
       return col

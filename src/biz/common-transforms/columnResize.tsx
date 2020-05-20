@@ -38,7 +38,7 @@ export interface ColumnResizeOptions {
   disableUserSelectWhenResizing?: boolean
 }
 
-export default function columnResize({
+export function columnResize({
   sizes,
   onChangeSizes,
   minSize = 40,

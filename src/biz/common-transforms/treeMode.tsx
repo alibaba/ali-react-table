@@ -42,7 +42,7 @@ export interface TreeModeOptions {
   isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 }
 
-export default function treeMode({
+export function treeMode({
   onChangeOpenKeys,
   openKeys,
   primaryKey,

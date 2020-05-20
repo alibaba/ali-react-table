@@ -8,7 +8,7 @@ function isIdentity(x: any, y: any) {
   return x === y
 }
 
-export default function autoRowSpan(): TableTransform {
+export function autoRowSpan(): TableTransform {
   return transformColumn((col, { dataSource, range }) => {
     if (!col.features?.autoRowSpan) {
       return col

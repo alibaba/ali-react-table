@@ -8,6 +8,11 @@ module.exports = {
   stories,
 
   webpack: async (config) => {
+    if (config.mode === 'production') {
+      // 在生产环境下关闭 devtool
+      config.devtool = false
+    }
+
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       use: [

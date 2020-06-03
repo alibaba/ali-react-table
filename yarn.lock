@@ -9583,7 +9583,7 @@ react-base16-styling@^0.6.0:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-beautiful-dnd@latest:
+react-beautiful-dnd@^13.0.0:
   version "13.0.0"
   resolved "https://registry.npm.taobao.org/react-beautiful-dnd/download/react-beautiful-dnd-13.0.0.tgz#f70cc8ff82b84bc718f8af157c9f95757a6c3b40"
   integrity sha1-9wzI/4K4S8cY+K8VfJ+VdXpsO0A=

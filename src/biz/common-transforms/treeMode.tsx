@@ -136,7 +136,16 @@ export function treeMode({
         }
       }
 
-      const getCellProps = () => ({ style: { padding: 0 } })
+      const getCellProps = (value: any, record: any, rowIndex: number) => {
+        if (firstCol.getCellProps) {
+          const prevProps = firstCol.getCellProps(value, record, rowIndex)
+          return {
+            ...prevProps,
+            style: { ...prevProps?.style, padding: 0 },
+          }
+        }
+        return { style: { padding: 0 } }
+      }
 
       return [{ ...firstCol, render, getCellProps }, ...others]
     }

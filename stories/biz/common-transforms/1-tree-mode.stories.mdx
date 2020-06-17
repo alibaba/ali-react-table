@@ -44,8 +44,9 @@ export interface TreeModeOptions {
   - 上层需要提供 `options.openKeys` 来告诉 treeMode 哪些节点是展开的，哪些行节点是收拢的
 - `options.onChangeOpenKeys`: 除了 `nextKeys` 之外，该回调函数还会接受到 `key` 与 `action` 参数，分别表示本次操作「对应的 key」与「操作类型」
 - `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
-  - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状默认下的一些元信息（深度、是否展开等）
-  - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将且其渲染收拢/展开按钮
+  - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状模式下的一些元信息（深度、是否展开等）
+  - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将渲染收拢或展开按钮
+    - 如果该函数返回了 true，则 treeMode 认为该节点是「叶子节点」，将 **不渲染** 收拢或展开按钮
 - `options.indentSize` 可以配置子节点的缩进宽度。
 
 ### treeMode 非受控用法

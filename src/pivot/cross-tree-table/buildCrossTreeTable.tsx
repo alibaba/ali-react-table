@@ -64,6 +64,17 @@ export default function buildCrossTreeTable(
         getValue(row: CrossTreeTableRenderRow) {
           return row.node.value
         },
+        getCellProps(value: any, row: any) {
+          if (primaryColumn.getCellProps) {
+            return primaryColumn.getCellProps(row.node, row.nodes.length - 1)
+          }
+        },
+        render(value: any, row: any) {
+          if (primaryColumn.render) {
+            return primaryColumn.render(row.node, row.nodes.length - 1)
+          }
+          return value
+        },
       },
       ...getDataPartColumns(),
     ]

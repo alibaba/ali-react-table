@@ -72,6 +72,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
   }: ConvertOptions<T> = {},
 ): T[] {
   const totalKey = encode([])
+  // fixme 如果 expandKeys 没传的，应该认为所有的节点都是展开的
   const expandKeySet = new Set(expandKeys ?? [])
 
   return dfs(drillTree, 0)

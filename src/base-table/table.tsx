@@ -145,9 +145,12 @@ export default class BaseTable extends React.Component<BaseTableProps, BaseTable
       hasScroll: true,
       needRenderLock: true,
       offsetY: 0,
-      maxRenderHeight: Number(window.innerHeight),
       offsetX: 0,
-      maxRenderWidth: window.innerWidth,
+      // 因为 ResizeObserver 在一开始总是会调用一次所提供的回调函数
+      // 故这里为 maxRenderHeight/maxRenderWidth 设置一个默认值即可（因为这两个默认值很快就会被覆盖）
+      // https://stackoverflow.com/questions/60026223/does-resizeobserver-invokes-initially-on-page-load
+      maxRenderHeight: 600,
+      maxRenderWidth: 800,
     }
   }
 

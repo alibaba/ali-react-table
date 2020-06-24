@@ -1,8 +1,7 @@
 import React from 'react'
-import * as styledComponents from 'styled-components'
-import { asyncScheduler, fromEvent, merge } from 'rxjs'
+import { asyncScheduler, BehaviorSubject, defer, fromEvent, merge } from 'rxjs'
 import { map, mapTo, scan, throttleTime } from 'rxjs/operators'
-import StateObservable from './helpers/StateObservable'
+import * as styledComponents from 'styled-components'
 import { TRNodeList } from './interfaces'
 
 /** styled-components 类库的版本，ali-react-table 同时支持 v3 和 v5 */
@@ -87,8 +86,9 @@ export function batchAdjustRightCellSizes(rightTableRows: TRNodeList, mainTableR
   }
 }
 
-export const throttledWindowResize$ = fromEvent(window, 'resize').pipe(
-  throttleTime(150, asyncScheduler, { leading: true, trailing: true }),
+// 使用 defer 避免过早引用 window，导致在 SSR 场景下报错
+export const throttledWindowResize$ = defer(() =>
+  fromEvent(window, 'resize').pipe(throttleTime(150, asyncScheduler, { leading: true, trailing: true })),
 )
 
 /** 获取默认的滚动条大小 */
@@ -109,12 +109,14 @@ function getScrollbarSizeImpl() {
   return { width: scrollbarWidth, height: scrollbarHeight }
 }
 
-export const scrollBarSize$ = new StateObservable(
-  throttledWindowResize$.pipe(map(() => getScrollbarSizeImpl())),
-  getScrollbarSizeImpl(),
-)
+let scrollBarSize$: BehaviorSubject<{ width: number; height: number }>
 
 export function getScrollbarSize() {
+  if (scrollBarSize$ == null) {
+    scrollBarSize$ = new BehaviorSubject(getScrollbarSizeImpl())
+    throttledWindowResize$.pipe(map(() => getScrollbarSizeImpl())).subscribe(scrollBarSize$)
+  }
+
   return scrollBarSize$.value
 }
 

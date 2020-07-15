@@ -1,7 +1,7 @@
 const baseTable = [
   'base-table/base-table.stories.mdx',
   'base-table/base-table-api.stories.mdx',
-  'base-table/base-table-extra.stories.mdx',
+  'base-table/base-table-advanced-usage.stories.mdx',
   'base-table/base-table.stories.tsx',
 ]
 

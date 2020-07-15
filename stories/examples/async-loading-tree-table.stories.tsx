@@ -1,5 +1,4 @@
-import { BaseTable } from 'ali-react-table'
-import { applyTransforms, commonTransforms } from 'ali-react-table/biz'
+import { applyTransforms, BaseTable, makeBuildTreeTransform, makeTreeModeTransform } from 'ali-react-table'
 import React, { useEffect, useRef, useState } from 'react'
 import { amount, lfl, ratio } from '../assets/format'
 
@@ -79,8 +78,8 @@ export function AsyncLoadingTreeTable() {
         { code: 'rate', name: '重点商品收入占比', render: ratio, align: 'right' },
       ],
     },
-    commonTransforms.buildTree('key', 'parentKey'),
-    commonTransforms.treeMode({
+    makeBuildTreeTransform('key', 'parentKey'),
+    makeTreeModeTransform({
       primaryKey: 'key',
       openKeys,
 

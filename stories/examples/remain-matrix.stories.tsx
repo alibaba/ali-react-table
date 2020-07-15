@@ -1,5 +1,4 @@
-import { ArtColumn, BaseTable, Classes } from 'ali-react-table'
-import { proto } from 'ali-react-table/biz'
+import { ArtColumn, BaseTable, Classes, proto } from 'ali-react-table'
 import * as d3 from 'd3'
 import React from 'react'
 import styled from 'styled-components'

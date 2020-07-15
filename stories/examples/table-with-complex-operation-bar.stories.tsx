@@ -1,13 +1,16 @@
 import * as fusion from '@alifd/next'
-import { ArtColumn, BaseTable } from 'ali-react-table'
 import {
   applyTransforms,
-  commonTransforms,
+  ArtColumn,
+  BaseTable,
   exportTableAsExcel,
+  makeFlattenTransform,
+  makeOrderFieldTransform,
   proto,
-  transformColumn,
+  traverseColumn,
+  useColumnHoverTransform,
   useOperationBar,
-} from 'ali-react-table/biz'
+} from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio } from '../assets/format'
@@ -97,7 +100,7 @@ export function 表格操作栏示例() {
 
   // 自定义的 transform，为 features.lfl 为 true 的列添加对应的 环比列
   function transformLfl(showLfl: boolean) {
-    return transformColumn((col) => {
+    return traverseColumn((col) => {
       if (showLfl && col.features?.lfl) {
         return [col, { ...col, name: '环比', render: (value) => `lfl_of_${value}` }]
       }
@@ -126,17 +129,12 @@ export function 表格操作栏示例() {
     columns,
   })
 
-  const [hoverColIndex, onChangeHoverColIndex] = useState(-1)
-
   const renderData = applyTransforms(
     { columns, dataSource: state.data },
     ...operationBar.transforms,
-    commonTransforms.orderField(),
-    commonTransforms.flatten(),
-    commonTransforms.columnHover({
-      hoverColIndex,
-      onChangeHoverColIndex,
-    }),
+    makeOrderFieldTransform(),
+    makeFlattenTransform(),
+    useColumnHoverTransform(),
   )
 
   return (

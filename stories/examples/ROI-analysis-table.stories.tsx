@@ -1,6 +1,5 @@
 import * as hippo from '@alifd/next'
-import { ArtColumn, BaseTable } from 'ali-react-table'
-import { applyTransforms, proto, transformColumn } from 'ali-react-table/biz'
+import { applyTransforms, ArtColumn, BaseTable, proto, traverseColumn } from 'ali-react-table'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { amount, lfl, ratio } from '../assets/format'
@@ -213,7 +212,7 @@ export function ROIAnalysisTable() {
 
   const renderData = applyTransforms(
     { dataSource: dataSource, columns },
-    transformColumn((col) => {
+    traverseColumn((col) => {
       if (!col.features?.pbp) {
         return col
       }

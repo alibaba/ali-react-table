@@ -1,10 +1,10 @@
 import { Checkbox, Radio } from '@alifd/next'
-import { ArtColumn, BaseTable, BaseTableProps } from 'ali-react-table'
-import { applyTransforms, TableTransform } from 'ali-react-table/biz'
+import { applyTransforms, ArtColumn, BaseTable, BaseTableProps, internals, TableTransform } from 'ali-react-table'
 import React, { useState } from 'react'
-import { safeGetRowKey } from '../../src/internals'
 import { FusionStyles } from '../assets/fusion-style'
 import { testProvColumns, useProvinceDataSource } from '../assets/ncov19-assets'
+
+const { safeGetRowKey } = internals
 
 export default {
   title: '示例 / 单选与多选',

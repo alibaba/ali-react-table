@@ -1,5 +1,11 @@
-import { ArtColumn, BaseTable, Classes } from 'ali-react-table'
-import { applyTransforms, commonTransforms } from 'ali-react-table/biz'
+import {
+  applyTransforms,
+  ArtColumn,
+  BaseTable,
+  Classes,
+  makeBuildTreeTransform,
+  makeTreeModeTransform,
+} from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { getAppTrafficData } from '../assets/cdn-data'
@@ -54,9 +60,9 @@ export function TreeTableWithLastOpenMark() {
     { columns: columns, dataSource: state.data },
 
     // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
-    commonTransforms.buildTree('id', 'parent_id'),
+    makeBuildTreeTransform('id', 'parent_id'),
 
-    commonTransforms.treeMode({
+    makeTreeModeTransform({
       primaryKey: 'id',
       openKeys,
       onChangeOpenKeys(nextKeys, key, action) {

@@ -1,5 +1,4 @@
-import { ArtColumn, BaseTable, isLeafNode } from 'ali-react-table'
-import { applyTransforms, commonTransforms } from 'ali-react-table/biz'
+import { applyTransforms, ArtColumn, BaseTable, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
@@ -79,7 +78,7 @@ export function 示例() {
   const renderData = applyTransforms(
     // 使用 indicatorTree 作为 dataSource，因为现在表格行和指标树是对应的
     { columns: [mainCol, ...state.columns], dataSource: indicatorTree },
-    commonTransforms.treeMode({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
+    makeTreeModeTransform({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
   console.log('组件状态 state:', state)

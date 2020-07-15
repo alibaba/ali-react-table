@@ -113,10 +113,8 @@ function makeStyledDrawer(Drawer: any) {
 
 const StyledDiv = makeStyledDrawer('div')
 
-CustomColumnsDialog.makeStyledDrawer = makeStyledDrawer
-
 /** 自定义列对话框，支持 hippo（已经完成） / fusion（开发中） 两种组件体系 */
-export default function CustomColumnsDialog({
+function CustomColumnsDialog({
   trigger,
   defaultVisible,
   defaultCheckedCodes,
@@ -327,3 +325,7 @@ export default function CustomColumnsDialog({
     </>
   )
 }
+
+CustomColumnsDialog.makeStyledDrawer = makeStyledDrawer
+
+export default CustomColumnsDialog

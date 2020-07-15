@@ -1,186 +1,48 @@
 import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
 
-<Meta title="基础表格 / 文档" />
+<Meta title="基础表格 / 基本用法" />
 
 # 基础表格
 
-基础表格 `BaseTable`是 ali-react-table 中各个表格组件的底层组件，提供了基本的表格渲染能力。 BaseTable 由 fusion 0.x 表格修改而来，去除了一些业务交互类功能（例如行选中、单元格编辑等），专注于数据展现。
+基础表格 `BaseTable`是 ali-react-table 中各个表格组件的底层组件，提供了基本的表格渲染能力。BaseTable 只提供了基本的表格渲染能力，一些常见的表格功能（排序、树状模式等）详见 <LinkTo kind="表格功能拓展 / 文档" story="page">表格功能拓展</LinkTo>.
 
-BaseTable 保留了原有表格组件的一些非常实用的特性（表头吸顶、锁列、单元格合并等），并在其基础上进行了大量优化，支持虚拟滚动，支持十万行/十万列以上的渲染规模。
+BaseTable 自带了一些非常实用的特性（表头吸顶、锁列、单元格合并等），并支持虚拟滚动，支持大数据量渲染。
 
 ## 基本用法
 
 基本的 Table 包含行和列，使用 `columns` 属性来定义列的信息，使用传入的 `dataSource` 属性数据来创建行，这两个属性也是表格组件必传的 props（其他所有 props 都是可选的）。
 
-- `dataSource` 数组用于提供表格每一行的数据；数组中的每个对象对应表格的一行，对象的字段一般需要和 `column.code` 对应。**注意是 `code` 字段，不是 `dataIndex` 字段**
-- `columns` 数组用于指定表格中包含哪些列
+- `dataSource` 提供表格数据，数组中的每一项对应表格的一行
+- `columns` 指定表格中包含哪些列，`column.code` 与 `dataSource` 中的数据字段对应
 
-基本用法： `<BaseTable dataSource={dataSource} columns={columns} />`，效果如下：
+以下是 BaseTable 的基本用法示例：
+
+```typescript
+function 基本用法() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns: ArtColumn[] = [
+    { code: 'prov', name: '省份', width: 150 },
+    { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+    { code: 'cured', name: '治愈', width: 100, align: 'right' },
+    { code: 'dead', name: '死亡', width: 100, align: 'right' },
+    { code: 't', name: '最后更新时间', width: 180 },
+  ]
+  return <BaseTable dataSource={dataSource} columns={columns} />
+}
+```
 
 <Preview>
   <Story id="基础表格-示例--基本用法" />
 </Preview>
 
-**更多用法详见 <LinkTo kind="基础表格 / 示例" story="基本用法">BaseTable 的各个示例</LinkTo>。**
+除了基本用法之外，`BaseTable` 也支持锁列、表头吸顶、列分组、单元格合并等功能，具体用法可参考 **<LinkTo kind="基础表格 / 示例" story="基本用法">BaseTable 的各个示例</LinkTo>。**
 
-## `BaseTable` 列配置
-
-`BaseTable` **不支持** 使用 JSX 标签形式（例如 `<Table.Column />`）定义表格的列配置，**必须使用 `columns` 数组来定义表格有哪些列。**
-
-`columns` 中单个列的配置具体如下：
-
-| 字段              | 类型                                                       |                                                                |
-| ----------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
-| `name`            | `string`                                                   | 列的名称                                                       |
-| `code`            | `string`                                                   | 在数据中的字段 code                                            |
-| `getValue`        | `(record: any, rowIndex: number) => any`                   | 自定义取数方法                                                 |
-| `render`          | `(value: any, record: any, rowIndex: number) => ReactNode` | 自定义渲染方法                                                 |
-| `getCellProps`    | `(value: any, record: any, rowIndex: number) => any`       | 自定义的获取单元格 props 的方法                                |
-| `getSpanRect`     | `(value: any, record: any, rowIndex: number) => SpanRect`  | 在虚拟滚动的情况下设置单元格合并                               |
-| `title`           | `ReactNode`                                                | 列标题的展示名称；在页面中进行展示时，该字段将覆盖 `name` 字段 |
-| `width`           | `number`                                                   | 列的宽度，如果该列是锁定的，则宽度为必传项                     |
-| `align`           | `'left' / 'center' / 'right'`                              | 单元格对其方向                                                 |
-| `hidden`          | `boolean`                                                  | 是否隐藏                                                       |
-| `lock`            | `boolean`                                                  | 是否锁列                                                       |
-| `children`        | `ArtColumn[]`                                              | 该列的子节点                                                   |
-| `headerCellProps` | `React.ThHTMLAttributes`                                   | 表头单元格的 props                                             |
-| `features`        | `{ [key: string]: any }`                                   | 功能开关标记，用于对表格功能进行拓展                           |
-
-列配置中的部分字段为必传或必选的字段，规则如下：
-
-- `name` 字段必选
-- 对于叶子节点，即 `column.children == null || column.children.length === 0`，`code` 或 `getValue` 二者中至少提供一个
-- 对于锁定的列（`lock=true`），宽度 `width` 为必传项；推荐给所有的列都配置上宽度，或是给表格配置一个默认的列宽度
-
-## 表格 props 一览
-
-**主要字段**
-
-| 字段          | 类型                                                          |                                                                                                                                                                         |
-| ------------- | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `dataSource`  | **必传属性** `any[]`                                          | 表格数据源                                                                                                                                                              |
-| `columns`     | **必传属性** `ArtColumn[]`                                    | 表格的列配置                                                                                                                                                            |
-| `isLoading`   | `boolean`                                                     | 表格是否在加载中                                                                                                                                                        |
-| `primaryKey`  | `string` <br/> 或 `(record: any, rowIndex: number) => string` | 用于指定每一行的 key<br/>传入字符串表示从数据中获取对应字段的值作为 key<br/>传入函数时将调用该函数来生成每一行的 key<br/>不传该 prop 时，表格将使用下标作为每一行的 key |
-| `useVirtual`  | `'auto'` <br/> 或 `boolean` <br/> 或一个对象                  | 是否开启虚拟滚动，详见下方「虚拟滚动」说明                                                                                                                              |
-| `getRowProps` | `(record: any, rowIndex: number): React.HTMLAttributes`       | 自定义每一行的 props                                                                                                                                                    |
-
-**表格样式与结构**
-
-| 字段                 | 类型                  |                                               |
-| -------------------- | --------------------- | --------------------------------------------- |
-| `className`          | `number`              | 自定义类名                                    |
-| `style`              | `React.CSSProperties` | 自定义内联样式                                |
-| `isStickyHead`       | `boolean`             | 表格头部是否吸顶，默认为 true                 |
-| `stickyTop`          | `number`              | 表头吸顶后，距离顶部的距离                    |
-| `hasHeader`          | `boolean`             | 表格是否具有头部                              |
-| `useOuterBorder`     | `boolean`             | 是否使用来自外层 div 的边框代替单元格的外边框 |
-| `emptyContent`       | `ReactNode`           | 数据为空的时候的表格内容展现                  |
-| `defaultColumnWidth` | `number`              | 列的默认宽度                                  |
-
-**其他不常用的属性**
-
-| 字段           | 类型                                                  |                                 |
-| -------------- | ----------------------------------------------------- | ------------------------------- |
-| `stickyBottom` | `number`                                              | 表格底部距离页面下边缘的距离    |
-| `flowRoot` \*  | `'auto' / 'self' / HTMLElement / (() => HTMLElement)` | 表格所处于的块格式化上下文(BFC) |
-
-- flowRoot \* [块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context) 用于在开启虚拟滚动的情况下计算表格的可见范围。
-
-## 锁列与嵌套的列结构
-
-在有列嵌套的情况下（通过 column.children 设置列的子节点，形成列的嵌套结构），锁列具有传递性，从而避免了锁定列与非锁定列出现在同一个父节点下的情况：
-
-- 如果一个父节点设置了锁列 lock=true，则其所有子节点将自动被设置为 lock=true
-- 如果一个节点设置了锁列 lock=true，则其父节点和所有祖先节点将被设置为 lock=true
-
-此外，如果所有的列都设置了 lock=true，则整个表格的锁列将不生效。
-
-## 虚拟滚动
-
-- `useVirtual` 可以设定为以下值：
-  - `'auto'` （默认值）表示根据表格的行数或列数自动调整是否开启虚拟滚动
-    - 行数量超过 80 时，自动开启纵向虚拟滚动
-    - 列数量超过 80 时，自动开启横向虚拟滚动
-    - 表头的横向虚拟滚动默认关闭
-  - `boolean` 表示强制开启或关闭虚拟滚动
-  - 传入一个对象可以分别指定 横向/纵向/表头 是否开启虚拟滚动
-    - 对象的结构为 `{ horizontal?: boolean | 'auto', vertical?: boolean | 'auto', header?: boolean | 'auto' }`
-- 水平方向的虚拟滚动 要求「所有的列都有一个指定的宽度」，推荐设置 `defaultColumnWidth`，避免部分列缺失宽度
-- 设置 `style.overflow = 'auto'` 时，必须为表格设置高度或最大高度；
-  - 此时表格的外层 div 会被认为是表格所处的 BFC，该 div 的高度将决定表格渲染多少行，故这个 div 的最大高度必须是确定的
-  - 目前暂不支持动态切换 flowRoot，意味着在表格组件加载之后 重新设置 `style.overflow` 将不会起作用
-- 在虚拟滚动开启的情况下，需要使用 `column.getSpanRect` 来设定单元格合并的情况
-  - `column.getSpanRect` 返回一个 `SpanRect` 的对象来表示对应单元所处的合并后的位置。
-  - `SpanRect` 的具体类型为 `{ left: number, right: number, top: number, bottom: number }`，注意其中 left/top 是 inclusive 的，right/bottom 是 exclusive 的。
-
-## 自定义表格样式
-
-推荐使用 BaseTable 透出的一些 CSS 变量来自定义表格的样式。下面是一个自定义表格样式的示例：
-
-<Preview>
-  <Story id="基础表格-示例--自定义表格样式" />
-</Preview>
-
-<details>
-
-<summary>点击展开 CSS 变量列表</summary>
-
-```typescript
-export type BaseTableCSSVariables = Partial<{
-  /** 表格的字体颜色 */
-  '--color': string
-  /** 表格背景颜色 */
-  '--bgcolor': string
-  /** 表头的字体颜色 */
-  '--header-color': string
-  /** 表头的背景颜色 */
-  '--header-bgcolor': string
-  /** 单元格的边框颜色 */
-  '--border-color': string
-
-  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
-  '--row-height': string
-  /** 表格行 鼠标悬停时的背景色 */
-  '--row-hover-color': string
-  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
-  '--header-row-height': string
-
-  /** 单元格边框，默认为 1px solid var(--border-color) */
-  '--cell-border': string
-  /** 单元格上下边框，默认为 var(--cell-border) */
-  '--cell-border-horizontal': string
-  /** 单元格左右边框，默认为 var(--cell-border) */
-  '--cell-border-vertical': string
-
-  /** 表头单元格边框，默认为 1px solid var(--border-color) */
-  '--header-cell-border': string
-  /** 表头单元格上下边框，默认为 var(--header-cell-border) */
-  '--header-cell-border-horizontal': string
-  /** 表头单元格左右边框，默认为 var(--header-cell-border) */
-  '--header-cell-border-vertical': string
-
-  /** 单元格边框 */
-  '--cell-border-top': string
-  /** 单元格边框 */
-  '--cell-border-bottom': string
-  /** 单元格边框 */
-  '--cell-border-left': string
-  /** 单元格边框 */
-  '--cell-border-right': string
-
-  /** 表头单元格边框 */
-  '--header-cell-border-top': string
-  /** 表头单元格边框 */
-  '--header-cell-border-bottom': string
-  /** 表头单元格边框 */
-  '--header-cell-border-left': string
-  /** 表头单元格边框 */
-  '--header-cell-border-right': string
-}>
-```
-
-</details>
-
-当 CSS 变量无法满足自定义样式需求时，推荐通过 styled-components 来覆盖表格的默认样式。表格内各部分的 CSS 类名可以通过 `Classes` 对象来获取。
+`BaseTable` 的详细 API 详见 **<LinkTo kind="基础表格 / API" story="page">BaseTable API</LinkTo>。**

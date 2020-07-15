@@ -1,4 +1,4 @@
-import { collectNodes, isLeafNode } from '../common-utils'
+import { collectNodes, isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
 import { VirtualEnum } from './interfaces'
 import { BaseTableProps, BaseTableState } from './table'

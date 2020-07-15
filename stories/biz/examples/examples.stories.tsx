@@ -1,20 +1,30 @@
 import * as fusion from '@alifd/next'
 import { Balloon, Button } from '@alifd/next'
 import { EarthFilled16, Row16, ThumbsDown16, ThumbsUp16 } from '@carbon/icons-react'
-import { ArtColumn, BaseTable, collectNodes } from 'ali-react-table'
 import {
   applyTransforms,
-  commonTransforms,
+  ArtColumn,
+  BaseTable,
+  collectNodes,
   CustomColumnsDialog,
   exportTableAsExcel,
+  makeAutoRowSpanTransform,
+  makeBuildTreeTransform,
+  makeColumnHoverTransform,
+  makeColumnRangeHoverTransform,
+  makeColumnResizeTransform,
+  makeSortTransform,
+  makeTipsTransform,
+  makeTreeModeTransform,
   proto,
+  SortHeaderCellProps,
   SortItem,
   useColumnHoverRangeTransform,
   useColumnHoverTransform,
   useOperationBar,
   useSortTransform,
   useTreeModeTransform,
-} from 'ali-react-table/biz'
+} from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
 import ReactJson from 'react-json-view'
 import { getAppTrafficData } from '../../assets/cdn-data'
@@ -79,9 +89,9 @@ export function 树状表格() {
     { columns: columns, dataSource: state.data },
 
     // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
-    commonTransforms.buildTree('id', 'parent_id'),
+    makeBuildTreeTransform('id', 'parent_id'),
 
-    commonTransforms.treeMode({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
+    makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
   )
 
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
@@ -108,7 +118,7 @@ export function 树状表格_非受控() {
 
   const renderData = applyTransforms(
     { columns: columns, dataSource: state.data },
-    commonTransforms.buildTree('id', 'parent_id'),
+    makeBuildTreeTransform('id', 'parent_id'),
     treeModeTransform,
   )
 
@@ -133,7 +143,7 @@ export function 表格排序_多列() {
 
   const renderData = applyTransforms(
     { columns, dataSource },
-    commonTransforms.sort({
+    makeSortTransform({
       sorts,
       onChangeSorts,
     }),
@@ -201,7 +211,7 @@ export function 表格排序_单列() {
 
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 5) },
-    commonTransforms.sort({
+    makeSortTransform({
       sorts,
       onChangeSorts,
       mode: 'single', // 改为 multiple 可以使用多列排序
@@ -302,7 +312,7 @@ export function 列高亮() {
 
   const renderData = applyTransforms(
     { columns: testProvColumns, dataSource: data.slice(0, 5) },
-    commonTransforms.columnHover({
+    makeColumnHoverTransform({
       hoverColIndex,
       onChangeHoverColIndex,
     }),
@@ -399,7 +409,7 @@ export function 列的范围高亮() {
 
   const renderData = applyTransforms(
     { columns, dataSource: state.data },
-    commonTransforms.columnRangeHover({
+    makeColumnRangeHoverTransform({
       hoverRange,
       onChangeHoverRange,
     }),
@@ -549,8 +559,8 @@ export function 列气泡提示() {
 
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 3) },
-    commonTransforms.sort({ mode: 'single', sorts, onChangeSorts }),
-    commonTransforms.tips({ Balloon }),
+    makeSortTransform({ mode: 'single', sorts, onChangeSorts }),
+    makeTipsTransform({ Balloon }),
   )
 
   return (
@@ -584,13 +594,13 @@ export function 树状模式与层级排序() {
   const renderData = applyTransforms(
     { columns, dataSource: state.data },
     // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
-    commonTransforms.buildTree('id', 'parent_id'),
-    commonTransforms.sort({
+    makeBuildTreeTransform('id', 'parent_id'),
+    makeSortTransform({
       sorts,
       onChangeSorts,
       mode: 'single', // 改为 multiple 可以使用多列排序
     }),
-    commonTransforms.treeMode({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
+    makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
@@ -723,7 +733,7 @@ export function 单元格自动合并() {
         },
       ],
     },
-    commonTransforms.autoRowSpan(),
+    makeAutoRowSpanTransform(),
   )
 
   return (
@@ -731,14 +741,7 @@ export function 单元格自动合并() {
   )
 }
 
-function CustomSortHeaderCell({
-  column,
-  sortOptions,
-  sortIndex,
-  children,
-  onToggle,
-  sortOrder,
-}: commonTransforms.SortHeaderCellProps) {
+function CustomSortHeaderCell({ column, sortOptions, sortIndex, children, onToggle, sortOrder }: SortHeaderCellProps) {
   // 通过 justify-content 来与 col.align 保持对齐方向一致
   const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
 
@@ -782,7 +785,7 @@ export function 自定义样式的排序表头() {
 
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 5) },
-    commonTransforms.sort({
+    makeSortTransform({
       sorts,
       onChangeSorts,
       SortHeaderCell: CustomSortHeaderCell,
@@ -815,7 +818,7 @@ export function 拖拽调整列宽() {
 
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 5) },
-    commonTransforms.columnResize({
+    makeColumnResizeTransform({
       sizes,
       onChangeSizes,
       appendExpander: true,

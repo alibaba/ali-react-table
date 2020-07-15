@@ -1,7 +1,7 @@
 import cx from 'classnames'
 import React from 'react'
 import { BaseTableProps } from '../../base-table'
-import { getTreeDepth, isLeafNode } from '../../common-utils'
+import { getTreeDepth, isLeafNode } from '../../utils'
 import { ArtColumn, SpanRect } from '../../interfaces'
 import { CrossTableClasses, ROW_KEY } from './constants'
 import { CrossTableProps } from './cross-table'

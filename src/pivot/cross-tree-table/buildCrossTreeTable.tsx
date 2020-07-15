@@ -1,7 +1,7 @@
 import React from 'react'
 import { BaseTableProps } from '../../base-table'
-import { treeMode } from '../../biz/common-transforms'
-import { isLeafNode as standardIsLeafNode } from '../../common-utils'
+import { makeTreeModeTransform } from '../../transforms'
+import { isLeafNode as standardIsLeafNode } from '../../utils'
 import { ArtColumn } from '../../interfaces'
 import {
   BuildCrossTableOptions,
@@ -42,7 +42,7 @@ export default function buildCrossTreeTable(
     isLeafNode: isLeafNodeOpt = standardIsLeafNode,
   } = options
 
-  return treeMode({
+  return makeTreeModeTransform({
     primaryKey: ROW_KEY,
     openKeys,
     onChangeOpenKeys,

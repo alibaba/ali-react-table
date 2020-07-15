@@ -1,5 +1,5 @@
-import { groupBy, isLeafNode } from '../../common-utils'
-import { fromEntries } from '../../common-utils/others'
+import { groupBy, isLeafNode } from '../../utils'
+import { fromEntries } from '../../utils/others'
 import buildDrillTree from './buildDrillTree'
 import { DrillNode, RecordMatrix } from './interfaces'
 import simpleEncode from './simpleEncode'

@@ -1,9 +1,9 @@
 import { Information16 } from '@carbon/icons-react'
 import React from 'react'
 import styled from 'styled-components'
-import { safeRenderHeader } from '../../common-utils/internals'
 import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { safeRenderHeader } from '../internals'
+import { traverseColumn } from '../utils'
 
 const HeaderCellWithTips = styled.div`
   display: flex;
@@ -23,8 +23,8 @@ export interface TipsOptions {
   Balloon: any
 }
 
-export function tips({ Balloon }: TipsOptions): TableTransform {
-  return transformColumn((col) => {
+export function makeTipsTransform({ Balloon }: TipsOptions): TableTransform {
+  return traverseColumn((col) => {
     if (!col.features?.tips) {
       return col
     }

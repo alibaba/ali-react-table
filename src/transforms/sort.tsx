@@ -1,11 +1,9 @@
 import * as CarbonIcons from '@carbon/icons-react'
-import React, { CSSProperties, ReactNode } from 'react'
+import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
-import { collectNodes, isLeafNode } from '../../common-utils'
-import { safeGetValue, safeRenderHeader } from '../../common-utils/internals'
-import { ArtColumn } from '../../interfaces'
-import { SortItem, SortOrder, TableTransform } from '../interfaces'
-import { layeredSort, smartCompare } from '../utils'
+import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
+import { safeGetValue, safeRenderHeader } from '../internals'
+import { collectNodes, compareStringOrNumber, isLeafNode, layeredSort } from '../utils'
 
 type IconComponent = typeof CarbonIcons.Number_116
 
@@ -123,7 +121,7 @@ export interface SortOptions {
   keepDataSource?: boolean
 }
 
-export function sort({
+export function makeSortTransform({
   sorts: inputSorts,
   onChangeSorts: inputOnChangeSorts,
   orders = ['desc', 'asc', 'none'],
@@ -178,7 +176,7 @@ export function sort({
             continue
           }
           const sortable = column.features.sortable
-          const compareFn = typeof sortable === 'function' ? sortable : smartCompare
+          const compareFn = typeof sortable === 'function' ? sortable : compareStringOrNumber
           const xValue = safeGetValue(column, x, -1)
           const yValue = safeGetValue(column, y, -1)
           const cmp = compareFn(xValue, yValue)
@@ -250,4 +248,12 @@ export function sort({
     const idx = orders.indexOf(order)
     return orders[idx === orders.length - 1 ? 0 : idx + 1]
   }
+}
+
+export function useSortTransform({
+  defaultSorts = [],
+  ...others
+}: Omit<SortOptions, 'sorts' | 'onChangeSorts'> & { defaultSorts?: SortItem[] } = {}) {
+  const [sorts, onChangeSorts] = useState(defaultSorts)
+  return makeSortTransform({ sorts, onChangeSorts, ...others })
 }

@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { fromEvent } from 'rxjs'
 import * as op from 'rxjs/operators'
 import styled from 'styled-components'
-import { safeRenderHeader } from '../../common-utils/internals'
-import isLeafNode from '../../common-utils/isLeafNode'
 import { TableTransform } from '../interfaces'
-import transformColumn from '../utils/transformColumn'
+import { safeRenderHeader } from '../internals'
+import { isLeafNode, traverseColumn } from '../utils'
 
 function clamp(min: number, x: number, max: number) {
   return Math.max(min, Math.min(max, x))
@@ -38,7 +37,7 @@ export interface ColumnResizeOptions {
   disableUserSelectWhenResizing?: boolean
 }
 
-export function columnResize({
+export function makeColumnResizeTransform({
   sizes,
   onChangeSizes,
   minSize = 40,
@@ -80,7 +79,7 @@ export function columnResize({
     })
   }
 
-  const innerTransform = transformColumn((col, { range }) => {
+  const innerTransform = traverseColumn((col, { range }) => {
     if (!isLeafNode(col)) {
       return col
     }
@@ -117,4 +116,12 @@ export function columnResize({
       dataSource,
     }
   }
+}
+
+export function useColumnResizeTransform({
+  defaultSizes,
+  ...others
+}: Omit<ColumnResizeOptions, 'sizes' | 'onChangeSizes'> & { defaultSizes: number[] }) {
+  const [sizes, onChangeSizes] = useState(defaultSizes)
+  return makeColumnResizeTransform({ sizes, onChangeSizes, ...others })
 }

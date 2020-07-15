@@ -102,24 +102,24 @@ function doubleDataSourceTransform({ columns, dataSource }) {
 
 你可以在自定义的 transform 中执行任何逻辑，只要返回值仍然是有效的 `dataSource / columns` 即可。在自定义的 transform 中，对每一个列的处理方式可能是不同的，此时我们推荐利用 `column.features` 来为不同的列打上标记。
 
-## 自定义 transform 辅助函数 `transformColumn`
+## 自定义 transform 辅助函数 `traverseColumn`
 
-实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 ali-react-table/biz 提供了 `transformColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
+实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 ali-react-table/biz 提供了 `traverseColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
 
 ```typescript
-function transformColumn(fn: (column: ArtColumn) => null | ArtColumn | ArtColumn[]): TableTransform
+function traverseColumn(fn: (column: ArtColumn) => null | ArtColumn | ArtColumn[]): TableTransform
 ```
 
 返回 `null` 时，对应的列将被移除；返回 `ArtColumn` 或一个数组时，返回的结果会替换对应的列。
 
-下面是一些利用 `transformColumn` 实现的 transform：
+下面是一些利用 `traverseColumn` 实现的 transform：
 
 ```javascript
 // 反转列的 hidden 属性
-const invertHidden = transformColumn((col) => ({ ...col, hidden: !col.hidden }))
+const invertHidden = traverseColumn((col) => ({ ...col, hidden: !col.hidden }))
 
 // 将所有的列的标题字体大小设置为 24px
-const bigTitle = transformColumn((col) => {
+const bigTitle = traverseColumn((col) => {
   const title = col.title ?? col.name
   return {
     ...col,
@@ -128,7 +128,7 @@ const bigTitle = transformColumn((col) => {
 })
 
 // 根据 features.showCompare 来添加对应的 对比列
-const addCompareCol = transformColumn((col) => {
+const addCompareCol = traverseColumn((col) => {
   if (col.features?.showCompare) {
     return [col, { ...col, name: '对比值', code: `compare_${col.code}` }]
   }

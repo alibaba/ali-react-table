@@ -1,9 +1,8 @@
-import { isLeafNode } from '../../common-utils'
 import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { isLeafNode, traverseColumn } from '../utils'
 
-export function flatten(): TableTransform {
-  return transformColumn((column) => {
+export function makeFlattenTransform(): TableTransform {
+  return traverseColumn((column) => {
     if (isLeafNode(column)) {
       return column
     }

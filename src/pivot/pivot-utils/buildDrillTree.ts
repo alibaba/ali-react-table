@@ -1,4 +1,4 @@
-import { groupBy } from '../../common-utils'
+import { groupBy } from '../../utils'
 import { DrillNode } from './interfaces'
 import simpleEncode from './simpleEncode'
 

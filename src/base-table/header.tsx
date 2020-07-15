@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React from 'react'
-import { getTreeDepth, isLeafNode } from '../common-utils'
+import { getTreeDepth, isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
 import { HorizontalRenderRange, TableSide } from './interfaces'
 import { Classes } from './styles'

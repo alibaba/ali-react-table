@@ -1,7 +1,6 @@
-import React from 'react'
-import { isLeafNode } from '../../common-utils'
-import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { TableTransform } from 'ali-react-table'
+import React, { useState } from 'react'
+import { isLeafNode, traverseColumn } from '../utils'
 
 export interface ColumnHoverOptions {
   hoverColor?: string
@@ -9,12 +8,12 @@ export interface ColumnHoverOptions {
   onChangeHoverColIndex(nextColIndex: number): void
 }
 
-export function columnHover({
+export function makeColumnHoverTransform({
   hoverColor = '#f5f5f5',
   hoverColIndex,
   onChangeHoverColIndex,
 }: ColumnHoverOptions): TableTransform {
-  return transformColumn((col, { range }) => {
+  return traverseColumn((col, { range }) => {
     const colIndexMatched = range.start <= hoverColIndex && hoverColIndex < range.end
 
     if (!isLeafNode(col)) {
@@ -46,4 +45,12 @@ export function columnHover({
       },
     }
   })
+}
+
+export function useColumnHoverTransform({
+  hoverColor,
+  defaultHoverColIndex = -1,
+}: { hoverColor?: string; defaultHoverColIndex?: number } = {}) {
+  const [hoverColIndex, onChangeHoverColIndex] = useState(defaultHoverColIndex)
+  return makeColumnHoverTransform({ hoverColor, hoverColIndex, onChangeHoverColIndex })
 }

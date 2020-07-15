@@ -1,6 +1,5 @@
-import { isLeafNode } from '../../common-utils'
-import { ArtColumn } from '../../interfaces'
-import { TableTransform } from '../interfaces'
+import { isLeafNode } from './index'
+import { ArtColumn, TableTransform } from '../interfaces'
 
 type NormalizeAsArrayInput<T> = null | T | T[]
 
@@ -14,7 +13,7 @@ function normalizeAsArray(input: NormalizeAsArrayInput<ArtColumn>): ArtColumn[] 
   }
 }
 
-export default function transformColumn(
+export default function traverseColumn(
   fn: (
     field: ArtColumn,
     ctx: { range: { start: number; end: number }; dataSource: any[] },

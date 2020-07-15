@@ -1,8 +1,8 @@
 import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { traverseColumn } from '../utils'
 
-export function orderField(startOrder = 1): TableTransform {
-  return transformColumn((column) => {
+export function makeOrderFieldTransform(startOrder = 1): TableTransform {
+  return traverseColumn((column) => {
     if (column.features?.order || column.features?.orderField) {
       return {
         ...column,

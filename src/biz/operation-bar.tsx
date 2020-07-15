@@ -1,11 +1,10 @@
 import { Column16, Download16 } from '@carbon/icons-react'
 import React, { ReactNode, useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { collectNodes } from '../common-utils'
-import { ArtColumn } from '../interfaces'
-import { visible } from './common-transforms'
+import { collectNodes } from '../utils'
+import { ArtColumn, TableTransform } from '../interfaces'
+import { makeVisibleTransform } from '../transforms'
 import CustomColumnsDialog from './CustomColumnsDialog'
-import { TableTransform } from './interfaces'
 
 const OperationBarDiv: any = styled.div`
   z-index: 50;
@@ -115,7 +114,7 @@ export function useOperationBar({
           style={{ '--action-color': actionColor } as any}
         />,
       )
-      transforms.push(visible(visibleCodes.concat(codeGroups.enforceVisible)))
+      transforms.push(makeVisibleTransform(visibleCodes.concat(codeGroups.enforceVisible)))
     } else if (feat.type === 'export') {
       nodes.push(
         <span key={index} className="item action" onClick={feat.onExport}>

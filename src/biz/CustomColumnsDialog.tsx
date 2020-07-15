@@ -1,7 +1,7 @@
 import React, { CSSProperties, ReactNode, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { STYLED_VERSION } from '../base-table/utils'
-import { isLeafNode } from '../common-utils'
+import { isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
 
 const TreeDiv = styled.div`
@@ -134,7 +134,7 @@ function CustomColumnsDialog({
 
   if (process.env.NODE_ENV !== 'production' && STYLED_VERSION === 'v3' && drawerComponentProp == null) {
     console.warn(
-      'ali-react-table 自定义列对话框组件在配合 styled-components@3 使用时，' +
+      '[ali-react-table] 自定义列对话框组件在配合 styled-components@3 使用时，' +
         '请从上层传入 drawerComponent 以提供经过样式处理的 Drawer 组件\n' +
         '\n' +
         'const StyledDrawer = CustomColumnsDialog.makeStyledDrawer(Drawer)\n' +

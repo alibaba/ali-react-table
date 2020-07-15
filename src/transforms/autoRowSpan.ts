@@ -1,15 +1,13 @@
-import { safeGetValue } from '../../common-utils/internals'
-import isLeafNode from '../../common-utils/isLeafNode'
-import { SpanRect } from '../../interfaces'
-import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { SpanRect, TableTransform } from '../interfaces'
+import { safeGetValue } from '../internals'
+import { isLeafNode, traverseColumn } from '../utils'
 
 function isIdentity(x: any, y: any) {
   return x === y
 }
 
-export function autoRowSpan(): TableTransform {
-  return transformColumn((col, { dataSource, range }) => {
+export function makeAutoRowSpanTransform(): TableTransform {
+  return traverseColumn((col, { dataSource, range }) => {
     if (!col.features?.autoRowSpan) {
       return col
     }

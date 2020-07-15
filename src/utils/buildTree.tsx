@@ -1,4 +1,4 @@
-import { flatMap } from '../../common-utils/others'
+import { flatMap } from './others'
 
 type WithChildren<T> = T & { children?: WithChildren<T>[] }
 

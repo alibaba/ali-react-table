@@ -1,7 +1,6 @@
-import React from 'react'
-import { isLeafNode } from '../../common-utils'
+import React, { useState } from 'react'
 import { TableTransform } from '../interfaces'
-import { transformColumn } from '../utils'
+import { isLeafNode, traverseColumn } from '../utils'
 
 const EMPTY_RANGE = { start: -1, end: -1 }
 
@@ -52,13 +51,13 @@ export interface ColumnRangeHoverOptions {
   onChangeHoverRange(nextColIndexRange: HoverRange): void
 }
 
-export function columnRangeHover({
+export function makeColumnRangeHoverTransform({
   hoverColor = '#f5f5f5',
   headerHoverColor = '#ddd',
   hoverRange,
   onChangeHoverRange,
 }: ColumnRangeHoverOptions): TableTransform {
-  return transformColumn((col, { range: colRange }) => {
+  return traverseColumn((col, { range: colRange }) => {
     if (!isLeafNode(col)) {
       if (headerHoverColor == null) {
         return col
@@ -98,4 +97,13 @@ export function columnRangeHover({
       },
     }
   })
+}
+
+export function useColumnHoverRangeTransform({
+  hoverColor,
+  headerHoverColor,
+  defaultHoverRange = { start: 0, end: 0 },
+}: Omit<ColumnRangeHoverOptions, 'hoverRange' | 'onChangeHoverRange'> & { defaultHoverRange?: HoverRange } = {}) {
+  const [hoverRange, onChangeHoverRange] = useState(defaultHoverRange)
+  return makeColumnRangeHoverTransform({ hoverColor, headerHoverColor, hoverRange, onChangeHoverRange })
 }

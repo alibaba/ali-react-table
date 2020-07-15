@@ -1,4 +1,4 @@
-import { ArtColumn } from '../interfaces'
+import { ArtColumn } from './interfaces'
 
 export function safeRenderHeader(column: ArtColumn) {
   return column.title ?? column.name

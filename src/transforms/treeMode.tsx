@@ -1,10 +1,9 @@
 import * as CarbonIcons from '@carbon/icons-react'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { isLeafNode as standardIsLeafNode } from '../../common-utils'
-import { safeRender } from '../../common-utils/internals'
-import { ArtColumn } from '../../interfaces'
-import { TableTransform } from '../interfaces'
+import { isLeafNode as standardIsLeafNode } from '../utils'
+import { safeRender } from '../internals'
+import { ArtColumn, TableTransform } from '../interfaces'
 
 const ExpansionCell = styled.div`
   display: flex;
@@ -42,7 +41,7 @@ export interface TreeModeOptions {
   isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 }
 
-export function treeMode({
+export function makeTreeModeTransform({
   onChangeOpenKeys,
   openKeys,
   primaryKey,
@@ -150,4 +149,14 @@ export function treeMode({
       return [{ ...firstCol, render, getCellProps }, ...others]
     }
   }
+}
+
+export function useTreeModeTransform({
+  isLeafNode,
+  indentSize,
+  primaryKey,
+  defaultOpenKeys = [],
+}: Omit<TreeModeOptions, 'openKeys' | 'onChangeOpenKeys'> & { defaultOpenKeys?: string[] }) {
+  const [openKeys, onChangeOpenKeys] = useState(defaultOpenKeys)
+  return makeTreeModeTransform({ indentSize, primaryKey, isLeafNode, openKeys, onChangeOpenKeys })
 }

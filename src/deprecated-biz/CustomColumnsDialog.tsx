@@ -61,6 +61,7 @@ const Footer = styled.footer`
   margin-top: auto;
 `
 
+/** @deprecated 表格操作栏与自定义列对话框 相关 API 将会在 1.0 版本被移除，请勿使用 */
 export interface CustomColumnsDialogProps {
   defaultVisible?: boolean
   trigger(onOpen: () => void): ReactNode
@@ -113,7 +114,7 @@ function makeStyledDrawer(Drawer: any) {
 
 const StyledDiv = makeStyledDrawer('div')
 
-/** 自定义列对话框，支持 hippo（已经完成） / fusion（开发中） 两种组件体系 */
+/** @deprecated 表格操作栏与自定义列对话框 相关 API 将会在 1.0 版本被移除，请勿使用 */
 function CustomColumnsDialog({
   trigger,
   defaultVisible,

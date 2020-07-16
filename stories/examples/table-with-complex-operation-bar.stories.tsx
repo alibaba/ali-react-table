@@ -9,8 +9,8 @@ import {
   proto,
   traverseColumn,
   useColumnHoverTransform,
-  useOperationBar,
 } from 'ali-react-table'
+import { useOperationBar } from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio } from '../assets/format'

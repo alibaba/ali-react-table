@@ -6,7 +6,6 @@ import {
   ArtColumn,
   BaseTable,
   collectNodes,
-  CustomColumnsDialog,
   exportTableAsExcel,
   makeAutoRowSpanTransform,
   makeBuildTreeTransform,
@@ -21,10 +20,10 @@ import {
   SortItem,
   useColumnHoverRangeTransform,
   useColumnHoverTransform,
-  useOperationBar,
   useSortTransform,
   useTreeModeTransform,
 } from 'ali-react-table'
+import { CustomColumnsDialog, useOperationBar } from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
 import ReactJson from 'react-json-view'
 import { getAppTrafficData } from '../../assets/cdn-data'

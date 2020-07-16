@@ -44,6 +44,7 @@ const OperationBarDiv: any = styled.div`
   }
 `
 
+/** @deprecated 表格操作栏与自定义列对话框 相关 API 将会在 1.0 版本被移除，请勿使用 */
 export type TableOperationFeature =
   | { type: 'separator' }
   | { type: 'custom-columns'; drawerComponent?: any }
@@ -54,6 +55,7 @@ export type TableOperationFeature =
 
 type HTMLDivProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
+/** @deprecated 表格操作栏与自定义列对话框 相关 API 将会在 1.0 版本被移除，请勿使用 */
 export function useOperationBar({
   features,
   columns,

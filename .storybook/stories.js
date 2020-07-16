@@ -8,8 +8,6 @@ const baseTable = [
 const biz = [
   'biz/biz.stories.mdx',
   'biz/common-transforms/**/*.stories.mdx',
-  'biz/hooks/**/*.stories.mdx',
-  'biz/components/**/*.stories.mdx',
   'biz/examples/**/*.stories.tsx',
 ]
 
@@ -30,7 +28,7 @@ const stories = [
   ...biz,
   ...pivot,
   'tools/**/*.stories.mdx',
-  'examples/**/*.stories.tsx',
+  'examples/**/*.stories.{tsx,mdx}',
 ].map((file) => `../stories/${file}`)
 
 module.exports = stories

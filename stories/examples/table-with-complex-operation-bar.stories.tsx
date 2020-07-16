@@ -1,4 +1,3 @@
-import * as fusion from '@alifd/next'
 import {
   applyTransforms,
   ArtColumn,
@@ -10,11 +9,11 @@ import {
   traverseColumn,
   useColumnHoverTransform,
 } from 'ali-react-table'
-import { useOperationBar } from 'ali-react-table/biz'
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio } from '../assets/format'
 import { FusionStyles } from '../assets/fusion-style'
+import { useOperationBar } from './operation-bar-and-custom-columns-dialog/components'
 
 export default { title: '示例 / 表格操作栏示例' }
 
@@ -125,7 +124,6 @@ export function 表格操作栏示例() {
       { type: 'custom-columns' },
       { type: 'custom', node: `共 ${state.isLoading ? '-' : state.data.length} 条数据` },
     ],
-    components: fusion,
     columns,
   })
 

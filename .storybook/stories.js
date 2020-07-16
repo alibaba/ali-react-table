@@ -26,8 +26,8 @@ const stories = [
   'changelog.stories.mdx',
   ...baseTable,
   ...biz,
-  ...pivot,
   'tools/**/*.stories.mdx',
+  ...pivot,
   'examples/**/*.stories.{tsx,mdx}',
 ].map((file) => `../stories/${file}`)
 

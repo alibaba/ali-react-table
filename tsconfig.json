@@ -15,8 +15,7 @@
     "experimentalDecorators": true,
     "paths": {
       "ali-react-table": ["src/ali-react-table.ts"],
-      "ali-react-table/pivot": ["src/ali-react-table-pivot.ts"],
-      "ali-react-table/biz": ["src/ali-react-table-biz.ts"]
+      "ali-react-table/pivot": ["src/ali-react-table-pivot.ts"]
     }
   },
   "include": ["src/**/*", "stories/**/*"]

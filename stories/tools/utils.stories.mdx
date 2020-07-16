@@ -1,0 +1,210 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="工具 / 通用工具函数" />
+
+## 通用工具函数
+
+`ali-react-table` 导出了一部分内部的工具函数，方便上层调用。
+
+<hr />
+
+### `applyTransforms`
+
+API: `function applyTransforms<T>(input: T, ...transforms: Transform<T>[]): T`
+
+以 input 作为输入，按序使用 transform。transform 是一个简单的纯函数，transform 的参数类型与返回值类型相同
+
+`applyTransform(input, f1, f2, f3)` 等价于 `f3(f2(f1(input)))`.
+
+```typescript
+// 相关源码参考
+type Transform<T> = (input: T) => T
+
+function applyTransforms<T>(input: T, ...transforms: Transform<T>[]) {
+  return transforms.reduce((v, fn) => fn(v), input)
+}
+```
+
+### `buildTree`
+
+API: `function buildTree<T>(idProp: string, parentIdProp: string, items: T[]): WithChildren<T>[]`
+
+根据 `idProp` 与 `parentIdProp` 从**平铺的对象数组**中构建对应的**树**；
+
+- 当 `A[parentIdProp] === B[idProp]` 时，对象 A 会被移动到对象 B 的 children 字段中；
+- 当一个对象的 `parentIdProp` 不与其他对象的 `idProp` 字段相等时，该对象被作为树的顶层节点。
+
+```typescript
+const array = [
+  { id: 'node-1', parent: 'root', name: '我是节点1' },
+  { id: 'node-2', parent: 'root', name: '我是节点2' },
+  { id: 'node-3', parent: 'node-2', name: '我是节点3' },
+  { id: 'node-4', parent: 'node-2', name: '我是节点4' },
+  { id: 'node-5', parent: 'node-4', name: '我是节点5' },
+]
+
+const tree = buildTree('id', 'parent', array)
+
+expect(tree).toEqual([
+  { id: 'node-1', parent: 'root', name: '我是节点1' },
+  {
+    id: 'node-2',
+    parent: 'root',
+    name: '我是节点2',
+    children: [
+      { id: 'node-3', parent: 'node-2', name: '我是节点3' },
+      {
+        id: 'node-4',
+        parent: 'node-2',
+        name: '我是节点4',
+        children: [{ id: 'node-5', parent: 'node-3', name: '我是节点5' }],
+      },
+    ],
+  },
+])
+```
+
+### `collectNodes`
+
+收集一棵树上的节点
+
+API: `function collectNodes<T extends AbstractTreeNode>(nodes: T[], order: 'pre' | 'post' | 'leaf-only'): T[]`
+
+- pre: 前序遍历
+- post: 后续遍历
+- leaf-only: 仅收集叶子节点
+
+```typescript
+const tree = [
+  { id: 'node-1', parent: 'root', name: '我是节点1' },
+  {
+    id: 'node-2',
+    parent: 'root',
+    name: '我是节点2',
+    children: [
+      { id: 'node-3', parent: 'node-2', name: '我是节点3' },
+      {
+        id: 'node-4',
+        parent: 'node-2',
+        name: '我是节点4',
+        children: [{ id: 'node-5', parent: 'node-3', name: '我是节点5' }],
+      },
+    ],
+  },
+]
+
+const result = collectNodes(tree, 'pre')
+
+expect(result).toEqual([
+  { id: 'node-1', parent: 'root', name: '我是节点1' },
+  {
+    id: 'node-2',
+    parent: 'root',
+    name: '我是节点2',
+    children: [
+      { id: 'node-3', ...others },
+      { id: 'node-4', ...others },
+    ],
+  },
+  { id: 'node-3', parent: 'node-2', name: '我是节点3' },
+  { id: 'node-4', parent: 'node-2', name: '我是节点4', ...others },
+  { id: 'node-5', parent: 'node-3', name: '我是节点5' },
+])
+```
+
+### `exportTableAsExcel`
+
+将表格数据导出为 Excel 文件。
+
+```typescript
+function exportTableAsExcel(
+  // 一般情况下为 xlsxPackage 参数传入 require('xlsx') 即可
+  xlsxPackage: typeof XLSX_NS,
+  dataSource: any[],
+  columns: ArtColumn[],
+  filename: string,
+): void
+```
+
+「表格导出」与「表格渲染」的不同点：
+
+- 单元格内容：
+  - BaseTable 渲染时，会使用 `column.render` 来渲染单元格中的内容
+  - exportTableAsExcel 只会使用 `column.code` 或是 `column.getValue` 来获取表格中每个单元格的内容
+- 列隐藏：
+  - 当 `column.hidden` 为 true 时，BaseTable 会隐藏相应的列
+  - exportTableAsExcel 总是会导出所有的列
+- 支持的表格特性：
+  - BaseTable 支持所有表格特性
+  - 表格导出仅支持一部分表格特性：
+    - 支持 表头分组
+    - 支持 单元格合并
+    - **不支持** 单元格样式
+
+### `getTreeDepth`
+
+API: `function getTreeDepth(nodes: AbstractTreeNode[]): number`
+
+获取一棵树的高度/深度
+
+### `groupBy`
+
+API: `function groupBy<T, K extends string>(list: T[], iteratee: (t: T) => K): { [key in K]: T[] }`
+
+对 list 中的元素进行分组，iteratee 的返回值相同的元素将被分到同一个分组。
+
+### `isLeafNode`
+
+判断一个节点是否为叶子节点
+
+```typescript
+// 相关源码参考
+interface AbstractTreeNode {
+  children?: AbstractTreeNode[]
+}
+
+function isLeafNode<N extends AbstractTreeNode>(node: N) {
+  return node.children == null || node.children.length === 0
+}
+```
+
+### `layeredSort`
+
+API: `function layeredSort<T extends AbstractTreeNode>(array: T[], compare: (x: T, y: T) => number): T[]`
+
+对树状结构的数据进行排序。
+
+`layeredSort` 与 `Array#sort` 类似。但 layeredSort 是一个递归的过程，针对树上的每一个父节点，该函数都会对其子节点数组（children) 进行排序.
+
+### `mergeCellProps`
+
+API: `function mergeCellProps(base: CellProps, extra: CellProps): CellProps`
+
+合并两个 cellProps（单元格属性）对象。
+
+mergeCellProps 会按照「单元格属性的性质」来合并两个对象：
+
+- 对于 数字、字符串、布尔值类型的字段，extra 中的字段值将直接覆盖 base 中的字段值
+- 对于函数/方法类型的字段（对应单元格的事件回调函数），mergeCellProps 将生成一个新的函数，新函数将按序调用 base 和 extra 中的方法
+- 对于普通对象类型的字段（一般对应单元格的样式），mergeCellProps 将调用 lodash.merge 来合并字段值
+
+### `proto`
+
+详见 <LinkTo kind="工具 / proto" story="page">proto 文档</LinkTo>
+
+### `smartCompare`
+
+API: `(x: any, y: any) => number`
+
+比较字符串、数字、null 或是数组，返回一个负数表示「x 小于 y」，返回 0 表示「x 等于 y」，返回一个正数表示「x 大于 y」。
+
+- 对于字符串将比较两者的字典序；
+- 对数字将比较两者大小；
+- null 值在比较时总是小于另一个值；
+- 对于数组来说，将逐个比较数组中的元素，第一个不相等的比较结果将作为整个数组的比较结果
+  - 数组的比较可参考 python 中的元祖比较：https://stackoverflow.com/questions/5292303/how-does-tuple-comparison-work-in-python
+
+### `traverseColumn`
+
+todo todo

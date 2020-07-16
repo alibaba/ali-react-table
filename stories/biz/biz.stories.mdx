@@ -3,11 +3,11 @@ import LinkTo from '@storybook/addon-links/react'
 
 <Meta title="表格功能拓展 / 文档" />
 
-# 表格功能拓展
+# 表格常见功能
 
-ali-react-table/biz 提供了业务开发中经常需要用到的一些功能，部分功能采用 **统一的拓展机制** 进行实现与提供，其他功能由导出函数 / React 组件 / React hooks 进行提供。
+ali-react-table 提供了业务开发中经常需要用到的一些功能，这些功能采用 **统一的拓展机制** 进行实现。
 
-ali-react-table/biz 提供的常用功能如下：
+ali-react-table 提供的常用功能如下：
 
 - <LinkTo kind="表格功能拓展 / 常用功能 / 树状模式" story="page">
     树状模式
@@ -25,20 +25,14 @@ ali-react-table/biz 提供的常用功能如下：
     拖拽调整列宽
   </LinkTo>
 - <LinkTo kind="表格功能拓展 / 常用功能 / 其他功能" story="page">
-    commonTransforms 中的其他功能
-  </LinkTo>
-- <LinkTo kind="表格功能拓展 / hooks / 表格操作栏" story="page">
-    hooks：表格操作栏（包括自定列功能）
-  </LinkTo>
-- <LinkTo kind="表格功能拓展 / react组件 / 自定义列对话框" story="page">
-    React 组件：自定义列对话框
+    其他功能
   </LinkTo>
 
 ## 统一拓展机制
 
 `BaseTable` 基于 dataSource 和 column 渲染表格，对 dataSource/columns 进行一些包装和替换，可以实现丰富的表格特性：包括排序、树状模式、过滤等。
 
-ali-react-table/biz 基于 `TableTransform` 来对 BaseTable 进行功能增强。`Transform<T>` 与 `TableTransform` 的接口如下：
+ali-react-table 基于 `TableTransform` 来对 BaseTable 进行功能增强。`Transform<T>` 与 `TableTransform` 的接口如下：
 
 ```typescript
 type Transform<T> = (input: T) => T
@@ -55,12 +49,10 @@ type TableTransform = Transform<{
 
 ## 使用 transform
 
-ali-react-table/biz 导出了 applyTransforms 方法来应用多个 transform 🌟：
+ali-react-table 导出了 applyTransforms 方法来应用多个 transform 🌟：
 
 ```jsx
-import { BaseTable } from 'ali-react-table'
-// 注意导入的路径
-import { applyTransforms } from 'ali-react-table/biz'
+import { BaseTable, applyTransforms } from 'ali-react-table'
 
 const renderData = applyTransforms(
   // 输入放在第一个参数
@@ -104,7 +96,7 @@ function doubleDataSourceTransform({ columns, dataSource }) {
 
 ## 自定义 transform 辅助函数 `traverseColumn`
 
-实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 ali-react-table/biz 提供了 `traverseColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
+实现自定义 transform 需要注意 column 是树状结构（`column.children` 存放了子节点），我们往往需要对 column 进行递归的处理。为此 ali-react-table 提供了 `traverseColumn` 方法用来简化创建针对列的 transform。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform，接口如下：
 
 ```typescript
 function traverseColumn(fn: (column: ArtColumn) => null | ArtColumn | ArtColumn[]): TableTransform

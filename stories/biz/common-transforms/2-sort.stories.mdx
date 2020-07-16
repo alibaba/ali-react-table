@@ -5,7 +5,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 # 排序
 
-本页文档将介绍 ali-react-table/biz 提供的排序的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="表格排序-单列">表格功能拓展-功能拓展示例</LinkTo> 查看。
+本页文档将介绍 ali-react-table 提供的排序的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="表格排序-单列">表格功能拓展-功能拓展示例</LinkTo> 查看。
 
 ## sort 表格排序
 
@@ -45,10 +45,10 @@ export interface SortOptions {
 
 ### sort 非受控用法
 
-ali-react-table/biz 也提供了非受控的使用方式，useSortTransform 是一个自定义 React hooks，其参数与 commonTransforms.sort 类似，但移除了 sorts/onChangeSorts，同时新增了 defaultSorts 参数（默认为空数组）.
+ali-react-table 也提供了非受控的使用方式，useSortTransform 是一个自定义 React hooks，其参数与 commonTransforms.sort 类似，但移除了 sorts/onChangeSorts，同时新增了 defaultSorts 参数（默认为空数组）.
 
 ```javascript
-import { useSortTransform } from 'ali-react-table/biz'
+import { useSortTransform } from 'ali-react-table'
 
 function MyComponent() {
   const sortTransform = useSortTransform({

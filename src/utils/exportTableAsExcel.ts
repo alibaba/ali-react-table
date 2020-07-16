@@ -54,13 +54,7 @@ function sanitizeCellDatum(value: any): XlsxCellDatum {
   }
 }
 
-/** 兼容 ArtColumn 的 Excel 导出函数。
- * 该函数会调用 `column.getValue`（如果该方法不为空的话）来获取表格中每个单元格的数据.
- *
- * * biz features: 当 `col.features.noExport` 为 true 时，导出文件时将忽略该列
- * * 支持分组表头
- * * 暂不支持 rowSpan / colSpan
- * */
+/** 根据 BaseTable 的 dataSource 和 column，将表格数据导出为 Excel 文件 */
 export default function exportTableAsExcel(
   xlsxPackage: typeof XLSX_NS,
   dataSource: any[],

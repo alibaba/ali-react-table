@@ -5,7 +5,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 # 树状模式
 
-本页文档将介绍 ali-react-table/biz 提供的树状模式的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="树状表格">表格功能拓展-功能拓展示例</LinkTo> 查看。
+本页文档将介绍 ali-react-table 提供的树状模式的相关 API。本页中的示例源码可在 <LinkTo kind="表格功能拓展 / 功能拓展示例" story="树状表格">表格功能拓展-功能拓展示例</LinkTo> 查看。
 
 ## buildTree 从列表数据中构建树状数据
 
@@ -13,7 +13,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 根据数据中的 id/parentId 字段，将 dataSource 转换为树状结构，树状结构下，父节点的 children 数组中包含对其子节点的引用。
 
-ali-react-table/biz 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
+ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
 
 如果你已经有了树状结构的数据，那就可以跳过 buildTree 的调用，直接使用 treeMode 来进行渲染。
 
@@ -51,10 +51,10 @@ export interface TreeModeOptions {
 
 ### treeMode 非受控用法
 
-ali-react-table/biz 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 commonTransforms.treeMode 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
+ali-react-table 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 commonTransforms.treeMode 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
 
 ```javascript
-import { useTreeModeTransform } from 'ali-react-table/biz'
+import { useTreeModeTransform } from 'ali-react-table'
 
 function MyComponent() {
   const treeModeTransform = useTreeModeTransform({ primaryKey: 'id', defaultOpenKeys: ['B2C'] })

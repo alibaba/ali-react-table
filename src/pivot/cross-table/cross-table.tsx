@@ -2,6 +2,7 @@ import cx from 'classnames'
 import React, { ComponentType, ReactNode } from 'react'
 import styled from 'styled-components'
 import { BaseTable, BaseTableProps, Classes } from '../../base-table'
+import { CellProps } from '../../interfaces'
 import buildCrossTable from './buildCrossTable'
 import { CrossTableClasses, ROW_KEY } from './constants'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
@@ -55,7 +56,7 @@ export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'co
     topNode: TopCrossTreeNode,
     leftDepth: number,
     topDepth: number,
-  ): React.TdHTMLAttributes<HTMLTableDataCellElement>
+  ): CellProps
 }
 
 CrossTable.defaultProps = {

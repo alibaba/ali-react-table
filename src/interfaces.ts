@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react'
 
 export type ArtColumnAlign = 'left' | 'center' | 'right'
 
+export type CellProps = React.TdHTMLAttributes<HTMLTableCellElement>
+
 export interface ArtColumnStaticPart {
   /** 列的名称 */
   name: string
@@ -25,7 +27,7 @@ export interface ArtColumnStaticPart {
   lock?: boolean
 
   /** 表头单元格的 props */
-  headerCellProps?: React.ThHTMLAttributes<HTMLTableHeaderCellElement>
+  headerCellProps?: CellProps
 
   /** 功能开关 */
   features?: { [key: string]: any }
@@ -39,7 +41,7 @@ export interface ArtColumnDynamicPart {
   render?(value: any, record: any, rowIndex: number): ReactNode
 
   /** 自定义的获取单元格 props 的方法 */
-  getCellProps?(value: any, record: any, rowIndex: number): React.TdHTMLAttributes<HTMLTableDataCellElement>
+  getCellProps?(value: any, record: any, rowIndex: number): CellProps
 
   /** 自定义的获取单元格 SpanRect 方法 */
   getSpanRect?(value: any, record: any, rowIndex: number): SpanRect

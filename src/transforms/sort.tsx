@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
 import { safeGetValue, safeRenderHeader } from '../internals'
-import { collectNodes, compareStringOrNumber, isLeafNode, layeredSort } from '../utils'
+import { collectNodes, smartCompare,isLeafNode, layeredSort } from '../utils'
 
 type IconComponent = typeof CarbonIcons.Number_116
 
@@ -176,7 +176,7 @@ export function makeSortTransform({
             continue
           }
           const sortable = column.features.sortable
-          const compareFn = typeof sortable === 'function' ? sortable : compareStringOrNumber
+          const compareFn = typeof sortable === 'function' ? sortable : smartCompare
           const xValue = safeGetValue(column, x, -1)
           const yValue = safeGetValue(column, y, -1)
           const cmp = compareFn(xValue, yValue)

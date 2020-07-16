@@ -20,13 +20,10 @@ function deprecate<T>(fn: T, oldName: string, newName: string): T {
   }) as any
 }
 
-import { traverseColumn, compareStringOrNumber } from './ali-react-table'
+import { traverseColumn } from './ali-react-table'
 
 /** @deprecated [ali-react-table] transformColumn 已经过时, 请使用 traverseColumn 代替 */
 export const transformColumn = deprecate(traverseColumn, 'transformColumn', 'traverseColumn')
-
-/** @deprecated [ali-react-table] smartCompare 已经过时, 请使用 compareStringOrNumber 代替 */
-export const smartCompare = deprecate(compareStringOrNumber, 'smartCompare', 'compareStringOrNumber')
 
 import {
   makeAutoRowSpanTransform,

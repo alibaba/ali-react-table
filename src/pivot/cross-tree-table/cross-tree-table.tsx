@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import { noop } from 'rxjs'
 import { BaseTable, BaseTableProps } from '../../base-table'
+import { CellProps } from '../../interfaces'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, ROW_KEY, TopCrossTreeNode } from '../cross-table'
 import buildCrossTreeTable from './buildCrossTreeTable'
 
@@ -29,7 +30,7 @@ export interface CrossTreeTableProps extends Omit<BaseTableProps, 'dataSource' |
     topNode: TopCrossTreeNode,
     leftDepth: number,
     topDepth: number,
-  ): React.TdHTMLAttributes<HTMLTableDataCellElement>
+  ): CellProps
 }
 
 export default class CrossTreeTable extends React.Component<CrossTreeTableProps, { openKeys: string[] }> {

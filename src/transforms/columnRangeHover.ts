@@ -1,47 +1,15 @@
-import React, { useState } from 'react'
-import { TableTransform } from '../interfaces'
-import { isLeafNode, traverseColumn } from '../utils'
+import { useState } from 'react'
+import { CellProps, TableTransform } from '../interfaces'
+import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
 
-const EMPTY_RANGE = { start: -1, end: -1 }
+const EMPTY_RANGE = {
+  start: -1,
+  end: -1,
+} as const
 
 export type HoverRange = {
   start: number
   end: number
-}
-
-type ReactTdAttributes = React.TdHTMLAttributes<HTMLTableDataCellElement>
-
-export function attachColumnHoverCellProps(
-  cellProps: ReactTdAttributes = {},
-  {
-    onChangeHoverRange,
-    hoverRange,
-    colRange,
-    hoverColor,
-  }: {
-    onChangeHoverRange: (nextColIndexRange: HoverRange) => void
-    hoverRange: HoverRange
-    colRange: HoverRange
-    hoverColor: string
-  },
-): ReactTdAttributes {
-  const colIndexMatched = colRange.end > hoverRange.start && hoverRange.end > colRange.start
-
-  return {
-    ...cellProps,
-    onMouseEnter(e) {
-      cellProps.onMouseEnter?.(e)
-      onChangeHoverRange(colRange)
-    },
-    onMouseLeave(e) {
-      cellProps.onMouseLeave?.(e)
-      onChangeHoverRange(EMPTY_RANGE)
-    },
-    style: {
-      ...cellProps.style,
-      backgroundColor: colIndexMatched ? hoverColor : cellProps?.style?.backgroundColor,
-    },
-  }
 }
 
 export interface ColumnRangeHoverOptions {
@@ -58,6 +26,8 @@ export function makeColumnRangeHoverTransform({
   onChangeHoverRange,
 }: ColumnRangeHoverOptions): TableTransform {
   return traverseColumn((col, { range: colRange }) => {
+    const match = colRange.end > hoverRange.start && hoverRange.end > colRange.start
+
     if (!isLeafNode(col)) {
       if (headerHoverColor == null) {
         return col
@@ -65,11 +35,14 @@ export function makeColumnRangeHoverTransform({
 
       return {
         ...col,
-        headerCellProps: attachColumnHoverCellProps(col.headerCellProps, {
-          onChangeHoverRange,
-          hoverColor: headerHoverColor,
-          colRange,
-          hoverRange,
+        headerCellProps: mergeCellProps(col.headerCellProps, {
+          onMouseEnter() {
+            onChangeHoverRange(colRange)
+          },
+          onMouseLeave() {
+            onChangeHoverRange(EMPTY_RANGE)
+          },
+          style: { backgroundColor: match ? headerHoverColor : undefined },
         }),
       }
     }
@@ -78,21 +51,27 @@ export function makeColumnRangeHoverTransform({
 
     return {
       ...col,
-      headerCellProps: attachColumnHoverCellProps(col.headerCellProps, {
-        onChangeHoverRange,
-        hoverColor: headerHoverColor,
-        colRange,
-        hoverRange,
+      headerCellProps: mergeCellProps(col.headerCellProps, {
+        onMouseEnter() {
+          onChangeHoverRange(colRange)
+        },
+        onMouseLeave() {
+          onChangeHoverRange(EMPTY_RANGE)
+        },
+        style: { backgroundColor: match ? headerHoverColor : undefined },
       }),
 
-      getCellProps(value: any, record: any, rowIndex: number): ReactTdAttributes {
-        const prevCellProps = prevGetCellProps?.(value, record, rowIndex) ?? {}
+      getCellProps(value: any, record: any, rowIndex: number): CellProps {
+        const prevCellProps = prevGetCellProps?.(value, record, rowIndex)
 
-        return attachColumnHoverCellProps(prevCellProps, {
-          onChangeHoverRange,
-          hoverColor,
-          colRange,
-          hoverRange,
+        return mergeCellProps(prevCellProps, {
+          onMouseEnter() {
+            onChangeHoverRange(colRange)
+          },
+          onMouseLeave() {
+            onChangeHoverRange(EMPTY_RANGE)
+          },
+          style: { backgroundColor: match ? hoverColor : undefined },
         })
       },
     }
@@ -102,7 +81,7 @@ export function makeColumnRangeHoverTransform({
 export function useColumnHoverRangeTransform({
   hoverColor,
   headerHoverColor,
-  defaultHoverRange = { start: 0, end: 0 },
+  defaultHoverRange = EMPTY_RANGE,
 }: Omit<ColumnRangeHoverOptions, 'hoverRange' | 'onChangeHoverRange'> & { defaultHoverRange?: HoverRange } = {}) {
   const [hoverRange, onChangeHoverRange] = useState(defaultHoverRange)
   return makeColumnRangeHoverTransform({ hoverColor, headerHoverColor, hoverRange, onChangeHoverRange })

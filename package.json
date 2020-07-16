@@ -36,8 +36,10 @@
   },
   "dependencies": {
     "@types/classnames": "^2.2.9",
+    "@types/lodash.merge": "^4.6.6",
     "classnames": "^2.2.6",
     "dvt-aggregation": "^0.2.7",
+    "lodash.merge": "^4.6.2",
     "react": "^16.9.0",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "^6.5.4",

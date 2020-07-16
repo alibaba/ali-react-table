@@ -1,6 +1,6 @@
-import { TableTransform } from 'ali-react-table'
 import React, { useState } from 'react'
-import { isLeafNode, traverseColumn } from '../utils'
+import { TableTransform } from '../interfaces'
+import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
 
 export interface ColumnHoverOptions {
   hoverColor?: string
@@ -14,34 +14,28 @@ export function makeColumnHoverTransform({
   onChangeHoverColIndex,
 }: ColumnHoverOptions): TableTransform {
   return traverseColumn((col, { range }) => {
-    const colIndexMatched = range.start <= hoverColIndex && hoverColIndex < range.end
-
     if (!isLeafNode(col)) {
       return col
     }
+
+    const colIndexMatched = range.start <= hoverColIndex && hoverColIndex < range.end
 
     const prevGetCellProps = col.getCellProps
 
     return {
       ...col,
-      getCellProps(value: any, record: any, rowIndex: number): React.TdHTMLAttributes<HTMLTableDataCellElement> {
-        const prevCellProps = prevGetCellProps?.(value, record, rowIndex) ?? {}
+      getCellProps(value: any, record: any, rowIndex: number) {
+        const prevCellProps = prevGetCellProps?.(value, record, rowIndex)
 
-        return {
-          ...prevCellProps,
-          style: {
-            ...prevCellProps.style,
-            backgroundColor: colIndexMatched ? hoverColor : undefined,
-          },
-          onMouseEnter(e) {
-            prevCellProps.onMouseEnter?.(e)
+        return mergeCellProps(prevCellProps, {
+          style: { backgroundColor: colIndexMatched ? hoverColor : undefined },
+          onMouseEnter() {
             onChangeHoverColIndex(range.start)
           },
-          onMouseLeave(e) {
-            prevCellProps.onMouseLeave?.(e)
+          onMouseLeave() {
             onChangeHoverColIndex(-1)
           },
-        }
+        })
       },
     }
   })

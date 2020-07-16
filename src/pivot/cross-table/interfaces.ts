@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
-import { ArtColumnStaticPart } from '../../interfaces'
+import { ReactNode } from 'react'
+import { ArtColumnStaticPart, CellProps } from '../../interfaces'
 
 export interface CrossTableIndicator extends ArtColumnStaticPart {
   code: string
@@ -12,7 +12,7 @@ export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hid
   render?(leftNode: LeftCrossTreeNode, leftDepth: number): ReactNode
 
   /** 自定义的获取单元格 props 的方法 */
-  getCellProps?(leftNode: LeftCrossTreeNode, leftDepth: number): React.TdHTMLAttributes<HTMLTableCellElement>
+  getCellProps?(leftNode: LeftCrossTreeNode, leftDepth: number): CellProps
 }
 
 export interface CrossTreeNode {

@@ -28,7 +28,7 @@ import { FusionStyles } from '../../assets/fusion-style'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
 
 export default {
-  title: '表格功能拓展 / 功能拓展示例',
+  title: '表格常见功能 / 常见功能示例',
   parameters: {
     docs: {
       page() {

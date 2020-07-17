@@ -116,7 +116,7 @@ export interface BaseTableState {
   maxRenderWidth: number
 }
 
-export default class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
+export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   static defaultProps = {
     isStickyHead: true,
     stickyTop: 0,

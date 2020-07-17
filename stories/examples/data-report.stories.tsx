@@ -61,11 +61,9 @@ export function 示例() {
 
   useEffect(() => {
     getAppTrafficData().then((data) => {
-      console.log('明细数据:', data)
       const codes = ['city_name', 'shop_name']
       const topTree = buildDrillTree(data, codes)
       const recordMap = buildRecordMap({ data, codes })
-      console.log('构建的 RecordMap（低配版 matrix）', recordMap)
 
       // 动态生成表格列
       const columns = convertDrillTreeToColumns(recordMap, topTree)
@@ -80,9 +78,6 @@ export function 示例() {
     { columns: [mainCol, ...state.columns], dataSource: indicatorTree },
     makeTreeModeTransform({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
-
-  console.log('组件状态 state:', state)
-  console.log('渲染数据 renderData:', renderData)
 
   return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 

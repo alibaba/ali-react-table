@@ -18,6 +18,7 @@ const pivot = [
   'pivot/cross-tree-table.stories.tsx',
   'pivot/pivot-utils.stories.mdx',
   'pivot/pivot-utils.stories.tsx',
+  'pivot/dvt-aggregation.stories.mdx',
 ]
 
 const stories = [

@@ -26,7 +26,6 @@ export class Pivot {
 
   @computed({ keepAlive: true })
   get aggregate() {
-    console.log('create aggregate function!')
     return createAggregateFunction(this.allIndicators as any)
   }
 

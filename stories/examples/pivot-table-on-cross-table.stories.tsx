@@ -134,15 +134,6 @@ export function PivotTableBasedOnCrossTable() {
     prebuiltTopTree: topDrillTree,
   })
 
-  console.log('透视表状态', {
-    leftDrillTree,
-    topDrillTree,
-    leftTreeRoot,
-    topTreeRoot,
-    aggregate,
-    matrix,
-  })
-
   return (
     <div style={{ minWidth: 800 }}>
       <FusionStyles />

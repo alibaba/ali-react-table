@@ -1,0 +1,39 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 常用功能 / 拖拽调整列宽" />
+
+# 拖拽调整列宽
+
+`commonTransforms.columnResize(options: ColumnResizeOptions): TableTransform`
+
+根据 `options.sizes` 重新设置每一列的宽度，并在每一列的表头右侧渲染一个 span，作为拖拽排序的 handle。
+
+```typescript
+interface ColumnResizeOptions {
+  /** 每一列的宽度 */
+  sizes: number[]
+
+  /** 修改宽度的回调函数 */
+  onChangeSizes(nextSizes: number[]): void
+
+  // 以下为可选参数
+
+  /** 列的最小宽度，默认为 40 */
+  minSize?: number
+  /** 列的最大宽度，默认为 Infinity */
+  maxSize?: number
+  /** 是否在列的末尾追加可伸缩列，默认为 false */
+  appendExpander?: boolean
+  /** 是否在调整列宽时禁用 user-select，默认为 false */
+  disableUserSelectWhenResizing?: boolean
+}
+```
+
+<Preview>
+  <Story id="表格-常用功能示例--拖拽调整列宽" />
+</Preview>
+
+## 非受控用法
+
+ali-react-table 也提供了非受控的用法，useColumnResizeTransform 在受控的基础上移除了 sizes/onChangeSizes，同时新增了 defaultSizes 参数。

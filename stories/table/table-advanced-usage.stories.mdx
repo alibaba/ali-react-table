@@ -1,0 +1,37 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 进阶用法" />
+
+## 虚拟滚动
+
+数据量较大时，表格会自动开启虚拟滚动。你也可以通过表格的 `useVirtual` 属性来调整虚拟滚动功能，目前 `useVirtual` 支持以下几个值：
+
+- `'auto'` （默认值）表示根据表格的行数或列数自动调整是否开启虚拟滚动
+  - 行数量超过 80 时，自动开启纵向虚拟滚动
+  - 列数量超过 80 时，自动开启横向虚拟滚动
+  - 表头的横向虚拟滚动默认关闭
+- `true` 开启所有虚拟滚动
+- `false` 关闭所有虚拟滚动
+- 传入一个对象可以分别指定 横向/纵向/表头 是否开启虚拟滚动
+  - 对象的结构为 `{ horizontal?: boolean | 'auto', vertical?: boolean | 'auto', header?: boolean | 'auto' }`
+
+**虚拟滚动注意事项：**
+
+- 水平方向的虚拟滚动 要求「所有的列都有一个指定的宽度」，推荐设置 `defaultColumnWidth`，避免部分列缺失宽度
+- 如果需要设置表格的高度或最大高度，注意要**将 width/maxWidth 设置在表格上**，不要设置在父节点上
+- 设置 `style.overflow = 'auto'` 时，必须为表格设置高度或最大高度；
+  - 此时表格的外层 div 会被认为是表格所处的 BFC，该 div 的高度将决定表格渲染多少行，故这个 div 的最大高度必须是确定的
+  - 目前暂不支持动态切换 flowRoot，意味着在表格组件加载之后 重新设置 `style.overflow` 将不会起作用
+- 在虚拟滚动开启的情况下，如果想要进行单元格合并，则要使用 `column.getSpanRect` 来进行设定：
+  - `column.getSpanRect` 返回一个 `SpanRect` 的对象来表示对应单元所处的合并后的位置。
+  - `SpanRect` 的具体类型为 `{ left: number, right: number, top: number, bottom: number }`，注意其中 left/top 是 inclusive 的，right/bottom 是 exclusive 的。
+
+## 锁列与嵌套的列结构
+
+在有列嵌套的情况下（通过 column.children 设置列的子节点，形成列的嵌套结构），锁列具有传递性，从而避免了锁定列与非锁定列出现在同一个父节点下的情况：
+
+- 如果一个父节点设置了锁列 lock=true，则其所有子节点将自动被设置为 lock=true
+- 如果一个节点设置了锁列 lock=true，则其父节点和所有祖先节点将被设置为 lock=true
+
+此外，如果所有的列都设置了 lock=true，则整个表格的锁列将不生效。

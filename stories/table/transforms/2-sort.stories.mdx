@@ -1,0 +1,129 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 常用功能 / 排序" />
+
+# 排序
+
+本页文档将介绍 ali-react-table 提供的排序的相关 API。本页中的示例源码可在 <LinkTo kind="表格常见功能 / 常见功能示例" story="表格排序-单列">表格-常用功能示例</LinkTo> 查看。
+
+## sort 表格排序
+
+API 接口： `commonTransforms.sort(options: SortOptions): TableTransform`
+
+```typescript
+export interface SortOptions {
+  /** 排序字段列表 */
+  sorts: SortItem[]
+
+  /** 更新排序字段列表的回调函数 */
+  onChangeSorts(nextSorts: SortItem[]): void
+
+  // 以下字段为可选参数
+
+  /** 排序切换顺序 */
+  orders?: SortOrder[]
+
+  /** 排序模式。单选 single，多选 multiple，默认为多选 */
+  mode?: 'single' | 'multiple'
+
+  /** 自定义排序表头 */
+  SortHeaderCell?: React.ComponentType<SortHeaderCellProps>
+
+  /** 是否保持 dataSource 不变 */
+  keepDataSource?: boolean
+}
+```
+
+- 该 transform 会对 dataSource 和 columns 进行更新
+- 该 transform 会根据 options.sorts 来排序 dataSource
+  - `options.mode=multiple` （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
+  - `options.mode=single` 时表现为单字段排序
+  - 无论是多字段还是单字段排序，`options.sorts` 始终为一个数组
+- 该 transform 会根据 options.sorts 为列的表头渲染对应的排序图标
+- **注意默认情况下，列都是不可排序的。想让某一列支持排序，必须设置 `column.features.sortable = true`**
+
+### sort 非受控用法
+
+ali-react-table 也提供了非受控的使用方式，useSortTransform 是一个自定义 React hooks，其参数与 commonTransforms.sort 类似，但移除了 sorts/onChangeSorts，同时新增了 defaultSorts 参数（默认为空数组）.
+
+```javascript
+import { useSortTransform } from 'ali-react-table'
+
+function MyComponent() {
+  const sortTransform = useSortTransform({
+    defaultSorts: [
+      { code: 'deadCount', order: 'asc' },
+      { code: 'confirmedCount', order: 'desc' },
+    ],
+  })
+
+  const renderData = applyTransforms({ columns: columns, dataSource: state.data }, sortTransform)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
+## 基本示例
+
+<Preview>
+  <Story id="表格-常用功能示例--表格排序-单列" />
+</Preview>
+
+## 进阶用法 —— 树状排序
+
+`commonTransforms.sort` 默认就支持了树状排序，即对于树中的某一个父节点，对其子节点进行排序。使用时注意 transform 的调用顺序。
+
+```javascript
+const renderData = applyTransforms(
+  input,
+  commonTransforms.buildTree(args),
+  commonTransforms.sort(sortOptions), // 注意 sort 需要放在 treeMode
+  commonTransforms.treeMode(treeModeOptions),
+)
+```
+
+<Preview>
+  <Story id="表格-常用功能示例--树状模式与层级排序" />
+</Preview>
+
+## 进阶用法 —— 自定义比较函数
+
+当为某一列设置 `features.sortable = true` 时，该列默认会按照自然序（对于数字）或字典序（对于字符串）进行排序。
+我们可以为 `features.sortable` 设置一个函数来自定义某一列的比较规则，该函数将被作为 `Array#sort` 的参数。
+
+如果只想使用 sort 提供的交互与 UI，但不想让 sort 改变 dataSource，可以设置 `options.keepDataSource = true`。
+
+## 进阶功能 —— 自定义切换顺序
+
+`SortOptions#orders` 可以用来指定排序切换顺序。该选项的默认值为 `['desc', 'asc', 'none']`，即连续点击某一列的表头时，先按降序排序，然后按升序排序，最后取消排序；传入自定义的 orders 可以覆盖默认的切换顺序。
+
+## 进阶用法 —— 自定义排序列表头渲染
+
+`SortOptions#SortHeaderCell` 可用于自定义排序表头的内容和样式，组件接口如下：
+
+```typescript
+interface SortHeaderCellProps {
+  /** 调用 commonTransforms.sort(...) 时的参数 */
+  sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
+
+  /** 在添加排序相关的内容之前 表头原有的渲染内容 */
+  children: ReactNode
+
+  /** 当前排序 */
+  sortOrder: SortOrder
+
+  /** 多列排序下，sortIndex 指明了当前排序字段起作用的顺序. 当 sortOrder 为 none 时，sortIndex 为 -1 */
+  sortIndex: number
+
+  /** 当前列的配置 */
+  column: ArtColumn
+
+  /** 切换排序的回调 */
+  onToggle(): void
+}
+```
+
+<Preview>
+  <Story id="表格-常用功能示例--自定义样式的排序表头" />
+</Preview>

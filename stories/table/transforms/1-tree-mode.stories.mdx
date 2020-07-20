@@ -1,0 +1,90 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 常用功能 / 树状模式" />
+
+# 树状模式
+
+本页文档将介绍 ali-react-table 提供的树状模式的相关 API。本页中的示例源码可在 <LinkTo kind="表格常见功能 / 常见功能示例" story="树状表格">表格-常用功能示例</LinkTo> 查看。
+
+## buildTree 从列表数据中构建树状数据
+
+`commonTransforms.buildTree(idProp: string, parentIdProp: string): TableTransform`
+
+根据数据中的 id/parentId 字段，将 dataSource 转换为树状结构，树状结构下，父节点的 children 数组中包含对其子节点的引用。
+
+ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
+
+如果你已经有了树状结构的数据，那就可以跳过 buildTree 的调用，直接使用 treeMode 来进行渲染。
+
+## treeMode 使用树状结构来渲染表格
+
+`commonTransforms.treeMode(options?: TreeModeOptions): TableTransform`
+
+- 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
+- 该 transform 会对 dataSource 和 columns 进行更新，根据逻辑如下：
+  - 根据 options.openKeys 计算出需要展示的表格行，并计算每一行的缩进和展开信息
+    - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[commonTransform.treeMetaSymbol]` 来获取该信息
+  - 该 transform 会对 `columns[0]` 进行更新，使其在渲染时处理缩进并绘制树状模式的展开/收拢按钮
+
+`TreeModeOptions` 具体定义：
+
+```typescript
+export interface TreeModeOptions {
+  primaryKey: string
+  openKeys: string[]
+  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+}
+```
+
+- **transform 都是纯函数，所需的状态需要由上层提供**
+  - 上层需要提供 `options.openKeys` 来告诉 treeMode 哪些节点是展开的，哪些行节点是收拢的
+- `options.onChangeOpenKeys`: 除了 `nextKeys` 之外，该回调函数还会接受到 `key` 与 `action` 参数，分别表示本次操作「对应的 key」与「操作类型」
+- `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
+  - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状模式下的一些元信息（深度、是否展开等）
+  - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将渲染收拢或展开按钮
+    - 如果该函数返回了 true，则 treeMode 认为该节点是「叶子节点」，将 **不渲染** 收拢或展开按钮
+- `options.indentSize` 可以配置子节点的缩进宽度。
+
+### treeMode 非受控用法
+
+ali-react-table 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 commonTransforms.treeMode 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
+
+```javascript
+import { useTreeModeTransform } from 'ali-react-table'
+
+function MyComponent() {
+  const treeModeTransform = useTreeModeTransform({ primaryKey: 'id', defaultOpenKeys: ['B2C'] })
+
+  const renderData = applyTransforms({ columns: columns, dataSource: state.data }, treeModeTransform)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
+## 基本示例
+
+<Preview>
+  <Story id="表格-常用功能示例--树状表格" />
+</Preview>
+
+## 进阶用法 —— 异步数据加载
+
+异步数据加载场景下，因为此时前端只有整棵树中一小部分的数据，我们必须主动告诉表格哪些节点是父节点（可被展开），哪些节点是子节点（不可被展开）。设置 `TreeModeOptions#isLeafNode` 覆盖默认的子节点判断方式，并在 `TreeModeOptions#onChangeOpenKeys` 中根据展开的节点判断是否需要加载更多数据，可以实现树状模式下异步数据加载功能。
+
+<Preview>
+  <Story id="示例-表格交互-异步数据加载树状表格--异步数据加载树状表格" />
+</Preview>
+
+## 进阶用法 —— 对上次展开位置进行标记
+
+在 onChangeOpenKeys 记录上一次用户展开的节点的 key，并使用 getRowProps 为相应的行设置 `className="last-open"`（也设置为其他类名）。这样就可以通过 CSS 来方便的控制「上次展开的位置」的样式。
+
+表格行的 CSS 类名为 `art-table-row`（推荐使用 `Classes.tableRow` 来引用），展开/收拢图标为 `expansion-icon`
+
+<Preview>
+  <Story id="示例-表格交互-树状表格中的最近展开标记--树状表格中的最近展开标记" />
+</Preview>

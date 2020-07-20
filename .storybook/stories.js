@@ -1,35 +1,24 @@
-const baseTable = [
-  'base-table/base-table.stories.mdx',
-  'base-table/base-table-api.stories.mdx',
-  'base-table/base-table-advanced-usage.stories.mdx',
-  'base-table/base-table.stories.tsx',
-]
-
-const biz = [
-  'biz/biz.stories.mdx',
-  'biz/common-transforms/**/*.stories.mdx',
-  'biz/examples/**/*.stories.tsx',
-]
-
-const pivot = [
-  'pivot/cross-table.stories.mdx',
-  'pivot/cross-table.stories.tsx',
-  'pivot/cross-tree-table.stories.mdx',
-  'pivot/cross-tree-table.stories.tsx',
-  'pivot/pivot-utils.stories.mdx',
-  'pivot/pivot-utils.stories.tsx',
-  'pivot/dvt-aggregation.stories.mdx',
-]
-
 const stories = [
   // 手动引入来控制顺序
   'index.stories.mdx',
   'changelog.stories.mdx',
-  ...baseTable,
-  ...biz,
+
+  'table/table.stories.mdx',
+  'table/table-api.stories.mdx',
+  'table/table-advanced-usage.stories.mdx',
+  'table/table.stories.tsx',
+  'table/transforms.stories.mdx',
+  'table/transforms/**/*.stories.mdx',
+  'table/transforms-examples.stories.tsx',
+
+  'tools/utils.stories.mdx',
   'tools/**/*.stories.mdx',
-  ...pivot,
+
   'examples/**/*.stories.{tsx,mdx}',
+
+  'pivot/cross-table.stories.{mdx,tsx}',
+  'pivot/cross-tree-table.stories.{mdx,tsx}',
+  'pivot/pivot-utils.stories.{mdx,tsx}',
 ].map((file) => `../stories/${file}`)
 
 module.exports = stories

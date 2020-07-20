@@ -1,0 +1,64 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 常用功能 / 列高亮" />
+
+# 列高亮
+
+## columnHover 列高亮
+
+`commonTransforms.columnHover(options: ColumnHoverOptions): TableTransform`
+
+- 这是一个只会对 `columns` 进行更新的 transform
+- 如果某一列的 colIndex 与 options.hoverColIndex 匹配，该 transform 会将该列单元格的背景色设置为 `options.hoverColor`，默认为 `'#f5f5f5'`
+
+```typescript
+type ColumnHoverOptions = {
+  hoverColor?: string
+  hoverColIndex: number
+  onChangeHoverColIndex(nextColIndex: number): void
+}
+```
+
+<Preview>
+  <Story id="表格-常用功能示例--列高亮" />
+</Preview>
+
+## columnRangeHover 列范围高亮
+
+`commonTransforms.columnRangeHover(options: ColumnRangeHoverOptions): TableTransform`
+
+- 这是一个只会对 `columns` 进行更新的 transform
+- 如果某一列的 colIndex 与 `options.hoverColor` 匹配...
+  - 该 transform 会将该列单元格的背景色设置为 `options.hoverColor`，默认为 `'#f5f5f5'`
+  - 该 transform 会将该列表头的背景色设置为 `options.headerHoverColor`，默认为 `'#ddd'`
+
+```typescript
+type ColumnHoverOptions = {
+  hoverColor?: string
+  headerHoverColor?: string
+  hoverRange: { start: number; end: number }
+  onChangeHoverRange(nextColIndexRange: { start: number; end: number }): void
+}
+```
+
+<Preview>
+  <Story id="表格-常用功能示例--列的范围高亮" />
+</Preview>
+
+## 非受控用法
+
+ali-react-table 也提供了非受控的使用方式：useColumnHoverTransform。两者与受控用法类似，但移除了 hoverColIndex/onChangeHoverColIndex，同时增加了 defaultHoverColIndex.
+
+```javascript
+import { useColumnHoverTransform } from 'ali-react-table'
+
+function MyComponent() {
+  const columnHover = useColumnHoverTransform()
+  const renderData = applyTransforms({ columns: inputColumns, dataSource: inputDataSource }, columnHover)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
+非受控列范围高亮 useColumnRangeHoverTransform：useColumnHoverRangeTransform 在受控用法的基础上移除了 hoverRange/onChangeHoverRange，增加了 defaultHoverRange.

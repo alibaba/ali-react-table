@@ -10,10 +10,10 @@ import {
 } from 'ali-react-table/pivot'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
-import { PivotTableBasedOnCrossTable as _PivotTableBasedOnCrossTable } from '../examples/pivot-table-on-cross-table.stories'
+import { PivotTableBasedOnCrossTable as _PivotTableBasedOnCrossTable } from '../examples/pivot/pivot-table-on-cross-table.stories'
 import MinimumPivotTableDesigner from './MinimumPivotTableDesigner'
 
-export default { title: '交叉与透视 / 透视工具示例' }
+export default { title: '交叉与透视 / pivot-utils / 示例' }
 
 export function 下钻树示例() {
   const dwdData = [

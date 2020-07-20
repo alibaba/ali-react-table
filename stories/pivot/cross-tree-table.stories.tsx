@@ -1,7 +1,7 @@
 import { CrossTreeTable, LeftCrossTreeNode, TopCrossTreeNode } from 'ali-react-table/pivot'
 import React from 'react'
 
-export default { title: '交叉与透视 / 交叉树状表格示例' }
+export default { title: '交叉与透视 / 交叉树状表格 / 示例' }
 
 export function 基本示例() {
   const leftTree: LeftCrossTreeNode[] = [

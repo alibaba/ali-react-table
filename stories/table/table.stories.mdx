@@ -1,0 +1,48 @@
+import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import LinkTo from '@storybook/addon-links/react'
+
+<Meta title="表格 / 基本用法" />
+
+# 基础表格
+
+基础表格 `BaseTable`是 ali-react-table 中各个表格组件的底层组件，提供了基本的表格渲染能力。BaseTable 只提供了基本的表格渲染能力，一些常见的表格功能（排序、树状模式等）详见 <LinkTo kind="表格常见功能 / 文档" story="page">表格常见功能</LinkTo>.
+
+BaseTable 自带了一些非常实用的特性（表头吸顶、锁列、单元格合并等），并支持虚拟滚动，支持大数据量渲染。
+
+## 基本用法
+
+基本的 Table 包含行和列，使用 `columns` 属性来定义列的信息，使用传入的 `dataSource` 属性数据来创建行，这两个属性也是表格组件必传的 props（其他所有 props 都是可选的）。
+
+- `dataSource` 提供表格数据，数组中的每一项对应表格的一行
+- `columns` 指定表格中包含哪些列，`column.code` 与 `dataSource` 中的数据字段对应
+
+以下是 BaseTable 的基本用法示例：
+
+```typescript
+function 基本用法() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns: ArtColumn[] = [
+    { code: 'prov', name: '省份', width: 150 },
+    { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+    { code: 'cured', name: '治愈', width: 100, align: 'right' },
+    { code: 'dead', name: '死亡', width: 100, align: 'right' },
+    { code: 't', name: '最后更新时间', width: 180 },
+  ]
+  return <BaseTable dataSource={dataSource} columns={columns} />
+}
+```
+
+<Preview>
+  <Story id="表格-表格示例--基本用法" />
+</Preview>
+
+除了基本用法之外，`BaseTable` 也支持锁列、表头吸顶、列分组、单元格合并等功能，具体用法可参考 **<LinkTo kind="表格 / 示例" story="基本用法">BaseTable 的各个示例</LinkTo>。**
+
+`BaseTable` 的详细 API 详见 **<LinkTo kind="表格 / API" story="page">BaseTable API</LinkTo>。**

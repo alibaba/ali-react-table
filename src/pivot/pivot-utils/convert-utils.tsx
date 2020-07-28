@@ -1,4 +1,4 @@
-import { AddAlt16, SubtractAlt16 } from '@carbon/icons-react'
+import { CaretRight16 } from '@carbon/icons-react'
 import React from 'react'
 import { noop } from 'rxjs'
 import styled from 'styled-components'
@@ -10,16 +10,17 @@ import simpleEncode from './simpleEncode'
 const ExpandSpan = styled.span`
   display: inline-flex;
   align-items: center;
-  padding: 2px 4px;
+  padding: 2px 8px 2px 0;
   cursor: pointer;
-
-  :hover {
-    outline: 1px dashed #ccc;
-  }
 
   .icon {
     fill: currentColor;
     margin-right: 4px;
+
+    &.expanded {
+      transform-origin: center center;
+      transform: rotate(90deg);
+    }
   }
 `
 
@@ -135,7 +136,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
                 )
               }}
             >
-              <SubtractAlt16 className="icon" />
+              <CaretRight16 className="icon expanded" />
               {node.value}
             </ExpandSpan>
           )
@@ -149,7 +150,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
                 onChangeExpandKeys(expandKeys.concat([node.key]), node, 'expand')
               }}
             >
-              <AddAlt16 className="icon" />
+              <CaretRight16 className="icon collapsed" />
               {node.value}
             </ExpandSpan>
           )

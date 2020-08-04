@@ -1,6 +1,6 @@
 {
   "name": "ali-react-table",
-  "version": "0.13.7",
+  "version": "0.14.0",
   "description": "高性能 React 表格组件",
   "sideEffects": false,
   "module": "dist/ali-react-table.esm.js",
@@ -45,7 +45,7 @@
     "styled-components": "^3.4.10 || ^5.0.1"
   },
   "devDependencies": {
-    "dvt-aggregation": "^0.2.9",
+    "dvt-aggregation": "^0.2.8",
     "@alifd/next": "^1.19.22",
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.0",

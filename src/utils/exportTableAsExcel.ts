@@ -1,9 +1,10 @@
 import XLSX_NS from 'xlsx'
 import SpanManager from '../base-table/helpers/SpanManager'
-import { collectNodes, getTreeDepth } from './index'
-import { safeGetCellProps, safeGetValue } from '../internals'
-import isLeafNode from './isLeafNode'
 import { ArtColumn, SpanRect } from '../interfaces'
+import { safeGetCellProps, safeGetValue } from '../internals'
+import collectNodes from './collectNodes'
+import getTreeDepth from './getTreeDepth'
+import isLeafNode from './isLeafNode'
 
 function safeGetSpanRect(column: ArtColumn, record: any, rowIndex: number, colIndex: number): SpanRect {
   let colSpan = 1

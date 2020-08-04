@@ -1,4 +1,4 @@
-import { isLeafNode } from './index'
+import isLeafNode from './isLeafNode'
 import { ArtColumn, TableTransform } from '../interfaces'
 
 type NormalizeAsArrayInput<T> = null | T | T[]

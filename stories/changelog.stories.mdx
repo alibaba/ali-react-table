@@ -5,16 +5,14 @@ import LinkTo from '@storybook/addon-links/react'
 
 请注意日志中的加粗部分(break change)哦 ヾ(=･ω･=)o
 
-### unreleased
+### 0.14.0 2020-08-04
 
 - **Break Change: 移除 ali-react-table/biz 入口**
-  - 1.0 以前不会真正移除，只添加了警告
-- **Break Change: 移除 commonTransforms， commonTransforms.XXX 改名为 makeXXXTransform**
-  - 1.0 以前不会真正移除，只添加了警告
+  - **移除 commonTransforms， commonTransforms.XXX 改名为 makeXXXTransform**
+  - **移除 useOperationBar 和 CustomColumnsDialog**
+  - 请直接从 `ali-react-table` 导入 API。老的 API 在 1.0 以前不会真正移除，但添加了过时的警告
 - **Break Change: 移除 dvt-aggregation 依赖，移除 createAggregateFunction API**
   - 如果原先有使用 createAggregateFunction 函数，请手动安装 dvt-aggregation。
-- **Break Change: 移除 useOperationBar 和 CustomColumnsDialog**
-  - 1.0 以前不会真正移除，只添加了警告
 - 其他
   - 文档目录优化
   - 支持 SSR
@@ -22,7 +20,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 <details>
 
-<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开 v0.13 &amp; v0.12 日志</summary>
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开 v0.13 的日志</summary>
 
 ### v0.13.7 2020-07-28
 
@@ -72,6 +70,12 @@ fix: 修复 rollup 打包错误
 - feat(biz)： 导出一些 commonTransforms 中的 TS 类型；
 - feat(biz)： commonTransforms.orderField 也可以识别 `features.orderField`
 
+</details>
+
+<details>
+
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开 v0.12 的日志</summary>
+
 ### v0.12.2 2020-04-17
 
 - feat: commonTransforms.sort 支持上层传入自定义的渲染组件 [#23](https://github.com/alibaba/ali-react-table/pull/23)
@@ -98,7 +102,7 @@ fix: 修复 rollup 打包错误
 
 <details>
 
-<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开开源前的更新日志</summary>
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开历史版本（开源前）更新日志</summary>
 
 ### v0.11.8 2020-03-30
 

@@ -12,7 +12,7 @@ import { Pivot, PivotView } from './models'
 
 mobx.configure({ enforceActions: 'observed' })
 
-export default { title: '示例 / 交叉与透视 / 支持下钻的树状表格' }
+export default { title: '交叉与透视 / 示例 / 支持下钻的树状表格' }
 
 const ALL_DIMS = [
   { code: 'planet', name: '子公司' },

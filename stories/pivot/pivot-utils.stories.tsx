@@ -10,7 +10,6 @@ import {
 import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
-import { PivotTableBasedOnCrossTable as _PivotTableBasedOnCrossTable } from '../examples/pivot/pivot-table-on-cross-table.stories'
 import MinimumPivotTableDesigner from './MinimumPivotTableDesigner'
 
 export default { title: '交叉与透视 / pivot-utils / 示例' }
@@ -214,5 +213,3 @@ export function 简单透视表() {
     </div>
   )
 }
-
-export const 基于交叉表的透视表 = _PivotTableBasedOnCrossTable

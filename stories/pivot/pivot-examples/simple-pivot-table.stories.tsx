@@ -10,9 +10,9 @@ import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../../assets/cdn-data'
 import { amount, lfl, ratio } from '../../assets/format'
 import { FusionStyles } from '../../assets/fusion-style'
-import MinimumPivotTableDesigner from '../../pivot/MinimumPivotTableDesigner'
+import MinimumPivotTableDesigner from '../MinimumPivotTableDesigner'
 
-export default { title: '示例 / 交叉与透视 / 基于 CrossTable 的透视表' }
+export default { title: '交叉与透视 / 示例 / 简易透视表' }
 
 const dimensions = [
   { code: 'planet', name: '子公司', width: 150 },
@@ -83,7 +83,7 @@ function generateSubtotalNode(drillNode: DrillNode) {
   }
 }
 
-export function PivotTableBasedOnCrossTable() {
+export function 简易透视表() {
   const [{ data, isLoading }, setState] = useState({ isLoading: true, data: [] as any[] })
 
   useEffect(() => {

@@ -1,9 +1,9 @@
 import { BaseTable, ArtColumn } from 'ali-react-table'
 import React from 'react'
-import { cols, useAllDataSource } from '../../assets/ncov19-assets'
+import { cols, useAllDataSource } from '../assets/ncov19-assets'
 
 export default {
-  title: '示例 / 交叉与透视 / 大数据测试',
+  title: '示例 / 大数据测试',
   parameters: {
     docs: {
       page() {

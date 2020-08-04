@@ -367,7 +367,7 @@ export function 单元格自动合并() {
 
   const renderData = applyTransforms(
     {
-      dataSource: cityData.slice(0, 4).flatMap((d) => d.children),
+      dataSource: cityData.slice(0, 3).flatMap((d) => d.children.slice(0, 4)),
       columns: [
         {
           code: 'provinceName',
@@ -376,7 +376,10 @@ export function 单元格自动合并() {
           features: { autoRowSpan: true },
         },
         cols.cityName,
-        ...cols.indCols,
+        ...cols.indCols.map((col) => ({
+          ...col,
+          features: { autoRowSpan: true },
+        })),
         {
           code: 'updateTime',
           name: '最后更新时间',

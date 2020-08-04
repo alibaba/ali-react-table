@@ -1,5 +1,6 @@
 import { ArtColumn } from 'ali-react-table'
-import { buildDrillTree, buildRecordMap, createAggregateFunction } from 'ali-react-table/pivot'
+import { buildDrillTree, buildRecordMap } from 'ali-react-table/pivot'
+import { createAggregateFunction } from 'dvt-aggregation'
 import _ from 'lodash'
 import { action, computed, observable } from 'mobx'
 

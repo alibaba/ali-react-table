@@ -2,10 +2,10 @@ import {
   buildDrillTree,
   buildRecordMatrix,
   convertDrillTreeToCrossTree,
-  createAggregateFunction,
   CrossTable,
   DrillNode,
 } from 'ali-react-table/pivot'
+import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../../assets/cdn-data'
 import { amount, lfl, ratio } from '../../assets/format'

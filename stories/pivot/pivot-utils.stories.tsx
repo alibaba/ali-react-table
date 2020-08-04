@@ -3,11 +3,11 @@ import {
   buildDrillTree,
   buildRecordMatrix,
   convertDrillTreeToCrossTree,
-  createAggregateFunction,
   CrossTable,
   CrossTableLeftMetaColumn,
   DrillNode,
 } from 'ali-react-table/pivot'
+import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
 import { PivotTableBasedOnCrossTable as _PivotTableBasedOnCrossTable } from '../examples/pivot/pivot-table-on-cross-table.stories'

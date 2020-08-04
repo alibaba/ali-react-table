@@ -5,16 +5,47 @@ import LinkTo from '@storybook/addon-links/react'
 
 请注意日志中的加粗部分(break change)哦 ヾ(=･ω･=)o
 
-## unreleased
+### unreleased
 
-- **Break Change: refactor: 移除 ali-react-table/biz 入口（1.0 以前不会真正移除，只会添加警告）**
-- **Break Change: refactor: 移除 commonTransforms， commonTransforms.XXX 改名为 makeXXXTransform**
-- 文档目录重构
+- **Break Change: 移除 ali-react-table/biz 入口**
+  - 1.0 以前不会真正移除，只添加了警告
+- **Break Change: 移除 commonTransforms， commonTransforms.XXX 改名为 makeXXXTransform**
+  - 1.0 以前不会真正移除，只添加了警告
+- **Break Change: 移除 dvt-aggregation 依赖，移除 createAggregateFunction API**
+  - 如果原先有使用 createAggregateFunction 函数，请手动安装 dvt-aggregation。
+- **Break Change: 移除 useOperationBar 和 CustomColumnsDialog**
+  - 1.0 以前不会真正移除，只添加了警告
+- 其他
+  - 文档目录优化
 
-## v0.13.2 2020-05-19
+<details>
 
-- feat: 拖拽 <LinkTo kind="表格常见功能 / 常见功能示例" story="拖拽调整列宽">拖拽调整列宽</LinkTo>
-- feat: 新增 <LinkTo kind="交叉与透视 / 交叉树状表格" story="page">CrossTreeTable</LinkTo>
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开 v0.13 &amp; v0.12 日志</summary>
+
+### v0.13.7 2020-07-28
+
+fix: 优化 convertDrillTreeToCrossTree 生成的箭头样式
+
+### v0.13.6 2020-07-10
+
+deps: 移除依赖 carbon/icons-react
+
+### v0.13.5 2020-06-03
+
+fix: 避免 treeMode 覆盖第一列的 props; 修复 CrossTreeTable primary render/getCellProps 的参数
+
+### v0.13.4 2020-06-17
+
+deps: 移除没有用到的依赖 constate
+
+### v0.13.3 2020-05-20
+
+fix: 修复 rollup 打包错误
+
+### v0.13.2 2020-05-19
+
+- feat: 拖拽 <LinkTo kind="表格 / 常用功能示例" story="拖拽调整列宽">拖拽调整列宽</LinkTo>
+- feat: 新增 <LinkTo kind="交叉与透视 / 交叉树状表格 / 文档" story="page">CrossTreeTable</LinkTo>
 - feat: 新增部分 transform 的非受控用法
   - useColumnHoverTransform
   - useColumnHoverRangeTransform
@@ -23,11 +54,11 @@ import LinkTo from '@storybook/addon-links/react'
   - useTreeModeTransform
 - feat: 导出 Excel 文件时支持单元格合并
 
-## v0.13.1 2020-04-26
+### v0.13.1 2020-04-26
 
 - feat(biz): commonTransforms.sort 添加 keepDataSource 参数；为 commonTransforms.treeMode 生成的元素添加 className [#31](https://github.com/alibaba/ali-react-table/pull/31)
 
-## v0.13.0 2020-04-20
+### v0.13.0 2020-04-20
 
 - **Break Change: BaseTable primaryKey 的计算值只能为 string，移除 props.primaryKey 的默认值**
 - feat: 导出内部的一些数据处理方法；导出 getTreeDepth 方法
@@ -39,13 +70,13 @@ import LinkTo from '@storybook/addon-links/react'
 - feat(biz)： 导出一些 commonTransforms 中的 TS 类型；
 - feat(biz)： commonTransforms.orderField 也可以识别 `features.orderField`
 
-## v0.12.2 2020-04-17
+### v0.12.2 2020-04-17
 
 - feat: commonTransforms.sort 支持上层传入自定义的渲染组件 [#23](https://github.com/alibaba/ali-react-table/pull/23)
 - feat: 修改 proto TS 类型，添加 proto.extends [#14](https://github.com/alibaba/ali-react-table/pull/14)
 - deps: 移除对 immer 和 react-dom 的依赖 [#16](https://github.com/alibaba/ali-react-table/pull/16)
 
-## v0.12.1 2020-04-13
+### v0.12.1 2020-04-13
 
 - 新增表格常见功能：自动单元格合并 [#4](https://github.com/alibaba/ali-react-table/pull/4)
 - 优化加载图标的显示位置 [#13](https://github.com/alibaba/ali-react-table/pull/13)
@@ -53,7 +84,7 @@ import LinkTo from '@storybook/addon-links/react'
 - 新增：表头部分添加 onWheel 监听 [#10](https://github.com/alibaba/ali-react-table/pull/10)
 - 新增：表格常见功能 treeMode 允许上层定义 isLeafNode [#6](https://github.com/alibaba/ali-react-table/pull/6)
 
-## v0.12.0 2020-04-02
+### v0.12.0 2020-04-02
 
 - ✨ 开源，NPM package 名称换为 ali-react-table
 - 新增 ali-react-table/biz, ali-react-table/pivot 两个 sub-package
@@ -61,95 +92,97 @@ import LinkTo from '@storybook/addon-links/react'
   - 交叉与透视功能相关符号通过 pivot 进行导出
 - 移除了 BaseTable#onRowClick
 
+</details>
+
 <details>
 
-<summary>点击展开开源前的更新日志</summary>
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开开源前的更新日志</summary>
 
-## v0.11.8 2020-03-30
+### v0.11.8 2020-03-30
 
 - 新增 CustomColumnsDialog 组件
 
-## v0.11.7 2020-03-29
+### v0.11.7 2020-03-29
 
 - 新增 commonTransform.tips
 
-## v0.11.6 2020-03-24
+### v0.11.6 2020-03-24
 
 - 新增对 styled-components v3 的支持
 
-## v0.11.3 2020-03-23
+### v0.11.3 2020-03-23
 
 - 列配置新增 column.headerCellProps 指定表头单元格的 props
 - 新增 commonTransform.columnHover
 - 自定义列新增 column.features.enforceVisible
 - 表格部分样式调整
 
-## v0.11.0 2020-03-14
+### v0.11.0 2020-03-14
 
 - 新增表头的虚拟滚动
 - 性能优化：使用 div 来作为 virtualTop/virtualBottom
 - 样式优化，规范化 CSS variables
 
-## v0.10.1 2020-03-12
+### v0.10.1 2020-03-12
 
 - **Cube 改名为 RecordMatrix，相关函数也修改了名称**（注意这是一个 break change，但用了 patch 进行发布）
 - 优化表格边框样式
 
-## v0.10.0 2020-03-11
+### v0.10.0 2020-03-11
 
 - useVirtual 为 'auto' 时对应的阈值降低到 80 行 / 80 列
 - **Break Change! BaseTable 移除了 fixedHeader/maxBodyHeight**
   - 请使用 style.height 与 style.overflow = 'auto' 来为表格设置固定高度
 - New Feature lab 中新增了交叉表
 
-## v0.9.0 2020-03-05
+### v0.9.0 2020-03-05
 
 - **Break Change! 渲染表格操作栏的能力现在由 useOperationBar 的返回值的 view 组件进行提供**
   - 原先的 `operationBar.render` 方法被移除了，请使用 `<operationBar.view>...</operationBar.view>` 代替 render 方法
   - 下次真的不改了
 
-## v0.8.0 2020-03-03
+### v0.8.0 2020-03-03
 
 - **Break Change! 组件 OperationBarDiv 被移除了**
   - 渲染表格操作栏的能力现在由 useOperationBar 的返回值的 render 方法提供
 - Feature: useVirtual 支持两个方向分别设置是否开启；useVirtual 默认值变为 `'auto'`
 - 文档完善
 
-## v0.7.0 2020-02-22
+### v0.7.0 2020-02-22
 
 - **Break Change! BaseTable `hasOuterBorder` 属性被移除**
 - Feature: 新增 `defaultColumnWidth` 属性，用于指定列的默认宽度
 - Feature: 新增 `flowRoot` 属性，用于指定自定义的虚拟滚动的容器
 - Fix: 修复虚拟滚动的相关问题
 
-## v0.6.2 2020-02-19
+### v0.6.2 2020-02-19
 
 - Feature: sort 支持单字段排序；优化对齐
 
-## v0.6.1 2020-02-16
+### v0.6.1 2020-02-16
 
 - **Break Change! 部分工具函数名称修改，详见文档。**
 - Feature: BaseTable 添加虚拟滚动，优化表格单元格尺寸同步算法，优化表格性能。
 
-## v0.5.0 2020-01-12
+### v0.5.0 2020-01-12
 
 - Feature: 自定义列支持多层嵌套的 columns 结构
 - Break Change! Column 配置调整：flags -> features， column.view.xxx -> column.xxx
 - Break Change! getCellProps 方法签名调整，改为和 render 一致
 - Break Change! 表格工具栏(OperationBar) 重构
 
-## v0.4.0 2019-12-30
+### v0.4.0 2019-12-30
 
 - biz-utils 新增 commonTransform.sort
 - BREAK CHANGE: `useOperationBar` features 类型修改
 
-## v0.3.1 2019-12-28
+### v0.3.1 2019-12-28
 
 - 文档网站优化，升级到 storybook 5.3.0-rc.3，总算可以看到 stories 的源代码了
 - biz-utils 新增构建树的方法，commonTransform.buildTree
 - biz-utils 新增树状模式，commonTransform.treeMode
 
-## v0.3.0 2019-12-27
+### v0.3.0 2019-12-27
 
 - DvtTable 重命名为 BaseTable
 - BaseTable 支持 column.view.hidden 与 column.view.lock
@@ -159,7 +192,7 @@ import LinkTo from '@storybook/addon-links/react'
   - 数据导出
   - 自定义列
 
-## v0.2.0 2019-12-19
+### v0.2.0 2019-12-19
 
 - 新增 DvtTable 与 CrossTable
 - 新增 buildDrillTree / buildCube 等用于构建数据立方的工具函数

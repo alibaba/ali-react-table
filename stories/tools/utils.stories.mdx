@@ -207,4 +207,15 @@ API: `(x: any, y: any) => number`
 
 ### `traverseColumn`
 
-todo todo
+API: `(fn: (column, ctx) => NormalizeAsArrayInput<ArtColumn>) => TableTransform`
+
+`traverseColumn` 方法可用来简化「创建针对列的 transform」。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform。fn 的表现如下：
+
+- fn 被调用时的参数：
+  - column 参数：表格的列配置
+  - ctx：与 column 对应的上下文对象：
+    - ctx.range：列的下标，包含 ctx.range.start, ctx.range.end 两个下标
+    - ctx.dataSource：表格的数据源
+- fn 的返回结果：
+  - 返回 `null` 时，对应的列将被移除；
+  - 返回 `ArtColumn` 或一个数组时，返回的结果会替换对应的列。

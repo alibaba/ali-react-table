@@ -15,7 +15,7 @@ function normalizeAsArray(input: NormalizeAsArrayInput<ArtColumn>): ArtColumn[] 
 
 export default function traverseColumn(
   fn: (
-    field: ArtColumn,
+    column: ArtColumn,
     ctx: { range: { start: number; end: number }; dataSource: any[] },
   ) => NormalizeAsArrayInput<ArtColumn>,
 ): TableTransform {

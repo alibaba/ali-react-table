@@ -14,7 +14,7 @@ const ExpandSpan = styled.span`
   cursor: pointer;
 
   .icon {
-    fill: currentColor;
+    fill: #999;
     margin-right: 4px;
 
     &.expanded {

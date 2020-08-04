@@ -1,9 +1,8 @@
-import cx from 'classnames'
 import React from 'react'
 import { BaseTableProps } from '../../base-table'
-import { getTreeDepth, isLeafNode } from '../../utils'
 import { ArtColumn, SpanRect } from '../../interfaces'
-import { CrossTableClasses, ROW_KEY } from './constants'
+import { getTreeDepth, isLeafNode } from '../../utils'
+import { ROW_KEY } from './constants'
 import { CrossTableProps } from './cross-table'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
 import {
@@ -73,12 +72,7 @@ export default function buildCrossTable(
       ): ArtColumn['getCellProps'] {
         return (_value: any, row: CrossTableRenderRow, rowIndex: number) => {
           const node = row.nodes[colIndex]
-          const customProps = metaCol.getCellProps?.(node, colIndex)
-
-          return {
-            className: cx(CrossTableClasses.leftHeaderCell, customProps?.className),
-            ...customProps,
-          }
+          return metaCol.getCellProps?.(node, colIndex)
         }
       }
 

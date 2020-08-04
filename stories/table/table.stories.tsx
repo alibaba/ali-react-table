@@ -1,5 +1,5 @@
 import { Button, Checkbox } from '@alifd/next'
-import { ArtColumn, BaseTable, Classes, SpanRect } from 'ali-react-table'
+import { ArtColumn, BaseTable, SpanRect } from 'ali-react-table'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { amount, time } from '../assets/format'
@@ -47,19 +47,16 @@ export function 基本用法() {
   return <BaseTable dataSource={dataSource} columns={columns} />
 }
 
-const ZebraBaseTable = styled(BaseTable)`
-  --row-hover-color: none;
+const ZebraBaseTable: typeof BaseTable = styled(BaseTable)`
+  --hover-color: none;
 
-  .${Classes.tableRow} {
-    &.even {
-      background: #f2f2f2;
-    }
-
-    &.odd {
-      background: white;
-    }
+  .art-table-row.even td {
+    background: #f2f2f2;
   }
-`
+  .art-table-row.odd td {
+    background: white;
+  }
+` as any
 
 export function 自定义表格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
@@ -82,20 +79,16 @@ export function 自定义表格样式() {
 export function 自定义表格样式2() {
   /*
   import styled from 'styled-components'
-  import { BaseTable, Classes } from 'ali-react-table'
+  import { BaseTable } from 'ali-react-table'
 
   const ZebraBaseTable = styled(BaseTable)`
-     --row-hover-color: none;
-
-    .${Classes.tableRow} {
-      &.even {
-        background: #f2f2f2;
-      }
-
-      &.odd {
-        background: white;
-      }
-    }`
+     --hover-color: none;
+    .art-table-row.even td {
+      background: #f2f2f2;
+    }
+    .art-table-row.odd td {
+      background: white;
+    }
    */
   const { isLoading, dataSource } = useProvinceDataSource()
   return <ZebraBaseTable isLoading={isLoading} dataSource={dataSource.slice(0, 10)} columns={testProvColumns} />
@@ -506,6 +499,9 @@ export function 自定义表格行props() {
 
   return (
     <BaseTable
+      style={{
+        '--bgcolor': 'transparent',
+      }}
       isLoading={isLoading}
       dataSource={dataSource.slice(0, 6)}
       columns={testProvColumns}

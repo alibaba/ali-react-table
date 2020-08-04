@@ -1,6 +1,6 @@
-export { default as CrossTable, CrossTableProps, StyledBaseTableForCrossTable } from './cross-table'
+export { default as CrossTable, CrossTableProps } from './cross-table'
 export { default as buildCrossTable, BuildCrossTableOptions } from './buildCrossTable'
-export { CrossTableClasses, ROW_KEY } from './constants'
+export { ROW_KEY } from './constants'
 export {
   CrossTreeNode,
   CrossTableLeftMetaColumn,

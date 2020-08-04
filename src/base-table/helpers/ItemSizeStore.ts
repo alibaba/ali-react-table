@@ -1,7 +1,8 @@
 import { VerticalRenderRange } from '../interfaces'
 import { OVERSCAN_SIZE } from '../utils'
 
-export const ITEM_SIZE = 40
+// ITEM_SIZE 要允许上层传入
+export const ITEM_SIZE = 48
 
 interface Item {
   offset: number

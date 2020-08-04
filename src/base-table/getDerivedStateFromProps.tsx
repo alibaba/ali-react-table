@@ -68,23 +68,23 @@ function getLeftNestedLockCount(columns: ArtColumn[]) {
 export default function getDerivedStateFromProps(
   props: Readonly<BaseTableProps>,
   state: BaseTableState,
-): Pick<BaseTableState, 'flat' | 'nested' | 'useVirtual'> & {
-  maxRenderHeight?: number
-} {
+): Pick<BaseTableState, 'flat' | 'nested' | 'useVirtual' | 'stickyLeftMap' | 'stickyRightMap'> {
   const { useVirtual: useVirtualProp, columns: columnsProp, dataSource: dataSourceProp, defaultColumnWidth } = props
 
   const columns = processColumns(columnsProp, defaultColumnWidth)
 
   const leftNestedLockCount = getLeftNestedLockCount(columns)
 
-  const mainFlat = collectNodes(columns, 'leaf-only')
+  const fullFlat = collectNodes(columns, 'leaf-only')
 
   if (leftNestedLockCount === columns.length) {
     // 处理所有的列均为 lock
     return {
-      flat: { left: [], right: [], main: mainFlat, center: mainFlat },
-      nested: { left: [], right: [], main: columns, center: columns },
+      flat: { left: [], right: [], full: fullFlat, center: fullFlat },
+      nested: { left: [], right: [], full: columns, center: columns },
       useVirtual: { horizontal: false, vertical: false, header: false },
+      stickyLeftMap: new Map(),
+      stickyRightMap: new Map(),
     }
   }
 
@@ -93,8 +93,9 @@ export default function getDerivedStateFromProps(
   const centerNested = columns.slice(leftNestedLockCount, columns.length - rightNestedLockCount)
   const rightNested = columns.slice(columns.length - rightNestedLockCount)
 
-  const shouldEnableHozVirtual = mainFlat.length >= AUTO_VIRTUAL_THRESHOLD && mainFlat.every((col) => col.width != null)
+  const shouldEnableHozVirtual = fullFlat.length >= AUTO_VIRTUAL_THRESHOLD && fullFlat.every((col) => col.width != null)
   const shouldEnableVerVirtual = dataSourceProp.length >= AUTO_VIRTUAL_THRESHOLD
+
   const useVirtual =
     typeof useVirtualProp !== 'object'
       ? {
@@ -108,19 +109,41 @@ export default function getDerivedStateFromProps(
           header: resolveVirtualEnabled(useVirtualProp.header, shouldEnableVerVirtual),
         }
 
+  const flat = {
+    left: collectNodes(leftNested, 'leaf-only'),
+    full: fullFlat,
+    right: collectNodes(rightNested, 'leaf-only'),
+    center: collectNodes(centerNested, 'leaf-only'),
+  }
+
+  const fullFlatCount = flat.full.length
+  const leftFlatCount = flat.left.length
+  const rightFlatCount = flat.right.length
+
+  const stickyLeftMap = new Map<number, number>()
+  let stickyLeft = 0
+  for (let i = 0; i < leftFlatCount; i++) {
+    stickyLeftMap.set(i, stickyLeft)
+    stickyLeft += flat.full[i].width
+  }
+
+  const stickyRightMap = new Map<number, number>()
+  let stickyRight = 0
+  for (let i = 0; i < rightFlatCount; i++) {
+    stickyRightMap.set(fullFlatCount - 1 - i, stickyRight)
+    stickyRight += flat.full[fullFlatCount - 1 - i].width
+  }
+
   return {
-    flat: {
-      left: collectNodes(leftNested, 'leaf-only'),
-      main: mainFlat,
-      right: collectNodes(rightNested, 'leaf-only'),
-      center: collectNodes(centerNested, 'leaf-only'),
-    },
+    flat,
     nested: {
       left: leftNested,
-      main: columns,
+      full: columns,
       right: rightNested,
       center: centerNested,
     },
     useVirtual,
+    stickyLeftMap,
+    stickyRightMap,
   }
 }

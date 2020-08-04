@@ -42,10 +42,10 @@ export function useAllDataSource() {
     isLoading: true,
   })
   useEffect(() => {
-    getNCoV2019Data().then(data => {
+    getNCoV2019Data().then((data) => {
       setState({
         dataSource: _.sortBy(
-          data.map(rawItem => ({
+          data.map((rawItem) => ({
             provinceName: rawItem.provinceName,
             cityName: rawItem.cityName,
             confirmedCount: Number(rawItem.city_confirmedCount),
@@ -54,7 +54,7 @@ export function useAllDataSource() {
             deadCount: Number(rawItem.city_deadCount),
             updateTime: rawItem.updateTime,
           })),
-          d => d.updateTime,
+          (d) => d.updateTime,
         ),
         isLoading: false,
       })
@@ -69,8 +69,8 @@ export function useProvinceDataSource() {
     isLoading: true,
   })
   useEffect(() => {
-    getNCoV2019Data().then(data => {
-      const provinceItems = _.uniqBy(data, d => d.provinceName + '--' + d.updateTime).map<ProvinceItem>(d => ({
+    getNCoV2019Data().then((data) => {
+      const provinceItems = _.uniqBy(data, (d) => d.provinceName + '--' + d.updateTime).map<ProvinceItem>((d) => ({
         provinceName: d.provinceName,
         confirmedCount: Number(d.province_confirmedCount),
         suspectedCount: Number(d.province_suspectedCount),
@@ -81,10 +81,10 @@ export function useProvinceDataSource() {
 
       setState({
         dataSource: _.orderBy(
-          Object.values(_.groupBy(provinceItems, d => d.provinceName)).map(data => {
-            return _.maxBy(data, d => d.updateTime)
+          Object.values(_.groupBy(provinceItems, (d) => d.provinceName)).map((data) => {
+            return _.maxBy(data, (d) => d.updateTime)
           }),
-          d => -d.confirmedCount,
+          (d) => -d.confirmedCount,
         ),
         isLoading: false,
       })
@@ -100,12 +100,12 @@ export function useCityDataSource() {
   })
 
   useEffect(() => {
-    getNCoV2019Data().then(data => {
-      const items = Object.values(_.groupBy(data, d => d.provinceName)).map(byProv => {
-        const rawProvItem = _.maxBy(byProv, d => d.updateTime)
+    getNCoV2019Data().then((data) => {
+      const items = Object.values(_.groupBy(data, (d) => d.provinceName)).map((byProv) => {
+        const rawProvItem = _.maxBy(byProv, (d) => d.updateTime)
 
-        const cityItems = Object.values(_.groupBy(byProv, d => d.cityName)).map(byCity => {
-          const rawCityItem = _.maxBy(byCity, d => d.updateTime)
+        const cityItems = Object.values(_.groupBy(byProv, (d) => d.cityName)).map((byCity) => {
+          const rawCityItem = _.maxBy(byCity, (d) => d.updateTime)
           return {
             provinceName: rawCityItem.provinceName,
             cityName: rawCityItem.cityName,
@@ -130,7 +130,7 @@ export function useCityDataSource() {
       })
 
       setState({
-        dataSource: _.sortBy(items, d => -d.confirmedCount).flat(),
+        dataSource: _.sortBy(items, (d) => -d.confirmedCount).flat(),
         isLoading: false,
       })
     })

@@ -1,8 +1,7 @@
 import React from 'react'
-import { asyncScheduler, BehaviorSubject, defer, fromEvent, merge } from 'rxjs'
-import { map, mapTo, scan, throttleTime } from 'rxjs/operators'
+import { asyncScheduler, BehaviorSubject, defer, fromEvent, Subscription } from 'rxjs'
+import { map, throttleTime } from 'rxjs/operators'
 import * as styledComponents from 'styled-components'
-import { TRNodeList } from './interfaces'
 
 /** styled-components 类库的版本，ali-react-table 同时支持 v3 和 v5 */
 export const STYLED_VERSION = (styledComponents as any).createGlobalStyle != null ? 'v5' : 'v3'
@@ -21,69 +20,6 @@ export function sum(arr: number[]) {
     result += x
   })
   return result
-}
-
-export function batchAdjustLeftCellSizes(leftTableRows: TRNodeList, mainTableRows: TRNodeList) {
-  const leftRowCount = leftTableRows.length
-
-  // 批量获取 left-section 中每个单元格在 main-section 中对应单元格的尺寸
-  const sizes: Array<{ h: number; w: number }> = []
-  for (let i = 0; i < leftRowCount; i++) {
-    const leftRow = leftTableRows.item(i) as HTMLTableRowElement
-    const leftCellCount = leftRow.cells.length
-    const mainRow = mainTableRows.item(i) as HTMLTableRowElement
-    for (let j = 0; j < leftCellCount; j++) {
-      const cell = mainRow.cells.item(j)
-      sizes.push({ h: cell.offsetHeight, w: cell.offsetWidth })
-    }
-  }
-  // 批量设置 left-section 中的单元格的尺寸
-  let n = 0
-  for (let i = 0; i < leftRowCount; i++) {
-    const leftRow = leftTableRows.item(i) as HTMLTableRowElement
-    const cellCount = leftRow.cells.length
-    for (let j = 0; j < cellCount; j++) {
-      const cell = leftRow.cells.item(j)
-      const size = sizes[n]
-      n += 1
-      cell.style.width = `${size.w}px`
-      cell.style.height = `${size.h}px`
-    }
-  }
-}
-
-export function batchAdjustRightCellSizes(rightTableRows: TRNodeList, mainTableRows: TRNodeList) {
-  const rightRowCount = rightTableRows.length
-
-  // 批量获取 right-section 中每个单元格在 main-section 中对应单元格的尺寸
-  // 获取尺寸时注意 right-section/main-section 是"靠右对齐"
-  // 古下面代码中是"从右往左"迭代 main-section 中的单元格的
-  const sizes: Array<{ h: number; w: number }> = []
-  for (let i = 0; i < rightRowCount; i++) {
-    const rightRow = rightTableRows.item(i) as HTMLTableRowElement
-    const rightCellCount = rightRow.cells.length
-    const mainRow = mainTableRows.item(i) as HTMLTableRowElement
-    const mainCellCount = mainRow.cells.length
-    for (let j = 0; j < rightCellCount; j++) {
-      const mainCell = mainRow.cells.item(mainCellCount - 1 - j)
-      sizes.push({ h: mainCell.offsetHeight, w: mainCell.offsetWidth })
-    }
-  }
-
-  // 批量设置 right-section 中的单元格的尺寸
-  let n = 0
-  for (let i = 0; i < rightRowCount; i++) {
-    const rightRow = rightTableRows.item(i) as HTMLTableRowElement
-    const rightCellCount = rightRow.cells.length
-    for (let j = 0; j < rightCellCount; j++) {
-      // 从右往左设置单元格尺寸
-      const rightCell = rightRow.cells.item(rightCellCount - 1 - j)
-      const size = sizes[n]
-      n += 1
-      rightCell.style.width = `${size.w}px`
-      rightCell.style.height = `${size.h}px`
-    }
-  }
 }
 
 // 使用 defer 避免过早引用 window，导致在 SSR 场景下报错
@@ -120,41 +56,38 @@ export function getScrollbarSize() {
   return scrollBarSize$.value
 }
 
-/** 同步两个元素之间的 scrollLeft
- *  在 x.onScroll 中设置 y.scrollLeft 将会触发 y.onScroll (反之亦然)
- *  为了避免相互调用，在设置 scrollLeft 该方法会用 .skip 记录接下来需要忽略的 scroll 事件
- */
-export function syncScrollLeft(x: HTMLDivElement, y: HTMLDivElement) {
-  type ScrollTarget = 'x' | 'y'
-  type ScrollSkipState = { skip: ScrollTarget; fire: boolean; target: ScrollTarget }
-  const otherScrollTarget = (target: ScrollTarget): ScrollTarget => {
-    return target === 'x' ? 'y' : 'x'
-  }
-  const scrollSkipState$ = merge(
-    fromEvent(x, 'scroll').pipe(mapTo('x' as ScrollTarget)),
-    fromEvent(y, 'scroll').pipe(mapTo('y' as ScrollTarget)),
-  ).pipe(
-    scan<ScrollTarget, ScrollSkipState>(
-      (acc, target) => {
-        if (acc.skip === target) {
-          return { skip: null, fire: false, target }
-        } else {
-          return { skip: otherScrollTarget(target), fire: true, target }
-        }
-      },
-      { skip: null, fire: false, target: null },
-    ),
-  )
+/** 同步多个元素之间的 scrollLeft, 每当 scrollLeft 发生变化时 callback 会被调用 */
+export function syncScrollLeft(elements: HTMLElement[], callback: (scrollLeft: number) => void): Subscription {
+  const bypassSet: Set<HTMLElement> = new Set()
 
-  return scrollSkipState$.subscribe(({ fire, target }) => {
-    if (fire) {
-      if (target === 'x') {
-        y.scrollLeft = x.scrollLeft
-      } else {
-        x.scrollLeft = y.scrollLeft
+  function publishScrollLeft(origin: HTMLElement, scrollLeft: number) {
+    bypassSet.clear()
+    for (const elem of elements) {
+      if (elem === origin) {
+        continue
       }
+      elem.scrollLeft = scrollLeft
+      bypassSet.add(elem)
     }
-  })
+  }
+
+  const subscription = new Subscription()
+
+  for (const ele of elements) {
+    const listener = () => {
+      if (bypassSet.has(ele)) {
+        bypassSet.delete(ele)
+        return
+      }
+      const scrollLeft = ele.scrollLeft
+      publishScrollLeft(ele, scrollLeft)
+      callback(scrollLeft)
+    }
+    ele.addEventListener('scroll', listener, { passive: true })
+    subscription.add(() => ele.removeEventListener('scroll', listener))
+  }
+
+  return subscription
 }
 
 export function query<T extends Element = HTMLDivElement>(elem: HTMLDivElement, className: string) {

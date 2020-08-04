@@ -1,8 +1,8 @@
 import cx from 'classnames'
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { getTreeDepth, isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
-import { HorizontalRenderRange, TableSide } from './interfaces'
+import { HorizontalRenderRange } from './interfaces'
 import { Classes } from './styles'
 import { BaseTableState } from './table'
 
@@ -18,8 +18,9 @@ export interface TableHeaderProps {
   nested: BaseTableState['nested']
   flat: BaseTableState['flat']
   useVirtual: BaseTableState['useVirtual']
-  side: TableSide
   hoz: HorizontalRenderRange
+  stickyLeftMap: Map<number, number>
+  stickyRightMap: Map<number, number>
 }
 
 type ColWithRenderInfo =
@@ -146,10 +147,10 @@ function attachColIndex(inputNested: ArtColumn[], colIndexOffset: number) {
 
 /** 计算用于渲染表头的数据结构 */
 function calculateRenderInfo(
-  { flat, nested, side, hoz, useVirtual }: TableHeaderProps,
+  { flat, nested, hoz, useVirtual }: TableHeaderProps,
   rowCount: number,
 ): { flat: ColWithRenderInfo[]; leveled: ColWithRenderInfo[][] } {
-  if (side === 'main' && useVirtual.header) {
+  if (useVirtual.header) {
     const leftPart = calculateLeveledAndFlat(attachColIndex(nested.left, 0), rowCount)
     const filtered = filterNestedCenter(nested.center, hoz, flat.left.length)
     const centerPart = calculateLeveledAndFlat(filtered, rowCount)
@@ -176,38 +177,55 @@ function calculateRenderInfo(
     }
   }
 
-  const colIndexOffset = side === 'right' ? flat.left.length + flat.center.length : 0
-  return calculateLeveledAndFlat(attachColIndex(nested[side], colIndexOffset), rowCount)
+  return calculateLeveledAndFlat(attachColIndex(nested.full, 0), rowCount)
 }
 
 export default function TableHeader(props: TableHeaderProps) {
-  const { nested, flat } = props
-  const colCount = flat.main.length
-  const rowCount = getTreeDepth(nested.main) + 1
+  const { nested, flat, stickyLeftMap, stickyRightMap } = props
+  const rowCount = getTreeDepth(nested.full) + 1
   const renderInfo = calculateRenderInfo(props, rowCount)
+
+  const fullFlatCount = flat.full.length
+  const leftFlatCount = flat.left.length
+  const rightFlatCount = flat.right.length
 
   const tbody = renderInfo.leveled.map((wrappedCols, level) => {
     const headerCells = wrappedCols.map((wrapped) => {
       if (wrapped.type === 'normal') {
-        const headerCellProps = wrapped.col.headerCellProps ?? {}
+        const { colIndex, colSpan, isLeaf, col } = wrapped
+
+        const headerCellProps = col.headerCellProps ?? {}
+
+        const positionStyle: CSSProperties = {}
+        if (colIndex < leftFlatCount) {
+          positionStyle.position = 'sticky'
+          positionStyle.left = stickyLeftMap.get(colIndex)
+        } else if (colIndex >= fullFlatCount - rightFlatCount) {
+          positionStyle.position = 'sticky'
+          positionStyle.right = stickyRightMap.get(colIndex)
+        }
 
         return (
           <th
-            key={wrapped.colIndex}
+            key={colIndex}
             {...headerCellProps}
-            className={cx(
-              Classes.tableHeaderCell,
-              {
-                first: wrapped.colIndex === 0,
-                last: wrapped.colIndex + wrapped.colSpan === colCount,
-              },
-              headerCellProps.className,
-            )}
-            colSpan={wrapped.colSpan}
-            rowSpan={wrapped.isLeaf ? rowCount - level : undefined}
-            style={{ textAlign: wrapped.col.align, ...headerCellProps.style }}
+            className={cx(Classes.tableHeaderCell, headerCellProps.className, {
+              first: colIndex === 0,
+              last: colIndex + colSpan === fullFlatCount,
+              'lock-left': colIndex < leftFlatCount,
+              'lock-left-last': colIndex + colSpan === leftFlatCount,
+              'lock-right': colIndex >= fullFlatCount - rightFlatCount,
+              'lock-right-first': colIndex === fullFlatCount - rightFlatCount,
+            })}
+            colSpan={colSpan}
+            rowSpan={isLeaf ? rowCount - level : undefined}
+            style={{
+              textAlign: col.align,
+              ...headerCellProps.style,
+              ...positionStyle,
+            }}
           >
-            {wrapped.col.title ?? wrapped.col.name}
+            {col.title ?? col.name}
           </th>
         )
       } else {
@@ -233,23 +251,21 @@ export default function TableHeader(props: TableHeaderProps) {
   })
 
   return (
-    <div className={Classes.tableHeader}>
-      <table>
-        <colgroup>
-          {renderInfo.flat.map((wrapped) => {
-            if (wrapped.type === 'blank') {
-              if (wrapped.width > 0) {
-                return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />
-              } else {
-                return null
-              }
+    <table>
+      <colgroup>
+        {renderInfo.flat.map((wrapped) => {
+          if (wrapped.type === 'blank') {
+            if (wrapped.width > 0) {
+              return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />
             } else {
-              return <col key={wrapped.colIndex} style={{ width: wrapped.width }} />
+              return null
             }
-          })}
-        </colgroup>
-        <tbody>{tbody}</tbody>
-      </table>
-    </div>
+          } else {
+            return <col key={wrapped.colIndex} style={{ width: wrapped.width }} />
+          }
+        })}
+      </colgroup>
+      <tbody>{tbody}</tbody>
+    </table>
   )
 }

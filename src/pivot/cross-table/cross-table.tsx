@@ -1,38 +1,9 @@
-import cx from 'classnames'
-import React, { ComponentType, ReactNode } from 'react'
-import styled from 'styled-components'
-import { BaseTable, BaseTableProps, Classes } from '../../base-table'
+import React, { ReactNode } from 'react'
+import { BaseTable, BaseTableProps } from '../../base-table'
 import { CellProps } from '../../interfaces'
 import buildCrossTable from './buildCrossTable'
-import { CrossTableClasses, ROW_KEY } from './constants'
+import { ROW_KEY } from './constants'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
-
-export const StyledBaseTableForCrossTable: ComponentType<BaseTableProps> = styled(BaseTable)`
-  // 使 art-table 默认的 hover 效果失效
-  .${Classes.tableBody} tr.hovered {
-    background-color: inherit;
-  }
-
-  .${Classes.tableBody} td.${CrossTableClasses.leftHeaderCell} {
-    vertical-align: center;
-    padding-top: 16px;
-  }
-
-  .${CrossTableClasses.topHeaderCell} {
-    min-height: 24px;
-    display: flex;
-    align-items: center;
-  }
-
-  &.compact {
-    .${Classes.tableCell} {
-      height: 36px;
-    }
-    .${Classes.tableBody} td.${CrossTableClasses.leftHeaderCell} {
-      padding-top: 8px;
-    }
-  }
-` as any
 
 export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' | 'primaryKey'> {
   leftTree: LeftCrossTreeNode[]
@@ -72,7 +43,6 @@ export default function CrossTable({
   getCellProps,
   leftMetaColumns,
   render,
-  className,
   ...others
 }: CrossTableProps) {
   const { dataSource, columns } = buildCrossTable({
@@ -89,13 +59,5 @@ export default function CrossTable({
     leftMetaColumns,
   })
 
-  return (
-    <StyledBaseTableForCrossTable
-      {...others}
-      dataSource={dataSource}
-      columns={columns}
-      primaryKey={ROW_KEY}
-      className={cx('compact', className)}
-    />
-  )
+  return <BaseTable {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />
 }

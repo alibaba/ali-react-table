@@ -83,45 +83,32 @@ export type BaseTableCSSVariables = Partial<{
   '--color': string
   /** 表格背景颜色 */
   '--bgcolor': string
+  /** 鼠标悬停时的背景色 */
+  '--hover-color': string
+  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
+  '--row-height': string
+
   /** 表头的字体颜色 */
   '--header-color': string
   /** 表头的背景颜色 */
   '--header-bgcolor': string
-  /** 数据单元格 和 表头单元格 的边框颜色 */
-  '--border-color': string
-
-  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
-  '--row-height': string
-  /** 表格行 鼠标悬停时的背景色 */
-  '--row-hover-color': string
   /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
   '--header-row-height': string
 
-  /** 数据单元格边框，默认为 1px solid var(--border-color) */
+  /** 单元格的边框颜色 */
+  '--border-color': string
+  /** 单元格边框，默认为 1px solid var(--border-color) */
   '--cell-border': string
-  /** 数据单元格上下边框，默认为 var(--cell-border) */
+  /** 单元格上下边框，默认为 var(--cell-border) */
   '--cell-border-horizontal': string
-  /** 数据单元格左右边框，默认为 var(--cell-border) */
+  /** 单元格左右边框，默认为 var(--cell-border) */
   '--cell-border-vertical': string
-
   /** 表头单元格边框，默认为 1px solid var(--border-color) */
   '--header-cell-border': string
   /** 表头单元格上下边框，默认为 var(--header-cell-border) */
   '--header-cell-border-horizontal': string
   /** 表头单元格左右边框，默认为 var(--header-cell-border) */
   '--header-cell-border-vertical': string
-
-  /** 数据单元格边框 */
-  '--cell-border-top': string
-  '--cell-border-bottom': string
-  '--cell-border-left': string
-  '--cell-border-right': string
-
-  /** 表头单元格边框 */
-  '--header-cell-border-top': string
-  '--header-cell-border-bottom': string
-  '--header-cell-border-left': string
-  '--header-cell-border-right': string
 }>
 ```
 

@@ -678,7 +678,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const { needRenderLock, flat } = this.state
 
     if (this.isLock()) {
-      const sumOfColWidth = flat.full.map((col) => col.width).reduce((sum, w) => sum + w, 0)
+      const sumOfColWidth = sum(flat.full.map((col) => col.width))
       const nextNeedRenderLock = sumOfColWidth > this.doms.artTable.clientWidth
       if (needRenderLock !== nextNeedRenderLock) {
         this.setState({ needRenderLock: nextNeedRenderLock })

@@ -12,7 +12,7 @@ export const OVERSCAN_SIZE = 100
 
 export const LOADING_ICON_SIZE = 40
 
-export const AUTO_VIRTUAL_THRESHOLD = 80
+export const AUTO_VIRTUAL_THRESHOLD = 100
 
 export function sum(arr: number[]) {
   let result = 0

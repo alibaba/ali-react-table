@@ -25,7 +25,6 @@
   },
   "files": [
     "dist",
-    "biz",
     "pivot"
   ],
   "prettier": {

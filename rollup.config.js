@@ -21,7 +21,7 @@ const config = (arg) => ({
   ...arg,
 })
 
-const input = ['src/ali-react-table.ts', 'src/ali-react-table-biz.ts', 'src/ali-react-table-pivot.ts']
+const input = ['src/ali-react-table.ts', 'src/ali-react-table-pivot.ts']
 
 export default [
   config({

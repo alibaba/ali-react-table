@@ -23,6 +23,9 @@ export const Classes = {
   stickyScroll: `${prefix}sticky-scroll`,
   stickyScrollItem: `${prefix}sticky-scroll-item`,
 
+  leftLockShadow: `${prefix}left-lock-shadow`,
+  rightLockShadow: `${prefix}right-lock-shadow`,
+
   /** 数据为空时表格内容的外层 div */
   emptyWrapper: `${prefix}empty-wrapper`,
 
@@ -31,7 +34,7 @@ export const Classes = {
   loadingIndicator: `${prefix}loading-indicator`,
   loadingIndicatorIcon: `${prefix}loading-indicator-icon`,
   loadingContentWrapper: `${prefix}loading-content-wrapper`,
-}
+} as const
 
 const Z = {
   lock: 20,
@@ -40,7 +43,7 @@ const Z = {
   virtual: 3,
   tableInner: 2,
   shadow: 1,
-}
+} as const
 
 export type BaseTableCSSVariables = Partial<{
   /** 表格的字体颜色 */
@@ -164,6 +167,10 @@ const ArtTable = styled.div`
     border-spacing: 0;
   }
 
+  tr:hover {
+    --bgcolor: var(--hover-color);
+  }
+
   th {
     font-weight: normal;
     text-align: left;
@@ -171,29 +178,33 @@ const ArtTable = styled.div`
     height: var(--header-row-height);
     color: var(--header-color);
     background: var(--header-bgcolor);
-    border-left: var(--header-cell-border-horizontal);
-    border-top: var(--header-cell-border-vertical);
-  }
-  th.last {
     border-right: var(--header-cell-border-vertical);
+    border-bottom: var(--header-cell-border-horizontal);
+  }
+  tr.first th {
+    border-top: var(--header-cell-border-horizontal);
+  }
+  th.first {
+    border-left: var(--header-cell-border-vertical);
   }
 
   td {
     padding: 8px 12px;
     background: var(--bgcolor);
     height: var(--row-height);
-    border-left: var(--cell-border-vertical);
-    border-top: var(--cell-border-horizontal);
-  }
-  td.last {
     border-right: var(--cell-border-vertical);
-  }
-  tr.last td {
     border-bottom: var(--cell-border-horizontal);
   }
-
-  tr:hover > td {
-    background: var(--hover-color);
+  td.first {
+    border-left: var(--cell-border-vertical);
+  }
+  tr.first td {
+    border-top: var(--cell-border-horizontal);
+  }
+  &.has-header {
+    tr.first td {
+      border-top: none;
+    }
   }
 
   .lock-left,
@@ -201,7 +212,7 @@ const ArtTable = styled.div`
     z-index: 2;
   }
 
-  .left-lock-shadow .lock-left-last ::after {
+  .${Classes.leftLockShadow} .lock-left-last ::after {
     position: absolute;
     top: 0;
     right: 0;
@@ -213,7 +224,7 @@ const ArtTable = styled.div`
     box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
   }
 
-  .right-lock-shadow .lock-right-first ::after {
+  .${Classes.rightLockShadow} .lock-right-first ::after {
     position: absolute;
     top: 0;
     left: 0;

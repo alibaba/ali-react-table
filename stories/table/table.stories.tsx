@@ -47,17 +47,6 @@ export function 基本用法() {
   return <BaseTable dataSource={dataSource} columns={columns} />
 }
 
-const ZebraBaseTable: typeof BaseTable = styled(BaseTable)`
-  --hover-color: none;
-
-  .art-table-row.even td {
-    background: #f2f2f2;
-  }
-  .art-table-row.odd td {
-    background: white;
-  }
-` as any
-
 export function 自定义表格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
   return (
@@ -76,18 +65,27 @@ export function 自定义表格样式() {
   )
 }
 
+const ZebraBaseTable: typeof BaseTable = styled(BaseTable)`
+  .art-table-row.even {
+    --bgcolor: #f2f2f2;
+  }
+  .art-table-row.odd {
+    --bgcolor: white;
+  }
+` as any
+
 export function 自定义表格样式2() {
   /*
   import styled from 'styled-components'
   import { BaseTable } from 'ali-react-table'
 
   const ZebraBaseTable = styled(BaseTable)`
-     --hover-color: none;
-    .art-table-row.even td {
-      background: #f2f2f2;
+    --cell-border-vertical: none;
+    .art-table-row.even {
+      --bgcolor: #f2f2f2;
     }
-    .art-table-row.odd td {
-      background: white;
+    .art-table-row.odd {
+      --bgcolor: white;
     }
    */
   const { isLoading, dataSource } = useProvinceDataSource()

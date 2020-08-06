@@ -1,9 +1,8 @@
 import cx from 'classnames'
 import React, { CSSProperties, ReactNode } from 'react'
-import ResizeObserver from 'resize-observer-polyfill'
 import { noop, Subscription } from 'rxjs'
 import * as op from 'rxjs/operators'
-import { ArtColumn, CellProps } from '../interfaces'
+import { ArtColumn } from '../interfaces'
 import { safeGetRowKey, safeGetValue } from '../internals'
 import EmptyTable from './empty'
 import getDerivedStateFromProps from './getDerivedStateFromProps'
@@ -119,9 +118,6 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   private store = new ItemSizeStore()
 
-  /** artTable.clientWidth 的缓存 */
-  private artTableClientWidth = 800
-
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
   private rootSubscription = new Subscription()
@@ -208,8 +204,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const { tableBody, tableHeader } = this.doms
 
     if (this.isLock()) {
-      const left = 'left-lock-shadow'
-      const right = 'right-lock-shadow'
+      const left = Classes.leftLockShadow
+      const right = Classes.rightLockShadow
 
       const useLeft = this.state.needRenderLock && x > 0
       const useRight = this.state.needRenderLock && x < tableBody.scrollWidth - tableBody.clientWidth
@@ -549,9 +545,16 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     this.didMountOrUpdate()
   }
 
-  componentDidUpdate(prevProps: Readonly<BaseTableProps>) {
+  componentDidUpdate(prevProps: Readonly<BaseTableProps>, prevState: Readonly<BaseTableState>) {
     this.updateDoms()
     this.didMountOrUpdate(prevProps)
+    this.resetStickyScrollIfNecessary(prevState)
+  }
+
+  private resetStickyScrollIfNecessary(prevState: Readonly<BaseTableState>) {
+    if (this.state.hasScroll && !prevState.hasScroll) {
+      this.doms.stickyScroll.scrollLeft = 0
+    }
   }
 
   private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>) {
@@ -579,13 +582,6 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         this.adjustSize()
       }),
     )
-
-    this.artTableClientWidth = artTable.clientWidth
-    const artTableResizeObserver = new ResizeObserver(([entry]) => {
-      this.artTableClientWidth = entry.contentRect.width
-    })
-    artTableResizeObserver.observe(artTable)
-    this.rootSubscription.add(() => artTableResizeObserver.disconnect())
 
     // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
     // 故这里使用 requestAnimationFrame 等到下一个动画帧
@@ -659,7 +655,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     // todo 当页面上出现的元素过少时，要重新触发 render
   }
 
-  // fixme adjustLoadingPosition 目前有问题
+  // fixme adjustLoadingPosition 计算的坐标有时候不对
   private adjustLoadingPosition() {
     const { artTable, artTableWrapper } = this.doms
     const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
@@ -683,7 +679,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
     if (this.isLock()) {
       const sumOfColWidth = flat.full.map((col) => col.width).reduce((sum, w) => sum + w, 0)
-      const nextNeedRenderLock = sumOfColWidth > this.artTableClientWidth
+      const nextNeedRenderLock = sumOfColWidth > this.doms.artTable.clientWidth
       if (needRenderLock !== nextNeedRenderLock) {
         this.setState({ needRenderLock: nextNeedRenderLock })
       }

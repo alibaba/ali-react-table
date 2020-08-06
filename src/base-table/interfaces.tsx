@@ -22,8 +22,6 @@ export interface HorizontalRenderRange {
   rightBlank: number
 }
 
-export type TRNodeList = NodeListOf<HTMLTableRowElement>
-
 export interface TableDoms {
   artTableWrapper: HTMLDivElement
   artTable: HTMLDivElement

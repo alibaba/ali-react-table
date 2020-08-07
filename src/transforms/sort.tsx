@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
 import { safeGetValue, safeRenderHeader } from '../internals'
-import { collectNodes, smartCompare,isLeafNode, layeredSort } from '../utils'
+import { collectNodes, smartCompare, isLeafNode, layeredSort } from '../utils'
 
 type IconComponent = typeof CarbonIcons.Number_116
 
@@ -200,7 +200,7 @@ export function makeSortTransform({
         if (nextOrder === 'none') {
           nextSorts.pop()
         } else {
-          nextSorts[index].order = nextOrder
+          nextSorts[index] = { ...nextSorts[index], order: nextOrder }
         }
         onChangeSorts(nextSorts)
       }

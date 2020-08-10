@@ -7,7 +7,7 @@ import LinkTo from '@storybook/addon-links/react'
 
 ### autoRowSpan 自动单元格合并
 
-`commonTransforms.autoRowSpan()`：根据上下单元格的值 是否相等 自动合并单元格。
+`makeAutoRowSpanTransform()`：根据上下单元格的值 是否相等 自动合并单元格。
 
 在设置 `column.feature.autoRowSpan` 之后，如果该列上下两个单元格中的值相等，则自动合并这两个单元格。如果连续的多个单元格的值都相等，则合并所有这些单元格。 该 transform 会覆盖列中原有的 `getSpanRect`，注意避免与其他 transform 的冲突。
 

@@ -82,7 +82,7 @@ const TableHeaderCell = styled.div`
 `
 
 export interface SortHeaderCellProps {
-  /** 调用 commonTransforms.sort(...) 时的参数 */
+  /** 调用 makeSortTransform(...) 时的参数 */
   sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
 
   /** 在添加排序相关的内容之前 表头原有的渲染内容 */

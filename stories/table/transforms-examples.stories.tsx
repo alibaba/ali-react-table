@@ -54,7 +54,7 @@ export function 树状表格() {
       width: 200,
       // 通过自定义 getValue，可以实现「根据节点深度选取合适的数据字段」
       // getValue(record: any) {
-      //   const meta = record[commonTransforms.treeMetaSymbol]
+      //   const meta = record[treeMetaSymbol]
       //   const array = [record.subsidiary_name, record.city_name, record.shop_name]
       //   return array[meta.depth]
       // },

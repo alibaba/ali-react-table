@@ -8,6 +8,8 @@ import { CellProps } from '../interfaces'
  * * 对于函数/方法类型的字段（对应单元格的事件回调函数），mergeCellProps 将生成一个新的函数，新函数将按序调用 base 和 extra 中的方法
  * * 对于普通对象类型的字段（一般对应单元格的样式），mergeCellProps 将调用 lodash.merge 来合并字段值 */
 export default function mergeCellProps(base: CellProps, extra: CellProps): CellProps {
+  // todo className 如何进行合并？
+
   if (base == null) {
     return extra
   }

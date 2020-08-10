@@ -9,9 +9,9 @@ import LinkTo from '@storybook/addon-links/react'
 
 ## buildTree 从列表数据中构建树状数据
 
-`commonTransforms.buildTree(idProp: string, parentIdProp: string): TableTransform`
+`makeBuildTreeTransform(idProp: string, parentIdProp: string): TableTransform`
 
-根据数据中的 id/parentId 字段，将 dataSource 转换为树状结构，树状结构下，父节点的 children 数组中包含对其子节点的引用。
+根据数据中的 idProp/parentIdProp，将 dataSource 转换为树状结构。树状结构下，父节点的 children 数组中包含对其子节点的引用。
 
 ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
 
@@ -19,12 +19,12 @@ ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需�
 
 ## treeMode 使用树状结构来渲染表格
 
-`commonTransforms.treeMode(options?: TreeModeOptions): TableTransform`
+`makeTreeModeTransform(options?: TreeModeOptions): TableTransform`
 
 - 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
 - 该 transform 会对 dataSource 和 columns 进行更新，根据逻辑如下：
   - 根据 options.openKeys 计算出需要展示的表格行，并计算每一行的缩进和展开信息
-    - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[commonTransform.treeMetaSymbol]` 来获取该信息
+    - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[treeMetaSymbol]` 来获取该信息
   - 该 transform 会对 `columns[0]` 进行更新，使其在渲染时处理缩进并绘制树状模式的展开/收拢按钮
 
 `TreeModeOptions` 具体定义：
@@ -51,7 +51,7 @@ export interface TreeModeOptions {
 
 ### treeMode 非受控用法
 
-ali-react-table 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 commonTransforms.treeMode 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
+ali-react-table 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 makeTreeModeTransform 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
 
 ```javascript
 import { useTreeModeTransform } from 'ali-react-table'

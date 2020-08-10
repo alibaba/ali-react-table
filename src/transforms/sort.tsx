@@ -3,7 +3,7 @@ import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
 import { safeGetValue, safeRenderHeader } from '../internals'
-import { collectNodes, smartCompare,isLeafNode, layeredSort } from '../utils'
+import { collectNodes, smartCompare, isLeafNode, layeredSort } from '../utils'
 
 type IconComponent = typeof CarbonIcons.Number_116
 
@@ -82,7 +82,7 @@ const TableHeaderCell = styled.div`
 `
 
 export interface SortHeaderCellProps {
-  /** 调用 commonTransforms.sort(...) 时的参数 */
+  /** 调用 makeSortTransform(...) 时的参数 */
   sortOptions: Required<Omit<SortOptions, 'SortHeaderCell'>>
 
   /** 在添加排序相关的内容之前 表头原有的渲染内容 */
@@ -200,7 +200,7 @@ export function makeSortTransform({
         if (nextOrder === 'none') {
           nextSorts.pop()
         } else {
-          nextSorts[index].order = nextOrder
+          nextSorts[index] = { ...nextSorts[index], order: nextOrder }
         }
         onChangeSorts(nextSorts)
       }

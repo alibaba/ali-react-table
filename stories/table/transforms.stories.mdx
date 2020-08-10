@@ -80,7 +80,7 @@ const output = transform_3(temp2)
 
 ## 自定义 transform
 
-除了 commonTransforms 之外，我们也可以自己实现 transform，然后将其与其他 transform 组合到一起。
+除了 ali-react-table 默认导出的一些 transform 之外，我们也可以自己实现 transform，然后将其与其他 transform 组合到一起。
 
 ```javascript
 function doubleDataSourceTransform({ columns, dataSource }) {
@@ -127,5 +127,3 @@ const addCompareCol = traverseColumn((col) => {
   return col
 })
 ```
-
-值得一提的是，commonTransforms 中的大部分 transform 都是通过该方法生成的。

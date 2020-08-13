@@ -73,8 +73,12 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
   }: ConvertOptions<T> = {},
 ): T[] {
   const totalKey = encode([])
-  // fixme 如果 expandKeys 没传的，应该认为所有的节点都是展开的
-  const expandKeySet = new Set(expandKeys ?? [])
+  if (supportsExpand && expandKeys == null) {
+    throw new Error(
+      '[ali-react-table] convertDrillTreeToCrossTree(...) 设置 supportsExpand=true 时，expandKeys 不能为 null/undefined.',
+    )
+  }
+  const expandKeySet = new Set(expandKeys)
 
   return dfs(drillTree, 0)
 

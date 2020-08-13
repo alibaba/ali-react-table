@@ -37,6 +37,7 @@
 
 ## 更新日志
 
+- [从 0.14 升级到 1.0](docs/from-0.14-to-1.0.md)
 - [从 0.13 升级到 0.14](docs/from-0.13-to-0.14.md)
 - 具体的更新日志详见 [该文档](stories/changelog.stories.mdx)
 

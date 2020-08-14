@@ -122,6 +122,10 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   private doms: TableDoms
   private rootSubscription = new Subscription()
 
+  getDoms() {
+    return this.doms
+  }
+
   constructor(props: Readonly<BaseTableProps>) {
     super(props)
 

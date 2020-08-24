@@ -30,7 +30,7 @@ export default function EmptyTable({
     <table>
       {colgroup}
       <tbody>
-        <tr className={cx(Classes.tableRow, 'first', 'last')}>
+        <tr className={cx(Classes.tableRow, 'first', 'last')} data-rowindex={0}>
           <td
             className={cx(Classes.tableCell, 'first', 'last')}
             colSpan={colSpan}

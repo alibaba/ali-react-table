@@ -652,11 +652,32 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const virtualTop = this.doms.artTable.querySelector<HTMLDivElement>(`.${Classes.virtualBlank}.top`)
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
-    queryAll<HTMLTableRowElement>(this.doms.artTable, Classes.tableRow).forEach((tr) => {
+    let maxTrRowIndex = -1
+    let maxTrBottom = -1
+
+    for (const tr of queryAll<HTMLTableRowElement>(this.doms.artTable, Classes.tableRow)) {
       const rowIndex = Number(tr.dataset.rowindex)
-      this.store.updateItem(rowIndex, tr.offsetTop + virtualTopHeight, tr.offsetHeight)
-    })
-    // todo 当页面上出现的元素过少时，要重新触发 render
+      if (isNaN(rowIndex)) {
+        continue
+      }
+      maxTrRowIndex = Math.max(maxTrRowIndex, rowIndex)
+      const offset = tr.offsetTop + virtualTopHeight
+      const size = tr.offsetHeight
+      maxTrBottom = Math.max(maxTrBottom, offset + size)
+      this.store.updateItem(rowIndex, offset, size)
+    }
+
+    if (maxTrRowIndex !== -1) {
+      if (maxTrBottom < this.state.offsetY + this.state.maxRenderHeight) {
+        // 页面上出现的元素过少
+        const { vertical } = this.getRenderRange()
+        // 确保下一次渲染 能够渲染更多行
+        if (vertical.bottomIndex - 1 > maxTrRowIndex) {
+          // 重新触发 render
+          this.forceUpdate()
+        }
+      }
+    }
   }
 
   // fixme adjustLoadingPosition 计算的坐标有时候不对

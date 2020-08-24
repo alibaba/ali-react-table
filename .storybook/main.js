@@ -5,6 +5,10 @@ module.exports = {
   presets: ['@storybook/addon-docs/preset'],
   addons: ['@storybook/addon-storysource', '@storybook/addon-links/register'],
 
+  typescript: {
+    check: false,
+  },
+
   stories,
 
   webpack: async (config) => {
@@ -13,14 +17,6 @@ module.exports = {
       config.devtool = false
     }
 
-    config.module.rules.push({
-      test: /\.(ts|tsx)$/,
-      use: [
-        { loader: 'awesome-typescript-loader', options: { transpileOnly: true } },
-        'react-docgen-typescript-loader',
-      ],
-    })
-    config.resolve.extensions.push('.ts', '.tsx')
     if (config.resolve.plugins == null) {
       config.resolve.plugins = []
     }

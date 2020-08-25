@@ -4,6 +4,10 @@
 
 高性能 React 表格组件. https://ali-react-table.js.org/
 
+## News
+
+ali-react-table v1.0 发布。 详见 [changelog](stories/changelog.stories.mdx)
+
 ## 安装
 
 `npm install ali-react-table`

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "storybook": "start-storybook -p 2333",
-    "build-storybook": "rimraf storybook-dist/ && build-storybook -c .storybook -o storybook-dist/",
+    "build-storybook": "rimraf storybook-dist/ && build-storybook --no-dll -c .storybook -o storybook-dist/",
     "build": "rimraf dist/ && rollup --config rollup.config.js",
     "preversion": "npm run build",
     "prepublishOnly": "npm run build"

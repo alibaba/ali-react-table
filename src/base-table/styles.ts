@@ -212,7 +212,7 @@ const ArtTable = styled.div`
     z-index: 2;
   }
 
-  .${Classes.leftLockShadow} .lock-left-last ::after {
+  .${Classes.leftLockShadow} .lock-left-last::after {
     position: absolute;
     top: 0;
     right: 0;
@@ -224,7 +224,7 @@ const ArtTable = styled.div`
     box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
   }
 
-  .${Classes.rightLockShadow} .lock-right-first ::after {
+  .${Classes.rightLockShadow} .lock-right-first::after {
     position: absolute;
     top: 0;
     left: 0;

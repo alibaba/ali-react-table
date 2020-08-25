@@ -1,5 +1,6 @@
 import ResizeObserver from 'resize-observer-polyfill'
 import { fromEvent, merge, Observable } from 'rxjs'
+import * as op from 'rxjs/operators'
 
 interface SimpleDOMRect {
   readonly top: number
@@ -16,7 +17,7 @@ function getRect(ele: HTMLElement | typeof window): SimpleDOMRect {
   }
 }
 
-export function getClipRect(target: HTMLElement | typeof window, flowRoot: HTMLElement | typeof window) {
+export function getVisiblePart(target: HTMLElement | typeof window, flowRoot: HTMLElement | typeof window) {
   const targetRect = getRect(target)
   const rootRect = getRect(flowRoot)
 
@@ -32,24 +33,27 @@ export function getClipRect(target: HTMLElement | typeof window, flowRoot: HTMLE
   }
 }
 
+function fromResizeEvent(element: HTMLElement | typeof window): Observable<unknown> {
+  if (element === window) {
+    return fromEvent(element, 'resize')
+  }
+
+  return new Observable((subscriber) => {
+    const resizeObserver = new ResizeObserver(() => {
+      subscriber.next()
+    })
+    resizeObserver.observe(element as HTMLElement)
+
+    return () => {
+      resizeObserver.disconnect()
+    }
+  })
+}
+
 /** 基于 ResizeObserver 和 scroll event 封装的 RxJS observable；
  * 用于监听一个元素的在页面中的「可见范围」的不断变化 */
-export default class VisibleClipRectObservable extends Observable<{ clipRect: SimpleDOMRect; offsetY: number }> {
-  constructor(target: HTMLElement, flowRoot: HTMLElement | typeof window) {
-    super((subscriber) => {
-      const subscription = merge(fromEvent(flowRoot, 'scroll'), fromEvent(flowRoot, 'resize')).subscribe(callback)
-
-      const resizeObserver = new ResizeObserver(callback)
-      resizeObserver.observe(target)
-
-      function callback() {
-        subscriber.next(getClipRect(target, flowRoot))
-      }
-
-      return () => {
-        subscription.unsubscribe()
-        resizeObserver.disconnect()
-      }
-    })
-  }
+export function getVisiblePartObservable(target: HTMLElement, flowRoot: HTMLElement | typeof window) {
+  return merge<any>(fromEvent(flowRoot, 'scroll'), fromResizeEvent(flowRoot), fromResizeEvent(target)).pipe(
+    op.map(() => getVisiblePart(target, flowRoot)),
+  )
 }

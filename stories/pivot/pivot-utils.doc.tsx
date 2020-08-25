@@ -1,4 +1,3 @@
-import { BaseTable } from 'ali-react-table'
 import {
   buildDrillTree,
   buildRecordMatrix,
@@ -12,9 +11,7 @@ import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
 import MinimumPivotTableDesigner from './MinimumPivotTableDesigner'
 
-export default { title: '交叉与透视 / pivot-utils / 示例' }
-
-export function 下钻树示例() {
+export function DrillTreeIllustration() {
   const dwdData = [
     { subs: '上海子公司', shop: '上海大宁店', month: '2022-01', valueA: 782, valueB: 566 },
     { subs: '上海子公司', shop: '上海大宁店', month: '2022-02', valueA: 856, valueB: 403 },
@@ -36,33 +33,27 @@ export function 下钻树示例() {
   const drillTree = buildDrillTree(dwdData, ['subs', 'shop', 'month'])
 
   return (
-    <div>
-      <div style={{ fontSize: 16, lineHeight: 2 }}>输入数据（输入格式为一个对象的数组）</div>
-
-      <BaseTable
-        style={{ overflow: 'auto', height: 250 }}
-        useOuterBorder
-        columns={[
-          { name: '子公司(subs)', code: 'subs' },
-          { name: '门店(shop)', code: 'shop' },
-          { name: '月份(month)', code: 'month' },
-          { name: '指标A(valueA)', code: 'valueA' },
-          { name: '指标B(valueB)', code: 'valueB' },
-        ]}
-        dataSource={dwdData}
-        defaultColumnWidth={100}
+    <div style={{ border: '1px dashed #ccc', padding: 8 }}>
+      <div style={{ fontSize: 14, lineHeight: 2 }}>1. 输入数据（输入格式为一个对象的数组）</div>
+      <ReactJson
+        name="输入数据"
+        src={dwdData}
+        collapsed={0}
+        enableClipboard={false}
+        displayObjectSize={false}
+        displayDataTypes={false}
       />
 
-      <div style={{ marginTop: 16, fontSize: 16, lineHeight: 2 }}>
-        <div>处理过程</div>
+      <div style={{ marginTop: 16, fontSize: 14, lineHeight: 2 }}>
+        <div>2. 处理过程</div>
         <code>buildDrillTree(data, ['subs', 'shop', 'month'])</code>
       </div>
 
-      <div style={{ marginTop: 16, fontSize: 16, lineHeight: 2 }}>输出一个 DrillNode 的数组</div>
+      <div style={{ marginTop: 16, fontSize: 14, lineHeight: 2 }}>3. 输出一个 DrillNode 的数组</div>
       <ReactJson
-        name={null}
+        name="输出结果"
         src={drillTree}
-        collapsed={2}
+        collapsed={0}
         enableClipboard={false}
         displayObjectSize={false}
         displayDataTypes={false}
@@ -71,7 +62,7 @@ export function 下钻树示例() {
   )
 }
 
-export function 简单交叉表() {
+export function SimpleCrossTable() {
   const data = [
     { subs: '上海子公司', shop: '上海大宁店', season: '一季度', month: '2022-01', valueA: 782, valueB: 566 },
     { subs: '上海子公司', shop: '上海大宁店', season: '一季度', month: '2022-02', valueA: 856, valueB: 403 },
@@ -122,7 +113,7 @@ export function 简单交叉表() {
   )
 }
 
-export function 简单透视表() {
+export function SimplePivotTable() {
   const data = [
     { subs: '上海子公司', shop: '上海大宁店', season: '一季度', month: '2022-01', valueA: 782, valueB: 566 },
     { subs: '上海子公司', shop: '上海大宁店', season: '一季度', month: '2022-02', valueA: 856, valueB: 403 },

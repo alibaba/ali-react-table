@@ -1,4 +1,4 @@
-import { Meta, Story, Preview } from '@storybook/addon-docs/blocks'
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks'
 import LinkTo from '@storybook/addon-links/react'
 
 <Meta title="表格 / 常用功能 / 排序" />
@@ -66,9 +66,9 @@ function MyComponent() {
 
 ## 基本示例
 
-<Preview>
+<Canvas>
   <Story id="表格-常用功能示例--表格排序-单列" />
-</Preview>
+</Canvas>
 
 ## 进阶用法 —— 树状排序
 
@@ -83,9 +83,9 @@ const renderData = applyTransforms(
 )
 ```
 
-<Preview>
+<Canvas>
   <Story id="表格-常用功能示例--树状模式与层级排序" />
-</Preview>
+</Canvas>
 
 ## 进阶用法 —— 自定义比较函数
 
@@ -124,6 +124,6 @@ interface SortHeaderCellProps {
 }
 ```
 
-<Preview>
+<Canvas>
   <Story id="表格-常用功能示例--自定义样式的排序表头" />
-</Preview>
+</Canvas>

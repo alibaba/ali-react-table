@@ -1,7 +1,6 @@
 import React from 'react'
 import { ArtColumn } from '../interfaces'
 
-export type TableSide = 'main' | 'left' | 'right'
 export type VirtualEnum = false | true | 'auto'
 
 export interface FullRenderRange {
@@ -23,20 +22,12 @@ export interface HorizontalRenderRange {
   rightBlank: number
 }
 
-export type TRNodeList = NodeListOf<HTMLTableRowElement>
-
 export interface TableDoms {
   artTableWrapper: HTMLDivElement
   artTable: HTMLDivElement
-  mainSection: HTMLDivElement
-  mainHeader: HTMLDivElement
-  mainBody: HTMLDivElement
-  leftSection: HTMLDivElement
-  leftHeader: HTMLDivElement
-  leftBody: HTMLDivElement
-  rightSection: HTMLDivElement
-  rightHeader: HTMLDivElement
-  rightBody: HTMLDivElement
+  tableHeader: HTMLDivElement
+  tableBody: HTMLDivElement
+
   stickyScroll: HTMLDivElement
   stickyScrollItem: HTMLDivElement
 }

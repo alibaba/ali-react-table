@@ -1,6 +1,6 @@
-import { Button, Checkbox } from '@alifd/next'
-import { ArtColumn, BaseTable, Classes, SpanRect } from 'ali-react-table'
-import React, { useState } from 'react'
+import { Button, Checkbox, Notification } from '@alifd/next'
+import { ArtColumn, BaseTable, SpanRect } from 'ali-react-table'
+import React, { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { amount, time } from '../assets/format'
 import { FusionStyles } from '../assets/fusion-style'
@@ -47,20 +47,6 @@ export function 基本用法() {
   return <BaseTable dataSource={dataSource} columns={columns} />
 }
 
-const ZebraBaseTable = styled(BaseTable)`
-  --row-hover-color: none;
-
-  .${Classes.tableRow} {
-    &.even {
-      background: #f2f2f2;
-    }
-
-    &.odd {
-      background: white;
-    }
-  }
-`
-
 export function 自定义表格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
   return (
@@ -79,23 +65,28 @@ export function 自定义表格样式() {
   )
 }
 
+const ZebraBaseTable: typeof BaseTable = styled(BaseTable)`
+  .art-table-row.even {
+    --bgcolor: #f2f2f2;
+  }
+  .art-table-row.odd {
+    --bgcolor: white;
+  }
+` as any
+
 export function 自定义表格样式2() {
   /*
   import styled from 'styled-components'
-  import { BaseTable, Classes } from 'ali-react-table'
+  import { BaseTable } from 'ali-react-table'
 
   const ZebraBaseTable = styled(BaseTable)`
-     --row-hover-color: none;
-
-    .${Classes.tableRow} {
-      &.even {
-        background: #f2f2f2;
-      }
-
-      &.odd {
-        background: white;
-      }
-    }`
+    --cell-border-vertical: none;
+    .art-table-row.even {
+      --bgcolor: #f2f2f2;
+    }
+    .art-table-row.odd {
+      --bgcolor: white;
+    }
    */
   const { isLoading, dataSource } = useProvinceDataSource()
   return <ZebraBaseTable isLoading={isLoading} dataSource={dataSource.slice(0, 10)} columns={testProvColumns} />
@@ -438,6 +429,9 @@ export function 虚拟滚动与单元格合并() {
 
 export function 自定义单元格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
+
+  const tableRef = useRef<BaseTable>()
+
   const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150 },
     {
@@ -490,11 +484,44 @@ export function 自定义单元格样式() {
   ]
   return (
     <div>
-      <h1>样式说明</h1>
-      <p>红色字体：确诊 &gt; 1000</p>
-      <p>绿色背景：治愈 / 确诊 &gt; 0.3</p>
-      <p>红色背景：死亡 &gt; 0</p>
-      <BaseTable isLoading={isLoading} dataSource={dataSource} columns={columns} />
+      <FusionStyles />
+      <div style={{ display: 'flex' }}>
+        <div>
+          <h1 style={{ marginBottom: 6 }}>样式说明</h1>
+          <p style={{ margin: '6px 0' }}>红色字体：确诊 &gt; 1000</p>
+          <p style={{ margin: '6px 0' }}>绿色背景：治愈 / 确诊 &gt; 0.3</p>
+          <p style={{ margin: '6px 0' }}>红色背景：死亡 &gt; 0</p>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: 32,
+            marginBottom: 6,
+            alignSelf: 'flex-end',
+          }}
+        >
+          <Button
+            size="small"
+            onClick={() => {
+              navigator.clipboard
+                .writeText(tableRef.current.getDoms().artTable.outerHTML)
+                .then(() => {
+                  Notification.open({ content: '复制成功' })
+                })
+                .catch(() => {
+                  Notification.error({ content: '复制失败' })
+                })
+            }}
+          >
+            复制表格
+          </Button>
+
+          <span style={{ marginLeft: 8 }}>(复制之后可以在 Excel 中进行粘贴)</span>
+        </div>
+      </div>
+
+      <BaseTable ref={tableRef} isLoading={isLoading} dataSource={dataSource} columns={columns} />
     </div>
   )
 }
@@ -506,6 +533,9 @@ export function 自定义表格行props() {
 
   return (
     <BaseTable
+      style={{
+        '--bgcolor': 'transparent',
+      }}
       isLoading={isLoading}
       dataSource={dataSource.slice(0, 6)}
       columns={testProvColumns}

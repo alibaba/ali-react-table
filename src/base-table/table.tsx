@@ -1,35 +1,32 @@
 import cx from 'classnames'
 import React, { CSSProperties, ReactNode } from 'react'
-import { noop, Subscription } from 'rxjs'
-import { distinctUntilChanged, filter, map } from 'rxjs/operators'
-import { safeGetCellProps, safeGetRowKey, safeGetValue, safeRender } from '../internals'
+import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subscription, timer } from 'rxjs'
+import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
+import { safeGetRowKey, safeGetValue } from '../internals'
 import EmptyTable from './empty'
 import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
 import ItemSizeStore from './helpers/ItemSizeStore'
 import SpanManager from './helpers/SpanManager'
-import VisibleClipRectObservable, { getClipRect } from './helpers/VisibleClipRectObservable'
+import { getVisiblePartObservable } from './helpers/visible-part'
 import {
   FullRenderRange,
   HorizontalRenderRange,
   HozWrappedCol,
   TableDoms,
-  TableSide,
-  TRNodeList,
   VerticalRenderRange,
   VirtualEnum,
 } from './interfaces'
 import Loading from './loading'
 import { BaseTableCSSVariables, Classes, Styled } from './styles'
 import {
-  batchAdjustLeftCellSizes,
-  batchAdjustRightCellSizes,
   getScrollbarSize,
   LOADING_ICON_SIZE,
   OVERSCAN_SIZE,
   query,
   queryAll,
+  shallowEqual,
   STYLED_REF_PROP,
   sum,
   syncScrollLeft,
@@ -37,7 +34,6 @@ import {
 } from './utils'
 
 export interface BaseTableProps {
-  ////// 数据部分
   /** 主键 */
   primaryKey?: string | ((record: any, rowIndex: number) => string)
   /** 表格展示的数据源 */
@@ -48,7 +44,6 @@ export interface BaseTableProps {
   /** 是否开启虚拟滚动 */
   useVirtual?: VirtualEnum | { horizontal?: VirtualEnum; vertical?: VirtualEnum; header?: VirtualEnum }
 
-  ////// 表格整体样式相关 props
   /** 表格头部是否置顶，默认为 true */
   isStickyHead?: boolean
   /** 表格置顶后，距离顶部的距离 */
@@ -78,18 +73,10 @@ export interface BaseTableProps {
 }
 
 export interface BaseTableState {
-  flat: {
-    left: ArtColumn[]
-    center: ArtColumn[]
-    right: ArtColumn[]
-    main: ArtColumn[]
-  }
-  nested: {
-    left: ArtColumn[]
-    right: ArtColumn[]
-    main: ArtColumn[]
-    center: ArtColumn[]
-  }
+  flat: { full: ArtColumn[]; left: ArtColumn[]; center: ArtColumn[]; right: ArtColumn[] }
+  nested: { full: ArtColumn[]; left: ArtColumn[]; center: ArtColumn[]; right: ArtColumn[] }
+  stickyLeftMap: Map<number, number>
+  stickyRightMap: Map<number, number>
 
   /** 是否要展示自定义滚动条(stickyScroll) */
   hasScroll: boolean
@@ -131,11 +118,21 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   static getDerivedStateFromProps = getDerivedStateFromProps
 
   private store = new ItemSizeStore()
-  private artTableRef = React.createRef<HTMLDivElement>()
+
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
   private rootSubscription = new Subscription()
-  private hoveredTableRows: HTMLTableRowElement[] = []
+
+  private data$: BehaviorSubject<{
+    props: BaseTableProps
+    state: BaseTableState
+    prevProps: BaseTableProps | null
+    prevState: BaseTableState | null
+  }>
+
+  getDoms() {
+    return this.doms
+  }
 
   constructor(props: Readonly<BaseTableProps>) {
     super(props)
@@ -156,82 +153,48 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   /** 自定义滚动条宽度为table宽度，使滚动条滑块宽度相同 */
   private updateStickyScroll() {
-    const { stickyScroll, mainBody, stickyScrollItem } = this.doms
+    const { stickyScroll, artTable, stickyScrollItem } = this.doms
 
-    if (!mainBody) {
+    if (!artTable) {
       return
     }
-    const refTable = mainBody.querySelector('table')
-    if (!refTable) {
-      return
-    }
-    const bodyWidth = mainBody.offsetWidth
+    const tableBodyInnerTable = artTable.querySelector(`.${Classes.tableBody} table`) as HTMLTableElement
+    const innerTableWidth = tableBodyInnerTable.offsetWidth
+    const artTableWidth = artTable.offsetWidth
 
-    const tableWidth = refTable.offsetWidth
     const scrollbarSize = getScrollbarSize()
     stickyScroll.style.marginTop = `-${scrollbarSize.height}px`
 
-    // 如果有纵向滚动条，需要减少一个滚动条的宽度
-    if (mainBody.scrollHeight > mainBody.clientHeight) {
-      stickyScroll.style.width = `${bodyWidth - scrollbarSize.width}px`
-    } else {
-      stickyScroll.style.width = 'auto'
-    }
-
-    if (bodyWidth >= tableWidth) {
+    if (artTableWidth >= innerTableWidth) {
       if (this.state.hasScroll) {
         this.setState({ hasScroll: false })
       }
-      // 考虑下mac下面隐藏滚动条的情况
-    } else if (!this.state.hasScroll && scrollbarSize.height > 5) {
-      this.setState({ hasScroll: true })
+    } else {
+      if (!this.state.hasScroll && scrollbarSize.height > 5) {
+        // 考虑下mac下面隐藏滚动条的情况
+        this.setState({ hasScroll: true })
+      }
     }
     // 设置子节点宽度
-    stickyScrollItem.style.width = `${tableWidth}px`
+    stickyScrollItem.style.width = `${innerTableWidth}px`
   }
 
-  // 通过头部和扁平的结构渲染表格
-  private renderTableSection(side: TableSide, renderRange: FullRenderRange) {
-    const { hasHeader } = this.props
-
-    const onWheel = side !== 'main' ? this.onWheelInOverflowHiddenPart : null
-    const onScroll = side === 'main' ? this.syncScrollFromMainBody : null
+  private renderTableHeader({ horizontal: hoz }: FullRenderRange) {
+    const { stickyTop, hasHeader } = this.props
+    const { flat, nested, useVirtual, stickyLeftMap, stickyRightMap } = this.state
 
     return (
-      <div className={cx(Classes.tableInner)}>
-        {hasHeader && this.renderTableHeader(side, renderRange)}
-        {this.renderTableBody(side, renderRange, onWheel, onScroll)}
+      <div className={Classes.tableHeader} style={{ top: stickyTop, display: hasHeader ? 'block' : 'none' }}>
+        <TableHeader
+          nested={nested}
+          flat={flat}
+          hoz={hoz}
+          useVirtual={useVirtual}
+          stickyLeftMap={stickyLeftMap}
+          stickyRightMap={stickyRightMap}
+        />
       </div>
     )
-  }
-
-  private renderTableHeader(side: TableSide, { horizontal: hoz }: FullRenderRange) {
-    const { stickyTop } = this.props
-    const { flat, nested, useVirtual } = this.state
-
-    return (
-      <div
-        className={cx(Classes.tableHeaderWrapper)}
-        style={{ top: stickyTop }}
-        onWheel={this.onWheelInOverflowHiddenPart}
-      >
-        <TableHeader nested={nested} flat={flat} hoz={hoz} side={side} useVirtual={useVirtual} />
-      </div>
-    )
-  }
-
-  /**
-   * 对于的锁定列和表头，因为我们对其设置了 overflow: hidden，导致在不会触发 scroll 事件。
-   * 我们监听其 wheel 事件，然后手动同步 scrollTop/scrollLeft
-   */
-  private onWheelInOverflowHiddenPart = (e: React.WheelEvent) => {
-    const { scrollLeft: x, scrollTop: y } = this.doms.mainBody
-    this.syncScroll(x + e.deltaX, y + e.deltaY)
-  }
-
-  private syncScrollFromMainBody = () => {
-    const { scrollLeft: x, scrollTop: y } = this.doms.mainBody
-    this.syncScroll(x, y)
   }
 
   private updateOffsetX(nextOffsetX: number) {
@@ -242,47 +205,36 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  /** 同步滚动偏移量 */
-  private syncScroll(x: number, y: number) {
+  private syncHorizontalScrollFromTableBody() {
+    this.syncHorizontalScroll(this.doms.tableBody.scrollLeft)
+  }
+
+  /** 同步横向滚动偏移量 */
+  private syncHorizontalScroll(x: number) {
     this.updateOffsetX(x)
 
-    const header = this.doms.mainHeader
-    const scrollNode = this.doms.mainBody
-
-    if (header) {
-      header.scrollLeft = x
-    }
-    scrollNode.scrollLeft = x
-    scrollNode.scrollTop = y
+    const { tableBody, tableHeader } = this.doms
 
     if (this.isLock()) {
-      const { rightBody, leftBody, rightSection, leftSection } = this.doms
+      const left = Classes.leftLockShadow
+      const right = Classes.rightLockShadow
 
-      if (leftBody) {
-        leftBody.scrollTop = y
-      }
-      if (rightBody) {
-        rightBody.scrollTop = y
-      }
+      const useLeft = this.state.needRenderLock && x > 0
+      const useRight = this.state.needRenderLock && x < tableBody.scrollWidth - tableBody.clientWidth
 
-      if (this.state.needRenderLock) {
-        if (x <= 0) {
-          // 滚动条在最左端
-          leftSection?.classList.remove(Classes.lockShadow)
-          rightSection?.classList.add(Classes.lockShadow)
-        } else if (x >= scrollNode.scrollWidth - scrollNode.clientWidth) {
-          // 滚动条在最右端
-          leftSection?.classList.add(Classes.lockShadow)
-          rightSection?.classList.remove(Classes.lockShadow)
-        } else {
-          // 滚动条在中间
-          leftSection?.classList.add(Classes.lockShadow)
-          rightSection?.classList.add(Classes.lockShadow)
-        }
+      if (useLeft) {
+        tableBody.classList.add(left)
+        tableHeader.classList.add(left)
       } else {
-        // 不需要渲染 left-section / right-section
-        leftSection?.classList.remove(Classes.lockShadow)
-        rightSection?.classList.remove(Classes.lockShadow)
+        tableBody.classList.remove(left)
+        tableHeader.classList.remove(left)
+      }
+      if (useRight) {
+        tableBody.classList.add(right)
+        tableHeader.classList.add(right)
+      } else {
+        tableBody.classList.remove(right)
+        tableHeader.classList.remove(right)
       }
     }
   }
@@ -314,7 +266,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const { offsetX, maxRenderWidth, useVirtual, flat } = this.state
 
     if (!useVirtual.horizontal) {
-      return { leftIndex: 0, leftBlank: 0, rightIndex: flat.main.length, rightBlank: 0 }
+      return { leftIndex: 0, leftBlank: 0, rightIndex: flat.full.length, rightBlank: 0 }
     }
 
     let leftIndex = 0
@@ -363,13 +315,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private getFlatHozWrappedCols(side: TableSide, hoz: HorizontalRenderRange): HozWrappedCol[] {
+  private getFlatHozWrappedCols(hoz: HorizontalRenderRange): HozWrappedCol[] {
     const { flat } = this.state
-
-    if (side !== 'main') {
-      const colIndexShift = side === 'right' ? flat.main.length - flat.right.length : 0
-      return flat[side].map((col, i) => ({ type: 'normal', col, colIndex: i + colIndexShift }))
-    }
 
     const wrappedCols: HozWrappedCol[] = [
       ...flat.left.map((col, i) => ({ type: 'normal', col, colIndex: i } as const)),
@@ -379,27 +326,17 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         .map((col, i) => ({ type: 'normal', col, colIndex: flat.left.length + hoz.leftIndex + i } as const)),
       hoz.rightBlank > 0 && { type: 'blank', blankSide: 'right', width: hoz.rightBlank },
       ...flat.right.map(
-        (col, i) => ({ type: 'normal', col, colIndex: flat.main.length - flat.right.length + i } as const),
+        (col, i) => ({ type: 'normal', col, colIndex: flat.full.length - flat.right.length + i } as const),
       ),
     ]
 
     return wrappedCols.filter(Boolean)
   }
 
-  private renderTableBody(
-    side: TableSide,
-    renderRange: FullRenderRange,
-    onWheel: React.WheelEventHandler<HTMLDivElement>,
-    onScroll: React.UIEventHandler<HTMLDivElement>,
-  ) {
-    const { onRowEnterOrLeave } = this
+  private renderTableBody(renderRange: FullRenderRange) {
     const { vertical: ver, horizontal: hoz } = renderRange
     const { isLoading, dataSource, getRowProps, primaryKey, emptyContent } = this.props
-    const { flat } = this.state
-    const colCount = flat.main.length
-    const leftFlatCount = flat.left.length
-
-    const wrappedCols = this.getFlatHozWrappedCols(side, hoz)
+    const wrappedCols = this.getFlatHozWrappedCols(hoz)
 
     const colgroup = (
       <colgroup>
@@ -414,7 +351,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
     if (ver.bottomIndex - ver.topIndex === 0) {
       return (
-        <div className={Classes.tableBody} onWheel={onWheel} onScroll={onScroll}>
+        <div className={Classes.tableBody}>
           <EmptyTable
             colgroup={colgroup}
             colSpan={wrappedCols.length}
@@ -425,29 +362,22 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       )
     }
 
+    const { flat, stickyLeftMap, stickyRightMap } = this.state
+    const fullFlatCount = flat.full.length
+    const leftFlatCount = flat.left.length
+    const rightFlatCount = flat.right.length
+
     const spanManager = new SpanManager()
     const rows = dataSource.slice(ver.topIndex, ver.bottomIndex).map(renderRow)
 
     return (
-      <div className={Classes.tableBody} onWheel={onWheel} onScroll={onScroll}>
-        <div
-          key="top-blank"
-          className={cx(Classes.virtualBlank, 'top')}
-          style={{
-            height: ver.topBlank,
-          }}
-        />
+      <div className={Classes.tableBody}>
+        <div key="top-blank" className={cx(Classes.virtualBlank, 'top')} style={{ height: ver.topBlank }} />
         <table>
           {colgroup}
           <tbody>{rows}</tbody>
         </table>
-        <div
-          key="bottom-blank"
-          className={cx(Classes.virtualBlank, 'bottom')}
-          style={{
-            height: ver.bottomBlank,
-          }}
-        />
+        <div key="bottom-blank" className={cx(Classes.virtualBlank, 'bottom')} style={{ height: ver.bottomBlank }} />
       </div>
     )
 
@@ -472,14 +402,6 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           className={rowClass}
           key={safeGetRowKey(primaryKey, record, rowIndex)}
           data-rowindex={rowIndex}
-          onMouseEnter={(e) => {
-            onRowEnterOrLeave(rowIndex, 'enter')
-            rowProps?.onMouseEnter?.(e)
-          }}
-          onMouseLeave={(e) => {
-            onRowEnterOrLeave(rowIndex, 'leave')
-            rowProps?.onMouseLeave?.(e)
-          }}
         >
           {wrappedCols.map((wrapped) => {
             if (wrapped.type === 'blank') {
@@ -496,12 +418,17 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         return null
       }
 
-      const cellProps = safeGetCellProps(column, record, rowIndex)
+      const value = safeGetValue(column, record, rowIndex)
+      const cellProps = column.getCellProps?.(value, record, rowIndex) ?? {}
+
+      let cellContent: ReactNode = value
+      if (column.render) {
+        cellContent = column.render(value, record, rowIndex)
+      }
 
       let colSpan = 1
       let rowSpan = 1
       if (column.getSpanRect) {
-        const value = safeGetValue(column, record, rowIndex)
         const spanRect = column.getSpanRect(value, record, rowIndex)
         colSpan = spanRect == null ? 1 : spanRect.right - colIndex
         rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
@@ -523,25 +450,37 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         spanManager.add(rowIndex, colIndex, colSpan, rowSpan)
       }
 
-      const cls = cx(Classes.tableCell, {
-        first: colIndex === 0,
-        last: colIndex === colCount - 1,
-      })
+      const positionStyle: CSSProperties = {}
 
-      if (column.align) {
-        cellProps.style = cellProps.style ?? {}
-        cellProps.style.textAlign = column.align
+      if (colIndex < leftFlatCount) {
+        positionStyle.position = 'sticky'
+        positionStyle.left = stickyLeftMap.get(colIndex)
+      } else if (colIndex >= fullFlatCount - rightFlatCount) {
+        positionStyle.position = 'sticky'
+        positionStyle.right = stickyRightMap.get(colIndex)
       }
 
       return React.createElement(
         'td',
         {
           key: colIndex,
-          className: cls,
           ...cellProps,
+          className: cx(Classes.tableCell, cellProps.className, {
+            first: colIndex === 0,
+            last: colIndex + colSpan === fullFlatCount,
+            'lock-left': colIndex < leftFlatCount,
+            'lock-left-last': colIndex + colSpan === leftFlatCount,
+            'lock-right': colIndex >= fullFlatCount - rightFlatCount,
+            'lock-right-first': colIndex === fullFlatCount - rightFlatCount,
+          }),
           ...(hasSpan ? { colSpan, rowSpan } : null),
+          style: {
+            textAlign: column.align,
+            ...cellProps.style,
+            ...positionStyle,
+          },
         },
-        safeRender(column, record, rowIndex),
+        cellContent,
       )
     }
   }
@@ -551,37 +490,12 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     return nested.left.length > 0 || nested.right.length > 0
   }
 
-  private onRowEnterOrLeave = (rowIndex: number, kind: 'enter' | 'leave') => {
-    // 移除原先的 hover 效果
-    this.hoveredTableRows.forEach((tr) => {
-      tr.classList.remove('hovered')
-    })
-    if (kind === 'leave') {
-      this.hoveredTableRows = []
-      return
-    }
-
-    // 添加新的 hover 效果
-    const rowSelector = `*[data-rowindex="${rowIndex}"]`
-    const mainRow = this.doms.mainBody.querySelector<HTMLTableRowElement>(rowSelector)
-    const leftLockRow = this.doms.leftBody?.querySelector<HTMLTableRowElement>(rowSelector)
-    const rightLockRow = this.doms.rightBody?.querySelector<HTMLTableRowElement>(rowSelector)
-
-    this.hoveredTableRows = [mainRow, leftLockRow, rightLockRow].filter(Boolean)
-    this.hoveredTableRows.forEach((tr) => {
-      tr.classList.add('hovered')
-    })
-  }
-
   render() {
     const { dataSource, className, style, hasHeader, useOuterBorder, isLoading, isStickyHead } = this.props
 
     const styleWrapper = (node: ReactNode) => {
-      const wrapperClassName = cx(Classes.artTableWrapper, className, {
-        'use-outer-border': useOuterBorder,
-      })
       const artTableWrapperProps = {
-        className: wrapperClassName,
+        className: cx(Classes.artTableWrapper, className, { 'use-outer-border': useOuterBorder }),
         style,
         [STYLED_REF_PROP]: this.artTableWrapperRef,
       }
@@ -603,144 +517,158 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       </>
     )
 
-    const loadingWrapper = (node: ReactNode) => {
-      return <Loading visible={isLoading}>{node}</Loading>
-    }
-
-    const tableClass = cx(Classes.artTable, {
-      sticky: isStickyHead,
-      empty: dataSource.length === 0,
-      lock: this.isLock(),
-      'has-header': hasHeader,
-    })
-
     const renderRange = this.getRenderRange()
 
-    const artTableProps = {
-      className: tableClass,
-      [STYLED_REF_PROP]: this.artTableRef,
-    }
-
-    const artTable = (
-      <Styled.ArtTable {...artTableProps}>
-        {this.renderLeftSection(renderRange)}
-        {this.renderMainSection(renderRange)}
-        {this.renderRightSection(renderRange)}
-      </Styled.ArtTable>
+    return styleWrapper(
+      withStickyScroll(
+        <Loading visible={isLoading}>
+          <Styled.ArtTable
+            className={cx(Classes.artTable, {
+              sticky: isStickyHead,
+              empty: dataSource.length === 0,
+              lock: this.isLock(),
+              'has-header': hasHeader,
+            })}
+          >
+            {this.renderTableHeader(renderRange)}
+            {this.renderTableBody(renderRange)}
+          </Styled.ArtTable>
+        </Loading>,
+      ),
     )
-
-    return styleWrapper(withStickyScroll(loadingWrapper(artTable)))
-  }
-
-  private renderLeftSection(renderRange: FullRenderRange) {
-    const { dataSource } = this.props
-    const { nested, needRenderLock } = this.state
-    if (!needRenderLock || nested.left.length === 0 || dataSource.length === 0) {
-      return null
-    }
-    return (
-      <Styled.LeftSection className={Classes.leftSection}>
-        {this.renderTableSection('left', renderRange)}
-      </Styled.LeftSection>
-    )
-  }
-
-  private renderMainSection(renderRange: FullRenderRange) {
-    return (
-      <Styled.MainSection className={cx(Classes.mainSection)}>
-        {this.renderTableSection('main', renderRange)}
-      </Styled.MainSection>
-    )
-  }
-
-  private renderRightSection(renderRange: FullRenderRange) {
-    const { dataSource } = this.props
-    const { nested, needRenderLock } = this.state
-    if (!needRenderLock || nested.right.length === 0 || dataSource.length === 0) {
-      return null
-    }
-    return (
-      <Styled.RightSection className={Classes.rightSection}>
-        {this.renderTableSection('right', renderRange)}
-      </Styled.RightSection>
-    )
-  }
-
-  private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>) {
-    this.adjustSize()
-    this.updateItemSizeStore(prevProps)
-    this.syncScrollFromMainBody()
-    this.updateStickyScroll()
   }
 
   componentDidMount() {
     this.updateDoms()
-    this.didMountOrUpdate()
+    this.data$ = new BehaviorSubject({
+      props: this.props,
+      state: this.state,
+      prevProps: null,
+      prevState: null,
+    })
     this.initSubscriptions()
+    this.didMountOrUpdate()
   }
 
-  private resolveFlowRoot() {
-    const { flowRoot } = this.props
-    const wrapper = this.artTableWrapperRef.current
-    if (flowRoot === 'auto') {
-      const computedStyle = getComputedStyle(wrapper)
-      return computedStyle.overflowY !== 'visible' ? wrapper : window
-    } else if (flowRoot === 'self') {
-      return wrapper
-    } else {
-      return typeof flowRoot === 'function' ? flowRoot() : flowRoot
+  componentDidUpdate(prevProps: Readonly<BaseTableProps>, prevState: Readonly<BaseTableState>) {
+    this.updateDoms()
+    this.data$.next({
+      props: this.props,
+      state: this.state,
+      prevProps,
+      prevState,
+    })
+    this.didMountOrUpdate(prevProps, prevState)
+  }
+
+  private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>, prevState?: Readonly<BaseTableState>) {
+    // todo 整理 sync/adjust/update/reset 等方法，现在稍微有点乱
+    this.syncHorizontalScrollFromTableBody()
+    this.updateStickyScroll()
+    this.adjustNeedRenderLock()
+    this.updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps)
+    this.resetStickyScrollIfNecessary(prevState)
+  }
+
+  private resetStickyScrollIfNecessary(prevState: Readonly<BaseTableState>) {
+    if (prevState != null && this.state.hasScroll && !prevState.hasScroll) {
+      this.doms.stickyScroll.scrollLeft = 0
     }
   }
 
   private initSubscriptions() {
-    const { mainBody, stickyScroll } = this.doms
+    const { tableHeader, tableBody, stickyScroll } = this.doms
 
-    this.rootSubscription.add(syncScrollLeft(mainBody, stickyScroll))
     this.rootSubscription.add(
       throttledWindowResize$.subscribe(() => {
         this.updateStickyScroll()
-        this.adjustSize()
+        this.adjustNeedRenderLock()
       }),
     )
 
-    // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
-    // 故这里使用 requestAnimationFrame 等到下一个动画帧
-    const rafId = requestAnimationFrame(() => {
-      const resoledFlowRoot = this.resolveFlowRoot()
-      const sizeAndOffset$ = new VisibleClipRectObservable(mainBody, resoledFlowRoot).pipe(
-        filter(() => {
-          const { horizontal, vertical } = this.state.useVirtual
-          return horizontal || vertical
-        }),
-        map(({ clipRect, offsetY }) => ({
-          maxRenderHeight: clipRect.bottom - clipRect.top,
-          maxRenderWidth: clipRect.right - clipRect.left,
-          offsetY,
-        })),
-        distinctUntilChanged((x, y) => {
-          // 因为 overscan 的存在，滚动较小的距离时不需要触发组件重渲染
-          return (
-            Math.abs(x.maxRenderWidth - y.maxRenderWidth) < OVERSCAN_SIZE / 2 &&
-            Math.abs(x.maxRenderHeight - y.maxRenderHeight) < OVERSCAN_SIZE / 2 &&
-            Math.abs(x.offsetY - y.offsetY) < OVERSCAN_SIZE / 2
-          )
-        }),
-      )
-      this.rootSubscription.add(
-        sizeAndOffset$.subscribe((sizeAndOffset) => {
+    // 滚动同步
+    this.rootSubscription.add(
+      syncScrollLeft([tableBody, stickyScroll, tableHeader], (scrollLeft) => {
+        this.syncHorizontalScroll(scrollLeft)
+      }),
+    )
+
+    // 表格所处的 flowRoot / BFC
+    const resolvedFlowRoot$ = this.data$.pipe(
+      op.map((data) => data.props.flowRoot),
+      op.switchMap((flowRoot) => {
+        const wrapper = this.artTableWrapperRef.current
+        if (flowRoot === 'auto') {
+          const computedStyle = getComputedStyle(wrapper)
+          return of(computedStyle.overflowY !== 'visible' ? wrapper : window)
+        } else if (flowRoot === 'self') {
+          return of(wrapper)
+        } else {
+          if (typeof flowRoot === 'function') {
+            // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
+            // 故这里使用 animationFrameScheduler 等下一个动画帧
+            return timer(0, animationFrameScheduler).pipe(op.map(flowRoot))
+          } else {
+            return of(flowRoot)
+          }
+        }
+      }),
+      op.distinctUntilChanged(),
+    )
+
+    // 表格在 flowRoot 中的可见部分
+    const visiblePart$ = resolvedFlowRoot$.pipe(
+      op.switchMap((resolvedFlowRoot) => {
+        return getVisiblePartObservable(this.doms.artTable, resolvedFlowRoot)
+      }),
+    )
+
+    // 每当可见部分发生变化的时候，调整 loading icon 的未知（如果 loading icon 存在的话）
+    this.rootSubscription.add(
+      combineLatest([
+        visiblePart$.pipe(
+          op.map((p) => p.clipRect),
+          op.distinctUntilChanged(shallowEqual),
+        ),
+        this.data$.pipe(op.filter((data) => !data.prevProps?.isLoading && data.props.isLoading)),
+      ]).subscribe(([clipRect]) => {
+        const { artTableWrapper } = this.doms
+        const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
+        if (!loadingIndicator) {
+          return
+        }
+        const height = clipRect.bottom - clipRect.top
+        loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+        loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+      }),
+    )
+
+    // 每当可见部分发生变化的时候，如果开启了虚拟滚动，则重新触发 render
+    this.rootSubscription.add(
+      visiblePart$
+        .pipe(
+          op.filter(() => {
+            const { horizontal, vertical } = this.state.useVirtual
+            return horizontal || vertical
+          }),
+          op.map(({ clipRect, offsetY }) => ({
+            maxRenderHeight: clipRect.bottom - clipRect.top,
+            maxRenderWidth: clipRect.right - clipRect.left,
+            offsetY,
+          })),
+          op.distinctUntilChanged((x, y) => {
+            // 因为 overscan 的存在，滚动较小的距离时不需要触发组件重渲染
+            return (
+              Math.abs(x.maxRenderWidth - y.maxRenderWidth) < OVERSCAN_SIZE / 2 &&
+              Math.abs(x.maxRenderHeight - y.maxRenderHeight) < OVERSCAN_SIZE / 2 &&
+              Math.abs(x.offsetY - y.offsetY) < OVERSCAN_SIZE / 2
+            )
+          }),
+        )
+        .subscribe((sizeAndOffset) => {
           this.setState(sizeAndOffset)
         }),
-      )
-    })
-
-    this.rootSubscription.add(() => {
-      cancelAnimationFrame(rafId)
-    })
-  }
-
-  componentDidUpdate(prevProps: Readonly<BaseTableProps>) {
-    this.updateDoms()
-    this.didMountOrUpdate(prevProps)
+    )
   }
 
   componentWillUnmount() {
@@ -750,136 +678,71 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   /** 更新 DOM 节点的引用，方便其他方法直接操作 DOM */
   private updateDoms() {
     const artTableWrapper = this.artTableWrapperRef.current
-    const artTable = this.artTableRef.current
-    const mainSection = query(artTable, Classes.mainSection)
-    const leftSection = query(artTable, Classes.leftSection)
-    const rightSection = query(artTable, Classes.rightSection)
+    const artTable = query(artTableWrapper, Classes.artTable)
 
     this.doms = {
       artTableWrapper,
       artTable,
-      mainSection,
-      mainHeader: query(mainSection, Classes.tableHeader),
-      mainBody: query(mainSection, Classes.tableBody),
-      leftSection,
-      leftHeader: query(leftSection, Classes.tableHeader),
-      leftBody: query(leftSection, Classes.tableBody),
-      rightSection,
-      rightHeader: query(rightSection, Classes.tableHeader),
-      rightBody: query(rightSection, Classes.tableBody),
+      tableHeader: query(artTable, Classes.tableHeader),
+      tableBody: query(artTable, Classes.tableBody),
+
       stickyScroll: query(artTableWrapper, Classes.stickyScroll),
       stickyScrollItem: query(artTableWrapper, Classes.stickyScrollItem),
     }
   }
 
-  private updateItemSizeStore(prevProps?: Readonly<BaseTableProps>) {
+  private updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps?: Readonly<BaseTableProps>) {
     if (prevProps != null) {
       if (prevProps.dataSource.length !== this.props.dataSource.length) {
         this.store.setMaxItemCount(this.props.dataSource.length)
       }
     }
 
-    const virtualTop = this.doms.mainBody.querySelector<HTMLDivElement>(`.${Classes.virtualBlank}.top`)
+    const virtualTop = this.doms.artTable.querySelector<HTMLDivElement>(`.${Classes.virtualBlank}.top`)
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
-    queryAll<HTMLTableRowElement>(this.doms.mainBody, Classes.tableRow).forEach((tr) => {
+    let maxTrRowIndex = -1
+    let maxTrBottom = -1
+
+    for (const tr of queryAll<HTMLTableRowElement>(this.doms.artTable, Classes.tableRow)) {
       const rowIndex = Number(tr.dataset.rowindex)
-      this.store.updateItem(rowIndex, tr.offsetTop + virtualTopHeight, tr.offsetHeight)
-    })
-  }
-
-  private adjustLoadingPosition() {
-    const { mainSection, artTableWrapper } = this.doms
-    const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
-    if (!loadingIndicator) {
-      return
-    }
-    const { clipRect } = getClipRect(mainSection, this.resolveFlowRoot())
-    const height = clipRect.bottom - clipRect.top
-    loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
-    loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
-  }
-
-  private adjustSize = () => {
-    this.adjustLoadingPosition()
-    this.adjustNeedRenderLock()
-    this.adjustSizeOfLockCells()
-    this.adjustSizeOfLockBodies()
-    this.adjustSizeOfLockHeaderCells()
-  }
-
-  // 同步左右两侧锁列的单元格高度
-  private adjustSizeOfLockCells() {
-    if (!this.isLock()) {
-      return
-    }
-
-    const mainTableRows = queryAll<HTMLTableRowElement>(this.doms.mainBody, Classes.tableRow)
-    if (this.doms.leftBody) {
-      const leftTableRows = queryAll<HTMLTableRowElement>(this.doms.leftBody, Classes.tableRow)
-      batchAdjustLeftCellSizes(leftTableRows, mainTableRows as TRNodeList)
-    }
-    if (this.doms.rightBody) {
-      const rightTableRows = queryAll<HTMLTableRowElement>(this.doms.rightBody, Classes.tableRow)
-      batchAdjustRightCellSizes(rightTableRows, mainTableRows)
-    }
-  }
-
-  private adjustSizeOfLockBodies() {
-    if (this.isLock()) {
-      const { mainBody, rightSection } = this.doms
-
-      let width = 0
-
-      if (mainBody.scrollHeight > mainBody.clientHeight) {
-        width = getScrollbarSize().width
+      if (isNaN(rowIndex)) {
+        continue
       }
-
-      rightSection && (rightSection.style.right = `${width}px`)
-    }
-  }
-
-  /** 更新左右两侧锁列表头的 tr 的高度 */
-  private adjustSizeOfLockHeaderCells() {
-    if (!this.isLock()) {
-      return
+      maxTrRowIndex = Math.max(maxTrRowIndex, rowIndex)
+      const offset = tr.offsetTop + virtualTopHeight
+      const size = tr.offsetHeight
+      maxTrBottom = Math.max(maxTrBottom, offset + size)
+      this.store.updateItem(rowIndex, offset, size)
     }
 
-    const mainTableRows = queryAll<HTMLTableRowElement>(this.doms.mainHeader, Classes.tableHeaderRow)
-    if (this.doms.leftHeader) {
-      const leftTableRows = queryAll<HTMLTableRowElement>(this.doms.leftHeader, Classes.tableHeaderRow)
-      batchAdjustLeftCellSizes(leftTableRows, mainTableRows)
-    }
-    if (this.doms.rightHeader) {
-      const rightTableRows = queryAll<HTMLTableRowElement>(this.doms.rightHeader, Classes.tableHeaderRow)
-      batchAdjustRightCellSizes(rightTableRows, mainTableRows)
+    if (maxTrRowIndex !== -1) {
+      if (maxTrBottom < this.state.offsetY + this.state.maxRenderHeight) {
+        // 页面上出现的元素过少
+        const { vertical } = this.getRenderRange()
+        // 确保下一次渲染 能够渲染更多行
+        if (vertical.bottomIndex - 1 > maxTrRowIndex) {
+          // 重新触发 render
+          this.forceUpdate()
+        }
+      }
     }
   }
 
   /** 计算表格所有列的渲染宽度之和，判断表格是否需要渲染锁列 */
   private adjustNeedRenderLock() {
-    let nextNeedRenderLock: boolean
+    const { needRenderLock, flat } = this.state
 
-    const { dataSource } = this.props
-    const { needRenderLock } = this.state
-    const { mainBody, artTable } = this.doms
-
-    if (this.isLock() && dataSource.length > 0) {
-      const firstRow = query<HTMLTableRowElement>(mainBody, Classes.tableRow)
-      if (firstRow == null) {
-        // fixme 理论上 firstRow 不为 null，但实际情况下非常低概率还是会出现为 null 的情况
-        return
+    if (this.isLock()) {
+      const sumOfColWidth = sum(flat.full.map((col) => col.width))
+      const nextNeedRenderLock = sumOfColWidth > this.doms.artTable.clientWidth
+      if (needRenderLock !== nextNeedRenderLock) {
+        this.setState({ needRenderLock: nextNeedRenderLock })
       }
-      const sumOfColWidth = Array.from(firstRow.cells).reduce((sum, cell) => {
-        return sum + cell.offsetWidth
-      }, 0)
-      nextNeedRenderLock = sumOfColWidth > artTable.clientWidth
     } else {
-      nextNeedRenderLock = false
-    }
-
-    if (needRenderLock !== nextNeedRenderLock) {
-      this.setState({ needRenderLock: nextNeedRenderLock })
+      if (needRenderLock) {
+        this.setState({ needRenderLock: false })
+      }
     }
   }
 }

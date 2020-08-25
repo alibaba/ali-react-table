@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React, { CSSProperties, ReactNode } from 'react'
-import { noop, Subscription } from 'rxjs'
+import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subscription, timer } from 'rxjs'
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
 import { safeGetRowKey, safeGetValue } from '../internals'
@@ -9,7 +9,7 @@ import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
 import ItemSizeStore from './helpers/ItemSizeStore'
 import SpanManager from './helpers/SpanManager'
-import VisibleClipRectObservable, { getClipRect } from './helpers/VisibleClipRectObservable'
+import { getVisiblePartObservable } from './helpers/visible-part'
 import {
   FullRenderRange,
   HorizontalRenderRange,
@@ -26,6 +26,7 @@ import {
   OVERSCAN_SIZE,
   query,
   queryAll,
+  shallowEqual,
   STYLED_REF_PROP,
   sum,
   syncScrollLeft,
@@ -121,6 +122,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
   private rootSubscription = new Subscription()
+
+  private data$: BehaviorSubject<{
+    props: BaseTableProps
+    state: BaseTableState
+    prevProps: BaseTableProps | null
+    prevState: BaseTableState | null
+  }>
 
   getDoms() {
     return this.doms
@@ -530,48 +538,53 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     )
   }
 
-  private resolveFlowRoot() {
-    const { flowRoot } = this.props
-    const wrapper = this.artTableWrapperRef.current
-    if (flowRoot === 'auto') {
-      const computedStyle = getComputedStyle(wrapper)
-      return computedStyle.overflowY !== 'visible' ? wrapper : window
-    } else if (flowRoot === 'self') {
-      return wrapper
-    } else {
-      return typeof flowRoot === 'function' ? flowRoot() : flowRoot
-    }
-  }
-
   componentDidMount() {
     this.updateDoms()
+    this.data$ = new BehaviorSubject({
+      props: this.props,
+      state: this.state,
+      prevProps: null,
+      prevState: null,
+    })
     this.initSubscriptions()
     this.didMountOrUpdate()
   }
 
   componentDidUpdate(prevProps: Readonly<BaseTableProps>, prevState: Readonly<BaseTableState>) {
     this.updateDoms()
-    this.didMountOrUpdate(prevProps)
+    this.data$.next({
+      props: this.props,
+      state: this.state,
+      prevProps,
+      prevState,
+    })
+    this.didMountOrUpdate(prevProps, prevState)
+  }
+
+  private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>, prevState?: Readonly<BaseTableState>) {
+    // todo 整理 sync/adjust/update/reset 等方法，现在稍微有点乱
+    this.syncHorizontalScrollFromTableBody()
+    this.updateStickyScroll()
+    this.adjustNeedRenderLock()
+    this.updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps)
     this.resetStickyScrollIfNecessary(prevState)
   }
 
   private resetStickyScrollIfNecessary(prevState: Readonly<BaseTableState>) {
-    if (this.state.hasScroll && !prevState.hasScroll) {
+    if (prevState != null && this.state.hasScroll && !prevState.hasScroll) {
       this.doms.stickyScroll.scrollLeft = 0
     }
   }
 
-  private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>) {
-    // todo 整理 adjustSize / updateItemSizeStore / updateStickyScroll 的调用时机
-
-    this.syncHorizontalScrollFromTableBody()
-    this.adjustSize()
-    this.updateItemSizeStore(prevProps)
-    this.updateStickyScroll()
-  }
-
   private initSubscriptions() {
-    const { artTable, tableHeader, tableBody, stickyScroll } = this.doms
+    const { tableHeader, tableBody, stickyScroll } = this.doms
+
+    this.rootSubscription.add(
+      throttledWindowResize$.subscribe(() => {
+        this.updateStickyScroll()
+        this.adjustNeedRenderLock()
+      }),
+    )
 
     // 滚动同步
     this.rootSubscription.add(
@@ -580,46 +593,82 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       }),
     )
 
-    this.rootSubscription.add(
-      throttledWindowResize$.subscribe(() => {
-        this.updateStickyScroll()
-        this.adjustSize()
+    // 表格所处的 flowRoot / BFC
+    const resolvedFlowRoot$ = this.data$.pipe(
+      op.map((data) => data.props.flowRoot),
+      op.switchMap((flowRoot) => {
+        const wrapper = this.artTableWrapperRef.current
+        if (flowRoot === 'auto') {
+          const computedStyle = getComputedStyle(wrapper)
+          return of(computedStyle.overflowY !== 'visible' ? wrapper : window)
+        } else if (flowRoot === 'self') {
+          return of(wrapper)
+        } else {
+          if (typeof flowRoot === 'function') {
+            // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
+            // 故这里使用 animationFrameScheduler 等下一个动画帧
+            return timer(0, animationFrameScheduler).pipe(op.map(flowRoot))
+          } else {
+            return of(flowRoot)
+          }
+        }
+      }),
+      op.distinctUntilChanged(),
+    )
+
+    // 表格在 flowRoot 中的可见部分
+    const visiblePart$ = resolvedFlowRoot$.pipe(
+      op.switchMap((resolvedFlowRoot) => {
+        return getVisiblePartObservable(this.doms.artTable, resolvedFlowRoot)
       }),
     )
 
-    // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
-    // 故这里使用 requestAnimationFrame 等到下一个动画帧
-    const rafId = requestAnimationFrame(() => {
-      const resoledFlowRoot = this.resolveFlowRoot()
-      const sizeAndOffset$ = new VisibleClipRectObservable(artTable, resoledFlowRoot).pipe(
-        op.filter(() => {
-          const { horizontal, vertical } = this.state.useVirtual
-          return horizontal || vertical
-        }),
-        op.map(({ clipRect, offsetY }) => ({
-          maxRenderHeight: clipRect.bottom - clipRect.top,
-          maxRenderWidth: clipRect.right - clipRect.left,
-          offsetY,
-        })),
-        op.distinctUntilChanged((x, y) => {
-          // 因为 overscan 的存在，滚动较小的距离时不需要触发组件重渲染
-          return (
-            Math.abs(x.maxRenderWidth - y.maxRenderWidth) < OVERSCAN_SIZE / 2 &&
-            Math.abs(x.maxRenderHeight - y.maxRenderHeight) < OVERSCAN_SIZE / 2 &&
-            Math.abs(x.offsetY - y.offsetY) < OVERSCAN_SIZE / 2
-          )
-        }),
-      )
-      this.rootSubscription.add(
-        sizeAndOffset$.subscribe((sizeAndOffset) => {
+    // 每当可见部分发生变化的时候，调整 loading icon 的未知（如果 loading icon 存在的话）
+    this.rootSubscription.add(
+      combineLatest([
+        visiblePart$.pipe(
+          op.map((p) => p.clipRect),
+          op.distinctUntilChanged(shallowEqual),
+        ),
+        this.data$.pipe(op.filter((data) => !data.prevProps?.isLoading && data.props.isLoading)),
+      ]).subscribe(([clipRect]) => {
+        const { artTableWrapper } = this.doms
+        const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
+        if (!loadingIndicator) {
+          return
+        }
+        const height = clipRect.bottom - clipRect.top
+        loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+        loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+      }),
+    )
+
+    // 每当可见部分发生变化的时候，如果开启了虚拟滚动，则重新触发 render
+    this.rootSubscription.add(
+      visiblePart$
+        .pipe(
+          op.filter(() => {
+            const { horizontal, vertical } = this.state.useVirtual
+            return horizontal || vertical
+          }),
+          op.map(({ clipRect, offsetY }) => ({
+            maxRenderHeight: clipRect.bottom - clipRect.top,
+            maxRenderWidth: clipRect.right - clipRect.left,
+            offsetY,
+          })),
+          op.distinctUntilChanged((x, y) => {
+            // 因为 overscan 的存在，滚动较小的距离时不需要触发组件重渲染
+            return (
+              Math.abs(x.maxRenderWidth - y.maxRenderWidth) < OVERSCAN_SIZE / 2 &&
+              Math.abs(x.maxRenderHeight - y.maxRenderHeight) < OVERSCAN_SIZE / 2 &&
+              Math.abs(x.offsetY - y.offsetY) < OVERSCAN_SIZE / 2
+            )
+          }),
+        )
+        .subscribe((sizeAndOffset) => {
           this.setState(sizeAndOffset)
         }),
-      )
-    })
-
-    this.rootSubscription.add(() => {
-      cancelAnimationFrame(rafId)
-    })
+    )
   }
 
   componentWillUnmount() {
@@ -642,7 +691,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private updateItemSizeStore(prevProps?: Readonly<BaseTableProps>) {
+  private updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps?: Readonly<BaseTableProps>) {
     if (prevProps != null) {
       if (prevProps.dataSource.length !== this.props.dataSource.length) {
         this.store.setMaxItemCount(this.props.dataSource.length)
@@ -678,24 +727,6 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         }
       }
     }
-  }
-
-  // fixme adjustLoadingPosition 计算的坐标有时候不对
-  private adjustLoadingPosition() {
-    const { artTable, artTableWrapper } = this.doms
-    const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
-    if (!loadingIndicator) {
-      return
-    }
-    const { clipRect } = getClipRect(artTable, this.resolveFlowRoot())
-    const height = clipRect.bottom - clipRect.top
-    loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
-    loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
-  }
-
-  private adjustSize = () => {
-    this.adjustLoadingPosition()
-    this.adjustNeedRenderLock()
   }
 
   /** 计算表格所有列的渲染宽度之和，判断表格是否需要渲染锁列 */

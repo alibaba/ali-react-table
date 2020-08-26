@@ -13,7 +13,7 @@ interface ProvinceItem {
   children?: CityItem[]
 }
 
-type CityItem = ProvinceItem & {
+type CityItem = Omit<ProvinceItem, 'children'> & {
   cityName: string
 }
 

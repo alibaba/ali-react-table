@@ -1,8 +1,17 @@
 import { Checkbox, Radio } from '@alifd/next'
-import { applyTransforms, ArtColumn, BaseTable, BaseTableProps, internals, TableTransform } from 'ali-react-table'
+import {
+  applyTransforms,
+  ArtColumn,
+  BaseTable,
+  BaseTableProps,
+  internals,
+  TableTransform,
+  useTreeModeTransform,
+} from 'ali-react-table'
 import React, { useState } from 'react'
 import { FusionStyles } from '../../assets/fusion-style'
-import { testProvColumns, useProvinceDataSource } from '../../assets/ncov19-assets'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
+import makeTreeDataHelper, { CheckedStrategy } from './makeTreeDataHelper'
 
 const { safeGetRowKey } = internals
 
@@ -56,7 +65,7 @@ export function 单选() {
   )
 }
 
-function multiSelect({
+function makeMultiSelectTransform({
   primaryKey,
   value,
   onChange,
@@ -151,7 +160,7 @@ export function 多选() {
 
   const renderData = applyTransforms(
     { dataSource: dataSource.slice(0, 10), columns: testProvColumns },
-    multiSelect({ primaryKey: 'provinceName', value, onChange }),
+    makeMultiSelectTransform({ primaryKey: 'provinceName', value, onChange }),
   )
 
   return (
@@ -166,5 +175,120 @@ export function 多选() {
         columns={renderData.columns}
       />
     </>
+  )
+}
+
+function makeTreeSelectTransform({
+  checkedStrategy,
+  value,
+  onChange,
+  rootKey,
+  primaryKey,
+  checkStrictly,
+  checkboxColumn,
+  tree,
+}: {
+  value: string[]
+  onChange(nextValue: string[]): void
+  tree: any[]
+  rootKey?: string
+  checkedStrategy?: CheckedStrategy
+  checkStrictly?: boolean
+  primaryKey: string
+  checkboxColumn?: Partial<ArtColumn>
+}): TableTransform {
+  return ({ dataSource, columns }) => {
+    const treeDataHelper = makeTreeDataHelper<any>({
+      tree: rootKey != null ? [{ [primaryKey]: rootKey, children: tree }] : tree,
+      getNodeValue: (node) => node[primaryKey],
+      value,
+      checkedStrategy,
+      checkStrictly,
+    })
+
+    const makeCheckbox = (key: string) => (
+      <Checkbox
+        checked={treeDataHelper.isChecked(key)}
+        indeterminate={treeDataHelper.isIndeterminate(key)}
+        onChange={(_, e) => {
+          e.stopPropagation()
+          onChange(treeDataHelper.getValueAfterToggle(key))
+        }}
+      />
+    )
+
+    return {
+      dataSource,
+      columns: [
+        // 在左侧添加一列用于渲染 checkbox
+        {
+          name: '',
+          ...checkboxColumn,
+          title: rootKey != null ? makeCheckbox(rootKey) : undefined,
+          render(value, record) {
+            return makeCheckbox(record[primaryKey])
+          },
+        },
+        ...columns,
+      ],
+    }
+  }
+}
+
+export function 树形选择() {
+  const [checkedKeys, setCheckedKeys] = useState<string[]>([])
+
+  const { dataSource: rawDataSource, isLoading } = useCityDataSource()
+
+  // 处理数据： 选取前 4 个省份，每个省份下选取 3 个城市
+  //  为每一行设置 name 作为展示名称；
+  //  为每一行数据设置 key，作为该行的主键；注意在相应的地方配置 primaryKey="key"
+  const dataSource = rawDataSource.slice(0, 4).map((prov) => ({
+    ...prov,
+    name: prov.provinceName,
+    key: `prov:${prov.provinceName}`,
+    children: prov.children.slice(0, 3).map((city) => ({
+      ...city,
+      name: city.cityName,
+      key: `city:${city.cityName}`,
+    })),
+  }))
+
+  const columns = [{ name: '省份/城市', code: 'name', width: 160 }, ...cols.indCols, cols.updateTime]
+
+  const renderData = applyTransforms(
+    { dataSource, columns },
+    useTreeModeTransform({ primaryKey: 'key' }),
+    makeTreeSelectTransform({
+      // treeModeTransform 会对 dataSource 进行过滤，导致树不完整
+      // 这里要将 dataSource 传给 makeTreeSelectTransform，传递的树是完整的
+      tree: dataSource,
+      primaryKey: 'key',
+      value: checkedKeys,
+      onChange: setCheckedKeys,
+      checkboxColumn: { width: 48, lock: true },
+
+      // 可以省略 rootKey，此时将不会出现全选的 checkbox
+      rootKey: 'all',
+      // checkStrictly 可以设置为 true，此时父子节点的选中状态不再关联
+      checkStrictly: false,
+      // checkedStrategy 也可以设置为 all / child
+      checkedStrategy: 'parent',
+    }),
+  )
+
+  return (
+    <div>
+      <FusionStyles />
+      <p>
+        当前选中的 key 值：<code>{JSON.stringify(checkedKeys)}</code>
+      </p>
+      <BaseTable
+        primaryKey="key"
+        isLoading={isLoading}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
+    </div>
   )
 }

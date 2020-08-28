@@ -36,6 +36,12 @@ ali-react-table v1.0 发布。 详见 [changelog](stories/changelog.stories.mdx)
 
 <br>
 
+![优化的加载图标位置](docs/imgs/ali-react-table-enhanced-loading-icon-position.gif)
+
+↑ 优化的加载图标位置，加载图标会位于表格的中心位置，并始终处于可见状态。
+
+<br>
+
 ![简单透视表格](docs/imgs/ali-react-table-simple-pivot-table.gif)
 ↑ 基于 BaseTable 的简单透视表格。一般来说，透视表展示的数据量较大，不过 BaseTable 内置的虚拟滚动保证了表格在大数据量下仍具有很好的性能，上层不需要过多担心性能问题。 [在线示例](https://ali-react-table.js.org/?path=/story/交叉与透视-示例-简易透视表--简易透视表)
 

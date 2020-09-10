@@ -4,9 +4,12 @@
 
 高性能 React 表格组件. https://ali-react-table.js.org/
 
-## News
+## 更新日志
 
-ali-react-table v1.0 发布。 详见 [changelog](stories/changelog.stories.mdx)
+- **NEWS** ali-react-table v1.0 发布，详见 [changelog](stories/changelog.stories.mdx)
+- [从 0.14 升级到 1.0](docs/from-0.14-to-1.0.md)
+- [从 0.13 升级到 0.14](docs/from-0.13-to-0.14.md)
+- 具体的更新日志详见 [该文档](stories/changelog.stories.mdx)
 
 ## 安装
 
@@ -44,12 +47,6 @@ ali-react-table v1.0 发布。 详见 [changelog](stories/changelog.stories.mdx)
 
 ![简单透视表格](docs/imgs/ali-react-table-simple-pivot-table.gif)
 ↑ 基于 BaseTable 的简单透视表格。一般来说，透视表展示的数据量较大，不过 BaseTable 内置的虚拟滚动保证了表格在大数据量下仍具有很好的性能，上层不需要过多担心性能问题。 [在线示例](https://ali-react-table.js.org/?path=/story/交叉与透视-示例-简易透视表--简易透视表)
-
-## 更新日志
-
-- [从 0.14 升级到 1.0](docs/from-0.14-to-1.0.md)
-- [从 0.13 升级到 0.14](docs/from-0.13-to-0.14.md)
-- 具体的更新日志详见 [该文档](stories/changelog.stories.mdx)
 
 ## 兼容性说明
 

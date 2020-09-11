@@ -213,30 +213,17 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   private syncHorizontalScroll(x: number) {
     this.updateOffsetX(x)
 
-    const { tableBody, tableHeader } = this.doms
+    const { tableBody, artTableWrapper } = this.doms
+    const { flat } = this.state
 
-    if (this.isLock()) {
-      const left = Classes.leftLockShadow
-      const right = Classes.rightLockShadow
+    const showLeftLockShadow = flat.left.length > 0 && this.state.needRenderLock && x > 0
+    const leftLockShadow = query(artTableWrapper, Classes.leftLockShadow)
+    leftLockShadow.style.display = showLeftLockShadow ? 'block' : 'none'
 
-      const useLeft = this.state.needRenderLock && x > 0
-      const useRight = this.state.needRenderLock && x < tableBody.scrollWidth - tableBody.clientWidth
-
-      if (useLeft) {
-        tableBody.classList.add(left)
-        tableHeader.classList.add(left)
-      } else {
-        tableBody.classList.remove(left)
-        tableHeader.classList.remove(left)
-      }
-      if (useRight) {
-        tableBody.classList.add(right)
-        tableHeader.classList.add(right)
-      } else {
-        tableBody.classList.remove(right)
-        tableHeader.classList.remove(right)
-      }
-    }
+    const showRightLockShadow =
+      flat.right.length > 0 && this.state.needRenderLock && x < tableBody.scrollWidth - tableBody.clientWidth
+    const rightLockShadow = query(artTableWrapper, Classes.rightLockShadow)
+    rightLockShadow.style.display = showRightLockShadow ? 'block' : 'none'
   }
 
   private getVerticalRenderRange(): VerticalRenderRange {
@@ -469,9 +456,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
             first: colIndex === 0,
             last: colIndex + colSpan === fullFlatCount,
             'lock-left': colIndex < leftFlatCount,
-            'lock-left-last': colIndex + colSpan === leftFlatCount,
             'lock-right': colIndex >= fullFlatCount - rightFlatCount,
-            'lock-right-first': colIndex === fullFlatCount - rightFlatCount,
           }),
           ...(hasSpan ? { colSpan, rowSpan } : null),
           style: {
@@ -492,7 +477,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   render() {
     const { dataSource, className, style, hasHeader, useOuterBorder, isLoading, isStickyHead } = this.props
-
+    const { flat } = this.state
     const styleWrapper = (node: ReactNode) => {
       const artTableWrapperProps = {
         className: cx(Classes.artTableWrapper, className, { 'use-outer-border': useOuterBorder }),
@@ -532,6 +517,9 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           >
             {this.renderTableHeader(renderRange)}
             {this.renderTableBody(renderRange)}
+
+            <div className={Classes.leftLockShadow} style={{ width: sum(flat.left.map((col) => col.width)) }} />
+            <div className={Classes.rightLockShadow} style={{ width: sum(flat.right.map((col) => col.width)) }} />
           </Styled.ArtTable>
         </Loading>,
       ),

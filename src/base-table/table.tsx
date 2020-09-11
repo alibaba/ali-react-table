@@ -16,7 +16,6 @@ import {
   HozWrappedCol,
   TableDoms,
   TableSide,
-  TRNodeList,
   VerticalRenderRange,
   VirtualEnum,
 } from './interfaces'
@@ -817,7 +816,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const mainTableRows = queryAll<HTMLTableRowElement>(this.doms.mainBody, Classes.tableRow)
     if (this.doms.leftBody) {
       const leftTableRows = queryAll<HTMLTableRowElement>(this.doms.leftBody, Classes.tableRow)
-      batchAdjustLeftCellSizes(leftTableRows, mainTableRows as TRNodeList)
+      batchAdjustLeftCellSizes(leftTableRows, mainTableRows)
     }
     if (this.doms.rightBody) {
       const rightTableRows = queryAll<HTMLTableRowElement>(this.doms.rightBody, Classes.tableRow)

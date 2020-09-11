@@ -2,7 +2,6 @@ import React from 'react'
 import { asyncScheduler, BehaviorSubject, defer, fromEvent, merge } from 'rxjs'
 import { map, mapTo, scan, throttleTime } from 'rxjs/operators'
 import * as styledComponents from 'styled-components'
-import { TRNodeList } from './interfaces'
 
 /** styled-components 类库的版本，ali-react-table 同时支持 v3 和 v5 */
 export const STYLED_VERSION = (styledComponents as any).createGlobalStyle != null ? 'v5' : 'v3'
@@ -23,15 +22,15 @@ export function sum(arr: number[]) {
   return result
 }
 
-export function batchAdjustLeftCellSizes(leftTableRows: TRNodeList, mainTableRows: TRNodeList) {
+export function batchAdjustLeftCellSizes(leftTableRows: HTMLTableRowElement[], mainTableRows: HTMLTableRowElement[]) {
   const leftRowCount = leftTableRows.length
 
   // 批量获取 left-section 中每个单元格在 main-section 中对应单元格的尺寸
   const sizes: Array<{ h: number; w: number }> = []
   for (let i = 0; i < leftRowCount; i++) {
-    const leftRow = leftTableRows.item(i) as HTMLTableRowElement
+    const leftRow = leftTableRows[i]
     const leftCellCount = leftRow.cells.length
-    const mainRow = mainTableRows.item(i) as HTMLTableRowElement
+    const mainRow = mainTableRows[i]
     for (let j = 0; j < leftCellCount; j++) {
       const cell = mainRow.cells.item(j)
       sizes.push({ h: cell.offsetHeight, w: cell.offsetWidth })
@@ -40,7 +39,7 @@ export function batchAdjustLeftCellSizes(leftTableRows: TRNodeList, mainTableRow
   // 批量设置 left-section 中的单元格的尺寸
   let n = 0
   for (let i = 0; i < leftRowCount; i++) {
-    const leftRow = leftTableRows.item(i) as HTMLTableRowElement
+    const leftRow = leftTableRows[i]
     const cellCount = leftRow.cells.length
     for (let j = 0; j < cellCount; j++) {
       const cell = leftRow.cells.item(j)
@@ -52,7 +51,7 @@ export function batchAdjustLeftCellSizes(leftTableRows: TRNodeList, mainTableRow
   }
 }
 
-export function batchAdjustRightCellSizes(rightTableRows: TRNodeList, mainTableRows: TRNodeList) {
+export function batchAdjustRightCellSizes(rightTableRows: HTMLTableRowElement[], mainTableRows: HTMLTableRowElement[]) {
   const rightRowCount = rightTableRows.length
 
   // 批量获取 right-section 中每个单元格在 main-section 中对应单元格的尺寸
@@ -60,9 +59,9 @@ export function batchAdjustRightCellSizes(rightTableRows: TRNodeList, mainTableR
   // 古下面代码中是"从右往左"迭代 main-section 中的单元格的
   const sizes: Array<{ h: number; w: number }> = []
   for (let i = 0; i < rightRowCount; i++) {
-    const rightRow = rightTableRows.item(i) as HTMLTableRowElement
+    const rightRow = rightTableRows[i]
     const rightCellCount = rightRow.cells.length
-    const mainRow = mainTableRows.item(i) as HTMLTableRowElement
+    const mainRow = mainTableRows[i]
     const mainCellCount = mainRow.cells.length
     for (let j = 0; j < rightCellCount; j++) {
       const mainCell = mainRow.cells.item(mainCellCount - 1 - j)
@@ -73,7 +72,7 @@ export function batchAdjustRightCellSizes(rightTableRows: TRNodeList, mainTableR
   // 批量设置 right-section 中的单元格的尺寸
   let n = 0
   for (let i = 0; i < rightRowCount; i++) {
-    const rightRow = rightTableRows.item(i) as HTMLTableRowElement
+    const rightRow = rightTableRows[i]
     const rightCellCount = rightRow.cells.length
     for (let j = 0; j < rightCellCount; j++) {
       // 从右往左设置单元格尺寸
@@ -162,5 +161,5 @@ export function query<T extends Element = HTMLDivElement>(elem: HTMLDivElement, 
 }
 
 export function queryAll<T extends Element = HTMLDivElement>(elem: HTMLDivElement, className: string) {
-  return elem?.querySelectorAll('.' + className) as NodeListOf<T>
+  return Array.from(elem?.querySelectorAll('.' + className)) as T[]
 }

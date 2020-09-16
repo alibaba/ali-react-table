@@ -92,125 +92,6 @@ export function 自定义表格样式2() {
   return <ZebraBaseTable isLoading={isLoading} dataSource={dataSource.slice(0, 10)} columns={testProvColumns} />
 }
 
-const Row = styled.div`
-  height: 36px;
-  display: flex;
-  align-items: center;
-
-  > span {
-    width: 100px;
-  }
-`
-
-export function Props组合() {
-  const [config, setConfig] = useState({
-    hasHeader: true,
-    isLoading: false,
-    useOuterBorder: false,
-    dataSize: 10,
-    height: 'auto' as 'auto' | number,
-  })
-
-  const { isLoading, dataSource } = useProvinceDataSource()
-
-  return (
-    <div>
-      <FusionStyles />
-      <div style={{ lineHeight: 1.5 }}>
-        hasHeader 表示表头是否展示；
-        <br />
-        isLoading 表示表格数据是否在加载中；
-        <br />
-        useOuterBorder 表示是否使用表格最外层的 div 的边框来代替单元格的外边框
-      </div>
-      <Row>
-        <Checkbox
-          checked={config.hasHeader}
-          onChange={(v) => {
-            setConfig({ ...config, hasHeader: v })
-          }}
-        >
-          hasHeader
-        </Checkbox>
-        <Checkbox
-          style={{ marginLeft: 32 }}
-          checked={config.isLoading}
-          onChange={(v) => {
-            setConfig({ ...config, isLoading: v })
-          }}
-        >
-          isLoading
-        </Checkbox>
-        <Checkbox
-          style={{ marginLeft: 32 }}
-          checked={config.useOuterBorder}
-          onChange={(v) => {
-            setConfig({ ...config, useOuterBorder: v })
-          }}
-        >
-          useOuterBorder
-        </Checkbox>
-      </Row>
-
-      <Row>
-        <span>data size:</span>
-        <Button.Group>
-          {[0, 3, 10].map((size) => (
-            <Button
-              key={size}
-              type={config.dataSize === size ? 'primary' : 'normal'}
-              onClick={() => {
-                setConfig({ ...config, dataSize: size })
-              }}
-            >
-              {size}
-            </Button>
-          ))}
-          <Button
-            type={isFinite(config.dataSize) ? 'normal' : 'primary'}
-            onClick={() => {
-              setConfig({ ...config, dataSize: Infinity })
-            }}
-          >
-            不限
-          </Button>
-        </Button.Group>
-      </Row>
-      <Row>
-        <span>table height:</span>
-        <Button.Group>
-          {['auto', 200, 400, 600].map((h) => (
-            <Button
-              key={h}
-              type={config.height === h ? 'primary' : 'normal'}
-              onClick={() => {
-                setConfig({ ...config, height: h as any })
-              }}
-            >
-              {h}
-            </Button>
-          ))}
-        </Button.Group>
-      </Row>
-      <p style={{ color: '#353640' }}>
-        tips: 为表格设置具体的高度之后记得添加 style.overflow=auto，不然高度仍然会被内容撑开.
-      </p>
-      <BaseTable
-        hasHeader={config.hasHeader}
-        isLoading={isLoading || config.isLoading}
-        useOuterBorder={config.useOuterBorder}
-        style={{
-          height: config.height,
-          overflow: config.height === 'auto' ? 'visible' : 'auto',
-          marginTop: 16,
-        }}
-        dataSource={dataSource.slice(0, config.dataSize)}
-        columns={testProvColumns}
-      />
-    </div>
-  )
-}
-
 export function 默认列宽() {
   const { isLoading, dataSource } = useProvinceDataSource()
   const columns: ArtColumn[] = [
@@ -389,6 +270,32 @@ export function 列分组() {
   )
 }
 
+export function 单元格合并() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns: ArtColumn[] = [
+    { code: 'prov', name: '省份' },
+    { code: 'confirmed', name: '确诊', align: 'right' },
+    { code: 'cured', name: '治愈', align: 'right' },
+    {
+      code: 't',
+      name: '最后更新时间',
+      getCellProps(value: any, record: any, rowIndex: number) {
+        if (rowIndex === 1) {
+          return { rowSpan: 2, colSpan: 1 }
+        }
+      },
+    },
+  ]
+  return <BaseTable defaultColumnWidth={100} dataSource={dataSource} columns={columns} />
+}
+
 export function 虚拟滚动与单元格合并() {
   const { dataSource, isLoading } = useCityDataSource()
 
@@ -555,5 +462,124 @@ export function 自定义表格行props() {
         }
       }}
     />
+  )
+}
+
+const Row = styled.div`
+  height: 36px;
+  display: flex;
+  align-items: center;
+
+  > span {
+    width: 100px;
+  }
+`
+
+export function Props组合() {
+  const [config, setConfig] = useState({
+    hasHeader: true,
+    isLoading: false,
+    useOuterBorder: false,
+    dataSize: 10,
+    height: 'auto' as 'auto' | number,
+  })
+
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  return (
+    <div>
+      <FusionStyles />
+      <div style={{ lineHeight: 1.5 }}>
+        hasHeader 表示表头是否展示；
+        <br />
+        isLoading 表示表格数据是否在加载中；
+        <br />
+        useOuterBorder 表示是否使用表格最外层的 div 的边框来代替单元格的外边框
+      </div>
+      <Row>
+        <Checkbox
+          checked={config.hasHeader}
+          onChange={(v) => {
+            setConfig({ ...config, hasHeader: v })
+          }}
+        >
+          hasHeader
+        </Checkbox>
+        <Checkbox
+          style={{ marginLeft: 32 }}
+          checked={config.isLoading}
+          onChange={(v) => {
+            setConfig({ ...config, isLoading: v })
+          }}
+        >
+          isLoading
+        </Checkbox>
+        <Checkbox
+          style={{ marginLeft: 32 }}
+          checked={config.useOuterBorder}
+          onChange={(v) => {
+            setConfig({ ...config, useOuterBorder: v })
+          }}
+        >
+          useOuterBorder
+        </Checkbox>
+      </Row>
+
+      <Row>
+        <span>data size:</span>
+        <Button.Group>
+          {[0, 3, 10].map((size) => (
+            <Button
+              key={size}
+              type={config.dataSize === size ? 'primary' : 'normal'}
+              onClick={() => {
+                setConfig({ ...config, dataSize: size })
+              }}
+            >
+              {size}
+            </Button>
+          ))}
+          <Button
+            type={isFinite(config.dataSize) ? 'normal' : 'primary'}
+            onClick={() => {
+              setConfig({ ...config, dataSize: Infinity })
+            }}
+          >
+            不限
+          </Button>
+        </Button.Group>
+      </Row>
+      <Row>
+        <span>table height:</span>
+        <Button.Group>
+          {['auto', 200, 400, 600].map((h) => (
+            <Button
+              key={h}
+              type={config.height === h ? 'primary' : 'normal'}
+              onClick={() => {
+                setConfig({ ...config, height: h as any })
+              }}
+            >
+              {h}
+            </Button>
+          ))}
+        </Button.Group>
+      </Row>
+      <p style={{ color: '#353640' }}>
+        tips: 为表格设置具体的高度之后记得添加 style.overflow=auto，不然高度仍然会被内容撑开.
+      </p>
+      <BaseTable
+        hasHeader={config.hasHeader}
+        isLoading={isLoading || config.isLoading}
+        useOuterBorder={config.useOuterBorder}
+        style={{
+          height: config.height,
+          overflow: config.height === 'auto' ? 'visible' : 'auto',
+          marginTop: 16,
+        }}
+        dataSource={dataSource.slice(0, config.dataSize)}
+        columns={testProvColumns}
+      />
+    </div>
   )
 }

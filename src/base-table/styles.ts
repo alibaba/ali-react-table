@@ -37,12 +37,10 @@ export const Classes = {
 } as const
 
 const Z = {
-  lock: 20,
+  lock: 5,
+  header: 10,
+  lockShadow: 20,
   scrollItem: 30,
-  header: 5,
-  virtual: 3,
-  tableInner: 2,
-  shadow: 1,
 } as const
 
 export type BaseTableCSSVariables = Partial<{
@@ -209,31 +207,32 @@ const ArtTable = styled.div`
 
   .lock-left,
   .lock-right {
-    z-index: 2;
+    z-index: ${Z.lock};
   }
 
-  .${Classes.leftLockShadow} .lock-left-last::after {
+  .${Classes.leftLockShadow} {
+    // 具体是否展示由 JS 来控制
+    display: none;
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: -1px;
-    width: 30px;
-    transform: translateX(100%);
-    content: '';
-    pointer-events: none;
-    box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.2);
-  }
-
-  .${Classes.rightLockShadow} .lock-right-first::after {
-    position: absolute;
-    top: 0;
     left: 0;
-    bottom: -1px;
-    width: 30px;
-    transform: translateX(-100%);
-    content: '';
+    top: 0;
+    bottom: 0;
+    z-index: ${Z.lockShadow};
+    box-shadow: rgba(0, 0, 0, 0.25) 10px 0 8px -8px;
+    border-right: var(--cell-border-vertical);
     pointer-events: none;
-    box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.2);
+  }
+
+  .${Classes.rightLockShadow} {
+    // 具体是否展示由 JS 来控制
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: ${Z.lockShadow};
+    box-shadow: rgba(0, 0, 0, 0.25) -10px 0 8px -8px;
+    pointer-events: none;
   }
 `
 

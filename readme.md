@@ -24,8 +24,8 @@
 ## 表格适用场景
 
 - 需要用表格展示大量数据，对表格性能较为敏感
-- 页面本身没有引入组件库（可能是出于页面体积的考量），缺少开箱可用的 React 表格
-- 组件库所提供的表格组件可定制能力不够，需要更加灵活的表格组件
+- 页面没有引入 React 组件库，需要一个尺寸较小的表格组件
+- 原有表格组件可定制能力不够，需要更加灵活的表格组件
 
 ## 效果演示
 
@@ -57,4 +57,4 @@
 - NPM: https://www.npmjs.com/package/ali-react-table
 - GitHub: https://github.com/alibaba/ali-react-table
 - 表格组件介绍: https://zhuanlan.zhihu.com/p/130755755
-- 表格使用过程中遇到问题可以联系钉钉号 o8mk7ym
+- 表格使用过程中遇到问题可以联系钉钉号 feichao93

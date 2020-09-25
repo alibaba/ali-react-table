@@ -33,14 +33,18 @@ export default function buildCrossTreeTable(
   options: BuildCrossTreeTableOptions,
 ): Pick<BaseTableProps, 'columns' | 'dataSource'> {
   const {
-    leftTree,
-    topTree,
     primaryColumn,
     openKeys,
     onChangeOpenKeys,
     indentSize,
     isLeafNode: isLeafNodeOpt = standardIsLeafNode,
   } = options
+
+  // 有的时候 leftTree/topTree 是通过 node.children 传入的
+  // 此时 leftTree/topTree 等于 null 和等于空数组是等价的
+  // 故在这里兼容 leftTree/topTree 为空的情况
+  const leftTree = options.leftTree ?? []
+  const topTree = options.topTree ?? []
 
   return makeTreeModeTransform({
     primaryKey: ROW_KEY,

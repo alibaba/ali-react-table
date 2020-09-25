@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { BaseTable, BaseTableProps } from '../../base-table'
 import { CellProps } from '../../interfaces'
 import buildCrossTable from './buildCrossTable'
@@ -6,6 +6,7 @@ import { ROW_KEY } from './constants'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
 
 export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' | 'primaryKey'> {
+  baseTableRef?: React.Ref<BaseTable>
   leftTree: LeftCrossTreeNode[]
   topTree: TopCrossTreeNode[]
 
@@ -20,7 +21,7 @@ export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'co
     topNode: TopCrossTreeNode,
     leftDepth: number,
     topDepth: number,
-  ): ReactNode
+  ): React.ReactNode
   getCellProps?(
     value: any,
     leftNode: LeftCrossTreeNode,
@@ -30,11 +31,7 @@ export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'co
   ): CellProps
 }
 
-CrossTable.defaultProps = {
-  leftMetaColumns: [] as CrossTableLeftMetaColumn[],
-}
-
-export default function CrossTable({
+export default (function CrossTable({
   leftTree,
   leftTotalNode,
   topTree,
@@ -43,14 +40,12 @@ export default function CrossTable({
   getCellProps,
   leftMetaColumns,
   render,
+  baseTableRef,
   ...others
 }: CrossTableProps) {
   const { dataSource, columns } = buildCrossTable({
-    // 有的时候 leftTree/topTree 是通过 node.children 传入的
-    // 此时 leftTree/topTree 等于 null 和等于空数组是等价的
-    // 故在这里兼容 leftTree/topTree 为空的情况
-    leftTree: leftTree ?? [],
-    topTree: topTree ?? [],
+    leftTree,
+    topTree,
     leftTotalNode,
     topTotalNode,
     getValue,
@@ -59,5 +54,5 @@ export default function CrossTable({
     leftMetaColumns,
   })
 
-  return <BaseTable {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />
-}
+  return <BaseTable ref={baseTableRef} {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />
+})

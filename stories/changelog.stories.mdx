@@ -5,7 +5,17 @@ import LinkTo from '@storybook/addon-links/react'
 
 请注意日志中的加粗部分(break change)哦 ヾ(=･ω･=)o
 
-### v1.1 2020-09-26
+### v1.2 2020-09-26
+
+- 新增 useAutoWidthTransform 自适应列宽
+- 其他：
+  - 修复 mergeCellProps 中 lodash.merge 原地修改对象的问题
+  - 放宽 buildCrossTable/buildCrossTreeTable 的参数限制
+  - CrossTable 与 CrossTreeTable 添加 tableRef
+  - 将 makeTreeModeTransform onClick 挂到单元格上
+  - makeColumnResizeTransform 修复 documentElement cursor 没有被重置的问题，新增 options.expanderVisibility 可隐藏可伸缩列
+
+### v1.1 2020-09-16
 
 - 优化锁列的实现方式 [#74](https://github.com/alibaba/ali-react-table/pull/74)
 

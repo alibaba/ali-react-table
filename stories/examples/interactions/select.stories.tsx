@@ -5,13 +5,13 @@ import {
   BaseTable,
   BaseTableProps,
   internals,
+  makeTreeDataHelper,
   TableTransform,
   useTreeModeTransform,
 } from 'ali-react-table'
 import React, { useState } from 'react'
 import { FusionStyles } from '../../assets/fusion-style'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import makeTreeDataHelper, { CheckedStrategy } from './makeTreeDataHelper'
 
 const { safeGetRowKey } = internals
 
@@ -177,6 +177,8 @@ export function 多选() {
     </>
   )
 }
+
+type CheckedStrategy = 'all' | 'parent' | 'child'
 
 function makeTreeSelectTransform({
   checkedStrategy,

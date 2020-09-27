@@ -16,8 +16,9 @@ import {
   proto,
   SortHeaderCellProps,
   SortItem,
+  useAutoWidthTransform,
 } from 'ali-react-table'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio, time } from '../assets/format'
 import { FusionStyles } from '../assets/fusion-style'
@@ -478,6 +479,7 @@ export function 拖拽调整列宽() {
       sizes,
       onChangeSizes,
       appendExpander: true,
+      expanderVisibility: 'hidden',
       disableUserSelectWhenResizing: true,
       minSize: 60,
       maxSize: 500,
@@ -490,6 +492,64 @@ export function 拖拽调整列宽() {
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
       <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+    </div>
+  )
+}
+
+export function 自适应列宽_demo() {
+  const { isLoading, dataSource: rawDataSource } = useProvinceDataSource()
+
+  const columns: ArtColumn[] = [
+    // 注意要为 自适应宽度的列 设置 features.autoWidth=true
+    { code: 'provinceName', name: '省份', features: { autoWidth: true } },
+    { code: 'confirmedCount', name: '确诊', render: amount, align: 'right', features: { autoWidth: true } },
+    { code: 'curedCount', name: '治愈', render: amount, align: 'right', features: { autoWidth: true } },
+    { code: 'deadCount', name: '死亡 (列宽固定为 150)', width: 150, render: amount, align: 'right' },
+    { code: 'updateTime', name: '最后更新时间', features: { autoWidth: true } },
+  ]
+
+  const tableRef = useRef<BaseTable>()
+  const [startIndex, setStartIndex] = useState(0)
+
+  const renderData = applyTransforms(
+    { columns, dataSource: rawDataSource.slice(startIndex, startIndex + 5) },
+
+    // 注意 useAutoWidthTransform 是一个 React hooks，要遵循 hooks 的用法规范
+    useAutoWidthTransform(
+      tableRef,
+      {
+        appendExpander: true,
+        expanderVisibility: 'hidden',
+        initColumnWidth: 100,
+      },
+      // deps=[data] 表示：每当 data 发生变化的时候，重新设置表格的列宽
+      // deps=[] 表示：只在 didMount 时重新设置一次列宽
+      // deps=undefined/null 表示：didMount 或每次 didUpdate 时都设置列宽
+      [rawDataSource, startIndex],
+    ),
+  )
+
+  return (
+    <div>
+      <p style={{ fontSize: 16 }}>
+        <code>useAutoWidthTransform</code> 会在 didMount/didUpdate
+        中获取单元格的实际内容宽度，然后重新设置表格列宽，实现「自适应列宽」。
+      </p>
+      <p style={{ fontSize: 14 }}>
+        useAutoWidthTransform 会频繁地从 DOM 中获取单元格的实际渲染宽度，单元格数量较多时会导致性能问题。
+        useAutoWidthTransform 不兼容「拖拽调整列宽」，不兼容「横向虚拟滚动」，不兼容存在 colSpan 的情况。
+        <b>谨慎使用，这里只提供 demo。</b>
+      </p>
+      <div style={{ margin: '12px 0' }}>
+        <button
+          onClick={() => {
+            setStartIndex(startIndex === 0 ? 5 : 0)
+          }}
+        >
+          切换数据
+        </button>
+      </div>
+      <BaseTable ref={tableRef} isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }

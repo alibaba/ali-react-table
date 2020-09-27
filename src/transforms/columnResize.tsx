@@ -10,6 +10,8 @@ function clamp(min: number, x: number, max: number) {
   return Math.max(min, Math.min(max, x))
 }
 
+const RESIZE_EXPANDER_CLS = 'resize-expander'
+
 const ResizeHandle = styled.span`
   position: absolute;
   top: 0;
@@ -35,6 +37,8 @@ export interface ColumnResizeOptions {
   appendExpander?: boolean
   /** 是否在调整列宽时禁用 user-select，默认为 false */
   disableUserSelectWhenResizing?: boolean
+  /** 可伸缩列 style.visibility */
+  expanderVisibility?: 'visible' | 'hidden'
 }
 
 export function makeColumnResizeTransform({
@@ -43,6 +47,7 @@ export function makeColumnResizeTransform({
   minSize = 40,
   maxSize = Infinity,
   appendExpander,
+  expanderVisibility = 'visible',
   disableUserSelectWhenResizing,
 }: ColumnResizeOptions): TableTransform {
   const startResize = (colIndex: number, e: React.MouseEvent<HTMLSpanElement>) => {
@@ -66,7 +71,6 @@ export function makeColumnResizeTransform({
       docElemStyle = document.documentElement.style
       prevUserSelect = docElemStyle.userSelect
       docElemStyle.userSelect = 'none'
-      docElemStyle.cursor = 'col-resize'
     }
 
     nextSizes$.subscribe({
@@ -112,7 +116,23 @@ export function makeColumnResizeTransform({
   return (input) => {
     const { columns, dataSource } = innerTransform(input)
     return {
-      columns: appendExpander ? columns.concat([{ name: '' }]) : columns,
+      columns: appendExpander
+        ? columns.concat([
+            {
+              name: '',
+              headerCellProps: {
+                className: RESIZE_EXPANDER_CLS,
+                style: { visibility: expanderVisibility },
+              },
+              getCellProps() {
+                return {
+                  className: RESIZE_EXPANDER_CLS,
+                  style: { visibility: expanderVisibility },
+                }
+              },
+            },
+          ])
+        : columns,
       dataSource,
     }
   }

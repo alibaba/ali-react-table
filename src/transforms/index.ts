@@ -1,4 +1,5 @@
 export { makeAutoRowSpanTransform } from './autoRowSpan'
+export { useAutoWidthTransform } from './autoWidth'
 export { makeBuildTreeTransform } from './buildTree'
 export { makeColumnHoverTransform, ColumnHoverOptions, useColumnHoverTransform } from './columnHover'
 export {

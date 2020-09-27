@@ -1,16 +1,14 @@
 import * as CarbonIcons from '@carbon/icons-react'
+import cx from 'classnames'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { isLeafNode as standardIsLeafNode } from '../utils'
-import { safeRender } from '../internals'
 import { ArtColumn, TableTransform } from '../interfaces'
+import { safeRender } from '../internals'
+import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
 
 const ExpansionCell = styled.div`
   display: flex;
   align-items: center;
-  cursor: pointer;
-  height: 100%;
-  padding: 0 12px;
 
   &.leaf {
     cursor: default;
@@ -93,7 +91,7 @@ export function makeTreeModeTransform({
           return content
         }
 
-        const { depth, isLeaf, rowKey, expanded } = record[treeMetaSymbol]
+        const { depth, isLeaf, expanded } = record[treeMetaSymbol]
 
         if (isLeaf) {
           return (
@@ -104,46 +102,40 @@ export function makeTreeModeTransform({
         }
 
         const marginLeft = -ICON_WIDTH + BASE_INDENT + depth * indentSize
-        if (expanded) {
-          return (
-            <ExpansionCell
-              className="expansion-cell expanded"
-              onClick={() => {
-                onChangeOpenKeys(
-                  openKeys.filter((key) => key !== rowKey),
-                  rowKey,
-                  'collapse',
-                )
-              }}
-            >
-              <CarbonIcons.CaretRight16 className="expansion-icon expanded" style={{ marginLeft }} />
-              {content}
-            </ExpansionCell>
-          )
-        } else {
-          return (
-            <ExpansionCell
-              className="expansion-cell collapsed"
-              onClick={() => {
-                onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
-              }}
-            >
-              <CarbonIcons.CaretRight16 className="expansion-icon collapsed" style={{ marginLeft }} />
-              {content}
-            </ExpansionCell>
-          )
-        }
+        const expandCls = expanded ? 'expanded' : 'collapsed'
+        return (
+          <ExpansionCell className={cx('expansion-cell', expandCls)}>
+            <CarbonIcons.CaretRight16 className={cx('expansion-icon', expandCls)} style={{ marginLeft }} />
+            {content}
+          </ExpansionCell>
+        )
       }
 
       const getCellProps = (value: any, record: any, rowIndex: number) => {
-        if (firstCol.getCellProps) {
-          const prevProps = firstCol.getCellProps(value, record, rowIndex)
-          return {
-            ...prevProps,
-            style: { ...prevProps?.style, padding: 0 },
+        const { isLeaf, rowKey, expanded } = record[treeMetaSymbol]
+
+        let onClick: any
+        if (!isLeaf) {
+          if (expanded) {
+            onClick = () => {
+              onChangeOpenKeys(
+                openKeys.filter((key) => key !== rowKey),
+                rowKey,
+                'collapse',
+              )
+            }
+          } else {
+            onClick = () => {
+              onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
+            }
           }
         }
-        return { style: { padding: 0 } }
+
+        const prevProps = firstCol.getCellProps?.(value, record, rowIndex)
+        return mergeCellProps(prevProps, {
+          onClick,
+          style: { cursor: isLeaf ? undefined : 'pointer' },
+        })
       }
 
       return [{ ...firstCol, render, getCellProps }, ...others]

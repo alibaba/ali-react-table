@@ -1,37 +1,38 @@
-function isLeafNode(node: AbstractTreeNode) {
-  return node.children == null || node.children.length === 0
-}
+import { AbstractTreeNode } from '../interfaces'
+import isLeafNode from './isLeafNode'
 
-interface AbstractTreeNode {
-  children?: AbstractTreeNode[]
-}
+// todo 改成 class Wrapper { ... }
 
 interface Wrapper<N extends AbstractTreeNode> {
+  /** 是否为根节点 */
   root?: boolean
+
+  /** 子节点数组 */
   children?: Wrapper<N>[]
+
+  /** 父节点 (parent wrapper node) */
   parent?: Wrapper<N>
+
+  /** 指向对应的普通节点 */
   node: N
 
+  /** 该节点在非严格模式下是否「选中」 */
   checked?: boolean
+
+  /** 该节点是否「恰好选中」 (即节点的值是否在 value 数组中） */
   exactChecked?: boolean
+
+  /** 非严格模式下该节点是否有任意祖先节点被选中 */
   anyAncestorsChecked?: boolean
+
+  /** 非严格模式下该节点是否有任意子孙节点被选中 */
   anyDescendentsChecked?: boolean
+
+  /** 非严格模式下该节点的所有子孙节点是否均为选中 */
   allDescendentsChecked?: boolean
 }
 
-/**
- * 根据输入的 tree 和 value (选中的值的数组）构建相应的 wrapper tree.
- * wrapper node (wrapper tree 上的节点) 是普通节点的包装，保存了节点之间的关系，同时具有以下字段
- * * `wrapper.parent` 指向父节点 (parent wrapper node)
- * * `wrapper.children` 指向子节点数组
- * * `wrapper.node` 指向对应的普通节点
- * * `wrapper.checked` 该节点在非严格模式下是否「选中」
- * * `wrapper.exactChecked` 该节点是否「恰好选中」 (即节点的值是否在 value 数组中）
- * * `wrapper.anyAncestorsChecked` 非严格模式下该节点是否有任意祖先节点被选中
- * * `wrapper.anyDescendentsChecked` 非严格模式下该节点是否有任意子孙节点被选中
- * * `wrapper.allDescendentsChecked` 非严格模式下该节点的所有子孙节点是否均为选中
- *
- * */
+/** 根据输入的 tree 和 value (选中的值的数组）构建相应的 wrapper tree. */
 function _calculateWrapperTree<N extends AbstractTreeNode>(
   tree: N[],
   getNodeValue: (node: N) => string,
@@ -87,7 +88,7 @@ function _calculateWrapperTree<N extends AbstractTreeNode>(
   }
 }
 
-export type CheckedStrategy = 'all' | 'parent' | 'child'
+type CheckedStrategy = 'all' | 'parent' | 'child'
 
 /**
  * 根据勾选策略清理 value
@@ -145,7 +146,7 @@ function stabilizeArray(prevArray: string[], nextArray: string[]) {
   return existing.concat(adding)
 }
 
-export interface MakeTreeDataHelperParams<N extends AbstractTreeNode> {
+interface MakeTreeDataHelperParams<N extends AbstractTreeNode> {
   tree: N[]
   getNodeValue(node: N): string
   value: string[]
@@ -281,13 +282,16 @@ export default function makeTreeDataHelper<N extends AbstractTreeNode>({
     }
   }
 
-  function getExtraInfo(nodeValue: string) {
-    const { parent, children, node: _node, ...extraInfo } = wrapperMap.get(nodeValue)
-    return extraInfo
+  function getWrapper(nodeValue: string) {
+    return wrapperMap.get(nodeValue)
   }
 
   function getNode(nodeValue: string) {
     return wrapperMap.get(nodeValue)?.node
+  }
+
+  function getCleanValue() {
+    return stabilizeArray(value, _getCleanValue(tree, getNodeValue, value, checkedStrategy))
   }
 
   return {
@@ -298,10 +302,8 @@ export default function makeTreeDataHelper<N extends AbstractTreeNode>({
     getValueAfterToggle,
     getValueAfterCheckAll,
     getValueAfterUncheckAll,
-    getExtraInfo,
+    getWrapper,
     getNode,
-    getCleanValue() {
-      return stabilizeArray(value, _getCleanValue(tree, getNodeValue, value, checkedStrategy))
-    },
+    getCleanValue,
   }
 }

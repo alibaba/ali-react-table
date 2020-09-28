@@ -1,5 +1,5 @@
 import { SpanRect, TableTransform } from '../interfaces'
-import { safeGetValue } from '../internals'
+import { internals } from '../internals'
 import { isLeafNode, traverseColumn } from '../utils'
 
 function isIdentity(x: any, y: any) {
@@ -22,11 +22,13 @@ export function makeAutoRowSpanTransform(): TableTransform {
     const spanRects: SpanRect[] = []
     let lastBottom = 0
     let prevValue: any = null
+    let prevRow: any = null
 
     for (let rowIndex = 0; rowIndex < dataSource.length; rowIndex++) {
-      const value = safeGetValue(col, dataSource[rowIndex], rowIndex)
+      const row = dataSource[rowIndex]
+      const value = internals.safeGetValue(col, row, rowIndex)
 
-      if (rowIndex === 0 || !shouldMergeCell(prevValue, value)) {
+      if (rowIndex === 0 || !shouldMergeCell(prevValue, value, prevRow, row)) {
         const spanRect: SpanRect = {
           top: lastBottom,
           bottom: rowIndex,
@@ -39,6 +41,7 @@ export function makeAutoRowSpanTransform(): TableTransform {
         lastBottom = rowIndex
       }
       prevValue = value
+      prevRow = row
     }
 
     for (let i = lastBottom; i < dataSource.length; i++) {

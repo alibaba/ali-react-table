@@ -1,8 +1,8 @@
-import { Information16 } from '@carbon/icons-react'
 import React from 'react'
 import styled from 'styled-components'
+import { icons } from '../common-views'
 import { TableTransform } from '../interfaces'
-import { safeRenderHeader } from '../internals'
+import { internals } from '../internals'
 import { traverseColumn } from '../utils'
 
 const HeaderCellWithTips = styled.div`
@@ -35,12 +35,12 @@ export function makeTipsTransform({ Balloon }: TipsOptions): TableTransform {
       ...col,
       title: (
         <HeaderCellWithTips style={{ justifyContent }}>
-          {safeRenderHeader(col)}
+          {internals.safeRenderHeader(col)}
           <Balloon
             closable={false}
             trigger={
               <div className="tip-icon-wrapper">
-                <Information16 className="tip-icon" />
+                <icons.Info className="tip-icon" />
               </div>
             }
           >

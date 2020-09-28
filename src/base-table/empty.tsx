@@ -1,8 +1,8 @@
 import cx from 'classnames'
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { Classes } from './styles'
 
-const defaultEmptyContent = (
+const DefaultEmptyContent = React.memo(() => (
   <>
     <img alt="empty-image" className="empty-image" src="//img.alicdn.com/tfs/TB1l1LcM3HqK1RjSZJnXXbNLpXa-50-50.svg" />
     <div className="empty-tips">
@@ -11,23 +11,24 @@ const defaultEmptyContent = (
       请修改条件后重新查询
     </div>
   </>
-)
-
-export interface EmptyContentConfig {
-  visible: 'auto' | boolean
-  content?: ReactNode
-  height?: number
-}
+))
 
 export interface EmptyTableProps {
   colgroup: React.ReactNode
   colSpan: number
   isLoading: boolean
-  config: EmptyContentConfig
+  emptyCellHeight?: number
+  EmptyContent?: React.ComponentType
 }
 
-export default function EmptyTable({ colgroup, colSpan, isLoading, config }: EmptyTableProps) {
-  const show = config.visible === true || (config.visible == 'auto' && !isLoading)
+export default function EmptyTable({
+  colgroup,
+  colSpan,
+  isLoading,
+  emptyCellHeight,
+  EmptyContent = DefaultEmptyContent,
+}: EmptyTableProps) {
+  const show = !isLoading
 
   return (
     <table>
@@ -37,9 +38,13 @@ export default function EmptyTable({ colgroup, colSpan, isLoading, config }: Emp
           <td
             className={cx(Classes.tableCell, 'first', 'last')}
             colSpan={colSpan}
-            style={{ height: config.height ?? 200 }}
+            style={{ height: emptyCellHeight ?? 200 }}
           >
-            {show && <div className={Classes.emptyWrapper}>{config.content ?? defaultEmptyContent}</div>}
+            {show && (
+              <div className={Classes.emptyWrapper}>
+                <EmptyContent />
+              </div>
+            )}
           </td>
         </tr>
       </tbody>

@@ -1,4 +1,4 @@
-import { Checkbox, Radio } from '@alifd/next'
+import { Button, Checkbox, Pagination, Radio } from '@alifd/next'
 import {
   applyTransforms,
   ArtColumn,
@@ -10,8 +10,10 @@ import {
   useTreeModeTransform,
 } from 'ali-react-table'
 import React, { useState } from 'react'
-import { FusionStyles } from '../../assets/fusion-style'
+import { multiSelect } from '../../../src/pipeline/features'
+import { dataSource1, repeat } from '../../assets/mock-table-data'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
+import { useTablePipeline } from '../../assets/ThemedBaseTable'
 
 const { safeGetRowKey } = internals
 
@@ -41,7 +43,6 @@ export function 单选() {
 
   return (
     <>
-      <FusionStyles />
       <div style={{ lineHeight: '24px' }}>当前选中的 value 为 {value || '[空]'}</div>
       <BaseTable
         primaryKey="provinceName"
@@ -165,7 +166,6 @@ export function 多选() {
 
   return (
     <>
-      <FusionStyles />
       <div style={{ lineHeight: '24px' }}>交互提示：按住 shift 键来来批量选中多行</div>
       <div style={{ lineHeight: '24px' }}>当前选中的 value 为 {value.keys.join(',') || '[空]'}</div>
       <BaseTable
@@ -281,7 +281,6 @@ export function 树形选择() {
 
   return (
     <div>
-      <FusionStyles />
       <p>
         当前选中的 key 值：<code>{JSON.stringify(checkedKeys)}</code>
       </p>
@@ -290,6 +289,76 @@ export function 树形选择() {
         isLoading={isLoading}
         dataSource={renderData.dataSource}
         columns={renderData.columns}
+      />
+    </div>
+  )
+}
+
+export function 跨页多选() {
+  const columns: ArtColumn[] = [
+    { name: '序号', width: 70, align: 'right', lock: true, code: 'order' },
+    { lock: true, code: 'name', width: 200, name: '公司名称' },
+    { code: 'amount', width: 160, align: 'right', name: '金额' },
+    { code: 'dept', width: 160, name: '金融机构' },
+    { code: 'applier', width: 120, name: '申请人' },
+  ]
+
+  const pageSize = 10
+  const [current, setCurrent] = useState(1)
+  const [value, onChange] = useState({ keys: ['1', '2'], lastKey: '' })
+
+  const pipeline = useTablePipeline()
+    .input({ dataSource: repeat(dataSource1, 20), columns })
+    .mapDataSource((ds) => ds.map((row, i) => ({ ...row, order: String(i + 1) })))
+    .snapshot('rows')
+    .primaryKey('order')
+    .mapDataSource((ds) => ds.slice((current - 1) * pageSize, current * pageSize)) // 分页
+    .use(
+      multiSelect({
+        value,
+        onChange,
+        highlightRowWhenSelected: true,
+        checkboxColumn: { lock: true },
+      }),
+    )
+
+  return (
+    <div>
+      <Button.Group>
+        <Button
+          onClick={() => {
+            onChange({
+              keys: pipeline.getDataSource('rows').map((row) => row.order),
+              lastKey: null,
+            })
+          }}
+        >
+          选择全部（所有页面）
+        </Button>
+        <Button
+          type="primary"
+          warning
+          onClick={() => {
+            onChange({ keys: [], lastKey: null })
+          }}
+        >
+          清空选择
+        </Button>
+      </Button.Group>
+      <span style={{ marginLeft: 8 }}>
+        已选择 {value.keys.length} / {pipeline.getDataSource('rows').length}
+      </span>
+
+      <BaseTable style={{ marginTop: 12 }} {...pipeline.getProps()} />
+
+      <Pagination
+        // @ts-ignore
+        style={{ marginTop: 12, textAlign: 'right' }}
+        defaultCurrent={1}
+        current={current}
+        onChange={setCurrent}
+        pageSize={pageSize}
+        total={pipeline.getDataSource('rows').length}
       />
     </div>
   )

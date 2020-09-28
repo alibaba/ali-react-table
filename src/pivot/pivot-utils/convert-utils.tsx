@@ -1,7 +1,7 @@
-import { CaretRight16 } from '@carbon/icons-react'
 import React from 'react'
 import { noop } from 'rxjs'
 import styled from 'styled-components'
+import { icons } from '../../common-views'
 import { isLeafNode } from '../../utils'
 import { CrossTableIndicator, CrossTreeNode } from '../cross-table'
 import { DrillNode } from './interfaces'
@@ -130,6 +130,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
           crossTreeNode.children = dfs(node.children, depth + 1)
         } else if (expandKeySet.has(node.key)) {
           // 展开的父节点
+          // @ts-ignore
           crossTreeNode.title = (
             <ExpandSpan
               onClick={() => {
@@ -140,7 +141,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
                 )
               }}
             >
-              <CaretRight16 className="icon expanded" />
+              <icons.CaretRight className="icon expanded" />
               {node.value}
             </ExpandSpan>
           )
@@ -154,7 +155,7 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
                 onChangeExpandKeys(expandKeys.concat([node.key]), node, 'expand')
               }}
             >
-              <CaretRight16 className="icon collapsed" />
+              <icons.CaretRight className="icon collapsed" />
               {node.value}
             </ExpandSpan>
           )

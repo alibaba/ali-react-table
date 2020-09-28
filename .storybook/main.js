@@ -3,7 +3,7 @@ const stories = require('./stories')
 
 module.exports = {
   presets: ['@storybook/addon-docs/preset'],
-  addons: ['@storybook/addon-storysource', '@storybook/addon-links/register'],
+  addons: ['@storybook/addon-storysource', '@storybook/addon-toolbars', '@storybook/addon-links/register'],
 
   typescript: {
     check: false,

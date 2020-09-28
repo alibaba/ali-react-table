@@ -1,7 +1,7 @@
-import XLSX_NS from 'xlsx'
+import type XLSX_NS from 'xlsx'
 import SpanManager from '../base-table/helpers/SpanManager'
 import { ArtColumn, SpanRect } from '../interfaces'
-import { safeGetCellProps, safeGetValue } from '../internals'
+import { internals } from '../internals'
 import collectNodes from './collectNodes'
 import getTreeDepth from './getTreeDepth'
 import isLeafNode from './isLeafNode'
@@ -10,12 +10,12 @@ function safeGetSpanRect(column: ArtColumn, record: any, rowIndex: number, colIn
   let colSpan = 1
   let rowSpan = 1
   if (column.getSpanRect) {
-    const value = safeGetValue(column, record, rowIndex)
+    const value = internals.safeGetValue(column, record, rowIndex)
     const spanRect = column.getSpanRect(value, record, rowIndex)
     colSpan = spanRect == null ? 1 : spanRect.right - colIndex
     rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
   } else {
-    const cellProps = safeGetCellProps(column, record, rowIndex)
+    const cellProps = internals.safeGetCellProps(column, record, rowIndex)
     if (cellProps.colSpan != null) {
       colSpan = cellProps.colSpan
     }
@@ -125,7 +125,7 @@ export default function exportTableAsExcel(
           mergeCells(move(origin, spanRect.left, spanRect.top), colSpan, rowSpan)
         }
 
-        return sanitizeCellDatum(safeGetValue(col, record, rowIndex))
+        return sanitizeCellDatum(internals.safeGetValue(col, record, rowIndex))
       })
     })
     add(dataPart, origin)

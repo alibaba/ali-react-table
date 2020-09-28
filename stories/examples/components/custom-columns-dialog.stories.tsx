@@ -2,7 +2,6 @@ import { Button } from '@alifd/next'
 import { ArtColumn, collectNodes, proto } from 'ali-react-table'
 import React, { useState } from 'react'
 import ReactJson from 'react-json-view'
-import { FusionStyles } from '../../assets/fusion-style'
 import { CustomColumnsDialog } from './components'
 
 export default { title: '示例 / 其他组件 / 自定义列对话框组件' }
@@ -101,7 +100,6 @@ export function 自定义列对话框组件() {
         displayDataTypes={false}
         displayObjectSize={false}
       />
-      <FusionStyles />
     </>
   )
 }

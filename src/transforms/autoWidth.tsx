@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseTable, Classes } from '../base-table'
 import { TableTransform } from '../interfaces'
-import { safeGetCellProps, safeRender } from '../internals'
+import { internals } from '../internals'
 import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
 
 const AUTO_WIDTH_WRAPPER_CLS = 'auto-width-wrapper'
@@ -86,14 +86,14 @@ export function useAutoWidthTransform(
       ...col,
       width: clampedWidth,
       getCellProps(_, record, rowIndex) {
-        return mergeCellProps(safeGetCellProps(col, record, rowIndex), {
+        return mergeCellProps(internals.safeGetCellProps(col, record, rowIndex), {
           style: { padding: 0 },
         })
       },
       render(_, record, rowIndex) {
         return (
           <AutoWidthWrapper className={AUTO_WIDTH_WRAPPER_CLS} style={options?.wrapperStyle}>
-            {safeRender(col, record, rowIndex)}
+            {internals.safeRender(col, record, rowIndex)}
           </AutoWidthWrapper>
         )
       },

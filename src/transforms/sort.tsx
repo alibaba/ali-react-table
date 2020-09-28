@@ -1,11 +1,8 @@
-import * as CarbonIcons from '@carbon/icons-react'
 import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
-import { safeGetValue, safeRenderHeader } from '../internals'
-import { collectNodes, smartCompare, isLeafNode, layeredSort } from '../utils'
-
-type IconComponent = typeof CarbonIcons.Number_116
+import { internals } from '../internals'
+import { collectNodes, isLeafNode, layeredSort, smartCompare } from '../utils'
 
 function SortIcon({
   size = 32,
@@ -35,36 +32,19 @@ function SortIcon({
   )
 }
 
-const NumberIconMap: { [key: number]: IconComponent } = {
-  1: CarbonIcons.Number_116,
-  2: CarbonIcons.Number_216,
-  3: CarbonIcons.Number_316,
-  4: CarbonIcons.Number_416,
-  5: CarbonIcons.Number_516,
-  6: CarbonIcons.Number_616,
-  7: CarbonIcons.Number_716,
-  8: CarbonIcons.Number_816,
-  9: CarbonIcons.Number_916,
-}
-
-const EmptyIcon: IconComponent = () => null
-
 function DefaultSortHeaderCell({ children, column, onToggle, sortOrder, sortIndex, sortOptions }: SortHeaderCellProps) {
   // 通过 justify-content 来与 col.align 保持对齐方向一致
   const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
-
-  let NumberIcon = EmptyIcon
-  if (sortOptions.mode === 'multiple') {
-    if (NumberIconMap[sortIndex + 1] != null) {
-      NumberIcon = NumberIconMap[sortIndex + 1]
-    }
-  }
 
   return (
     <TableHeaderCell onClick={onToggle} style={{ justifyContent }}>
       {children}
       <SortIcon style={{ marginLeft: 2, flexShrink: 0 }} size={16} order={sortOrder} />
-      <NumberIcon style={{ fill: '#666', flexShrink: 0 }} />
+      {sortOptions.mode === 'multiple' && sortIndex != -1 && (
+        <div style={{ marginLeft: 2, color: '#666', flex: '0 0 auto', fontSize: 10, fontFamily: 'monospace' }}>
+          {sortIndex + 1}
+        </div>
+      )}
     </TableHeaderCell>
   )
 }
@@ -177,8 +157,8 @@ export function makeSortTransform({
           }
           const sortable = column.features.sortable
           const compareFn = typeof sortable === 'function' ? sortable : smartCompare
-          const xValue = safeGetValue(column, x, -1)
-          const yValue = safeGetValue(column, y, -1)
+          const xValue = internals.safeGetValue(column, x, -1)
+          const yValue = internals.safeGetValue(column, y, -1)
           const cmp = compareFn(xValue, yValue)
           if (cmp !== 0) {
             return cmp * (order === 'asc' ? 1 : -1)
@@ -231,7 +211,7 @@ export function makeSortTransform({
               sortIndex={sortIndex}
               sortOptions={sortOptions}
             >
-              {safeRenderHeader(col)}
+              {internals.safeRenderHeader(col)}
             </SortHeaderCellComponent>
           )
         }

@@ -2,7 +2,6 @@ export * from './base-table'
 export * from './interfaces'
 export * from './utils'
 export * from './transforms'
+export * from './pipeline'
 
-import * as internals from './internals'
-
-export { internals }
+export * from './internals'

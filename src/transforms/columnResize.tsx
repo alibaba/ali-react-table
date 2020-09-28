@@ -3,7 +3,7 @@ import { fromEvent } from 'rxjs'
 import * as op from 'rxjs/operators'
 import styled from 'styled-components'
 import { TableTransform } from '../interfaces'
-import { safeRenderHeader } from '../internals'
+import { internals } from '../internals'
 import { isLeafNode, traverseColumn } from '../utils'
 
 function clamp(min: number, x: number, max: number) {
@@ -88,7 +88,7 @@ export function makeColumnResizeTransform({
       return col
     }
 
-    const prevTitle = safeRenderHeader(col)
+    const prevTitle = internals.safeRenderHeader(col)
 
     return {
       ...col,

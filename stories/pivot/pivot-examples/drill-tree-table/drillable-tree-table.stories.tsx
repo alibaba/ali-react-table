@@ -6,7 +6,6 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../../../assets/cdn-data'
 import { amount, lfl, ratio } from '../../../assets/format'
-import { FusionStyles } from '../../../assets/fusion-style'
 import { CheckedDimList, PrimaryColumnTitle } from './designers'
 import { Pivot, PivotView } from './models'
 
@@ -103,7 +102,6 @@ const Inner = observer(() => {
 
   return (
     <div>
-      <FusionStyles />
       <CheckedDimList pivot={pivot} />
       <CrossTreeTable
         style={{ marginTop: 8 }}

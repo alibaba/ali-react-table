@@ -1,7 +1,6 @@
 import { Button } from '@alifd/next'
 import React from 'react'
 import styled from 'styled-components'
-import { FusionStyles } from '../assets/fusion-style'
 
 const PivotTableDesignerDiv = styled.div`
   .row {
@@ -61,7 +60,6 @@ export default function MinimumPivotTableDesigner({
 
   return (
     <PivotTableDesignerDiv>
-      <FusionStyles />
       <div className="row">
         <span className="label">表格结构：</span>
         <Button.Group>

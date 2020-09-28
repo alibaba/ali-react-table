@@ -3,7 +3,6 @@ import { applyTransforms, ArtColumn, BaseTable, proto, traverseColumn } from 'al
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { amount, lfl, ratio } from '../../assets/format'
-import { FusionStyles } from '../../assets/fusion-style'
 
 const HintDiv = styled.div`
   margin-bottom: 16px;
@@ -230,7 +229,6 @@ export function 投入产出分析表格() {
 
   return (
     <div>
-      <FusionStyles />
       <HintDiv>交互提示：点击分日情况单元格 查看详细数据</HintDiv>
       <BaseTable columns={renderData.columns} dataSource={renderData.dataSource} />
     </div>

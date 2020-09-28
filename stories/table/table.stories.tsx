@@ -1,10 +1,12 @@
-import { Button, Checkbox, Notification } from '@alifd/next'
-import { ArtColumn, BaseTable, SpanRect } from 'ali-react-table'
-import React, { useRef, useState } from 'react'
+import { Button, Checkbox } from '@alifd/next'
+import { ArtColumn, CellProps, SpanRect } from 'ali-react-table'
+import cx from 'classnames'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { amount, time } from '../assets/format'
-import { FusionStyles } from '../assets/fusion-style'
+import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../assets/mock-table-data'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
+import { BaseTable } from '../assets/ThemedBaseTable'
 
 export default {
   title: '表格 / 表格示例',
@@ -47,69 +49,58 @@ export function 基本用法() {
   return <BaseTable dataSource={dataSource} columns={columns} />
 }
 
-export function 自定义表格样式() {
-  const { isLoading, dataSource } = useProvinceDataSource()
+export function 表格样式() {
+  const [compact, setCompact] = useState(true)
+  const [zebra, setZebra] = useState(false)
+  const [bordered, setBordered] = useState(false)
+  const [hasHeader, setHasHeader] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+
   return (
-    <BaseTable
-      style={{
-        '--cell-border-horizontal': '1px solid #f0f0f0',
-        '--cell-border-vertical': 'none',
-        '--header-bgcolor': '#fafafa',
-        '--header-cell-border': 'none',
-        '--header-row-height': '40px',
-      }}
-      isLoading={isLoading}
-      dataSource={dataSource.slice(0, 6)}
-      columns={testProvColumns}
-    />
+    <div>
+      <div style={{ marginBottom: 16 }}>
+        <div>
+          <Checkbox checked={compact} onChange={() => setCompact(!compact)}>
+            紧凑型(仅在盒马主题下生效)
+          </Checkbox>
+          <Checkbox style={{ marginLeft: 16 }} checked={zebra} onChange={() => setZebra(!zebra)}>
+            斑马线(仅在盒马主题下生效)
+          </Checkbox>
+          <Checkbox style={{ marginLeft: 16 }} checked={bordered} onChange={() => setBordered(!bordered)}>
+            边框(仅在盒马主题下生效)
+          </Checkbox>
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <Checkbox checked={hasHeader} onChange={() => setHasHeader(!hasHeader)}>
+            展示表头
+          </Checkbox>
+          <Checkbox style={{ marginLeft: 16 }} checked={isLoading} onChange={() => setIsLoading(!isLoading)}>
+            加载状态
+          </Checkbox>
+        </div>
+      </div>
+      <BaseTable
+        className={cx({ compact, zebra, bordered })}
+        isLoading={isLoading}
+        hasHeader={hasHeader}
+        dataSource={dataSource1}
+        columns={columns1}
+      />
+    </div>
   )
 }
 
-const ZebraBaseTable: typeof BaseTable = styled(BaseTable)`
-  .art-table-row.even {
-    --bgcolor: #f2f2f2;
-  }
-  .art-table-row.odd {
-    --bgcolor: white;
-  }
-` as any
-
-export function 自定义表格样式2() {
-  /*
-  import styled from 'styled-components'
-  import { BaseTable } from 'ali-react-table'
-
-  const ZebraBaseTable = styled(BaseTable)`
-    --cell-border-vertical: none;
-    .art-table-row.even {
-      --bgcolor: #f2f2f2;
-    }
-    .art-table-row.odd {
-      --bgcolor: white;
-    }
-   */
-  const { isLoading, dataSource } = useProvinceDataSource()
-  return <ZebraBaseTable isLoading={isLoading} dataSource={dataSource.slice(0, 10)} columns={testProvColumns} />
+export function 数据为空() {
+  // 与基本表格相比，行高降低，通过较小的尺寸在屏幕中显示更多的数据，高度40px
+  return <BaseTable dataSource={[]} columns={columns2} />
 }
 
-export function 默认列宽() {
-  const { isLoading, dataSource } = useProvinceDataSource()
-  const columns: ArtColumn[] = [
-    { code: 'provinceName', name: '省份' },
-    { code: 'confirmedCount', name: '确诊', render: amount, align: 'right' },
-    { code: 'suspectedCount', name: '疑似', render: amount, align: 'right' },
-    { code: 'curedCount', name: '治愈', render: amount, align: 'right' },
-    { code: 'deadCount', name: '死亡', render: amount, align: 'right' },
-    { code: 'updateTime', name: '最后更新时间', render: time },
-  ]
-  return (
-    <BaseTable
-      defaultColumnWidth={200}
-      isLoading={isLoading}
-      dataSource={dataSource.slice(0, 5)}
-      columns={[...columns, ...columns]}
-    />
-  )
+export function 空数据加载() {
+  return <BaseTable isLoading dataSource={[]} columns={columns2} />
+}
+
+export function 表格数据加载() {
+  return <BaseTable isLoading dataSource={dataSource2} columns={columns2} />
 }
 
 export function 左侧锁列() {
@@ -148,7 +139,7 @@ export function 左侧与右侧锁列() {
   )
 }
 
-export function 表头吸顶_Sticky_Header() {
+export function 表头吸顶() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
@@ -174,9 +165,7 @@ export function 表头吸顶_Sticky_Header() {
   )
 }
 
-export function 表头props() {
-  // 表头 props 好像也就改个样式 实用一点...
-
+export function 自定义表头单元格样式() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
@@ -212,7 +201,7 @@ export function 表头props() {
   )
 }
 
-export function 表格吸底_Sticky_Bottom() {
+export function 表格吸底() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
@@ -238,7 +227,7 @@ export function 表格吸底_Sticky_Bottom() {
           justifyContent: 'center',
         }}
       >
-        <div>表格底部操作栏，这里可以放置分页控件</div>
+        <div>表格底部操作栏，可以放置分页控件 或 表格总结信息</div>
       </div>
       <div style={{ border: '1px solid #ccc', height: '30vh', marginTop: 32 }}>OTHER CONTENT</div>
     </div>
@@ -280,7 +269,15 @@ export function 单元格合并() {
   ]
 
   const columns: ArtColumn[] = [
-    { code: 'prov', name: '省份' },
+    {
+      code: 'prov',
+      name: '省份',
+      getCellProps(value: any, record: any, rowIndex: number): CellProps {
+        if (rowIndex === 3) {
+          return { colSpan: 2, rowSpan: 2 }
+        }
+      },
+    },
     { code: 'confirmed', name: '确诊', align: 'right' },
     { code: 'cured', name: '治愈', align: 'right' },
     {
@@ -288,7 +285,7 @@ export function 单元格合并() {
       name: '最后更新时间',
       getCellProps(value: any, record: any, rowIndex: number) {
         if (rowIndex === 1) {
-          return { rowSpan: 2, colSpan: 1 }
+          return { rowSpan: 3 }
         }
       },
     },
@@ -336,8 +333,6 @@ export function 虚拟滚动与单元格合并() {
 
 export function 自定义单元格样式() {
   const { isLoading, dataSource } = useProvinceDataSource()
-
-  const tableRef = useRef<BaseTable>()
 
   const columns: ArtColumn[] = [
     { code: 'provinceName', name: '省份', width: 150 },
@@ -391,7 +386,6 @@ export function 自定义单元格样式() {
   ]
   return (
     <div>
-      <FusionStyles />
       <div style={{ display: 'flex' }}>
         <div>
           <h1 style={{ marginBottom: 6 }}>样式说明</h1>
@@ -399,36 +393,9 @@ export function 自定义单元格样式() {
           <p style={{ margin: '6px 0' }}>绿色背景：治愈 / 确诊 &gt; 0.3</p>
           <p style={{ margin: '6px 0' }}>红色背景：死亡 &gt; 0</p>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginLeft: 32,
-            marginBottom: 6,
-            alignSelf: 'flex-end',
-          }}
-        >
-          <Button
-            size="small"
-            onClick={() => {
-              navigator.clipboard
-                .writeText(tableRef.current.getDoms().artTable.outerHTML)
-                .then(() => {
-                  Notification.open({ content: '复制成功' })
-                })
-                .catch(() => {
-                  Notification.error({ content: '复制失败' })
-                })
-            }}
-          >
-            复制表格
-          </Button>
-
-          <span style={{ marginLeft: 8 }}>(复制之后可以在 Excel 中进行粘贴)</span>
-        </div>
       </div>
 
-      <BaseTable ref={tableRef} isLoading={isLoading} dataSource={dataSource} columns={columns} />
+      <BaseTable isLoading={isLoading} dataSource={dataSource} columns={columns} />
     </div>
   )
 }
@@ -475,6 +442,65 @@ const Row = styled.div`
   }
 `
 
+export function 限定表格容器大小() {
+  const nameCol = { lock: true, code: 'name', width: 200, name: '公司名称' }
+  const repeats: ArtColumn[] = [
+    { code: 'amount', width: 160, align: 'right', name: '金额' },
+    { code: 'dept', width: 160, name: '金融机构' },
+    { code: 'applier', width: 120, name: '申请人' },
+  ]
+
+  return (
+    <BaseTable
+      style={{ width: 800, height: 385, overflow: 'auto' }}
+      dataSource={repeat(dataSource1, 10)}
+      columns={[
+        {
+          name: '序号',
+          width: 70,
+          align: 'right',
+          lock: true,
+          getValue(_, rowIndex) {
+            return String(rowIndex + 1)
+          },
+        },
+        nameCol,
+        ...repeat(repeats, 5),
+        operationCol,
+      ]}
+    />
+  )
+}
+
+export function 不限定表格容器大小() {
+  return (
+    <BaseTable
+      dataSource={repeat(dataSource1, 10)}
+      columns={[
+        {
+          name: '序号',
+          width: 70,
+          align: 'right',
+          lock: true,
+          getValue(_, rowIndex) {
+            return String(rowIndex + 1)
+          },
+        },
+        { lock: true, code: 'name', width: 200, name: '公司名称' },
+        ...repeat<ArtColumn>(
+          [
+            { code: 'amount', width: 160, align: 'right', name: '金额' },
+            { code: 'dept', width: 160, name: '金融机构' },
+            { code: 'applier', width: 120, name: '申请人' },
+          ],
+          5,
+        ),
+        operationCol,
+      ]}
+    />
+  )
+}
+
 export function Props组合() {
   const [config, setConfig] = useState({
     hasHeader: true,
@@ -488,7 +514,6 @@ export function Props组合() {
 
   return (
     <div>
-      <FusionStyles />
       <div style={{ lineHeight: 1.5 }}>
         hasHeader 表示表头是否展示；
         <br />

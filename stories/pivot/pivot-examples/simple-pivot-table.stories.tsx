@@ -9,7 +9,6 @@ import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from '../../assets/cdn-data'
 import { amount, lfl, ratio } from '../../assets/format'
-import { FusionStyles } from '../../assets/fusion-style'
 import MinimumPivotTableDesigner from '../MinimumPivotTableDesigner'
 
 export default { title: '交叉与透视 / 示例 / 简易透视表' }
@@ -136,7 +135,6 @@ export function 简易透视表() {
 
   return (
     <div style={{ minWidth: 800 }}>
-      <FusionStyles />
       <MinimumPivotTableDesigner
         showSupportsExpandToggle
         supportsExpand={supportsExpand}

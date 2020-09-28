@@ -1,30 +1,9 @@
-import * as CarbonIcons from '@carbon/icons-react'
 import cx from 'classnames'
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import { ExpansionCell, icons } from '../common-views'
 import { ArtColumn, TableTransform } from '../interfaces'
-import { safeGetCellProps, safeRender, safeRenderHeader } from '../internals'
+import { internals } from '../internals'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
-
-const ExpansionCell = styled.div`
-  display: flex;
-  align-items: center;
-
-  &.leaf {
-    cursor: default;
-  }
-
-  .expansion-icon {
-    fill: #999;
-    flex: 0 0 16px;
-    transition: transform 200ms;
-
-    &.expanded {
-      transform-origin: center center;
-      transform: rotate(90deg);
-    }
-  }
-`
 
 export const treeMetaSymbol = Symbol('treeMetaSymbol')
 
@@ -92,7 +71,7 @@ export function makeTreeModeTransform({
       const [firstCol, ...others] = columns
 
       const render = (value: any, record: any, recordIndex: number) => {
-        const content = safeRender(firstCol, record, recordIndex)
+        const content = internals.safeRender(firstCol, record, recordIndex)
         if (record[treeMetaSymbol] == null) {
           // 没有 treeMeta 信息的话，就返回原先的渲染结果
           return content
@@ -113,7 +92,7 @@ export function makeTreeModeTransform({
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
           <ExpansionCell className={cx('expansion-cell', expandCls)}>
-            <CarbonIcons.CaretRight16
+            <icons.CaretRight
               className={cx('expansion-icon', expandCls)}
               style={{ marginLeft: indent, marginRight: iconGap }}
             />
@@ -125,7 +104,7 @@ export function makeTreeModeTransform({
       const getCellProps = (value: any, record: any, rowIndex: number) => {
         if (record[treeMetaSymbol] == null) {
           // 没有 treeMeta 信息的话，就返回原先的 cellProps
-          return safeGetCellProps(firstCol, record, rowIndex)
+          return internals.safeGetCellProps(firstCol, record, rowIndex)
         }
 
         const { isLeaf, rowKey, expanded } = record[treeMetaSymbol]
@@ -157,7 +136,11 @@ export function makeTreeModeTransform({
       return [
         {
           ...firstCol,
-          title: <span style={{ marginLeft: iconIndent + ICON_WIDTH + iconGap }}>{safeRenderHeader(firstCol)}</span>,
+          title: (
+            <span style={{ marginLeft: iconIndent + ICON_WIDTH + iconGap }}>
+              {internals.safeRenderHeader(firstCol)}
+            </span>
+          ),
           render,
           getCellProps,
         },

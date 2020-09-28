@@ -13,7 +13,6 @@ import {
 } from 'ali-react-table'
 import _ from 'lodash'
 import React, { ReactNode, useRef, useState } from 'react'
-import { FusionStyles } from '../../assets/fusion-style'
 import { cols, useCityDataSource } from '../../assets/ncov19-assets'
 
 export default { title: '示例 / 表格交互 / 筛选' }
@@ -321,7 +320,6 @@ export function 筛选() {
   return (
     <div>
       <p>tips: 自适应匹配 —— 根据其他列的筛选条件缩小当前列的筛选范围</p>
-      <FusionStyles />
       <div>
         <Button onClick={() => onChangeFilterState({})}>重置筛选</Button>
       </div>

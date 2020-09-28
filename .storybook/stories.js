@@ -7,6 +7,7 @@ const stories = [
   'table/table-api.stories.mdx',
   'table/table-advanced-usage.stories.mdx',
   'table/table.stories.tsx',
+  'table/table-pipeline.stories.tsx',
   'table/transforms.stories.mdx',
   'table/transforms/**/*.stories.mdx',
   'table/transforms-examples.stories.tsx',
@@ -20,6 +21,8 @@ const stories = [
   'pivot/cross-tree-table.stories.{mdx,tsx}',
   'pivot/pivot-utils.stories.{mdx,tsx}',
   'pivot/pivot-examples/**/*.stories.{mdx,tsx}',
+
+  // 'hippo-table/**/*.stories.tsx',
 ].map((file) => `../stories/${file}`)
 
 module.exports = stories

@@ -1,0 +1,8 @@
+export { multiSelect, MultiSelectFeatureOptions } from './multiSelect'
+export { columnHover, autoRowSpan, buildTree, columnRangeHover, tips } from './others'
+export { rowDetail, RowDetailFeatureOptions } from './rowDetail'
+export { rowExpand, RowExpandFeatureOptions } from './rowExpand'
+export { singleSelect, SingleSelectFeatureOptions } from './singleSelect'
+export { sort, SortFeatureOptions } from './sort'
+export { treeMode, TreeModeFeatureOptions } from './treeMode'
+export { treeSelect, TreeSelectFeatureOptions } from './treeSelect'

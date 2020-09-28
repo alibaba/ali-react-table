@@ -21,7 +21,6 @@ import {
 import React, { useEffect, useRef, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio, time } from '../assets/format'
-import { FusionStyles } from '../assets/fusion-style'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
 
 export default {
@@ -322,7 +321,6 @@ export function 列气泡提示() {
 
   return (
     <div>
-      <FusionStyles />
       <BaseTable isLoading={isLoading} dataSource={renderData.dataSource.slice(0, 10)} columns={renderData.columns} />
     </div>
   )

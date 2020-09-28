@@ -12,7 +12,6 @@ import {
 import React, { useEffect, useState } from 'react'
 import { getAppTrafficData } from '../../assets/cdn-data'
 import { amount, ratio } from '../../assets/format'
-import { FusionStyles } from '../../assets/fusion-style'
 import { useOperationBar } from './components'
 
 export default { title: '示例 / 其他组件 / 表格操作栏示例' }
@@ -137,7 +136,6 @@ export function 表格操作栏示例() {
 
   return (
     <div>
-      <FusionStyles />
       <operationBar.view>{operationBar.nodes}</operationBar.view>
       <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
     </div>

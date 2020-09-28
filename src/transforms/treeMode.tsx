@@ -3,7 +3,7 @@ import cx from 'classnames'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, TableTransform } from '../interfaces'
-import { safeRender, safeRenderHeader } from '../internals'
+import { safeGetCellProps, safeRender, safeRenderHeader } from '../internals'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
 
 const ExpansionCell = styled.div`
@@ -123,6 +123,11 @@ export function makeTreeModeTransform({
       }
 
       const getCellProps = (value: any, record: any, rowIndex: number) => {
+        if (record[treeMetaSymbol] == null) {
+          // 没有 treeMeta 信息的话，就返回原先的 cellProps
+          return safeGetCellProps(firstCol, record, rowIndex)
+        }
+
         const { isLeaf, rowKey, expanded } = record[treeMetaSymbol]
 
         let onClick: any

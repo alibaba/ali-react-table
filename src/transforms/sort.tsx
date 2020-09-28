@@ -150,7 +150,7 @@ export function makeSortTransform({
     if (process.env.NODE_ENV !== 'production') {
       if (!hasAnySortableColumns(columns)) {
         console.warn(
-          'ali-react-table commonTransform.sort 缺少可排序的列，请通过 column.features.sortable 来指定哪些列可排序',
+          '[ali-react-table] commonTransform.sort 缺少可排序的列，请通过 column.features.sortable 来指定哪些列可排序',
           columns,
         )
       }

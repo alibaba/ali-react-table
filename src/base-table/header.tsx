@@ -189,7 +189,7 @@ export default function TableHeader(props: TableHeaderProps) {
   const leftFlatCount = flat.left.length
   const rightFlatCount = flat.right.length
 
-  const tbody = renderInfo.leveled.map((wrappedCols, level) => {
+  const thead = renderInfo.leveled.map((wrappedCols, level) => {
     const headerCells = wrappedCols.map((wrapped) => {
       if (wrapped.type === 'normal') {
         const { colIndex, colSpan, isLeaf, col } = wrapped
@@ -263,7 +263,7 @@ export default function TableHeader(props: TableHeaderProps) {
           }
         })}
       </colgroup>
-      <tbody>{tbody}</tbody>
+      <thead>{thead}</thead>
     </table>
   )
 }

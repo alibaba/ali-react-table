@@ -3,7 +3,7 @@ import cx from 'classnames'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, TableTransform } from '../interfaces'
-import { safeRender } from '../internals'
+import { safeRender, safeRenderHeader } from '../internals'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
 
 const ExpansionCell = styled.div`
@@ -29,20 +29,27 @@ const ExpansionCell = styled.div`
 export const treeMetaSymbol = Symbol('treeMetaSymbol')
 
 const ICON_WIDTH = 16
-const BASE_INDENT = 10
 
 export interface TreeModeOptions {
   primaryKey: string
   openKeys: string[]
   onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
-  indentSize?: number
   isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+
+  /** icon 的缩进值，一般为负数，此时 icon 将向左偏移. 默认为 -6 */
+  iconIndent?: number
+  /** icon 与右侧文本的距离，默认为 0 */
+  iconGap?: number
+  /** 每一级缩进产生的距离，默认为 16 */
+  indentSize?: number
 }
 
 export function makeTreeModeTransform({
   onChangeOpenKeys,
   openKeys,
   primaryKey,
+  iconIndent = -6,
+  iconGap = 0,
   indentSize = 16,
   isLeafNode = standardIsLeafNode,
 }: TreeModeOptions): TableTransform {
@@ -93,19 +100,23 @@ export function makeTreeModeTransform({
 
         const { depth, isLeaf, expanded } = record[treeMetaSymbol]
 
+        const indent = iconIndent + depth * indentSize
+
         if (isLeaf) {
           return (
             <ExpansionCell className="expansion-cell leaf">
-              <span style={{ marginLeft: BASE_INDENT + depth * indentSize }}>{content}</span>
+              <span style={{ marginLeft: indent + ICON_WIDTH + iconGap }}>{content}</span>
             </ExpansionCell>
           )
         }
 
-        const marginLeft = -ICON_WIDTH + BASE_INDENT + depth * indentSize
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
           <ExpansionCell className={cx('expansion-cell', expandCls)}>
-            <CarbonIcons.CaretRight16 className={cx('expansion-icon', expandCls)} style={{ marginLeft }} />
+            <CarbonIcons.CaretRight16
+              className={cx('expansion-icon', expandCls)}
+              style={{ marginLeft: indent, marginRight: iconGap }}
+            />
             {content}
           </ExpansionCell>
         )
@@ -138,7 +149,15 @@ export function makeTreeModeTransform({
         })
       }
 
-      return [{ ...firstCol, render, getCellProps }, ...others]
+      return [
+        {
+          ...firstCol,
+          title: <span style={{ marginLeft: iconIndent + ICON_WIDTH + iconGap }}>{safeRenderHeader(firstCol)}</span>,
+          render,
+          getCellProps,
+        },
+        ...others,
+      ]
     }
   }
 }
@@ -148,7 +167,9 @@ export function useTreeModeTransform({
   indentSize,
   primaryKey,
   defaultOpenKeys = [],
+  iconGap,
+  iconIndent,
 }: Omit<TreeModeOptions, 'openKeys' | 'onChangeOpenKeys'> & { defaultOpenKeys?: string[] }) {
   const [openKeys, onChangeOpenKeys] = useState(defaultOpenKeys)
-  return makeTreeModeTransform({ indentSize, primaryKey, isLeafNode, openKeys, onChangeOpenKeys })
+  return makeTreeModeTransform({ indentSize, primaryKey, isLeafNode, iconGap, iconIndent, openKeys, onChangeOpenKeys })
 }

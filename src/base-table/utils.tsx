@@ -10,8 +10,6 @@ export const STYLED_REF_PROP = STYLED_VERSION === 'v3' ? 'innerRef' : 'ref'
 
 export const OVERSCAN_SIZE = 100
 
-export const LOADING_ICON_SIZE = 40
-
 export const AUTO_VIRTUAL_THRESHOLD = 100
 
 export function sum(arr: number[]) {

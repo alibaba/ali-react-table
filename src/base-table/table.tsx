@@ -4,7 +4,7 @@ import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subs
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
 import { safeGetRowKey, safeGetValue } from '../internals'
-import EmptyTable from './empty'
+import EmptyTable, { EmptyContentConfig } from './empty'
 import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
 import ItemSizeStore from './helpers/ItemSizeStore'
@@ -18,11 +18,10 @@ import {
   VerticalRenderRange,
   VirtualEnum,
 } from './interfaces'
-import Loading from './loading'
-import { BaseTableCSSVariables, Classes, Styled } from './styles'
+import Loading, { LoadingContentWrapperProps } from './loading'
+import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING, StyledArtTableWrapper } from './styles'
 import {
   getScrollbarSize,
-  LOADING_ICON_SIZE,
   OVERSCAN_SIZE,
   query,
   queryAll,
@@ -32,6 +31,54 @@ import {
   syncScrollLeft,
   throttledWindowResize$,
 } from './utils'
+
+let emptyContentDeprecatedWarned = false
+function normalizeEmpty(input: BaseTableProps): EmptyContentConfig {
+  if (input == null) {
+    return { visible: 'auto' }
+  }
+  const { empty, emptyContent } = input
+  if (empty != null) {
+    if (typeof empty === 'boolean' || typeof empty === 'string') {
+      return { visible: empty }
+    } else {
+      return empty
+    }
+  } else if (emptyContent != null) {
+    if (!emptyContentDeprecatedWarned) {
+      emptyContentDeprecatedWarned = true
+      console.warn(
+        '[ali-react-table] BaseTable props.emptyContent 已经过时，请使用 props.empty.content 来设置数据为空时的表现',
+      )
+    }
+    return { visible: 'auto', content: emptyContent }
+  } else {
+    return { visible: 'auto' }
+  }
+}
+
+let loadingDeprecatedWarned = false
+function normalizeLoading(input: BaseTableProps) {
+  if (input == null) {
+    return { visible: false }
+  }
+  const { loading, isLoading } = input
+  if (loading != null) {
+    if (typeof loading === 'boolean') {
+      return { visible: loading }
+    } else {
+      return loading
+    }
+  } else if (isLoading != null) {
+    if (!loadingDeprecatedWarned) {
+      loadingDeprecatedWarned = true
+      console.warn('[ali-react-table] BaseTable props.isLoading 已经过时，请使用 props.loading 来设置数据加载中的表现')
+    }
+    return { visible: isLoading }
+  } else {
+    return { visible: false }
+  }
+}
 
 export interface BaseTableProps {
   /** 主键 */
@@ -58,10 +105,30 @@ export interface BaseTableProps {
   hasHeader?: boolean
   /** 使用来自外层 div 的边框代替单元格的外边框 */
   useOuterBorder?: boolean
-  /** 表格是否在加载中 */
+
+  /** @deprecated 表格是否在加载中，请使用 loading 来设置加载效果 */
   isLoading?: boolean
-  /** 数据为空的时候的表格内容展现 */
+  loading?:
+    | boolean
+    | {
+        visible: boolean
+        LoadingContentWrapper?: React.ComponentType<LoadingContentWrapperProps>
+        LoadingIcon?: React.ComponentType
+      }
+
+  /** @deprecated 数据为空的时候的表格内容展现，请使用 empty 来设置「数据为空」时的展现效果 */
   emptyContent?: ReactNode
+
+  // 设置「数据为空」时的展现效果
+  empty?:
+    | 'auto'
+    | boolean
+    | {
+        visible: 'auto' | boolean
+        content?: ReactNode
+        height?: number
+      }
+
   /** 列的默认宽度 */
   defaultColumnWidth?: number
 
@@ -110,7 +177,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     stickyBottom: 0,
     useVirtual: 'auto',
     hasHeader: true,
-    isLoading: false,
+    empty: 'auto',
     getRowProps: noop,
     flowRoot: 'auto',
   }
@@ -184,7 +251,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const { flat, nested, useVirtual, stickyLeftMap, stickyRightMap } = this.state
 
     return (
-      <div className={Classes.tableHeader} style={{ top: stickyTop, display: hasHeader ? 'block' : 'none' }}>
+      <div
+        className={Classes.tableHeader}
+        style={{
+          top: stickyTop === 0 ? undefined : stickyTop,
+          display: hasHeader ? undefined : 'none',
+        }}
+      >
         <TableHeader
           nested={nested}
           flat={flat}
@@ -322,7 +395,9 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   private renderTableBody(renderRange: FullRenderRange) {
     const { vertical: ver, horizontal: hoz } = renderRange
-    const { isLoading, dataSource, getRowProps, primaryKey, emptyContent } = this.props
+    const { dataSource, getRowProps, primaryKey } = this.props
+    const loading = normalizeLoading(this.props)
+    const empty = normalizeEmpty(this.props)
     const wrappedCols = this.getFlatHozWrappedCols(hoz)
 
     const colgroup = (
@@ -339,12 +414,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     if (ver.bottomIndex - ver.topIndex === 0) {
       return (
         <div className={Classes.tableBody}>
-          <EmptyTable
-            colgroup={colgroup}
-            colSpan={wrappedCols.length}
-            isLoading={isLoading}
-            emptyContent={emptyContent}
-          />
+          <EmptyTable colgroup={colgroup} colSpan={wrappedCols.length} isLoading={loading.visible} config={empty} />
         </div>
       )
     }
@@ -476,21 +546,53 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   render() {
-    const { dataSource, className, style, hasHeader, useOuterBorder, isLoading, isStickyHead } = this.props
+    const { dataSource, className, style, hasHeader, useOuterBorder, isStickyHead } = this.props
     const { flat } = this.state
+
     const styleWrapper = (node: ReactNode) => {
+      const artTableWrapperClassName = cx(
+        Classes.artTableWrapper,
+        {
+          'use-outer-border': useOuterBorder,
+          sticky: isStickyHead,
+          empty: dataSource.length === 0,
+          lock: this.isLock(),
+          'has-header': hasHeader,
+        },
+        className,
+      )
+
       const artTableWrapperProps = {
-        className: cx(Classes.artTableWrapper, className, { 'use-outer-border': useOuterBorder }),
+        className: artTableWrapperClassName,
         style,
         [STYLED_REF_PROP]: this.artTableWrapperRef,
       }
-      return <Styled.ArtTableWrapper {...artTableWrapperProps}>{node}</Styled.ArtTableWrapper>
+      return <StyledArtTableWrapper {...artTableWrapperProps}>{node}</StyledArtTableWrapper>
     }
 
-    const withStickyScroll = (node: ReactNode) => (
-      <>
-        {node}
-        <Styled.StickyScroll
+    const renderRange = this.getRenderRange()
+
+    return styleWrapper(
+      <Loading {...normalizeLoading(this.props)}>
+        <div className={Classes.artTable}>
+          {this.renderTableHeader(renderRange)}
+          {this.renderTableBody(renderRange)}
+
+          <div
+            className={Classes.lockShadowMask}
+            style={{ left: 0, width: sum(flat.left.map((col) => col.width)) + LOCK_SHADOW_PADDING }}
+          >
+            <div className={cx(Classes.lockShadow, Classes.leftLockShadow)} />
+          </div>
+          <div
+            className={Classes.lockShadowMask}
+            style={{ right: 0, width: sum(flat.right.map((col) => col.width)) + LOCK_SHADOW_PADDING }}
+          >
+            <div className={cx(Classes.lockShadow, Classes.rightLockShadow)} />
+          </div>
+        </div>
+
+        <div
           className={Classes.stickyScroll}
           style={{
             display: this.state.hasScroll ? 'block' : 'none',
@@ -498,31 +600,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           }}
         >
           <div className={Classes.stickyScrollItem} />
-        </Styled.StickyScroll>
-      </>
-    )
-
-    const renderRange = this.getRenderRange()
-
-    return styleWrapper(
-      withStickyScroll(
-        <Loading visible={isLoading}>
-          <Styled.ArtTable
-            className={cx(Classes.artTable, {
-              sticky: isStickyHead,
-              empty: dataSource.length === 0,
-              lock: this.isLock(),
-              'has-header': hasHeader,
-            })}
-          >
-            {this.renderTableHeader(renderRange)}
-            {this.renderTableBody(renderRange)}
-
-            <div className={Classes.leftLockShadow} style={{ width: sum(flat.left.map((col) => col.width)) }} />
-            <div className={Classes.rightLockShadow} style={{ width: sum(flat.right.map((col) => col.width)) }} />
-          </Styled.ArtTable>
-        </Loading>,
-      ),
+        </div>
+      </Loading>,
     )
   }
 
@@ -618,7 +697,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           op.map((p) => p.clipRect),
           op.distinctUntilChanged(shallowEqual),
         ),
-        this.data$.pipe(op.filter((data) => !data.prevProps?.isLoading && data.props.isLoading)),
+        this.data$.pipe(
+          op.filter((data) => {
+            const prevLoading = normalizeLoading(data.prevProps)
+            const cntLoading = normalizeLoading(data.props)
+            return !prevLoading.visible && cntLoading.visible
+          }),
+        ),
       ]).subscribe(([clipRect]) => {
         const { artTableWrapper } = this.doms
         const loadingIndicator = query(artTableWrapper, Classes.loadingIndicator)
@@ -626,8 +711,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           return
         }
         const height = clipRect.bottom - clipRect.top
-        loadingIndicator.style.top = `${height / 2 - LOADING_ICON_SIZE / 2}px`
-        loadingIndicator.style.marginTop = `${height / 2 - LOADING_ICON_SIZE / 2}px`
+        loadingIndicator.style.top = `${height / 2}px`
+        loadingIndicator.style.marginTop = `${height / 2}px`
       }),
     )
 

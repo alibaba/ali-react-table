@@ -1,17 +1,9 @@
 import React, { ReactNode } from 'react'
 import { Classes } from './styles'
-import { LOADING_ICON_SIZE } from './utils'
 
-const LoadingIndicatorIcon = ({ size }: { size: number }) => (
+const DefaultLoadingIcon = React.memo(() => (
   <svg
-    className={Classes.loadingIndicatorIcon}
-    style={{
-      margin: 'auto',
-      display: 'block',
-      shapeRendering: 'auto',
-    }}
-    width={size}
-    height={size}
+    style={{ margin: 'auto', display: 'block', width: 40, height: 40 }}
     viewBox="0 0 100 100"
     preserveAspectRatio="xMidYMid"
   >
@@ -35,37 +27,44 @@ const LoadingIndicatorIcon = ({ size }: { size: number }) => (
       />
     </circle>
   </svg>
-)
+))
 
-Loading.defaultProps = {
-  visible: true,
+export interface LoadingContentWrapperProps {
+  visible: boolean
+  children: ReactNode
 }
 
-export default function Loading({ visible, children }: { visible: boolean; children: ReactNode }) {
+function DefaultLoadingContentWrapper({ children, visible }: LoadingContentWrapperProps) {
   return (
-    <div className={Classes.loadingWrapper} style={{ position: 'relative' }}>
+    <div className="art-loading-content-wrapper" style={{ filter: visible ? 'blur(1px)' : 'none' }}>
+      {children}
+    </div>
+  )
+}
+
+interface LoadingProps {
+  visible: boolean
+  children: ReactNode
+  LoadingContentWrapper?: React.ComponentType<LoadingContentWrapperProps>
+  LoadingIcon?: React.ComponentType
+}
+
+export default function Loading({
+  visible,
+  children,
+  LoadingContentWrapper = DefaultLoadingContentWrapper,
+  LoadingIcon = DefaultLoadingIcon,
+}: LoadingProps) {
+  return (
+    <div className={Classes.loadingWrapper}>
       {visible && (
-        <div
-          className={Classes.loadingIndicatorWrapper}
-          style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
-        >
-          <div
-            className={Classes.loadingIndicator}
-            style={{
-              position: 'sticky',
-              zIndex: 1,
-              top: LOADING_ICON_SIZE,
-              left: 0,
-              right: 0,
-            }}
-          >
-            <LoadingIndicatorIcon size={LOADING_ICON_SIZE} />
+        <div className={Classes.loadingIndicatorWrapper}>
+          <div className={Classes.loadingIndicator}>
+            <LoadingIcon />
           </div>
         </div>
       )}
-      <div className={Classes.loadingContentWrapper} style={{ filter: visible ? 'blur(1px)' : 'none' }}>
-        {children}
-      </div>
+      <LoadingContentWrapper visible={visible} children={children} />
     </div>
   )
 }

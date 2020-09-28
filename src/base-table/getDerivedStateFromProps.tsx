@@ -21,7 +21,7 @@ function processColumns(columns: ArtColumn[], defaultColumnWidth: number) {
         if (defaultColumnWidth != null) {
           column = { ...column, width: defaultColumnWidth }
         } else if (process.env.NODE_ENV !== 'production' && isLeafNode(column) && column.lock) {
-          console.warn('锁列需要指定列宽度', column)
+          console.warn('[ali-react-table] 锁列需要指定列宽度', column)
         }
       }
 

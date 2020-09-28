@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 
+export const LOCK_SHADOW_PADDING = 20
+
 const prefix = 'art-'
 
 export const Classes = {
@@ -23,6 +25,8 @@ export const Classes = {
   stickyScroll: `${prefix}sticky-scroll`,
   stickyScrollItem: `${prefix}sticky-scroll-item`,
 
+  lockShadowMask: `${prefix}lock-shadow-mask`,
+  lockShadow: `${prefix}lock-shadow`,
   leftLockShadow: `${prefix}left-lock-shadow`,
   rightLockShadow: `${prefix}right-lock-shadow`,
 
@@ -32,8 +36,6 @@ export const Classes = {
   loadingWrapper: `${prefix}loading-wrapper`,
   loadingIndicatorWrapper: `${prefix}loading-indicator-wrapper`,
   loadingIndicator: `${prefix}loading-indicator`,
-  loadingIndicatorIcon: `${prefix}loading-indicator-icon`,
-  loadingContentWrapper: `${prefix}loading-content-wrapper`,
 } as const
 
 const Z = {
@@ -41,6 +43,7 @@ const Z = {
   header: 10,
   lockShadow: 20,
   scrollItem: 30,
+  loadingIndicator: 40,
 } as const
 
 export type BaseTableCSSVariables = Partial<{
@@ -52,6 +55,11 @@ export type BaseTableCSSVariables = Partial<{
   '--hover-color': string
   /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
   '--row-height': string
+  '--cell-padding': string
+  '--font-size': string
+  '-line-height': string
+  /** 锁列阴影，默认为 rgba(152, 152, 152, 0.5) 0 0 6px 2px */
+  '--lock-shadow': string
 
   /** 表头的字体颜色 */
   '--header-color': string
@@ -76,11 +84,15 @@ export type BaseTableCSSVariables = Partial<{
   '--header-cell-border-vertical': string
 }>
 
-const ArtTableWrapper = styled.div`
+export const StyledArtTableWrapper = styled.div`
   --color: #333;
   --bgcolor: white;
   --hover-color: #f5f5f5;
   --row-height: 48px;
+  --cell-padding: 8px 12px;
+  --font-size: 12px;
+  --line-height: 1.28571;
+  --lock-shadow: rgba(152, 152, 152, 0.5) 0 0 6px 2px;
 
   --header-color: #5a6c84;
   --header-bgcolor: #e9edf2;
@@ -124,15 +136,15 @@ const ArtTableWrapper = styled.div`
   .${Classes.virtualBlank} {
     background: var(--bgcolor);
   }
-`
 
-const ArtTable = styled.div`
-  // 表格的主要样式
-  cursor: default;
-  color: var(--color);
-  font-size: 12px;
-  line-height: 1.28571;
-  position: relative;
+  .${Classes.artTable} {
+    // 表格的主要样式
+    cursor: default;
+    color: var(--color);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    position: relative;
+  }
 
   .${Classes.tableHeader} {
     overflow-x: auto;
@@ -149,12 +161,10 @@ const ArtTable = styled.div`
     overflow-y: hidden;
   }
 
-  &.sticky {
-    .${Classes.tableHeader} {
-      position: sticky;
-      top: 0;
-      z-index: ${Z.header};
-    }
+  &.sticky .${Classes.tableHeader} {
+    position: sticky;
+    top: 0;
+    z-index: ${Z.header};
   }
 
   table {
@@ -165,14 +175,14 @@ const ArtTable = styled.div`
     border-spacing: 0;
   }
 
-  tr:hover {
+  tr:not(.no-hover):hover {
     --bgcolor: var(--hover-color);
   }
 
   th {
     font-weight: normal;
     text-align: left;
-    padding: 8px 12px;
+    padding: var(--cell-padding);
     height: var(--header-row-height);
     color: var(--header-color);
     background: var(--header-bgcolor);
@@ -187,7 +197,7 @@ const ArtTable = styled.div`
   }
 
   td {
-    padding: 8px 12px;
+    padding: var(--cell-padding);
     background: var(--bgcolor);
     height: var(--row-height);
     border-right: var(--cell-border-vertical);
@@ -199,10 +209,8 @@ const ArtTable = styled.div`
   tr.first td {
     border-top: var(--cell-border-horizontal);
   }
-  &.has-header {
-    tr.first td {
-      border-top: none;
-    }
+  &.has-header tr.first td {
+    border-top: none;
   }
 
   .lock-left,
@@ -210,69 +218,90 @@ const ArtTable = styled.div`
     z-index: ${Z.lock};
   }
 
-  .${Classes.leftLockShadow} {
-    // 具体是否展示由 JS 来控制
-    display: none;
+  //#region 锁列阴影
+  .${Classes.lockShadowMask} {
     position: absolute;
-    left: 0;
     top: 0;
     bottom: 0;
     z-index: ${Z.lockShadow};
-    box-shadow: rgba(0, 0, 0, 0.25) 10px 0 8px -8px;
-    border-right: var(--cell-border-vertical);
     pointer-events: none;
-  }
+    overflow: hidden;
 
-  .${Classes.rightLockShadow} {
-    // 具体是否展示由 JS 来控制
-    display: none;
+    .${Classes.lockShadow} {
+      display: none; // 具体是否展示由 JS 来控制
+      height: 100%;
+      box-shadow: var(--lock-shadow);
+
+      &.${Classes.leftLockShadow} {
+        margin-right: ${LOCK_SHADOW_PADDING}px;
+        border-right: var(--cell-border-vertical);
+      }
+
+      &.${Classes.rightLockShadow} {
+        margin-left: ${LOCK_SHADOW_PADDING}px;
+        border-left: var(--cell-border-vertical);
+      }
+    }
+  }
+  //#endregion
+
+  //#region 空表格展现
+  .${Classes.emptyWrapper} {
+    pointer-events: none;
+    color: #99a3b3;
+    font-size: 12px;
+    text-align: center;
     position: absolute;
-    right: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .empty-image {
+      width: 50px;
+      height: 50px;
+    }
+
+    .empty-tips {
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+  }
+  //#endregion
+
+  //#region 粘性滚动条
+  .${Classes.stickyScroll} {
+    overflow: auto;
+    position: sticky;
     bottom: 0;
-    z-index: ${Z.lockShadow};
-    box-shadow: rgba(0, 0, 0, 0.25) -10px 0 8px -8px;
-    pointer-events: none;
+    z-index: ${Z.scrollItem};
+    margin-top: -17px;
   }
-`
-
-const EmptyWrapper = styled.div`
-  color: #99a3b3;
-  font-size: 12px;
-  text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  .empty-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .empty-tips {
-    margin-top: 16px;
-    line-height: 1.5;
-  }
-`
-
-const StickyScroll = styled.div`
-  overflow: auto;
-  position: sticky;
-  bottom: 0;
-  z-index: ${Z.scrollItem};
-  margin-top: -17px;
 
   .${Classes.stickyScrollItem} {
     // 必须有高度才能出现滚动条
     height: 1px;
     visibility: hidden;
   }
-`
+  //#endregion
 
-export const Styled = {
-  ArtTableWrapper,
-  ArtTable,
-  StickyScroll,
-  EmptyWrapper,
-}
+  //#region 加载样式
+  .${Classes.loadingWrapper} {
+    position: relative;
+
+    .${Classes.loadingIndicatorWrapper} {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
+    .${Classes.loadingIndicator} {
+      position: sticky;
+      z-index: ${Z.loadingIndicator};
+      transform: translateY(-50%);
+    }
+  }
+  //#endregion
+`

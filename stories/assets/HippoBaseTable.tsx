@@ -170,11 +170,12 @@ const HippoLoadingIcon = React.memo(() => {
 /** Hippo Design 基础表格组件
  *
  * HippoBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式。  */
-export function HippoBaseTable(props: BaseTableProps) {
+export const HippoBaseTable = React.forwardRef<BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
   const headerDepth = getTreeDepth(props.columns)
 
   return (
     <StyledBaseTable
+      ref={ref}
       {...props}
       className={cx(props.className, {
         'header-depth-0': headerDepth === 0,
@@ -188,4 +189,4 @@ export function HippoBaseTable(props: BaseTableProps) {
       }}
     />
   )
-}
+})

@@ -47,10 +47,11 @@ export function autoRowSpan() {
 export function tips() {
   return <P extends TablePipeline>(pipeline: P) => {
     const Balloon = pipeline.ctx.components.Balloon
-    if (Balloon == null) {
-      throw new Error('使用 tips 之前需要通过 pipeline context 设置 components.Balloon')
+    const Tooltip = pipeline.ctx.components.Tooltip
+    if (Balloon == null && Tooltip == null) {
+      throw new Error('使用 tips 之前需要通过 pipeline context 设置 components.Balloon / components.Tooltip')
     }
-    return pipeline.useTransform(makeTipsTransform({ Balloon }))
+    return pipeline.useTransform(makeTipsTransform({ Balloon, Tooltip }))
   }
 }
 

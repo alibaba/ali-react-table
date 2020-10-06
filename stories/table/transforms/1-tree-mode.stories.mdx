@@ -76,7 +76,7 @@ function MyComponent() {
 异步数据加载场景下，因为此时前端只有整棵树中一小部分的数据，我们必须主动告诉表格哪些节点是父节点（可被展开），哪些节点是子节点（不可被展开）。设置 `TreeModeOptions#isLeafNode` 覆盖默认的子节点判断方式，并在 `TreeModeOptions#onChangeOpenKeys` 中根据展开的节点判断是否需要加载更多数据，可以实现树状模式下异步数据加载功能。
 
 <Canvas>
-  <Story id="示例-表格交互-异步数据加载树状表格--异步数据加载树状表格" />
+  <Story id="表格-pipeline-功能拓展--异步树状表格" />
 </Canvas>
 
 ## 进阶用法 —— 对上次展开位置进行标记

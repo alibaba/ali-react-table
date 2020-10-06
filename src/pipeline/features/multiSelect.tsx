@@ -84,8 +84,15 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
         return (
           <Checkbox
             checked={checked}
-            onChange={(_: any, e: React.MouseEvent) => {
-              onCheckboxChange(checked, key, e.nativeEvent.shiftKey)
+            onChange={(arg1: any, arg2: any) => {
+              // fusion: arg2?.nativeEvent
+              // antd: arg1.nativeEvent
+              const nativeEvent: KeyboardEvent = arg2?.nativeEvent ?? arg1.nativeEvent
+              // console.log(nativeEvent)
+              // debugger
+              if (nativeEvent) {
+                onCheckboxChange(checked, key, nativeEvent.shiftKey)
+              }
             }}
           />
         )

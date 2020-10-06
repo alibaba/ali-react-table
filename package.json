@@ -74,6 +74,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.1.0",
     "@types/styled-components": "5.1.2",
+    "antd": "^4.6.6",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.7",
     "chalk": "^4.0.0",

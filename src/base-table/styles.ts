@@ -175,12 +175,12 @@ export const StyledArtTableWrapper = styled.div`
 
   // 在 tr 上设置 .no-hover 可以禁用鼠标悬停效果
   tr:not(.no-hover):hover > td {
-    --bgcolor: var(--hover-bgcolor);
+    background: var(--hover-bgcolor);
   }
   // 在 tr 设置 highlight 可以为底下的 td 设置为高亮色
   // 而设置 .no-highlight 的话则可以禁用高亮效果；
   tr:not(.no-highlight).highlight > td {
-    --bgcolor: var(--highlight-bgcolor);
+    background: var(--highlight-bgcolor);
   }
 
   th {
@@ -232,9 +232,11 @@ export const StyledArtTableWrapper = styled.div`
     overflow: hidden;
 
     .${Classes.lockShadow} {
-      display: none; // 具体是否展示由 JS 来控制
       height: 100%;
-      box-shadow: var(--lock-shadow);
+      box-shadow: none;
+      &.show-shadow {
+        box-shadow: var(--lock-shadow);
+      }
 
       &.${Classes.leftLockShadow} {
         margin-right: ${LOCK_SHADOW_PADDING}px;

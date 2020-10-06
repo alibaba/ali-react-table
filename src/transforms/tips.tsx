@@ -20,10 +20,11 @@ const HeaderCellWithTips = styled.div`
 `
 
 export interface TipsOptions {
-  Balloon: any
+  Balloon?: any
+  Tooltip?: any
 }
 
-export function makeTipsTransform({ Balloon }: TipsOptions): TableTransform {
+export function makeTipsTransform({ Balloon, Tooltip }: TipsOptions): TableTransform {
   return traverseColumn((col) => {
     if (!col.features?.tips) {
       return col
@@ -36,16 +37,26 @@ export function makeTipsTransform({ Balloon }: TipsOptions): TableTransform {
       title: (
         <HeaderCellWithTips style={{ justifyContent }}>
           {internals.safeRenderHeader(col)}
-          <Balloon
-            closable={false}
-            trigger={
+          {Balloon ? (
+            // fusion/hippo
+            <Balloon
+              closable={false}
+              trigger={
+                <div className="tip-icon-wrapper">
+                  <icons.Info className="tip-icon" />
+                </div>
+              }
+            >
+              {col.features.tips}
+            </Balloon>
+          ) : (
+            // antd
+            <Tooltip title={col.features.tips}>
               <div className="tip-icon-wrapper">
                 <icons.Info className="tip-icon" />
               </div>
-            }
-          >
-            {col.features.tips}
-          </Balloon>
+            </Tooltip>
+          )}
         </HeaderCellWithTips>
       ),
     }

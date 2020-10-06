@@ -3,7 +3,6 @@ import { Row16, ThumbsDown16, ThumbsUp16 } from '@carbon/icons-react'
 import {
   applyTransforms,
   ArtColumn,
-  BaseTable,
   collectNodes,
   makeAutoRowSpanTransform,
   makeBuildTreeTransform,
@@ -22,6 +21,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio, time } from '../assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
+import { BaseTable } from '../assets/theme-helpers'
 
 export default {
   title: '表格 / 常用功能示例',
@@ -489,7 +489,12 @@ export function 拖拽调整列宽() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <BaseTable
+        className="bordered"
+        isLoading={isLoading}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
     </div>
   )
 }
@@ -506,7 +511,7 @@ export function 自适应列宽_demo() {
     { code: 'updateTime', name: '最后更新时间', features: { autoWidth: true } },
   ]
 
-  const tableRef = useRef<BaseTable>()
+  const tableRef = useRef()
   const [startIndex, setStartIndex] = useState(0)
 
   const renderData = applyTransforms(
@@ -547,7 +552,13 @@ export function 自适应列宽_demo() {
           切换数据
         </button>
       </div>
-      <BaseTable ref={tableRef} isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <BaseTable
+        ref={tableRef}
+        className="bordered"
+        isLoading={isLoading}
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+      />
     </div>
   )
 }

@@ -122,7 +122,10 @@ export function makeColumnResizeTransform({
               name: '',
               headerCellProps: {
                 className: RESIZE_EXPANDER_CLS,
-                style: { visibility: expanderVisibility },
+                style: {
+                  background: expanderVisibility === 'hidden' ? 'var(--bgcolor)' : undefined,
+                  border: expanderVisibility === 'hidden' ? 'none' : undefined,
+                },
               },
               getCellProps() {
                 return {

@@ -250,12 +250,20 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
     const showLeftLockShadow = flat.left.length > 0 && this.state.needRenderLock && x > 0
     const leftLockShadow = query(artTableWrapper, Classes.leftLockShadow)
-    leftLockShadow.style.display = showLeftLockShadow ? 'block' : 'none'
+    if (showLeftLockShadow) {
+      leftLockShadow.classList.add('show-shadow')
+    } else {
+      leftLockShadow.classList.remove('show-shadow')
+    }
 
     const showRightLockShadow =
       flat.right.length > 0 && this.state.needRenderLock && x < tableBody.scrollWidth - tableBody.clientWidth
     const rightLockShadow = query(artTableWrapper, Classes.rightLockShadow)
-    rightLockShadow.style.display = showRightLockShadow ? 'block' : 'none'
+    if (showRightLockShadow) {
+      rightLockShadow.classList.add('show-shadow')
+    } else {
+      rightLockShadow.classList.remove('show-shadow')
+    }
   }
 
   private getVerticalRenderRange(): VerticalRenderRange {

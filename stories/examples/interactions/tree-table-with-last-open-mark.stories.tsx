@@ -16,6 +16,7 @@ export default { title: '示例 / 表格交互 / 树状表格中的最近展开�
 const StyledBaseTable = styled(BaseTable)`
   tr.last-open {
     --bgcolor: rgba(128, 243, 87, 0.32);
+    --hover-bgcolor: rgba(128, 243, 87, 0.32);
 
     .expansion-icon {
       fill: #4de247;
@@ -24,6 +25,7 @@ const StyledBaseTable = styled(BaseTable)`
 
   tr.last-collapse {
     --bgcolor: rgba(253, 32, 32, 0.32);
+    --hover-bgcolor: rgba(253, 32, 32, 0.32);
 
     .expansion-icon {
       fill: #e54950;

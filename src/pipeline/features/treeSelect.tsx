@@ -67,15 +67,9 @@ export function treeSelect(opts: TreeSelectFeatureOptions) {
 
     if (opts.highlightRowWhenSelected) {
       pipeline.appendRowPropsGetter((row) => {
-        const rowKey = row[primaryKey]
-
-        let style: any = {}
-
-        if (treeDataHelper.isChecked(rowKey)) {
-          style['--bgcolor'] = 'var(--highlight-bgcolor)'
+        if (treeDataHelper.isChecked(row[primaryKey])) {
+          return { className: 'highlight' }
         }
-
-        return { style }
       })
     }
 

@@ -74,10 +74,11 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
         const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
 
         let style: any = {}
+        let className: string
         let onClick: any
 
         if (value === rowKey) {
-          style['--bgcolor'] = 'var(--highlight-bgcolor)'
+          className = 'highlight'
         }
         if (clickArea === 'row') {
           style.cursor = 'pointer'
@@ -87,7 +88,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
           }
         }
 
-        return { style, onClick }
+        return { className, style, onClick }
       })
     }
 

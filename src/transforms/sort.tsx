@@ -39,9 +39,18 @@ function DefaultSortHeaderCell({ children, column, onToggle, sortOrder, sortInde
   return (
     <TableHeaderCell onClick={onToggle} style={{ justifyContent }}>
       {children}
-      <SortIcon style={{ marginLeft: 2, flexShrink: 0 }} size={16} order={sortOrder} />
+      <SortIcon style={{ userSelect: 'none', marginLeft: 2, flexShrink: 0 }} size={16} order={sortOrder} />
       {sortOptions.mode === 'multiple' && sortIndex != -1 && (
-        <div style={{ marginLeft: 2, color: '#666', flex: '0 0 auto', fontSize: 10, fontFamily: 'monospace' }}>
+        <div
+          style={{
+            userSelect: 'none',
+            marginLeft: 2,
+            color: '#666',
+            flex: '0 0 auto',
+            fontSize: 10,
+            fontFamily: 'monospace',
+          }}
+        >
           {sortIndex + 1}
         </div>
       )}
@@ -103,9 +112,6 @@ export interface SortOptions {
   /** 排序激活时 是否高亮这一列的单元格 */
   highlightColumnWhenActive?: boolean
 
-  /** 排序激活时 是否高亮这一列的表头 */
-  highlightColumnHeaderWhenActive?: boolean
-
   // todo 排序点击触发位置
   //  clickArea
 }
@@ -118,7 +124,6 @@ export function makeSortTransform({
   SortHeaderCell = DefaultSortHeaderCell,
   keepDataSource,
   highlightColumnWhenActive,
-  highlightColumnHeaderWhenActive,
 }: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
@@ -140,7 +145,6 @@ export function makeSortTransform({
     mode,
     keepDataSource,
     highlightColumnWhenActive,
-    highlightColumnHeaderWhenActive,
   }
 
   const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
@@ -223,16 +227,14 @@ export function makeSortTransform({
             sortOrder = order
             sortIndex = index
 
-            if (highlightColumnHeaderWhenActive) {
-              result.headerCellProps = mergeCellProps(col.headerCellProps, {
-                style: { '--header-bgcolor': 'var(--header-highlight-bgcolor)' } as any,
-              })
-            }
             if (highlightColumnWhenActive) {
+              result.headerCellProps = mergeCellProps(col.headerCellProps, {
+                style: { background: 'var(--header-highlight-bgcolor)' } as any,
+              })
               result.getCellProps = (value, row, rowIndex) => {
                 const prevCellProps = internals.safeGetCellProps(col, row, rowIndex)
                 return mergeCellProps(prevCellProps, {
-                  style: { '--bgcolor': 'var(--highlight-bgcolor)' } as any,
+                  style: { background: 'var(--highlight-bgcolor)' } as any,
                 })
               }
             }

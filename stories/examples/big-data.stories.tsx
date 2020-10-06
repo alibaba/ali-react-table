@@ -1,6 +1,7 @@
-import { BaseTable, ArtColumn } from 'ali-react-table'
+import { ArtColumn } from 'ali-react-table'
 import React from 'react'
 import { cols, useAllDataSource } from '../assets/ncov19-assets'
+import { BaseTable } from '../assets/theme-helpers'
 
 export default {
   title: '示例 / 大数据测试',

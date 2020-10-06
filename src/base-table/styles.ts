@@ -233,18 +233,24 @@ export const StyledArtTableWrapper = styled.div`
 
     .${Classes.lockShadow} {
       height: 100%;
+    }
+
+    .${Classes.leftLockShadow} {
+      margin-right: ${LOCK_SHADOW_PADDING}px;
       box-shadow: none;
+
       &.show-shadow {
         box-shadow: var(--lock-shadow);
-      }
-
-      &.${Classes.leftLockShadow} {
-        margin-right: ${LOCK_SHADOW_PADDING}px;
         border-right: var(--cell-border-vertical);
       }
+    }
 
-      &.${Classes.rightLockShadow} {
-        margin-left: ${LOCK_SHADOW_PADDING}px;
+    .${Classes.rightLockShadow} {
+      margin-left: ${LOCK_SHADOW_PADDING}px;
+      box-shadow: none;
+
+      &.show-shadow {
+        box-shadow: var(--lock-shadow);
         border-left: var(--cell-border-vertical);
       }
     }

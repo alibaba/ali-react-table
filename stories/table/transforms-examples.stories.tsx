@@ -1,4 +1,5 @@
 import { Balloon } from '@alifd/next'
+import { Tooltip } from 'antd'
 import { Row16, ThumbsDown16, ThumbsUp16 } from '@carbon/icons-react'
 import {
   applyTransforms,
@@ -17,11 +18,11 @@ import {
   SortItem,
   useAutoWidthTransform,
 } from 'ali-react-table'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { getAppTrafficData } from '../assets/cdn-data'
 import { amount, ratio, time } from '../assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
-import { BaseTable } from '../assets/theme-helpers'
+import { BaseTable, BaseTableThemeContext } from '../assets/theme-helpers'
 
 export default {
   title: '表格 / 常用功能示例',
@@ -268,6 +269,7 @@ export function 列的范围高亮() {
 
 export function 列气泡提示() {
   const { isLoading, dataSource: data } = useProvinceDataSource()
+  const theme = useContext(BaseTableThemeContext)
 
   const [sorts, onChangeSorts] = useState<SortItem[]>([])
 
@@ -316,7 +318,7 @@ export function 列气泡提示() {
   const renderData = applyTransforms(
     { columns, dataSource: data.slice(0, 3) },
     makeSortTransform({ mode: 'single', sorts, onChangeSorts }),
-    makeTipsTransform({ Balloon }),
+    makeTipsTransform(theme === 'antd' ? { Tooltip } : { Balloon }),
   )
 
   return (
@@ -354,6 +356,7 @@ export function 树状模式与层级排序() {
       sorts,
       onChangeSorts,
       mode: 'single', // 改为 multiple 可以使用多列排序
+      highlightColumnWhenActive: true,
     }),
     makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )

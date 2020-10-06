@@ -175,9 +175,9 @@ export function 行单选() {
       <div style={{ margin: '12px 0' }}>
         <Button.Group>
           <Button onClick={() => onChange(randomPick(dataSource1.map((row) => row.id)))}>随机选择</Button>
-          <Button onClick={() => onChange(null)}>取消选中</Button>
+          <Button onClick={() => onChange('')}>取消选中</Button>
         </Button.Group>
-        <p>当前选中的 key： {value ?? '[空]'}</p>
+        <p>当前选中的 key： {value || '[空]'}</p>
       </div>
 
       <BaseTable {...pipeline.getProps()} />
@@ -219,7 +219,6 @@ export function 表格排序() {
 export function 多列排序() {
   const pipeline = useTablePipeline()
     .input({ dataSource: dataSource3, columns: columns3 })
-    .use(features.columnRangeHover())
     .use(
       features.sort({
         mode: 'multiple',
@@ -270,13 +269,7 @@ export function 树状模式与层级排序() {
     .input({ columns, dataSource: state.data })
     .primaryKey('id')
     .use(features.buildTree('id', 'parent_id'))
-    .use(
-      features.sort({
-        mode: 'single',
-        highlightColumnWhenActive: true,
-        highlightColumnHeaderWhenActive: true,
-      }),
-    )
+    .use(features.sort({ mode: 'single', highlightColumnWhenActive: true }))
     .use(features.treeMode({ defaultOpenKeys: ['B2C'] }))
 
   return <BaseTable isLoading={state.isLoading} {...pipeline.getProps()} />
@@ -548,4 +541,76 @@ export function 异步树状表格() {
     )
 
   return <BaseTable defaultColumnWidth={120} isLoading={state.isLoading} {...pipeline.getProps()} />
+}
+
+const StyledBaseTable = styled(BaseTable)`
+  tr.last-open {
+    --bgcolor: rgba(128, 243, 87, 0.32);
+    --hover-bgcolor: rgba(128, 243, 87, 0.32);
+
+    .expansion-icon {
+      fill: #4de247;
+    }
+  }
+
+  tr.last-collapse {
+    --bgcolor: rgba(253, 32, 32, 0.32);
+    --hover-bgcolor: rgba(253, 32, 32, 0.32);
+
+    .expansion-icon {
+      fill: #e54950;
+    }
+  }
+`
+
+export function 树状表格中的最近展开标记() {
+  const columns: ArtColumn[] = [
+    { code: 'name', name: '数据维度', width: 200 },
+    { code: 'shop_name', name: '门店' },
+    { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
+    { code: 'app_qty_pbt', name: 'APP件单价', align: 'right' },
+    { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总', align: 'right' },
+  ]
+
+  const [state, setState] = useState({
+    isLoading: true,
+    data: [] as any[],
+    lastOpenKey: '',
+    lastCollapseKey: '',
+  })
+
+  useEffect(() => {
+    getAppTrafficData().then((data) => {
+      setState({ isLoading: false, data, lastOpenKey: '', lastCollapseKey: '' })
+    })
+  }, [])
+
+  const [openKeys, onChangeOpenKeys] = useState([])
+
+  const pipeline = useTablePipeline()
+    .input({ columns: columns, dataSource: state.data })
+    .primaryKey('id')
+    .use(features.buildTree('id', 'parent_id'))
+    .use(
+      features.treeMode({
+        openKeys,
+        onChangeOpenKeys(nextKeys, key, action) {
+          onChangeOpenKeys(nextKeys)
+          if (action === 'expand') {
+            setState({ ...state, lastOpenKey: key, lastCollapseKey: '' })
+          } else {
+            setState({ ...state, lastOpenKey: '', lastCollapseKey: key })
+          }
+        },
+      }),
+    )
+    .appendRowPropsGetter((record) => {
+      if (record.id === state.lastOpenKey) {
+        return { className: 'last-open' }
+      } else if (record.id === state.lastCollapseKey) {
+        return { className: 'last-collapse' }
+      }
+    })
+
+  return <StyledBaseTable defaultColumnWidth={150} isLoading={state.isLoading} {...pipeline.getProps()} />
 }

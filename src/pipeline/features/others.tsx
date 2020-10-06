@@ -15,7 +15,7 @@ export function columnHover() {
   return <P extends TablePipeline>(pipeline: P) =>
     pipeline.useTransform(
       makeColumnHoverTransform({
-        hoverColor: 'var(--hover-color)',
+        hoverColor: 'var(--hover-bgcolor)',
         hoverColIndex: pipeline.state[stateKey] ?? -1,
         onChangeHoverColIndex: (nextColIndex) => {
           pipeline.setStateAtKey(stateKey, nextColIndex)
@@ -32,8 +32,6 @@ export function columnRangeHover() {
   return <P extends TablePipeline>(pipeline: P) =>
     pipeline.useTransform(
       makeColumnRangeHoverTransform({
-        hoverColor: 'var(--hover-color)',
-        headerHoverColor: '#eff2fb',
         hoverRange: pipeline.state[stateKey] ?? { start: -1, end: -1 },
         onChangeHoverRange: (nextColIndexRange) => {
           pipeline.setStateAtKey(stateKey, nextColIndexRange)

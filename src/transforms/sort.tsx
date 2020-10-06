@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactNode, useState } from 'react'
 import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
 import { internals } from '../internals'
-import { collectNodes, isLeafNode, layeredSort, smartCompare } from '../utils'
+import { collectNodes, isLeafNode, layeredSort, mergeCellProps, smartCompare } from '../utils'
 
 function SortIcon({
   size = 32,
@@ -99,6 +99,15 @@ export interface SortOptions {
 
   /** 是否保持 dataSource 不变 */
   keepDataSource?: boolean
+
+  /** 排序激活时 是否高亮这一列的单元格 */
+  highlightColumnWhenActive?: boolean
+
+  /** 排序激活时 是否高亮这一列的表头 */
+  highlightColumnHeaderWhenActive?: boolean
+
+  // todo 排序点击触发位置
+  //  clickArea
 }
 
 export function makeSortTransform({
@@ -106,8 +115,10 @@ export function makeSortTransform({
   onChangeSorts: inputOnChangeSorts,
   orders = ['desc', 'asc', 'none'],
   mode = 'multiple',
-  SortHeaderCell,
+  SortHeaderCell = DefaultSortHeaderCell,
   keepDataSource,
+  highlightColumnWhenActive,
+  highlightColumnHeaderWhenActive,
 }: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
@@ -122,7 +133,15 @@ export function makeSortTransform({
           inputOnChangeSorts(nextSorts.slice(len - 1))
         }
 
-  const sortOptions = { sorts, onChangeSorts, orders, mode, keepDataSource }
+  const sortOptions = {
+    sorts,
+    onChangeSorts,
+    orders,
+    mode,
+    keepDataSource,
+    highlightColumnWhenActive,
+    highlightColumnHeaderWhenActive,
+  }
 
   const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
 
@@ -192,19 +211,35 @@ export function makeSortTransform({
       function dfs(col: ArtColumn): ArtColumn {
         const result = { ...col }
 
-        if (col.code && (col.features?.sortable || sortMap.has(col.code))) {
+        const sortable = col.code && (col.features?.sortable || sortMap.has(col.code))
+        const active = sortable && sortMap.has(col.code)
+
+        if (sortable) {
           let sortIndex = -1
           let sortOrder: SortOrder = 'none'
 
-          if (sortMap.has(col.code)) {
+          if (active) {
             const { order, index } = sortMap.get(col.code)
             sortOrder = order
             sortIndex = index
+
+            if (highlightColumnHeaderWhenActive) {
+              result.headerCellProps = mergeCellProps(col.headerCellProps, {
+                style: { '--header-bgcolor': 'var(--header-highlight-bgcolor)' } as any,
+              })
+            }
+            if (highlightColumnWhenActive) {
+              result.getCellProps = (value, row, rowIndex) => {
+                const prevCellProps = internals.safeGetCellProps(col, row, rowIndex)
+                return mergeCellProps(prevCellProps, {
+                  style: { '--bgcolor': 'var(--highlight-bgcolor)' } as any,
+                })
+              }
+            }
           }
 
-          const SortHeaderCellComponent = SortHeaderCell ?? DefaultSortHeaderCell
           result.title = (
-            <SortHeaderCellComponent
+            <SortHeaderCell
               onToggle={() => toggle(col.code)}
               sortOrder={sortOrder}
               column={col}
@@ -212,9 +247,10 @@ export function makeSortTransform({
               sortOptions={sortOptions}
             >
               {internals.safeRenderHeader(col)}
-            </SortHeaderCellComponent>
+            </SortHeaderCell>
           )
         }
+
         if (!isLeafNode(col)) {
           result.children = col.children.map(dfs)
         }

@@ -13,7 +13,7 @@ import React, { useState } from 'react'
 import { multiSelect } from '../../../src/pipeline/features'
 import { dataSource1, repeat } from '../../assets/mock-table-data'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import { useTablePipeline } from '../../assets/ThemedBaseTable'
+import { useTablePipeline } from '../../assets/theme-helpers'
 
 const { safeGetRowKey } = internals
 

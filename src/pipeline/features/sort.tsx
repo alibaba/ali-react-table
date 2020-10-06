@@ -11,10 +11,9 @@ export function sort(opts: SortFeatureOptions = {}) {
 
     return pipeline.useTransform(
       makeSortTransform({
-        orders: opts.orders,
+        ...opts,
         sorts: opts.sorts ?? pipeline.state[stateKey] ?? opts.defaultSorts ?? [],
         keepDataSource: opts.keepDataSource,
-        mode: opts.mode,
         onChangeSorts: (nextSorts) => {
           opts.onChangeSorts?.(nextSorts)
           pipeline.setStateAtKey(stateKey, nextSorts)

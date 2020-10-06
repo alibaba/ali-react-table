@@ -1,4 +1,4 @@
-import { BaseTable, BaseTableProps, Classes, getTreeDepth, LoadingContentWrapperProps } from 'ali-react-table'
+import { BaseTable, BaseTableProps, getTreeDepth, LoadingContentWrapperProps } from 'ali-react-table'
 import cx from 'classnames'
 import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
@@ -21,6 +21,14 @@ const StyledBaseTable = (styled(BaseTable)`
   --cell-padding: 8px 20px;
   --line-height: 20px;
 
+  --color: #666;
+  --header-color: #333;
+  --header-bgcolor: #f9f9f9;
+  --hover-bgcolor: #eff3fb;
+  --header-hover-bgcolor: #eff2fb;
+  --highlight-bgcolor: #e2e6ef; // todo 该颜色需要调整
+  --header-highlight-bgcolor: #e2e6ef; // todo 该颜色需要调整
+
   &.header-depth-1 {
     --header-row-height: 40px;
   }
@@ -33,19 +41,13 @@ const StyledBaseTable = (styled(BaseTable)`
     --cell-border-vertical: none;
     --header-cell-border-vertical: none;
 
-    .${Classes.tableHeaderRow}.first th {
+    thead > tr.first th {
       border-top: none;
     }
-
-    .${Classes.tableHeaderRow}.last th {
+    thead > tr.last th {
       border-bottom: none;
     }
   }
-
-  --hover-color: #eff3fb;
-  --color: #666;
-  --header-color: #333;
-  --header-bgcolor: #f9f9f9;
 
   th {
     font-weight: 500;
@@ -60,9 +62,7 @@ const StyledBaseTable = (styled(BaseTable)`
   &.zebra tr.odd,
   tr.alternative {
     --bgcolor: #f9f9f9;
-    &:not(.no-hover):hover {
-      --bgcolor: var(--hover-color);
-    }
+    // 仍然需要 hover 效果，故 --hover-bgcolor 还是保持原样
   }
 ` as unknown) as typeof BaseTable
 

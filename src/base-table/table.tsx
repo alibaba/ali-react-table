@@ -211,7 +211,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
     return (
       <div
-        className={Classes.tableHeader}
+        className={cx(Classes.tableHeader, 'no-scrollbar')}
         style={{
           top: stickyTop === 0 ? undefined : stickyTop,
           display: hasHeader ? undefined : 'none',

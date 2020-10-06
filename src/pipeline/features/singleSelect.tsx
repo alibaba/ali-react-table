@@ -77,8 +77,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
         let onClick: any
 
         if (value === rowKey) {
-          style['--bgcolor'] = '#e1e7f5'
-          style['--cell-border-horizontal'] = '1px solid #92acea'
+          style['--bgcolor'] = 'var(--highlight-bgcolor)'
         }
         if (clickArea === 'row') {
           style.cursor = 'pointer'

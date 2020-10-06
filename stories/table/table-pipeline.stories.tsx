@@ -1,5 +1,5 @@
 import { Button } from '@alifd/next'
-import { ArtColumn, collectNodes, features, isLeafNode, SortItem } from 'ali-react-table'
+import { ArtColumn, collectNodes, features, isLeafNode } from 'ali-react-table'
 import cx from 'classnames'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -10,18 +10,20 @@ import {
   columns3,
   columns4,
   columns5,
+  columns6,
   dataSource1,
   dataSource3,
   dataSource4,
   dataSource5,
+  dataSource6,
   operationCol,
   randomPick,
 } from '../assets/mock-table-data'
 import { RadioButtonGroup } from '../assets/RadioButtonGroup'
-import { BaseTable, useTablePipeline } from '../assets/ThemedBaseTable'
+import { BaseTable, useTablePipeline } from '../assets/theme-helpers'
 
 export default {
-  title: '表格 / 功能拓展',
+  title: '表格 / pipeline 功能拓展',
   parameters: {
     docs: {
       page() {
@@ -203,17 +205,28 @@ export function 行展开() {
 export function 表格排序() {
   const pipeline = useTablePipeline()
     .input({ dataSource: dataSource3, columns: columns3 })
-    .use(features.sort({ mode: 'single', defaultSorts: [{ code: 'applier', order: 'asc' }] }))
+    .use(
+      features.sort({
+        mode: 'single',
+        defaultSorts: [{ code: 'applier', order: 'asc' }],
+        highlightColumnWhenActive: true,
+      }),
+    )
 
   return <BaseTable {...pipeline.getProps()} />
 }
 
 export function 多列排序() {
-  const [sorts, onChangeSorts] = useState<SortItem[]>([{ code: 'applier', order: 'asc' }])
-
   const pipeline = useTablePipeline()
     .input({ dataSource: dataSource3, columns: columns3 })
-    .use(features.sort({ mode: 'multiple', sorts, onChangeSorts }))
+    .use(features.columnRangeHover())
+    .use(
+      features.sort({
+        mode: 'multiple',
+        defaultSorts: [{ code: 'applier', order: 'asc' }],
+        highlightColumnWhenActive: true,
+      }),
+    )
 
   return <BaseTable {...pipeline.getProps()} />
 }
@@ -261,6 +274,14 @@ export function 树状模式与层级排序() {
     .use(features.treeMode({ defaultOpenKeys: ['B2C'] }))
 
   return <BaseTable isLoading={state.isLoading} {...pipeline.getProps()} />
+}
+
+export function 表头分组与列高亮() {
+  const pipeline = useTablePipeline()
+    .input({ dataSource: dataSource6, columns: columns6 })
+    .use(features.columnRangeHover())
+
+  return <BaseTable className="bordered" {...pipeline.getProps()} />
 }
 
 export function 多选与提示信息() {

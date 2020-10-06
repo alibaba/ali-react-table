@@ -20,8 +20,8 @@ export interface ColumnRangeHoverOptions {
 }
 
 export function makeColumnRangeHoverTransform({
-  hoverColor = '#f5f5f5',
-  headerHoverColor = '#ddd',
+  hoverColor = 'var(--hover-bgcolor)',
+  headerHoverColor = 'var(--header-hover-bgcolor)',
   hoverRange,
   onChangeHoverRange,
 }: ColumnRangeHoverOptions): TableTransform {
@@ -42,7 +42,7 @@ export function makeColumnRangeHoverTransform({
           onMouseLeave() {
             onChangeHoverRange(EMPTY_RANGE)
           },
-          style: { backgroundColor: match ? headerHoverColor : undefined },
+          style: { '--header-bgcolor': match ? headerHoverColor : undefined } as any,
         }),
       }
     }
@@ -58,7 +58,7 @@ export function makeColumnRangeHoverTransform({
         onMouseLeave() {
           onChangeHoverRange(EMPTY_RANGE)
         },
-        style: { backgroundColor: match ? headerHoverColor : undefined },
+        style: { '--header-bgcolor': match ? headerHoverColor : undefined } as any,
       }),
 
       getCellProps(value: any, record: any, rowIndex: number): CellProps {
@@ -71,7 +71,7 @@ export function makeColumnRangeHoverTransform({
           onMouseLeave() {
             onChangeHoverRange(EMPTY_RANGE)
           },
-          style: { backgroundColor: match ? hoverColor : undefined },
+          style: { '--bgcolor': match ? hoverColor : undefined } as any,
         })
       },
     }

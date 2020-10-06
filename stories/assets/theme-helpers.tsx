@@ -14,14 +14,13 @@ export const BaseTableThemeContext = React.createContext('default')
 export function BaseTable(props: BaseTableProps) {
   const tableTheme = useContext(BaseTableThemeContext)
 
-  let cssUrl: string
+  // 默认加载 fusion 样式，不然很多组件的样式就挂了…
+  let cssUrl = 'https://gw.alipayobjects.com/os/lib/alifd/next/1.21.6/dist/next.css'
   let Table: any = ArtBaseTable
 
   if (tableTheme === 'hippo') {
     Table = HippoBaseTable
     cssUrl = 'https://gw.alipayobjects.com/os/lib/alife/hippo/2.12.11/dist/hippo.css'
-  } else if (tableTheme === 'fusion') {
-    cssUrl = 'https://gw.alipayobjects.com/os/lib/alifd/next/1.21.6/dist/next.css'
   } else if (tableTheme === 'antd') {
     // todo
   }

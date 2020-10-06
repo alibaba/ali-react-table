@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { amount, time } from '../assets/format'
 import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../assets/mock-table-data'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../assets/ncov19-assets'
-import { BaseTable } from '../assets/ThemedBaseTable'
+import { BaseTable } from '../assets/theme-helpers'
 
 export default {
   title: '表格 / 表格示例',

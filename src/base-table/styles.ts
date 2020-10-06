@@ -46,13 +46,14 @@ const Z = {
   loadingIndicator: 40,
 } as const
 
+// todo 待更新
 export type BaseTableCSSVariables = Partial<{
   /** 表格的字体颜色 */
   '--color': string
   /** 表格背景颜色 */
   '--bgcolor': string
   /** 鼠标悬停时的背景色 */
-  '--hover-color': string
+  '--hover-bgcolor': string
   /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
   '--row-height': string
   '--cell-padding': string
@@ -85,18 +86,22 @@ export type BaseTableCSSVariables = Partial<{
 }>
 
 export const StyledArtTableWrapper = styled.div`
+  --row-height: 48px;
   --color: #333;
   --bgcolor: white;
-  --hover-color: #f5f5f5;
-  --row-height: 48px;
+  --hover-bgcolor: var(--hover-color, #f5f5f5);
+  --highlight-bgcolor: #eee;
+
+  --header-row-height: 32px;
+  --header-color: #5a6c84;
+  --header-bgcolor: #e9edf2;
+  --header-hover-bgcolor: #ddd;
+  --header-highlight-bgcolor: #e4e8ed;
+
   --cell-padding: 8px 12px;
   --font-size: 12px;
   --line-height: 1.28571;
   --lock-shadow: rgba(152, 152, 152, 0.5) 0 0 6px 2px;
-
-  --header-color: #5a6c84;
-  --header-bgcolor: #e9edf2;
-  --header-row-height: 32px;
 
   --border-color: #dfe3e8;
   --cell-border: 1px solid var(--border-color);
@@ -106,11 +111,15 @@ export const StyledArtTableWrapper = styled.div`
   --header-cell-border-horizontal: var(--header-cell-border);
   --header-cell-border-vertical: var(--header-cell-border);
 
-  background: var(--bgcolor);
   box-sizing: border-box;
   * {
     box-sizing: border-box;
   }
+  cursor: default;
+  color: var(--color);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  position: relative;
 
   // 表格外边框由 art-table-wrapper 提供，而不是由单元格提供
   &.use-outer-border {
@@ -133,32 +142,22 @@ export const StyledArtTableWrapper = styled.div`
     }
   }
 
-  .${Classes.virtualBlank} {
-    background: var(--bgcolor);
-  }
-
-  .${Classes.artTable} {
-    // 表格的主要样式
-    cursor: default;
-    color: var(--color);
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    position: relative;
+  .no-scrollbar {
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .${Classes.tableHeader} {
     overflow-x: auto;
     overflow-y: hidden;
     background: var(--header-bgcolor);
-    // 隐藏 header 中的滚动条
-    ::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   .${Classes.tableBody} {
     overflow-x: auto;
     overflow-y: hidden;
+    background: var(--bgcolor);
   }
 
   &.sticky .${Classes.tableHeader} {
@@ -170,13 +169,18 @@ export const StyledArtTableWrapper = styled.div`
   table {
     width: 100%;
     table-layout: fixed;
-    background: var(--bgcolor);
     border-collapse: separate;
     border-spacing: 0;
   }
 
-  tr:not(.no-hover):hover {
-    --bgcolor: var(--hover-color);
+  // 在 tr 上设置 .no-hover 可以禁用鼠标悬停效果
+  tr:not(.no-hover):hover > td {
+    --bgcolor: var(--hover-bgcolor);
+  }
+  // 在 tr 设置 highlight 可以为底下的 td 设置为高亮色
+  // 而设置 .no-highlight 的话则可以禁用高亮效果；
+  tr:not(.no-highlight).highlight > td {
+    --bgcolor: var(--highlight-bgcolor);
   }
 
   th {

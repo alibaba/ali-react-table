@@ -71,9 +71,8 @@ export function treeSelect(opts: TreeSelectFeatureOptions) {
 
         let style: any = {}
 
-        if (treeDataHelper.isChecked(rowKey) || treeDataHelper.isIndeterminate(rowKey)) {
-          style['--bgcolor'] = '#e1e7f5'
-          style['--cell-border-horizontal'] = '1px solid #92acea'
+        if (treeDataHelper.isChecked(rowKey)) {
+          style['--bgcolor'] = 'var(--highlight-bgcolor)'
         }
 
         return { style }

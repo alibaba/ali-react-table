@@ -21,8 +21,6 @@ const stories = [
   'pivot/cross-tree-table.stories.{mdx,tsx}',
   'pivot/pivot-utils.stories.{mdx,tsx}',
   'pivot/pivot-examples/**/*.stories.{mdx,tsx}',
-
-  // 'hippo-table/**/*.stories.tsx',
 ].map((file) => `../stories/${file}`)
 
 module.exports = stories

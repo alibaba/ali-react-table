@@ -105,12 +105,7 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
       pipeline.appendRowPropsGetter((row, rowIndex) => {
         const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
         if (value.keys.includes(rowKey)) {
-          return {
-            style: {
-              '--bgcolor': '#e1e7f5',
-              '--cell-border-horizontal': '1px solid #92acea',
-            } as any,
-          }
+          return { style: { '--bgcolor': 'var(--highlight-bgcolor)' } as any }
         }
         return {}
       })

@@ -24,27 +24,7 @@ import { amount, ratio, time } from '../../assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
 import { BaseTable, BaseTableThemeContext } from '../../assets/theme-helpers'
 
-export default {
-  title: '表格 / 常用功能示例',
-  parameters: {
-    docs: {
-      page() {
-        return (
-          <div
-            style={{
-              margin: 'auto',
-              background: 'rgba(0, 0, 0, 0.03)',
-              borderRadius: 10,
-              padding: 30,
-            }}
-          >
-            示例过多，docs page 已在此处禁用，请在页面上方切换到「Canvas」模式
-          </div>
-        )
-      },
-    },
-  },
-}
+export default { title: '表格 / 常用功能示例' }
 
 export function 树状表格() {
   const columns: ArtColumn[] = [

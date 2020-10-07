@@ -1879,6 +1879,38 @@
   resolved "https://registry.npm.taobao.org/@sindresorhus/is/download/@sindresorhus/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha1-n7OjzzEyMoFR81PeRjLgHlIQK+o=
 
+"@storybook/addon-storysource@^6.0.26":
+  version "6.0.26"
+  resolved "https://registry.npm.alibaba-inc.com/@storybook/addon-storysource/download/@storybook/addon-storysource-6.0.26.tgz#ee099f271846b45a5a4e9ac7f4264604e65d8062"
+  integrity sha1-7gmfJxhGtFpaTprH9CZGBOZdgGI=
+  dependencies:
+    "@storybook/addons" "6.0.26"
+    "@storybook/api" "6.0.26"
+    "@storybook/client-logger" "6.0.26"
+    "@storybook/components" "6.0.26"
+    "@storybook/router" "6.0.26"
+    "@storybook/source-loader" "6.0.26"
+    "@storybook/theming" "6.0.26"
+    core-js "^3.0.1"
+    estraverse "^4.2.0"
+    loader-utils "^2.0.0"
+    prettier "~2.0.5"
+    prop-types "^15.7.2"
+    react "^16.9.17"
+    react-syntax-highlighter "^12.2.1"
+    regenerator-runtime "^0.13.3"
+
+"@storybook/addon-toolbars@^6.0.26":
+  version "6.0.26"
+  resolved "https://registry.npm.alibaba-inc.com/@storybook/addon-toolbars/download/@storybook/addon-toolbars-6.0.26.tgz#650a1793caac6616f4481116f4dfb79f2d3c336b"
+  integrity sha1-ZQoXk8qsZhb0SBEW9N+3ny08M2s=
+  dependencies:
+    "@storybook/addons" "6.0.26"
+    "@storybook/api" "6.0.26"
+    "@storybook/client-api" "6.0.26"
+    "@storybook/components" "6.0.26"
+    core-js "^3.0.1"
+
 "@storybook/addons@6.0.26":
   version "6.0.26"
   resolved "https://registry.npm.taobao.org/@storybook/addons/download/@storybook/addons-6.0.26.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40storybook%2Faddons%2Fdownload%2F%40storybook%2Faddons-6.0.26.tgz#343cbea3eee2d39413b80bc2d66535a7f61488fc"
@@ -2174,6 +2206,22 @@
   dependencies:
     core-js "^3.6.5"
     find-up "^4.1.0"
+
+"@storybook/source-loader@6.0.26":
+  version "6.0.26"
+  resolved "https://registry.npm.alibaba-inc.com/@storybook/source-loader/download/@storybook/source-loader-6.0.26.tgz#0c9a20b9e018c49d559c56e1bdae8350b8175371"
+  integrity sha1-DJogueAYxJ1VnFbhva6DULgXU3E=
+  dependencies:
+    "@storybook/addons" "6.0.26"
+    "@storybook/client-logger" "6.0.26"
+    "@storybook/csf" "0.0.1"
+    core-js "^3.0.1"
+    estraverse "^4.2.0"
+    global "^4.3.2"
+    loader-utils "^2.0.0"
+    lodash "^4.17.15"
+    prettier "~2.0.5"
+    regenerator-runtime "^0.13.3"
 
 "@storybook/theming@6.0.26":
   version "6.0.26"
@@ -3908,7 +3956,7 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bluebird@^3.0.5, bluebird@^3.3.5, bluebird@^3.5.5, bluebird@^3.7.1:
+bluebird@^3.3.5, bluebird@^3.5.5, bluebird@^3.7.1:
   version "3.7.2"
   resolved "https://registry.npm.taobao.org/bluebird/download/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha1-nyKcFb4nJFT/qXOs4NvueaGww28=
@@ -6227,7 +6275,7 @@ esrecurse@^4.1.0:
   dependencies:
     estraverse "^5.2.0"
 
-estraverse@^4.1.1:
+estraverse@^4.1.1, estraverse@^4.2.0:
   version "4.3.0"
   resolved "https://registry.npm.taobao.org/estraverse/download/estraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"
   integrity sha1-OYrT88WiSUi+dyXoPRGn3ijNvR0=
@@ -6257,7 +6305,7 @@ etag@~1.8.1:
   resolved "https://registry.npm.taobao.org/etag/download/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
-eval@^0.1.0, eval@^0.1.4:
+eval@^0.1.4:
   version "0.1.4"
   resolved "https://registry.npm.taobao.org/eval/download/eval-0.1.4.tgz#e05dbe0dab4b9330215cbb7bf4886eb24bd58700"
   integrity sha1-4F2+DatLkzAhXLt79IhuskvVhwA=
@@ -10591,6 +10639,11 @@ prettier@^2.1.2:
   resolved "https://registry.npm.taobao.org/prettier/download/prettier-2.1.2.tgz?cache=0&sync_timestamp=1600215482255&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fprettier%2Fdownload%2Fprettier-2.1.2.tgz#3050700dae2e4c8b67c4c3f666cdb8af405e1ce5"
   integrity sha1-MFBwDa4uTItnxMP2Zs24r0BeHOU=
 
+prettier@~2.0.5:
+  version "2.0.5"
+  resolved "https://registry.npm.alibaba-inc.com/prettier/download/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha1-1tVigkVSQ/L5LMFxZpLAiqMVItQ=
+
 pretty-error@^2.1.1:
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/pretty-error/download/pretty-error-2.1.1.tgz#5f4f87c8f91e5ae3f3ba87ab4cf5e03b1a17f1a3"
@@ -11578,7 +11631,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react@^16.8.3, react@^16.8.4, react@^16.9.0:
+react@^16.8.3, react@^16.8.4, react@^16.9.0, react@^16.9.17:
   version "16.13.1"
   resolved "https://registry.npm.taobao.org/react/download/react-16.13.1.tgz?cache=0&sync_timestamp=1602077996768&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact%2Fdownload%2Freact-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha1-LoGIIvGpdDEiwGPWQQ2FweOv5I4=
@@ -12439,11 +12492,6 @@ sort-keys@^1.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
-source-list-map@^1.1.1:
-  version "1.1.2"
-  resolved "https://registry.npm.alibaba-inc.com/source-list-map/download/source-list-map-1.1.2.tgz#9889019d1024cce55cdc069498337ef6186a11a1"
-  integrity sha1-mIkBnRAkzOVc3AaUmDN+9hhqEaE=
-
 source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.npm.taobao.org/source-list-map/download/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
@@ -12473,7 +12521,7 @@ source-map-url@^0.4.0:
   resolved "https://registry.npm.taobao.org/source-map-url/download/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
   integrity sha1-PpNdfd1zYxuXZZlW1VEo6HtQhKM=
 
-source-map@^0.5.0, source-map@^0.5.6, source-map@^0.5.7, source-map@~0.5.3:
+source-map@^0.5.0, source-map@^0.5.6, source-map@^0.5.7:
   version "0.5.7"
   resolved "https://registry.npm.taobao.org/source-map/download/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
@@ -12571,17 +12619,6 @@ static-extend@^0.1.1:
   dependencies:
     define-property "^0.2.5"
     object-copy "^0.1.0"
-
-static-site-generator-webpack-plugin@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.npm.alibaba-inc.com/static-site-generator-webpack-plugin/download/static-site-generator-webpack-plugin-3.4.2.tgz#ad9fd0a4fb8b6f439a7a66018320b459bdb6d916"
-  integrity sha1-rZ/QpPuLb0OaemYBgyC0Wb222RY=
-  dependencies:
-    bluebird "^3.0.5"
-    cheerio "^0.22.0"
-    eval "^0.1.0"
-    url "^0.11.0"
-    webpack-sources "^0.2.0"
 
 "statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"
@@ -13840,14 +13877,6 @@ webpack-merge@^4.2.2:
   integrity sha1-onxS6ng9E5iv0gh/VH17nS9DY00=
   dependencies:
     lodash "^4.17.15"
-
-webpack-sources@^0.2.0:
-  version "0.2.3"
-  resolved "https://registry.npm.alibaba-inc.com/webpack-sources/download/webpack-sources-0.2.3.tgz#17c62bfaf13c707f9d02c479e0dcdde8380697fb"
-  integrity sha1-F8Yr+vE8cH+dAsR54Nzd6DgGl/s=
-  dependencies:
-    source-list-map "^1.1.1"
-    source-map "~0.5.3"
 
 webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
   version "1.4.3"

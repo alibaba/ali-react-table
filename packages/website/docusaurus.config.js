@@ -25,7 +25,11 @@ module.exports = {
           position: 'left',
         },
         { to: 'blog', label: '博客', position: 'left' },
-        { to: 'examples', label: '示例', position: 'left' },
+        {
+          href: process.env.NODE_ENV !== 'production' ? 'http://localhost:2333/' : '/storybook',
+          label: '示例',
+          position: 'left',
+        },
         {
           href: 'https://github.com/alibaba/ali-react-table',
           label: 'GitHub',

@@ -4,6 +4,7 @@ import * as art from 'ali-react-table'
 import styled from 'styled-components'
 import * as fusion from '@alifd/next'
 import useThemeContext from '@theme/hooks/useThemeContext'
+import * as assets from 'storybook/assets'
 
 const LightBaseTable = art.BaseTable
 const DarkBaseTable = styled(art.BaseTable)`
@@ -33,6 +34,7 @@ const ReactLiveScope = {
   fusion,
   ...fusion,
   cx,
+  assets,
 }
 
 export default ReactLiveScope

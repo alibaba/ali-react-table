@@ -5,7 +5,7 @@ module.exports = {
     {
       type: 'category',
       label: 'BaseTable',
-      items: ['table/basic-usage', 'table/advanced-usage', 'table/examples', 'table/api'],
+      items: ['table/basic-usage', 'table/examples', 'table/advanced-usage', 'table/api'],
     },
     {
       type: 'category',

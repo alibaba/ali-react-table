@@ -22,27 +22,7 @@ import {
 import { RadioButtonGroup } from '../../assets/RadioButtonGroup'
 import { BaseTable, useTablePipeline } from '../../assets/theme-helpers'
 
-export default {
-  title: '表格 / pipeline 功能拓展',
-  parameters: {
-    docs: {
-      page() {
-        return (
-          <div
-            style={{
-              margin: 'auto',
-              background: 'rgba(0, 0, 0, 0.03)',
-              borderRadius: 10,
-              padding: 30,
-            }}
-          >
-            示例过多，docs page 已在此处禁用，请在页面上方切换到「Canvas」模式
-          </div>
-        )
-      },
-    },
-  },
-}
+export default { title: '表格 / pipeline 功能拓展' }
 
 export function 树形表格() {
   const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])

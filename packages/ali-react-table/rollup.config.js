@@ -8,7 +8,7 @@ const external = Object.keys(pkg.dependencies).concat(['rxjs/operators', 'prop-t
 const config = (arg) => ({
   plugins: [
     typescript({
-      tsconfig: 'tsconfig.rollup.json',
+      tsconfig: 'tsconfig.json',
     }),
     resolve({
       extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],

@@ -1,6 +1,6 @@
 import React from 'react'
-import { internals } from '../../ali-react-table'
 import { ArtColumn } from '../../interfaces'
+import { internals } from '../../internals'
 import { TablePipeline } from '../pipeline'
 
 function diffArray(arr1: string[], arr2: string[]) {

@@ -123,7 +123,10 @@ export const StyledArtTableWrapper = styled.div`
 
   // 表格外边框由 art-table-wrapper 提供，而不是由单元格提供
   &.use-outer-border {
-    border: 1px solid var(--border-color);
+    border-top: var(--cell-border-horizontal);
+    border-right: var(--cell-border-vertical);
+    border-bottom: var(--cell-border-horizontal);
+    border-left: var(--cell-border-vertical);
 
     td.first,
     th.first {
@@ -171,6 +174,9 @@ export const StyledArtTableWrapper = styled.div`
     table-layout: fixed;
     border-collapse: separate;
     border-spacing: 0;
+    display: table;
+    margin: 0;
+    padding: 0;
   }
 
   // 在 tr 上设置 .no-hover 可以禁用鼠标悬停效果
@@ -190,6 +196,7 @@ export const StyledArtTableWrapper = styled.div`
     height: var(--header-row-height);
     color: var(--header-color);
     background: var(--header-bgcolor);
+    border: none;
     border-right: var(--header-cell-border-vertical);
     border-bottom: var(--header-cell-border-horizontal);
   }
@@ -204,6 +211,7 @@ export const StyledArtTableWrapper = styled.div`
     padding: var(--cell-padding);
     background: var(--bgcolor);
     height: var(--row-height);
+    border: none;
     border-right: var(--cell-border-vertical);
     border-bottom: var(--cell-border-horizontal);
   }

@@ -4,6 +4,7 @@ import { ExpansionCell, icons } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, mergeCellProps } from '../../utils'
+import { flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
 export interface RowDetailFeatureOptions {
@@ -50,7 +51,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
     return pipeline
       .dataSource(
-        pipeline.getDataSource().flatMap((row) => {
+        flatMap(pipeline.getDataSource(), (row) => {
           const expanded = openKeySet.has(row[primaryKey])
           return expanded ? [row, { ...row, [primaryKey]: getDetailKey(row), [rowDetailSymbol]: true }] : [row]
         }),

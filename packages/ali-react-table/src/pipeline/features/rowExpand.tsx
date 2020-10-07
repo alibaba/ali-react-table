@@ -4,6 +4,7 @@ import { ExpansionCell, icons } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, isLeafNode, mergeCellProps } from '../../utils'
+import { flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
 const rowExpandMeta = Symbol('row-expand-meta')
@@ -51,7 +52,7 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
       .appendRowPropsGetter(rowExpandRowPropsGetter)
 
     function processDataSource(input: any[]) {
-      return input.flatMap((row) => {
+      return flatMap(input, (row) => {
         const isLeaf = isLeafNode(row)
         const expanded = openKeySet.has(row[primaryKey])
 

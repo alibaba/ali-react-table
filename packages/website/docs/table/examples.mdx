@@ -1,0 +1,46 @@
+---
+id: examples
+title: 表格示例
+---
+
+### 基本用法
+
+基本用法基本用法基本用法基本用法基本用法基本用法基本用法
+
+```jsx live open
+function 基本用法() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns = [
+    { code: 'prov', name: '省份', width: 150 },
+    { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+    { code: 'cured', name: '治愈', width: 100, align: 'right' },
+    { code: 'dead', name: '死亡', width: 100, align: 'right' },
+    { code: 't', name: '最后更新时间', width: 180 },
+  ]
+
+  return <BaseTable dataSource={dataSource} columns={columns} />
+}
+```
+
+### 数据为空
+
+```jsx live
+function 数据为空() {
+  const columns2 = [
+    { code: 'name', name: '公司名称', width: 200 },
+    { code: 'dept', name: '部门名称', width: 180 },
+    { code: 'dest', name: '团建目的地', width: 160 },
+    { code: 'guide', name: '当地导游', width: 160 },
+  ]
+
+  // 与基本表格相比，行高降低，通过较小的尺寸在屏幕中显示更多的数据，高度40px
+  return <BaseTable dataSource={[]} columns={columns2} />
+}
+```

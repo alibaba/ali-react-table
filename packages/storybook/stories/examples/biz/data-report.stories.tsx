@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
 import { getAppTrafficData } from '../../../assets/cdn-data'
 
-export default { title: '示例 / 业务示例 / 典型数据报表' }
+export default { title: '业务示例 / 典型数据报表' }
 
 const amount = (v: any) => Number(v).toFixed(2)
 const ratio = (v: any) => `${(Number(v) * 100).toFixed(2)}%`

@@ -3,7 +3,7 @@ import React from 'react'
 import { cols, useAllDataSource } from '../../assets/ncov19-assets'
 import { BaseTable } from '../../assets/theme-helpers'
 
-export default { title: '示例 / 大数据测试' }
+export default { title: '大数据测试' }
 
 export function 滚动容器为window() {
   const { dataSource, isLoading } = useAllDataSource()

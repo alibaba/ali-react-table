@@ -173,7 +173,7 @@ function pbpRatioRender(v: number, col: ArtColumn, row: any) {
   )
 }
 
-export default { title: '示例 / 业务示例 / 投入产出分析表格' }
+export default { title: '业务示例 / 投入产出分析表格' }
 
 export function 投入产出分析表格() {
   const dataSource = useMemo(() => generateRandomData(), [])

@@ -95,8 +95,8 @@ function BlockSpin() {
 
 /** Ant Design 基础表格组件
  *
- * AntBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式。  */
-export const AntBaseTable = React.forwardRef<BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
+ * AntdBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式。  */
+export const AntdBaseTable = React.forwardRef<BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
   const headerDepth = getTreeDepth(props.columns)
 
   return (

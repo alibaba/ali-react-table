@@ -2,10 +2,9 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 const stories = [
   'table/table.stories.tsx',
-  'table/transforms-examples.stories.tsx',
-  'table/table-pipeline.stories.tsx',
-
-  'examples/**/*.stories.{tsx,mdx}',
+  'table/pipeline.stories.tsx',
+  'table/transforms.stories.tsx',
+  'examples/**/*.stories.tsx',
 ].map((file) => `../stories/${file}`)
 
 module.exports = {

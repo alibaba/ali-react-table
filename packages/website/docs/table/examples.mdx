@@ -38,7 +38,7 @@ function 数据为空() {
   return (
     <BaseTable
       dataSource={[]}
-      columns={assets.mockData.columns2}
+      columns={assets.biz.columns2}
       // components={{ EmptyContent: () => <h1>数据为空~~</h1> }}
     />
   )
@@ -53,7 +53,7 @@ function 数据为空() {
 
 ```jsx live
 function 表格数据加载() {
-  return <BaseTable isLoading dataSource={assets.mockData.dataSource2} columns={assets.mockData.columns2} />
+  return <BaseTable isLoading dataSource={assets.biz.dataSource2} columns={assets.biz.columns2} />
 }
 ```
 
@@ -255,7 +255,7 @@ function 自定义表格行props() {
 
 ```jsx live
 function 限定表格容器大小() {
-  const { dataSource1, operationCol } = assets.mockData
+  const { dataSource1, operationCol } = assets.biz
 
   const nameCol = { lock: true, code: 'name', width: 200, name: '公司名称' }
   const repeats = [

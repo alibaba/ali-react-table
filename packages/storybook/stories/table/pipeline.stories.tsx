@@ -18,11 +18,11 @@ import {
   dataSource6,
   operationCol,
   randomPick,
-} from '../../assets/mock-data'
+} from '../../assets/biz-assets'
 import { RadioButtonGroup } from '../../assets/RadioButtonGroup'
 import { BaseTable, useTablePipeline } from '../../assets/theme-helpers'
 
-export default { title: '表格 / pipeline 功能拓展' }
+export default { title: 'pipeline 功能拓展' }
 
 export function 树形表格() {
   const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])

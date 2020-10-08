@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   title: 'ali-react-table',
-  tagline: '现代化的高性能 React 组件',
+  tagline: '现代化的高性能 React 表格组件',
   url: 'https://ali-react-table.js.org',
   baseUrl: '/',
   onBrokenLinks: 'warn',

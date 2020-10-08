@@ -24,7 +24,7 @@ import { amount, ratio, time } from '../../assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
 import { BaseTable, BaseTableThemeContext } from '../../assets/theme-helpers'
 
-export default { title: '表格 / 常用功能示例' }
+export default { title: 'transforms 功能拓展（已过时）' }
 
 export function 树状表格() {
   const columns: ArtColumn[] = [

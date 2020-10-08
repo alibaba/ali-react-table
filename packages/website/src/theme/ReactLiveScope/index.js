@@ -3,6 +3,7 @@ import cx from 'clsx'
 import * as art from 'ali-react-table'
 import styled from 'styled-components'
 import * as fusion from '@alifd/next'
+import * as antd from 'antd'
 import useThemeContext from '@theme/hooks/useThemeContext'
 import * as assets from 'storybook/assets'
 
@@ -32,6 +33,7 @@ const ReactLiveScope = {
   ...art,
   BaseTable: ThemedBaseTable,
   fusion,
+  antd,
   ...fusion,
   cx,
   assets,

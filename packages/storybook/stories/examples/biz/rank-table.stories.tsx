@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { amount, lfl } from '../../../assets/format'
 
-export default { title: '示例 / 业务示例 / 商品排行榜' }
+export default { title: '业务示例 / 商品排行榜' }
 
 const StyledBaseTable = styled(BaseTable)`
   --border-color: none;

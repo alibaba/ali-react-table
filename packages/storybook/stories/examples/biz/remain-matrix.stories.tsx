@@ -33,7 +33,7 @@ const colorIdx = d3
   .domain([0.2, 0.6])
   .range(COLORS.map((c, i) => i))
 
-export default { title: '示例 / 业务示例 / 用户留存矩阵' }
+export default { title: '业务示例 / 用户留存矩阵' }
 
 const StyledBaseTable = styled(BaseTable)`
   --border-color: none;

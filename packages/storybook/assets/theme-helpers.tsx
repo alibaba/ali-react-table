@@ -8,33 +8,35 @@ import {
 import * as antd from 'antd'
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { AntBaseTable } from './AntBaseTable'
+import { AntdBaseTable } from './AntdBaseTable'
 import { HippoBaseTable } from './HippoBaseTable'
 
 export const BaseTableThemeContext = React.createContext('default')
 
+const fusionCSSUrl = 'https://gw.alipayobjects.com/os/lib/alifd/next/1.21.6/dist/next.css'
+const hippoCSSUrl = 'https://gw.alipayobjects.com/os/lib/alife/hippo/2.12.11/dist/hippo.css'
+const antdCSSUrl = 'https://gw.alipayobjects.com/os/lib/antd/4.6.6/dist/antd.css'
+
+export const WithCSS = ({ library }: { library: string }) => (
+  <Helmet>
+    <link rel="stylesheet" href={library === 'antd' ? antdCSSUrl : library === 'hippo' ? hippoCSSUrl : fusionCSSUrl} />
+  </Helmet>
+)
+
 export const BaseTable = React.forwardRef<_BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
   const tableTheme = useContext(BaseTableThemeContext)
 
-  // 默认加载 fusion 样式，不然很多组件的样式就挂了…
-  let cssUrl = 'https://gw.alipayobjects.com/os/lib/alifd/next/1.21.6/dist/next.css'
   let Table: any = _BaseTable
 
   if (tableTheme === 'hippo') {
     Table = HippoBaseTable
-    cssUrl = 'https://gw.alipayobjects.com/os/lib/alife/hippo/2.12.11/dist/hippo.css'
   } else if (tableTheme === 'antd') {
-    Table = AntBaseTable
-    cssUrl = 'https://gw.alipayobjects.com/os/lib/antd/4.6.6/dist/antd.css'
+    Table = AntdBaseTable
   }
 
   return (
     <>
-      {cssUrl && (
-        <Helmet>
-          <link rel="stylesheet" href={cssUrl} />
-        </Helmet>
-      )}
+      <WithCSS library={tableTheme} />
       <Table ref={ref} {...props} />
     </>
   )

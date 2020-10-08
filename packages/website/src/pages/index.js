@@ -8,33 +8,20 @@ import styles from './styles.module.css'
 
 const features = [
   {
-    title: 'Easy to Use',
+    title: '高性能',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your website up and running
-        quickly.
-      </>
-    ),
+    description: <>内置虚拟滚动，数据量较大时自动开启，轻松应对 10 万行 / 10 万列的数据规模。</>,
   },
   {
-    title: 'Focus on What Matters',
+    title: '实用表格特性',
     imageUrl: 'img/undraw_docusaurus_tree.svg',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
-      </>
-    ),
+    description: <>表头吸顶；左侧/右侧锁列；粘性滚动条；优化的加载图标位置</>,
   },
   {
-    title: 'Powered by React',
+    title: '可定制性',
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
-        header and footer.
-      </>
+      <>简单灵活的 API，丰富的定制能力。一套代码同时适配 Ant Design, Alibaba Fusion Design，盒马内部的 Hippo Design</>
     ),
   },
 ]

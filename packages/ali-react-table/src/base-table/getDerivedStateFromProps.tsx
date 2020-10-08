@@ -11,8 +11,29 @@ function resolveVirtualEnabled(virtualEnum: VirtualEnum, defaultValue: boolean) 
   return virtualEnum
 }
 
+let lockColumnNeedSpecifiedWidthWarned = false
+function warnLockColumnNeedSpecifiedWidth(column: ArtColumn) {
+  if (!lockColumnNeedSpecifiedWidthWarned) {
+    lockColumnNeedSpecifiedWidthWarned = true
+    console.warn('[ali-react-table] lock=true 的列需要指定宽度', column)
+  }
+}
+
+let columnHiddenDeprecatedWarned = false
+function warnColumnHiddenDeprecated(column: ArtColumn) {
+  if (!columnHiddenDeprecatedWarned) {
+    columnHiddenDeprecatedWarned = true
+    console.warn('[ali-react-table] column.hidden 已经过时，如果需要隐藏该列，请将其从 columns 数组中移除', column)
+  }
+}
+
 /** 检查列配置 & 设置默认宽度 & 剔除隐藏的列 */
 function processColumns(columns: ArtColumn[], defaultColumnWidth: number) {
+  if (columns == null || !Array.isArray(columns)) {
+    console.warn('[ali-react-table] <BaseTable /> props.columns 需要传入一个数组', columns)
+    columns = []
+  }
+
   function dfs(columns: ArtColumn[]): ArtColumn[] {
     const result: ArtColumn[] = []
 
@@ -21,13 +42,15 @@ function processColumns(columns: ArtColumn[], defaultColumnWidth: number) {
         if (defaultColumnWidth != null) {
           column = { ...column, width: defaultColumnWidth }
         } else if (process.env.NODE_ENV !== 'production' && isLeafNode(column) && column.lock) {
-          console.warn('[ali-react-table] 锁列需要指定列宽度', column)
+          warnLockColumnNeedSpecifiedWidth(column)
         }
       }
 
       if (isLeafNode(column)) {
-        // 被隐藏的列 会在这里被剔除
-        if (!column.hidden) {
+        if (column.hidden) {
+          // 被隐藏的列 会在这里被剔除
+          warnColumnHiddenDeprecated(column)
+        } else {
           result.push(column)
         }
       } else {

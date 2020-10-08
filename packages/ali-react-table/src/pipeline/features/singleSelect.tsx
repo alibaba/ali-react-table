@@ -10,7 +10,7 @@ export interface SingleSelectFeatureOptions {
   onChange?: (next: string) => void
   isDisabled?(row: any): boolean
   clickArea?: 'checkbox' | 'cell' | 'row'
-  checkboxColumn?: Partial<ArtColumn>
+  checkboxColumn?: Partial<ArtColumn> // todo radioColumn
   checkboxPlacement?: 'start' | 'end'
 }
 

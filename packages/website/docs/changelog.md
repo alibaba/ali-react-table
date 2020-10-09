@@ -87,8 +87,8 @@ fix: 修复 rollup 打包错误
 
 #### v0.13.2 2020-05-19
 
-- feat: 拖拽 <LinkTo kind="表格 / 常用功能示例" story="拖拽调整列宽">拖拽调整列宽</LinkTo>
-- feat: 新增 <LinkTo kind="交叉与透视 / 交叉树状表格 / 文档" story="page">CrossTreeTable</LinkTo>
+- feat: 拖拽 拖拽调整列宽
+- feat: 新增 [CrossTreeTable](pivot/cross-tree-table)
 - feat: 新增部分 transform 的非受控用法
   - useColumnHoverTransform
   - useColumnHoverRangeTransform

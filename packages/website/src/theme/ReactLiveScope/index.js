@@ -18,6 +18,7 @@ const ReactLiveScope = {
   ...art,
 
   WebsiteBaseTable,
+  BaseTable: WebsiteBaseTable,
   assets,
   docHelpers,
 }

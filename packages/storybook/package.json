@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "start-storybook -p 2333",
-    "build": "build-storybook --no-dll"
+    "build": "build-storybook --no-dll -o storybook-dist"
   },
   "dependencies": {
     "@types/classnames": "^2.2.9",

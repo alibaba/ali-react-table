@@ -8,6 +8,8 @@ authorURL: https://shinima.pw/
 
 在前端开发中，表格一直都是最复杂的组件之一。表格不仅要支持丰富的操作（排序、过滤、搜索、分页、自定义列等），还要有非常好的性能以展示大量数据。很多组件库（例如 fusion design，ant design）提供了功能丰富的表格组件，这些表格一开始没有过多考虑性能问题，往往是后面遇到性能瓶颈问题时才考虑添加虚拟滚动特性，但此时过多的表格功能使得性能优化的难度非常高。
 
+<!--truncate-->
+
 ali-react-table （[https://github.com/alibaba/ali-react-table](https://github.com/alibaba/ali-react-table)）是我们小组开发的高性能 React 表格组件，我们在一开始就考虑了表格的性能，为其添加了内置的虚拟滚动特性。虚拟滚动会在数据量较大时自动开启，轻松展示一万行/一万列以上的数据。虚拟滚动是表格的核心特性之一，在为表格实现新功能时，我们会确保新功能不与虚拟滚动冲突。
 
 表格组件的基本用法和 antd/fusion 表格类似，传入 dataSource 来指定表格的数据源，传入 columns 来对表格的列进行配置。
@@ -35,12 +37,13 @@ function BasicUsage() {
 }
 ```
 
-todo image.png
+![base-table-simple-case-preview.png](2020-04-15-imgs/base-table-simple-case-preview.png)
 
 ## 虚拟滚动
 
 当数据量较大时，表格会自动开启虚拟滚动。
-![dvt-table-large-datasource.gif](https://cdn.nlark.com/yuque/0/2020/gif/169379/1586885898401-a66d2e2a-6a5b-4618-8a06-3a6419dbea18.gif#align=left&display=inline&height=413&margin=%5Bobject%20Object%5D&name=dvt-table-large-datasource.gif&originHeight=413&originWidth=1068&size=2117058&status=done&style=none&width=1068)
+
+![table-virutal-scroll.gif](2020-04-15-imgs/table-virutal-scroll.gif)
 
 ↑ 通过 dataSource 传入一个长度超过 5 万的数组，表格依旧流畅。当表格向下滚动时，BaseTable 默认会为表头设置 style.position=sticky，表头将会吸附在页面或滚动容器的顶部。
 
@@ -54,7 +57,7 @@ todo image.png
 
 下图是基于 BaseTable 的一个简单的透视表 demo（[在线 demo](https://ali-react-table.js.org/?path=/story/%E7%A4%BA%E4%BE%8B-%E5%9F%BA%E4%BA%8E-crosstable-%E7%9A%84%E9%80%8F%E8%A7%86%E8%A1%A8--pivot-table-based-on-cross-table)）
 
-![dvt-table-large-virtual2.gif](https://cdn.nlark.com/yuque/0/2020/gif/169379/1586885898414-31ffa0a5-2b7c-4788-9aff-d53829a532fe.gif#align=left&display=inline&height=652&margin=%5Bobject%20Object%5D&name=dvt-table-large-virtual2.gif&originHeight=652&originWidth=1287&size=5308512&status=done&style=none&width=1287)
+![pivot-table-demo.gif](2020-04-15-imgs/pivot-table-demo.gif)
 
 ## 表格功能拓展
 
@@ -73,7 +76,7 @@ type TableTransform = Transform<{
 
 `TableTransform`（后面简称 transform）是一个纯函数，输入**_列配置 + 数据源_**，输出一份新的**_列配置 + 数据源_**。每一个 transform 通过对 dataSource/columns 的包装和转换以实现一个新的特性。注意到每个 transform 的输入和输出的类型相同，我们可以将多个 transform 串联以实现不同功能的组合。
 
-ali-react-table/biz 提供了一些常见表格功能的 transform，下面以「**排序**和**列高亮**两个功能的组合」为例介绍 transform 的使用方式。 ![dvt-table-column-hover.gif](https://cdn.nlark.com/yuque/0/2020/gif/169379/1586885898453-948df0c5-061a-4d21-befc-818c8d8b903b.gif#align=left&display=inline&height=399&margin=%5Bobject%20Object%5D&name=dvt-table-column-hover.gif&originHeight=618&originWidth=1156&size=576736&status=done&style=none&width=746)
+ali-react-table/biz 提供了一些常见表格功能的 transform，下面以「**排序**和**列高亮**两个功能的组合」为例介绍 transform 的使用方式。 ![column-hover-and-sort.gif](2020-04-15-imgs/column-hover-and-sort.gif)
 
 对应的代码如下：
 
@@ -124,21 +127,21 @@ function SingleSortExample() {
   - 表格功能不满足业务需求时，可自行实现自定义 transform，与 commonTransforms 配合使用
 - 对于表格组件维护者（也就是我）：拓展功能所需的状态由上层提供，表格内部的状态数量可控，降低表格性能优化的难度，表格组件维护起来比较容易
 
-同时这也带来了更清晰的表格功能设计分层：**BaseTable 提供灵活的 column 配置来提供高可定制性，上层实现各类 transform 实现拓展功能。**表格的基本功能由 `ali-react-table` 提供，而拓展功能则需要从 `ali-react-table/biz` 引入**。 **下表展示了 BaseTable 中列配置对象的结构，可以看到上层可以定制列标题、宽度、锁列、单元格等内容，几乎涵盖了列的每个方面。
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/169379/1586885898471-467b55b8-47da-4751-8592-2176c472ee90.png#align=left&display=inline&height=655&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1310&originWidth=1962&size=257306&status=done&style=none&width=981)
+同时这也带来了更清晰的表格功能设计分层：**BaseTable 提供灵活的 column 配置来提供高可定制性，上层实现各类 transform 实现拓展功能。**表格的基本功能由 `ali-react-table` 提供，而拓展功能则需要从 `ali-react-table/biz` 引入**。**下表展示了 BaseTable 中列配置对象的结构，可以看到上层可以定制列标题、宽度、锁列、单元格等内容，几乎涵盖了列的每个方面。
+
+![base-table-column-structure.png](2020-04-15-imgs/base-table-column-structure.png)
 
 ali-react-table/biz 还通过 commonTransform 提供了树状模式、自定义列、表格操作栏等功能，更多的功能也正在不断开发中，将通过统一的拓展方式进行提供。
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/169379/1586885898439-d5a2b7a8-46e5-40a8-a23f-37ee48886ba1.png#align=left&display=inline&height=576&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1152&originWidth=3426&size=367305&status=done&style=none&width=1713)
+
+![imgs-2020-04-15/tree-mode-and-custom-columns.png](2020-04-15-imgs/tree-mode-and-custom-columns.png)
 ↑ 左：树状模式；右：自定义列
 
 当遇到一些不常见的表格需求时，我们可以通过手动定制列的 render/getCellProps 来满足定制需求：
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/169379/1586885898478-686d6311-76a0-4026-953f-0faa062b15a9.png#align=left&display=inline&height=190&margin=%5Bobject%20Object%5D&name=image.png&originHeight=800&originWidth=3140&size=374205&status=done&style=none&width=746)
-
-<a name="XLlR6"></a>
+![imgs-2020-04-15/remain-matrix-and-rio-table.png](2020-04-15-imgs/remain-matrix-and-rio-table.png)
 
 ## 交叉表
 
-除了常见的行列数据，展示交叉数据或透视数据也是常见的表格需求。前述的 BaseTable 只能够展示行列异构的数据：行（dataSource）负责提供数据，列（columns）控制表格如何展现；而交叉/透视数据的行表头和列表头是同构的（行表头和列表头都是树状结构）。为了方便展示行列同构数据，我们基于 BaseTable  实现了一个简单的交叉表格（CrossTable），专门应对「行表头和列表头都是一棵树」 的场景。
+除了常见的行列数据，展示交叉数据或透视数据也是常见的表格需求。前述的 BaseTable 只能够展示行列异构的数据：行（dataSource）负责提供数据，列（columns）控制表格如何展现；而交叉/透视数据的行表头和列表头是同构的（行表头和列表头都是树状结构）。为了方便展示行列同构数据，我们基于 BaseTable 实现了一个简单的交叉表格（CrossTable），专门应对「行表头和列表头都是一棵树」 的场景。
 
 ali-react-table/pivot 提供的交叉表（CrossTable）也是一个较为底层的 React 组件，仅提供表格结构的渲染能力。CrossTable 的渲染过程可认为是：**`左树 + 上树 => 表格`**。大致使用方式如下：
 
@@ -162,10 +165,8 @@ ali-react-table/pivot 提供的交叉表（CrossTable）也是一个较为底层
 
 CrossTable 这里就不再过多介绍了，表格的效果可见本文上面透视表 demo 动图。ali-react-table/pivot 还提供了一些透视数据处理方法，方便在前端进行一些简单的数据聚合运算并将其展示到表格上，具体可见 [相关文档](https://ali-react-table.js.org/?path=/docs/%E4%BA%A4%E5%8F%89%E4%B8%8E%E9%80%8F%E8%A7%86)。
 
-<a name="ylekk"></a>
-
 ## 小结
 
-ali-react-table 的主要定位是提供高性能、高可定制性的 React 表格，方便上层进行封装和定制并接入到不同的系统和业务中。ali-react-table 没有绑定特定的 React 组件库，仅依赖了一些工具类库（例如 rxjs、styled-components、classnames），配合 webpack/rollup 的 tree shaking 特性，引入  ali-react-table 所产生的额外 JS 体积非常有限。
+ali-react-table 的主要定位是提供高性能、高可定制性的 React 表格，方便上层进行封装和定制并接入到不同的系统和业务中。ali-react-table 没有绑定特定的 React 组件库，仅依赖了一些工具类库（例如 rxjs、styled-components、classnames），配合 webpack/rollup 的 tree shaking 特性，引入 ali-react-table 所产生的额外 JS 体积非常有限。
 
 除了上面介绍的一些功能之外，ali-react-table 还提供了许多实用功能，包括表格操作栏、Excel 导出功能等（部分拓展功能需要安装 fusion 组件库）。组件已经[在 GitHub 上开源](https://github.com/alibaba/ali-react-table)，后续我们也会不断更新和维护 ali-react-table 的文档，添加更多的代码示例，欢迎大家使用~

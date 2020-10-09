@@ -1,1 +1,1 @@
-See [/stories/changelog.stories.mdx](/packages/ali-react-table/storiess/ali-react-table/stories/changelog.stories.mdx)
+See changelog [here](https://ali-react-table.js.org/beta/docs/changelog)

@@ -5,7 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 function StorybookIframe() {
   return (
     <iframe
-      src={process.env.NODE_ENV !== 'production' ? 'http://localhost:2333/' : '/storybook'}
+      src={process.env.NODE_ENV !== 'production' ? 'http://localhost:2333/' : '/beta/storybook'}
       style={{ display: 'block', width: '100%', height: 'calc(100vh - 60px)', border: 'none' }}
     />
   )

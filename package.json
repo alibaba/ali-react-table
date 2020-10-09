@@ -11,7 +11,10 @@
     "website:start": "yarn workspace website start",
     "website:build": "yarn workspace website build",
     "storybook:start": "yarn workspace storybook start",
-    "storybook:build": "yarn workspace storybook build"
+    "storybook:build": "yarn workspace storybook build",
+    "build-all": "yarn website:build && yarn storybook:build",
+    "collect-files": "rimraf website-deploy && copyfiles --up=3 \"packages/website/build/**/*\" website-deploy/beta/ && copyfiles --up=3 \"packages/storybook/storybook-dist/**/*\" website-deploy/beta/storybook/",
+    "prepare-website-deploy": "yarn build-all && yarn collect-files"
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,7 @@
     "trailingComma": "all"
   },
   "devDependencies": {
+    "copyfiles": "^2.4.0",
     "prettier": "^2.1.2",
     "typescript": "^4.0.3"
   }

@@ -6,7 +6,8 @@ import styles from './styles.module.css'
 
 function Playground({ children, theme, transformCode, ...props }) {
   const defaultShow = props.metastring.includes('open')
-  const [show, setShow] = React.useState(defaultShow)
+  const [showEditor, setShowEditor] = React.useState(defaultShow)
+  const [showPreview, setShowPreview] = React.useState(true)
 
   return (
     <LiveProvider
@@ -18,14 +19,22 @@ function Playground({ children, theme, transformCode, ...props }) {
       <div
         className={clsx(styles.playgroundHeader, styles.playgroundEditorHeader)}
         style={{ display: 'flex', cursor: 'pointer', userSelect: 'none' }}
-        onClick={() => setShow(!show)}
+        onClick={() => setShowEditor(!showEditor)}
       >
         <span>Live Editor</span>
         <span style={{ marginLeft: 'auto', fontSize: '85%' }}>点击展开或收拢</span>
       </div>
-      <LiveEditor className={styles.playgroundEditor} style={{ display: show ? undefined : 'none' }} />
-      <div className={clsx(styles.playgroundHeader, styles.playgroundPreviewHeader)}>Preview</div>
-      <div className={styles.playgroundPreview}>
+      <LiveEditor className={styles.playgroundEditor} style={{ display: showEditor ? undefined : 'none' }} />
+
+      <div
+        className={clsx(styles.playgroundHeader, styles.playgroundPreviewHeader)}
+        style={{ display: 'flex', cursor: 'pointer', userSelect: 'none' }}
+        onClick={() => setShowPreview(!showPreview)}
+      >
+        <span>Preview</span>
+        <span style={{ marginLeft: 'auto', fontSize: '85%' }}>点击展开或收拢</span>
+      </div>
+      <div className={styles.playgroundPreview} style={{ display: showPreview ? undefined : 'none' }}>
         <LivePreview />
         <LiveError />
       </div>

@@ -13,12 +13,7 @@ function 列高亮() {
   const columns = assets.biz.columns6
   const pipeline = useTablePipeline({ components: fusion }).input({ dataSource, columns }).use(features.columnHover())
 
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 ```
 

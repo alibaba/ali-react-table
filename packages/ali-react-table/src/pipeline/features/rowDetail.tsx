@@ -43,7 +43,8 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
   return function rowDetailStep<P extends TablePipeline>(pipeline: P) {
     const stateKey = 'rowDetail'
 
-    const hippoIndents = pipeline.ctx.indents
+    const indents = pipeline.ctx.indents
+    const textOffset = indents.iconIndent + indents.iconWidth + indents.iconGap
 
     const openKeys: string[] = opts.openKeys ?? pipeline.state[stateKey] ?? opts.defaultOpenKeys ?? []
     const onChangeOpenKeys: RowDetailFeatureOptions['onChangeOpenKeys'] = (nextKeys, key, action) => {
@@ -90,8 +91,8 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             <icons.CaretRight
               className={cx('expansion-icon', expandCls)}
               style={{
-                marginLeft: hippoIndents.iconIndent,
-                marginRight: hippoIndents.iconGap,
+                marginLeft: indents.iconIndent,
+                marginRight: indents.iconGap,
               }}
             />
             {content}
@@ -104,7 +105,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
           return {
             style: {
               '--bgcolor': '#fbfbfb',
-              '--cell-padding': `8px ${hippoIndents.textOffset}px`,
+              '--cell-padding': `8px ${textOffset}px`,
               overflow: 'hidden',
               ...opts.detailCellStyle,
             } as any,
@@ -139,7 +140,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             <div
               style={{
                 display: 'inline-block',
-                marginLeft: hippoIndents.iconIndent + hippoIndents.iconWidth + hippoIndents.iconGap,
+                marginLeft: textOffset,
               }}
             >
               {internals.safeRenderHeader(firstCol)}

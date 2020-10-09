@@ -22,17 +22,12 @@ function 表格排序() {
     .use(
       features.sort({
         mode: 'single',
-        defaultSorts: [{ code: 'applier', order: 'asc' }],
+        defaultSorts: [{ code: 'name', order: 'desc' }],
         highlightColumnWhenActive: true,
       }),
     )
 
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 ```
 

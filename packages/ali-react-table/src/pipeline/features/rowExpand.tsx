@@ -24,8 +24,13 @@ function rowExpandRowPropsGetter(row: any) {
 }
 
 export interface RowExpandFeatureOptions {
+  /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
+
+  /** 受控用法：当前展开的 keys */
   openKeys?: string[]
+
+  /** 受控用法：当前展开 keys 改变回调 */
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
 }
 
@@ -33,6 +38,7 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
   return <P extends TablePipeline>(pipeline: P) => {
     const stateKey = 'rowExpand'
     const indents = pipeline.ctx.indents
+    const textOffset = indents.iconIndent + indents.iconWidth + indents.iconGap
 
     const primaryKey = pipeline.ensurePrimaryKey('rowExpand') as string
     if (typeof primaryKey !== 'string') {
@@ -90,7 +96,7 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
         if (isLeaf) {
           return (
             <ExpansionCell className="expansion-cell leaf">
-              <span style={{ marginLeft: indents.textOffset }}>{content}</span>
+              <span style={{ marginLeft: textOffset }}>{content}</span>
             </ExpansionCell>
           )
         }
@@ -140,7 +146,7 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
         {
           ...firstCol,
           title: (
-            <div style={{ display: 'inline-block', marginLeft: indents.textOffset }}>
+            <div style={{ display: 'inline-block', marginLeft: textOffset }}>
               {internals.safeRenderHeader(firstCol)}
             </div>
           ),

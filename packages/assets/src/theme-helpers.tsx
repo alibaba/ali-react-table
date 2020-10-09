@@ -9,7 +9,6 @@ import * as antd from 'antd'
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import { AntdBaseTable } from './AntdBaseTable'
-import { FusionStyleReset } from './fusion-style-reset'
 import { HippoBaseTable } from './HippoBaseTable'
 
 export const BaseTableThemeContext = React.createContext('default')
@@ -23,7 +22,6 @@ export const AntdStyles = () => (
     <Helmet>
       <link rel="stylesheet" href={antdCSSUrl} />
     </Helmet>
-    {/* todo <AntdStyleReset />*/}
   </>
 )
 
@@ -32,8 +30,6 @@ export const FusionStyles = () => (
     <Helmet>
       <link rel="stylesheet" href={fusionCSSUrl} />
     </Helmet>
-    {/* 重置 fusion 样式给文档网站带来的影响 */}
-    <FusionStyleReset />
   </>
 )
 
@@ -42,7 +38,6 @@ export const HippoStyles = () => (
     <Helmet>
       <link rel="stylesheet" href={hippoCSSUrl} />
     </Helmet>
-    <FusionStyleReset />
   </>
 )
 
@@ -77,7 +72,6 @@ export function useThemedTablePipeline(arg?: any) {
       iconGap: 16,
       iconWidth: 16,
       indentSize: 24,
-      textOffset: -8 + 16 + 16,
     }
   } else if (tableTheme == 'antd') {
     components = antd
@@ -86,7 +80,6 @@ export function useThemedTablePipeline(arg?: any) {
       iconGap: 8,
       iconWidth: 16,
       indentSize: 16,
-      textOffset: 16,
     }
   }
 

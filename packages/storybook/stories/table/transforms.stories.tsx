@@ -19,10 +19,10 @@ import {
   useAutoWidthTransform,
 } from 'ali-react-table'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { getAppTrafficData } from '../../assets/cdn-data'
-import { amount, ratio, time } from '../../assets/format'
-import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import { ThemedBaseTable, BaseTableThemeContext } from '../../assets/theme-helpers'
+import { getAppTrafficData } from '../../../assets/src/cdn-data'
+import { amount, ratio, time } from '../../../assets/src/format'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../../assets/src/ncov19-assets'
+import { ThemedBaseTable, BaseTableThemeContext } from '../../../assets/src/theme-helpers'
 
 export default { title: 'transforms 功能拓展（已过时）' }
 

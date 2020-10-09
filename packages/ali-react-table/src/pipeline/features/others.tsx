@@ -6,6 +6,7 @@ import {
   makeColumnRangeHoverTransform,
   makeTipsTransform,
 } from '../../transforms'
+import { buildTree as _buildTree } from '../../utils'
 import { TablePipeline } from '../pipeline'
 
 export interface ColumnHoverFeatureOptions {
@@ -103,5 +104,6 @@ export function tips() {
 }
 
 export function buildTree(idProp: string, parentIdProp: string) {
-  return <P extends TablePipeline>(pipeline: P) => pipeline.useTransform(makeBuildTreeTransform(idProp, parentIdProp))
+  return <P extends TablePipeline>(pipeline: P) =>
+    pipeline.mapDataSource((rows) => _buildTree(idProp, parentIdProp, rows))
 }

@@ -11,12 +11,11 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowJs": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "ali-react-table": ["../ali-react-table/src/ali-react-table.ts"],
-      "ali-react-table/pivot": ["../ali-react-table/src/ali-react-table-pivot.ts"],
-      "assets": ["../assets/src/index.ts"]
+      "ali-react-table/pivot": ["../ali-react-table/src/ali-react-table-pivot.ts"]
     }
   },
-  "include": ["src/**/*", "docs/**/*"]
+  "include": ["src/**/*"]
 }

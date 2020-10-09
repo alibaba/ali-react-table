@@ -9,7 +9,7 @@ title: 行详情
 function 行详情() {
   const dataSource = assets.biz.dataSource1
   const columns = assets.biz.columns1.slice(0, 4)
-  const pipeline = useTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion })
     .input({ dataSource, columns })
     .primaryKey('id')
     .use(
@@ -17,7 +17,7 @@ function 行详情() {
         defaultOpenKeys: ['2'],
         renderDetail(row) {
           return (
-            <DetailDiv>
+            <docHelpers.DetailDiv>
               <div className="left">
                 <p>最近工作：高级经理｜{row.dept}｜2009-07-01 至今</p>
                 <p>工作职责：巴拉巴拉小魔仙</p>
@@ -27,18 +27,13 @@ function 行详情() {
                 <p>教育经理：北京大学｜工商管理｜2007-09-01 至 2006-06-01</p>
                 <p>中央财经大学｜2004-09-01 至 2007-06-01</p>
               </div>
-            </DetailDiv>
+            </docHelpers.DetailDiv>
           )
         },
       }),
     )
 
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 ```
 
@@ -102,12 +97,7 @@ function 表格嵌套() {
       }),
     )
 
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 ```
 
@@ -146,6 +136,6 @@ function NestedTableExample({ depth = 0 }) {
     .primaryKey('id')
     .use(features.rowDetail({ renderDetail }))
 
-  return <BaseTable isStickyHead={false} {...pipeline.getProps()} />
+  return <WebsiteBaseTable isStickyHead={false} {...pipeline.getProps()} />
 }
 ```

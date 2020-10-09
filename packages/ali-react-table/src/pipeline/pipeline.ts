@@ -11,13 +11,11 @@ interface PipelineSnapshot {
   rowPropsGetters: RowPropsGetter[]
 }
 
-// todo 需要重新设计一下
 interface IndentsConfig {
   iconIndent: number
-  iconWidth: number
+  iconWidth: 16
   iconGap: number
   indentSize: number
-  textOffset: number // iconIndent + iconWidth + iconGap
 }
 
 /**
@@ -44,7 +42,6 @@ export class TablePipeline {
     iconWidth: 16,
     iconGap: 0,
     indentSize: 16,
-    textOffset: 8,
   }
 
   readonly ctx: Partial<{

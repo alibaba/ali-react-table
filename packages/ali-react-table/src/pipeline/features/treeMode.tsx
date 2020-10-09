@@ -3,16 +3,37 @@ import { makeTreeModeTransform } from '../../transforms'
 import { TablePipeline } from '../pipeline'
 
 export interface TreeModeFeatureOptions {
+  /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
+
+  /** 受控用法：当前展开的 keys */
   openKeys?: string[]
+
+  /** 受控用法：展开 keys 改变的回调 */
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  /** 自定义叶子节点的判定逻辑 */
   isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+
+  /** icon 的缩进值。一般为负数，此时 icon 将向左偏移，默认从 pipeline.ctx.indents 中获取 */
+  iconIndent?: number
+
+  /** icon 与右侧文本的距离，默认从 pipeline.ctx.indents 中获取 */
+  iconGap?: number
+
+  /** 每一级缩进产生的距离，默认从 pipeline.ctx.indents 中获取 */
+  indentSize?: number
 }
 
 export function treeMode(opts: TreeModeFeatureOptions = {}) {
   return function treeModeStep<P extends TablePipeline>(pipeline: P) {
     const stateKey = 'treeMode'
-    const indents = pipeline.ctx.indents
+    const ctx = pipeline.ctx
+    const indents = {
+      iconIndent: opts.iconIndent ?? ctx.indents.iconIndent,
+      iconGap: opts.iconGap ?? ctx.indents.iconGap,
+      indentSize: opts.indentSize ?? ctx.indents.indentSize,
+    }
 
     const primaryKey = pipeline.ensurePrimaryKey('treeMode') as string
     if (typeof primaryKey !== 'string') {

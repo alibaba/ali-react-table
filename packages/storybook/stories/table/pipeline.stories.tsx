@@ -1,10 +1,7 @@
 import { Button } from '@alifd/next'
 import { ArtColumn, collectNodes, features, isLeafNode } from 'ali-react-table'
-import cx from 'classnames'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { getAppTrafficData } from '../../assets/cdn-data'
-import { amount, lfl, ratio } from '../../assets/format'
 import {
   columns1,
   columns3,
@@ -18,9 +15,11 @@ import {
   dataSource6,
   operationCol,
   randomPick,
-} from '../../assets/biz-assets'
-import { RadioButtonGroup } from '../../assets/RadioButtonGroup'
-import { ThemedBaseTable, useThemedTablePipeline } from '../../assets/theme-helpers'
+} from '../../../assets/src/biz-assets'
+import { getAppTrafficData } from '../../../assets/src/cdn-data'
+import { ratio } from '../../../assets/src/format'
+import { RadioButtonGroup } from '../../../assets/src/RadioButtonGroup'
+import { ThemedBaseTable, useThemedTablePipeline } from '../../../assets/src/theme-helpers'
 
 export default { title: 'pipeline 功能拓展' }
 
@@ -98,10 +97,8 @@ export function 行多选() {
 
 export function 行单选() {
   const [value, onChange] = useState('1')
-  const [clickArea, setClickArea] = useState<features.SingleSelectFeatureOptions['clickArea']>('checkbox')
-  const [checkboxPlacement, setCheckboxPlacement] = useState<features.SingleSelectFeatureOptions['checkboxPlacement']>(
-    'start',
-  )
+  const [clickArea, setClickArea] = useState<features.SingleSelectFeatureOptions['clickArea']>('radio')
+  const [radioPlacement, setRadioPlacement] = useState<features.SingleSelectFeatureOptions['radioPlacement']>('start')
   const [highlightRowWhenSelected, setHighlightRowWhenSelected] = useState(true)
 
   // 实际使用时注意设置 ctx.components, 例如...
@@ -110,7 +107,7 @@ export function 行单选() {
   const pipeline = useThemedTablePipeline()
     .input({ dataSource: dataSource1, columns: columns1 })
     .primaryKey('id')
-    .use(features.singleSelect({ value, onChange, highlightRowWhenSelected, checkboxPlacement, clickArea }))
+    .use(features.singleSelect({ value, onChange, highlightRowWhenSelected, radioPlacement, clickArea }))
 
   return (
     <div>
@@ -122,8 +119,8 @@ export function 行单选() {
             { value: 'start', label: '左侧' },
             { value: 'end', label: '右侧' },
           ]}
-          value={checkboxPlacement}
-          onChange={setCheckboxPlacement as any}
+          value={radioPlacement}
+          onChange={setRadioPlacement as any}
         />
       </div>
 
@@ -204,24 +201,6 @@ export function 多列排序() {
         mode: 'multiple',
         defaultSorts: [{ code: 'applier', order: 'asc' }],
         highlightColumnWhenActive: true,
-      }),
-    )
-
-  return <ThemedBaseTable {...pipeline.getProps()} />
-}
-
-export function 树形可选择表格() {
-  const pipeline = useThemedTablePipeline()
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(features.treeMode())
-    .use(
-      features.treeSelect({
-        tree: dataSource4,
-        rootKey: 'root',
-        defaultValue: ['1', '3'],
-        checkboxColumn: { lock: true },
-        highlightRowWhenSelected: true,
       }),
     )
 
@@ -330,267 +309,4 @@ export function 行详情() {
     )
 
   return <ThemedBaseTable {...pipeline.getProps()} />
-}
-
-export function 表格嵌套() {
-  const pipeline = useThemedTablePipeline()
-    .input({ dataSource: dataSource1, columns: columns1.slice(0, 4) })
-    .primaryKey('id')
-    .use(
-      features.rowDetail({
-        defaultOpenKeys: ['2'],
-        renderDetail() {
-          return (
-            <ThemedBaseTable
-              style={{ boxShadow: '0 0 4px 1px #33333333' }}
-              hasHeader={false}
-              className="bordered compact"
-              dataSource={dataSource1}
-              columns={columns1.slice(0, 4)}
-            />
-          )
-        },
-      }),
-    )
-
-  return <ThemedBaseTable {...pipeline.getProps()} />
-}
-
-export function 表格套娃({ depth = 0 }: { depth: number }) {
-  function renderDetail() {
-    let msg: string
-    if (depth < 2) {
-    } else if (depth <= 4) {
-      msg = '加油，马上就到底了'
-    } else if (depth <= 6) {
-      msg = '还剩最后几层了'
-    } else if (depth <= 8) {
-      msg = '加油，还差一点点'
-    } else {
-      return <div>到底了~</div>
-    }
-
-    return (
-      <div>
-        {msg}
-        <表格套娃 depth={depth + 1} />
-      </div>
-    )
-  }
-
-  const pipeline = useThemedTablePipeline()
-    .input({ dataSource: dataSource1.slice(0, 3), columns: columns1.slice(0, 4) })
-    .primaryKey('id')
-    .use(features.rowDetail({ renderDetail }))
-
-  return (
-    <ThemedBaseTable className={cx('compact', { bordered: depth % 2 === 1 })} isStickyHead={false} {...pipeline.getProps()} />
-  )
-}
-
-const fullData = [
-  {
-    key: 'key:@total@',
-    parentKey: null,
-    name: '总计',
-    childCount: 1,
-    a: 126434.47,
-    b: 90437.96,
-    c: 86279.48,
-    d: 59811.81,
-    lfl: 0.31,
-    rate: 0.66,
-  },
-  ...makeSubData('杭州'),
-  ...makeSubData('上海'),
-  ...makeSubData('北京'),
-  ...makeSubData('武汉'),
-  ...makeSubData('成都'),
-]
-
-function makeSubData(prefix: string) {
-  // prettier-ignore
-  return [
-    { key: `key:${prefix}`, parentKey: 'key:@total@', name: prefix, childCount: 1, a: 69665.75, b: 46072.06, c: 43819.82, d: 30336.13, lfl: 0.37, rate: 0.65 },
-    { key: `key:${prefix} 一季度`, parentKey: `key:${prefix}`, name: '一季度', childCount: 3, a: 14438.76, b: 9822.21, c: 8724.7, d: 5929.93, lfl: 0.39, rate: 0.6 },
-    { key: `key:${prefix} 一季度 2022-01`, parentKey: `key:${prefix} 一季度`, name: '2022-01', childCount: 0, a: 4349.64, b: 3072.48, c: 2412.92, d: 1840.75, lfl: 0.44, rate: 0.59 },
-    { key: `key:${prefix} 一季度 2022-02`, parentKey: `key:${prefix} 一季度`, name: '2022-02', childCount: 0, a: 4873.01, b: 3239.29, c: 3072.48, d: 1931.65, lfl: 0.36, rate: 0.59 },
-    { key: `key:${prefix} 一季度 2022-03`, parentKey: `key:${prefix} 一季度`, name: '2022-03', childCount: 0, a: 5216.1, b: 3510.44, c: 3239.29, d: 2157.52, lfl: 0.37, rate: 0.61 },
-    { key: `key:${prefix} 二季度`, parentKey: `key:${prefix}`, name: '二季度', childCount: 3, a: 16870.42, b: 10983.12, c: 10585.88, d: 7037.24, lfl: 0.37, rate: 0.64 },
-    { key: `key:${prefix} 二季度 2022-04`, parentKey: `key:${prefix} 二季度`, name: '2022-04', childCount: 0, a: 5214.15, b: 3411.93, c: 3510.44, d: 2110.52, lfl: 0.32, rate: 0.61 },
-    { key: `key:${prefix} 二季度 2022-05`, parentKey: `key:${prefix} 二季度`, name: '2022-05', childCount: 0, a: 5749.32, b: 3663.5, c: 3411.93, d: 2376.51, lfl: 0.4, rate: 0.64 },
-    { key: `key:${prefix} 二季度 2022-06`, parentKey: `key:${prefix} 二季度`, name: '2022-06', childCount: 0, a: 5906.94, b: 3907.68, c: 3663.5, d: 2550.21, lfl: 0.37, rate: 0.65 },
-  ]
-}
-
-function delay<T>(ms: number, resolvedValue: T) {
-  return new Promise<T>((resolve) => {
-    setTimeout(resolve, ms, resolvedValue)
-  })
-}
-
-/** 一个 mock 的树状数据服务，实际使用时要替换为相应的真实接口 */
-class MockTreeDataService {
-  count = 0
-
-  // 加载根节点的数据
-  async loadRootNodeData(): Promise<any> {
-    const rootDataNode = fullData.find((d) => d.parentKey == null)
-    return delay(1000, rootDataNode)
-  }
-
-  // 加载父节点的 key 加载子节点数据
-  async loadNodeDataByParentKey(parentKey: string): Promise<any[]> {
-    const slice = fullData.filter((d) => d.parentKey == parentKey)
-    return delay([500, 500, 2000, 5000, 1000, 800, 3000][this.count++ % 7], slice)
-  }
-}
-
-export function 异步树状表格() {
-  const [state, setState] = useState({ isLoading: true, data: [] as any[] })
-
-  const dataServiceRef = useRef<MockTreeDataService>()
-
-  useEffect(() => {
-    dataServiceRef.current = new MockTreeDataService()
-
-    dataServiceRef.current.loadRootNodeData().then((rootNodeData) => {
-      setState({ data: [rootNodeData], isLoading: false })
-    })
-  }, [])
-
-  function loadNodeDataByParentKey(parentKey: string) {
-    setState((prev) => ({ isLoading: true, data: prev.data }))
-    dataServiceRef.current.loadNodeDataByParentKey(parentKey).then((newData) => {
-      setState((prev) => {
-        return {
-          isLoading: false,
-          data: prev.data.concat(newData),
-        }
-      })
-    })
-  }
-
-  const [openKeys, onChangeOpenKeys] = useState<string[]>([])
-
-  const pipeline = useThemedTablePipeline()
-    .input({
-      dataSource: state.data,
-      columns: [
-        { name: '名称', code: 'name', width: 180, lock: true },
-        { code: 'a', name: '目标收入', render: amount, align: 'right' },
-        { code: 'b', name: '实际收入', render: amount, align: 'right' },
-        { code: 'd', name: '重点商品收入', render: amount, align: 'right' },
-        { code: 'lfl', name: '收入月环比', render: lfl, align: 'right' },
-        { code: 'rate', name: '重点商品收入占比', render: ratio, align: 'right' },
-      ],
-    })
-    .primaryKey('key')
-    .mapColumns(([firstCol, ...rest]) => [
-      firstCol,
-      // 重复几次 columns，看起来更加丰满
-      ...rest,
-      ...rest,
-      ...rest,
-      ...rest,
-    ])
-    .use(features.buildTree('key', 'parentKey'))
-    .use(
-      features.treeMode({
-        openKeys,
-
-        onChangeOpenKeys(nextKeys, key, action) {
-          if (state.isLoading) {
-            return
-          }
-          onChangeOpenKeys(nextKeys)
-
-          const needLoadData = state.data.every((d) => d.parentKey !== key)
-          if (action === 'expand' && needLoadData) {
-            // 如果当前展开了某一个节点，且该节点的子节点数据尚未加载，
-            //  则调用 loadNodeDataByParentKey 加载更多数据
-            loadNodeDataByParentKey(key)
-          }
-        },
-
-        // 提供一个自定义的 isLeafNode 方法，使得表格为父节点正确渲染收拢/展开按钮
-        isLeafNode(node) {
-          return node.childCount === 0
-        },
-      }),
-    )
-
-  return <ThemedBaseTable defaultColumnWidth={120} isLoading={state.isLoading} {...pipeline.getProps()} />
-}
-
-const StyledBaseTable = styled(ThemedBaseTable)`
-  tr.last-open {
-    --bgcolor: rgba(128, 243, 87, 0.32);
-    --hover-bgcolor: rgba(128, 243, 87, 0.32);
-
-    .expansion-icon {
-      fill: #4de247;
-    }
-  }
-
-  tr.last-collapse {
-    --bgcolor: rgba(253, 32, 32, 0.32);
-    --hover-bgcolor: rgba(253, 32, 32, 0.32);
-
-    .expansion-icon {
-      fill: #e54950;
-    }
-  }
-`
-
-export function 树状表格中的最近展开标记() {
-  const columns: ArtColumn[] = [
-    { code: 'name', name: '数据维度', width: 200 },
-    { code: 'shop_name', name: '门店' },
-    { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
-    { code: 'app_qty_pbt', name: 'APP件单价', align: 'right' },
-    { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总', align: 'right' },
-  ]
-
-  const [state, setState] = useState({
-    isLoading: true,
-    data: [] as any[],
-    lastOpenKey: '',
-    lastCollapseKey: '',
-  })
-
-  useEffect(() => {
-    getAppTrafficData().then((data) => {
-      setState({ isLoading: false, data, lastOpenKey: '', lastCollapseKey: '' })
-    })
-  }, [])
-
-  const [openKeys, onChangeOpenKeys] = useState([])
-
-  const pipeline = useThemedTablePipeline()
-    .input({ columns: columns, dataSource: state.data })
-    .primaryKey('id')
-    .use(features.buildTree('id', 'parent_id'))
-    .use(
-      features.treeMode({
-        openKeys,
-        onChangeOpenKeys(nextKeys, key, action) {
-          onChangeOpenKeys(nextKeys)
-          if (action === 'expand') {
-            setState({ ...state, lastOpenKey: key, lastCollapseKey: '' })
-          } else {
-            setState({ ...state, lastOpenKey: '', lastCollapseKey: key })
-          }
-        },
-      }),
-    )
-    .appendRowPropsGetter((record) => {
-      if (record.id === state.lastOpenKey) {
-        return { className: 'last-open' }
-      } else if (record.id === state.lastCollapseKey) {
-        return { className: 'last-collapse' }
-      }
-    })
-
-  return <StyledBaseTable defaultColumnWidth={150} isLoading={state.isLoading} {...pipeline.getProps()} />
 }

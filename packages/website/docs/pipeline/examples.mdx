@@ -11,32 +11,6 @@ title: 示例
 因为 fusion 对暗色模式的兼容性不佳，推荐使用亮色模式浏览当前页面。
 :::
 
-### 行单选
-
-```jsx live
-function 行单选() {
-  const { dataSource1, columns1 } = assets.biz
-
-  const pipeline = useTablePipeline({ components: fusion })
-    .input({ dataSource: dataSource1, columns: columns1 })
-    .primaryKey('id')
-    .use(
-      features.singleSelect({
-        defaultValue: '1',
-        highlightRowWhenSelected: true,
-        checkboxPlacement: 'start',
-        clickArea: 'row',
-      }),
-    )
-
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
-}
-```
 
 ### 行展开
 

@@ -7,8 +7,8 @@ import {
 } from 'ali-react-table/pivot'
 import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useEffect, useState } from 'react'
-import { getIncomeData } from '../../../assets/cdn-data'
-import { amount, lfl, ratio } from '../../../assets/format'
+import { getIncomeData } from '../../../../assets/src/cdn-data'
+import { amount, lfl, ratio } from '../../../../assets/src/format'
 import MinimumPivotTableDesigner from '../MinimumPivotTableDesigner'
 
 export default { title: '交叉与透视 / 示例 / 简易透视表' }

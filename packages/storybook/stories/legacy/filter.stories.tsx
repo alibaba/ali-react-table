@@ -13,7 +13,7 @@ import {
 } from 'ali-react-table'
 import _ from 'lodash'
 import React, { ReactNode, useRef, useState } from 'react'
-import { cols, useCityDataSource } from '../../assets/ncov19-assets'
+import { cols, useCityDataSource } from '../../../assets/src/ncov19-assets'
 
 export default { title: '示例 / 表格交互 / 筛选' }
 

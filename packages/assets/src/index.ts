@@ -1,5 +1,5 @@
 export { AntdBaseTable } from './AntdBaseTable'
-export * as cndData from './cdn-data'
+export * as cdnData from './cdn-data'
 export * as format from './format'
 export { HippoBaseTable } from './HippoBaseTable'
 export * as biz from './biz-assets'
@@ -13,3 +13,4 @@ export {
   AntdStyles,
   HippoStyles,
 } from './theme-helpers'
+export { MockTreeDataService } from './MockDataService'

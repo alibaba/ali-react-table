@@ -1,7 +1,7 @@
 import { BaseTable } from 'ali-react-table'
 import React from 'react'
 import styled from 'styled-components'
-import { amount, lfl } from '../../../assets/format'
+import { amount, lfl } from '../../../../assets/src/format'
 
 export default { title: '业务示例 / 商品排行榜' }
 

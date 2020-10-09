@@ -1,4 +1,4 @@
-import { BaseTableThemeContext } from '../assets/theme-helpers'
+import { BaseTableThemeContext } from 'assets/src/index'
 import React from 'react'
 
 export const globalTypes = {

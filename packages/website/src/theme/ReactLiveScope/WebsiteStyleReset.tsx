@@ -271,7 +271,7 @@ const FusionStylePart2 = styled.globalStyle`
 `
 
 /** 重置 fusion 样式给文档网站带来的影响 */
-export function FusionStyleReset() {
+export function WebsiteStyleReset() {
   return (
     <>
       <FusionStylePart1 />

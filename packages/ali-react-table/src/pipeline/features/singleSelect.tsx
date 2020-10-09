@@ -4,14 +4,29 @@ import { internals } from '../../internals'
 import { TablePipeline } from '../pipeline'
 
 export interface SingleSelectFeatureOptions {
+  /** 是否高亮被选中的行 */
   highlightRowWhenSelected?: boolean
+
+  /** 非受控用法：默认选中的值 */
   defaultValue?: string
+
+  /** 受控用法：当前选中的值 */
   value?: string
+
+  /** 受控用法：选中值改变回调 */
   onChange?: (next: string) => void
+
+  /** 判断一行是否禁用 */
   isDisabled?(row: any): boolean
-  clickArea?: 'checkbox' | 'cell' | 'row'
-  checkboxColumn?: Partial<ArtColumn> // todo radioColumn
-  checkboxPlacement?: 'start' | 'end'
+
+  /** 点击事件的响应区域 */
+  clickArea?: 'radio' | 'cell' | 'row'
+
+  /** 单选框所在列的 column 配置，可指定 width，lock 等属性 */
+  radioColumn?: Partial<ArtColumn>
+
+  /** 单选框所在列的位置 */
+  radioPlacement?: 'start' | 'end'
 }
 
 export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
@@ -22,7 +37,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
     }
 
     const stateKey = 'singleSelect'
-    const clickArea = opts.clickArea ?? 'checkbox'
+    const clickArea = opts.clickArea ?? 'radio'
     const isDisabled = opts.isDisabled ?? (() => false)
 
     const primaryKey = pipeline.ensurePrimaryKey('singleSelect')
@@ -32,11 +47,11 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
       pipeline.setStateAtKey(stateKey, rowKey)
     }
 
-    const checkboxColumn: ArtColumn = {
+    const radioColumn: ArtColumn = {
       name: '',
       width: 50,
       align: 'center',
-      ...opts.checkboxColumn,
+      ...opts.radioColumn,
       getCellProps(value: any, row: any, rowIndex: number): CellProps {
         if (clickArea === 'cell') {
           const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
@@ -52,7 +67,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
           <Radio
             checked={value === rowKey}
             disabled={isDisabled(row)}
-            onChange={clickArea === 'checkbox' ? () => onChange(rowKey) : undefined}
+            onChange={clickArea === 'radio' ? () => onChange(rowKey) : undefined}
           />
         )
       },
@@ -60,11 +75,11 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
 
     const nextColumns = pipeline.getColumns().slice()
 
-    const checkboxPlacement = opts.checkboxPlacement ?? 'start'
-    if (checkboxPlacement === 'start') {
-      nextColumns.unshift(checkboxColumn)
+    const radioPlacement = opts.radioPlacement ?? 'start'
+    if (radioPlacement === 'start') {
+      nextColumns.unshift(radioColumn)
     } else {
-      nextColumns.push(checkboxColumn)
+      nextColumns.push(radioColumn)
     }
 
     pipeline.columns(nextColumns)

@@ -3,10 +3,10 @@ import { ArtColumn, CellProps, SpanRect } from 'ali-react-table'
 import cx from 'classnames'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { amount, time } from '../../assets/format'
-import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../../assets/biz-assets'
-import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import { ThemedBaseTable } from '../../assets/theme-helpers'
+import { amount, time } from '../../../assets/src/format'
+import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../../../assets/src/biz-assets'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../../assets/src/ncov19-assets'
+import { ThemedBaseTable } from '../../../assets/src/theme-helpers'
 
 export default { title: 'BaseTable 示例' }
 

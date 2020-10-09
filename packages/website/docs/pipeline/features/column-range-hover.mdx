@@ -15,12 +15,7 @@ function 列高亮() {
     .input({ dataSource, columns })
     .use(features.columnRangeHover())
 
-  return (
-    <>
-      <assets.FusionStyles />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 ```
 

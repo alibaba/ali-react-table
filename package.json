@@ -10,7 +10,8 @@
   "scripts": {
     "website:start": "yarn workspace website start",
     "website:build": "yarn workspace website build",
-    "storybook:start": "yarn workspace storybook start"
+    "storybook:start": "yarn workspace storybook start",
+    "storybook:build": "yarn workspace storybook build"
   },
   "repository": {
     "type": "git",

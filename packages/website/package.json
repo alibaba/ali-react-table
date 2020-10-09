@@ -5,7 +5,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build",
+    "build": "docusaurus build --no-minify",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve"
@@ -17,7 +17,6 @@
     "@docusaurus/theme-live-codeblock": "2.0.0-alpha.65",
     "@mdx-js/react": "^1.5.8",
     "clsx": "^1.1.1",
-    "csv-parse": "^4.12.0",
     "moment": "^2.29.1",
     "numeral": "^2.0.6",
     "react": "^16.8.4",

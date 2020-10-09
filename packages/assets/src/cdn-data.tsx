@@ -1,4 +1,3 @@
-import parse from 'csv-parse/lib/sync'
 import React from 'react'
 
 const cdnLinks = {
@@ -10,7 +9,7 @@ const cdnLinks = {
 let appTrafficCache: Promise<any[]> = null
 export function getAppTrafficData() {
   if (!appTrafficCache) {
-    appTrafficCache = fetch(cdnLinks.mockBizData).then(res => res.json())
+    appTrafficCache = fetch(cdnLinks.mockBizData).then((res) => res.json())
   }
   return appTrafficCache
 }
@@ -18,7 +17,7 @@ export function getAppTrafficData() {
 let incomeCache: Promise<any[]> = null
 export function getIncomeData() {
   if (!incomeCache) {
-    incomeCache = fetch(cdnLinks.mockSellData).then(res => res.json())
+    incomeCache = fetch(cdnLinks.mockSellData).then((res) => res.json())
   }
   return incomeCache
 }
@@ -43,13 +42,27 @@ let ncov2019Cache: Promise<any[]> = null
 export function getNCoV2019Data() {
   if (!ncov2019Cache) {
     ncov2019Cache = fetch(cdnLinks.ncov2019Data)
-      .then(res => res.text())
-      .then<NCoV2019Item[]>(csvString =>
-        parse(csvString, {
-          columns: true,
-          skip_empty_lines: true,
-        }),
-      )
+      .then((res) => res.text())
+      .then<NCoV2019Item[]>((csvString) => {
+        // 手动解析 csv，鲁棒性非常差
+        const allStrRows = csvString.split('\n')
+        const head = allStrRows[0]
+        const body = allStrRows.slice(1)
+        const keys = head.split(',')
+        const result: any[] = []
+        for (const strRow of body) {
+          if (strRow === '') {
+            continue
+          }
+          const values = strRow.split(',')
+          const row: any = {}
+          keys.forEach((k, i) => {
+            row[k] = values[i]
+          })
+          result.push(row)
+        }
+        return result
+      })
   }
   return ncov2019Cache
 }

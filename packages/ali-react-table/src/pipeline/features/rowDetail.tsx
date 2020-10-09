@@ -8,11 +8,22 @@ import { flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
 export interface RowDetailFeatureOptions {
+  /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
+
+  /** 受控用法：当前展开的 keys */
   openKeys?: string[]
+
+  /** 受控用法：openKeys 改变的回调 */
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
-  renderDetail?(record: any): ReactNode
-  getDetailKey?(record: any): string
+
+  /** 详情单元格的渲染方法 */
+  renderDetail?(row: any): ReactNode
+
+  /** 获取详情单元格所在行的 key，默认为 `(row) => row[primaryKey] + '_detail'` */
+  getDetailKey?(row: any): string
+
+  /** 详情单元格 td 的额外样式 */
   detailCellStyle?: React.CSSProperties
 }
 
@@ -65,13 +76,13 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       const columnFlatCount = collectNodes(columns, 'leaf-only').length
       const [firstCol, ...others] = columns
 
-      const render = (value: any, record: any, recordIndex: number) => {
-        if (record[rowDetailSymbol]) {
-          return renderDetail(record)
+      const render = (value: any, row: any, rowIndex: number) => {
+        if (row[rowDetailSymbol]) {
+          return renderDetail(row)
         }
 
-        const content = internals.safeRender(firstCol, record, recordIndex)
-        const expanded = openKeySet.has(record[primaryKey])
+        const content = internals.safeRender(firstCol, row, rowIndex)
+        const expanded = openKeySet.has(row[primaryKey])
 
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
@@ -88,8 +99,8 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         )
       }
 
-      const getCellProps = (value: any, record: any, recordIndex: number) => {
-        if (record[rowDetailSymbol]) {
+      const getCellProps = (value: any, row: any, rowIndex: number) => {
+        if (row[rowDetailSymbol]) {
           return {
             style: {
               '--bgcolor': '#fbfbfb',
@@ -100,7 +111,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
           }
         }
 
-        const rowKey = record[primaryKey]
+        const rowKey = row[primaryKey]
         const expanded = openKeySet.has(rowKey)
 
         let onClick: any
@@ -117,7 +128,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
           }
         }
-        const prevProps = firstCol.getCellProps?.(value, record, recordIndex)
+        const prevProps = firstCol.getCellProps?.(value, row, rowIndex)
         return mergeCellProps(prevProps, { onClick, style: { cursor: 'pointer' } })
       }
 
@@ -136,8 +147,8 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
           ),
           render,
           getCellProps,
-          getSpanRect(value: any, record: any, rowIndex: number) {
-            if (record[rowDetailSymbol]) {
+          getSpanRect(value: any, row: any, rowIndex: number) {
+            if (row[rowDetailSymbol]) {
               // detail 总是成一行
               return { top: rowIndex, bottom: rowIndex + 1, left: 0, right: columnFlatCount }
             }

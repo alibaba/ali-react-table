@@ -3,29 +3,4 @@ id: single-select
 title: 单选
 ---
 
-```jsx
-function 树形表格() {
-  const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])
-  const pipeline = useTablePipeline()
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(features.treeMode({ openKeys, onChangeOpenKeys }))
-
-  const allParentKeys = collectNodes(dataSource4, 'pre')
-    .filter((row) => !isLeafNode(row))
-    .map((row) => row.id)
-
-  return (
-    <div>
-      <Button.Group>
-        <Button onClick={() => onChangeOpenKeys(allParentKeys)}>展开全部</Button>
-        <Button onClick={() => onChangeOpenKeys([])}>收拢全部</Button>
-      </Button.Group>
-      <p>
-        openKeys: {openKeys.join(', ')} {openKeys.length === 0 && '[空]'}
-      </p>
-      <BaseTable {...pipeline.getProps()} />
-    </div>
-  )
-}
-```
+todo

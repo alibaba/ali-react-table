@@ -5,4 +5,11 @@ export { HippoBaseTable } from './HippoBaseTable'
 export * as biz from './biz-assets'
 export * as ncov19 from './ncov19-assets'
 export { RadioButtonGroup } from './RadioButtonGroup'
-export { BaseTable, useTablePipeline, BaseTableThemeContext, WithCSS } from './theme-helpers'
+export {
+  ThemedBaseTable,
+  useThemedTablePipeline,
+  BaseTableThemeContext,
+  FusionStyles,
+  AntdStyles,
+  HippoStyles,
+} from './theme-helpers'

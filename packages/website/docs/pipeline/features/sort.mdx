@@ -3,29 +3,93 @@ id: sort
 title: 排序
 ---
 
-```jsx
-function 树形表格() {
-  const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])
-  const pipeline = useTablePipeline()
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(features.treeMode({ openKeys, onChangeOpenKeys }))
+对表格数据行进行排序，支持单列排序、多列排序、树形数据排序、自定义比较函数等功能。
 
-  const allParentKeys = collectNodes(dataSource4, 'pre')
-    .filter((row) => !isLeafNode(row))
-    .map((row) => row.id)
+### 基本示例
+
+```jsx live
+function 表格排序() {
+  const dataSource = assets.biz.dataSource3
+  const columns = [
+    { code: 'name', name: '公司名称', width: 200, features: { sortable: true } },
+    { code: 'entity', name: '支付实体', width: 160 },
+    { code: 'dept', name: '金融机构', width: 160, features: { sortable: true } },
+    { code: 'applier', name: '申请人', width: 160, features: { sortable: true } },
+  ]
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .use(
+      features.sort({
+        mode: 'single',
+        defaultSorts: [{ code: 'applier', order: 'asc' }],
+        highlightColumnWhenActive: true,
+      }),
+    )
 
   return (
-    <div>
-      <Button.Group>
-        <Button onClick={() => onChangeOpenKeys(allParentKeys)}>展开全部</Button>
-        <Button onClick={() => onChangeOpenKeys([])}>收拢全部</Button>
-      </Button.Group>
-      <p>
-        openKeys: {openKeys.join(', ')} {openKeys.length === 0 && '[空]'}
-      </p>
+    <>
+      <assets.FusionStyles />
       <BaseTable {...pipeline.getProps()} />
-    </div>
+    </>
   )
 }
 ```
+
+### 用法
+
+- 设置 `column.features.sortable` 来启用该列的排序
+  - 注意默认情况下，列都是不可排序的
+  - 设置 sortable=true 表示启用默认的比较函数（字符串使用字典序，数字使用自然序），设置 sortable=function 表示使用自定义的比较函数。
+- 该 transform 会根据 options.sorts 来排序 dataSource
+  - options.mode=multiple （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
+  - options.mode=single 时表现为单字段排序
+  - 无论是多字段还是单字段排序，**options.sorts 始终为一个数组**
+
+```jsx
+pipeline.use(features.sort(options))
+```
+
+options 结构如下：
+
+```typescript
+export interface SortOptions {
+  /** 排序字段列表 */
+  sorts: SortItem[]
+
+  /** 更新排序字段列表的回调函数 */
+  onChangeSorts(nextSorts: SortItem[]): void
+
+  /** 排序切换顺序 */
+  orders?: SortOrder[]
+
+  /** 排序模式。单选 single，多选 multiple，默认为多选 */
+  mode?: 'single' | 'multiple'
+
+  /** 自定义排序表头 */
+  SortHeaderCell?: React.ComponentType<SortHeaderCellProps>
+
+  /** 是否保持 dataSource 不变 */
+  keepDataSource?: boolean
+
+  /** 排序激活时 是否高亮这一列的单元格 */
+  highlightColumnWhenActive?: boolean
+
+  // todo 排序点击触发位置
+  //  clickArea
+}
+
+export type SortOrder = 'desc' | 'asc' | 'none'
+
+export type SortItem = { code: string; order: SortOrder }
+```
+
+### 多列排序
+
+### 树形数据排序
+
+features.sort 默认就支持了树形数据排序，即对于树中的某一个父节点，对其子节点进行排序。但使用时注意 feature 的使用顺序。
+
+todo demo
+
+### 自定义排序函数

@@ -13,6 +13,8 @@ const DarkBaseTable = styled(art.BaseTable)`
   --header-bgcolor: #45494f;
   --hover-color: #46484a;
   --hover-bgcolor: #46484a;
+  --highlight-bgcolor: #191a1b;
+  --header-highlight-bgcolor: #191a1b;
   --color: #dadde1;
   --header-color: #dadde1;
   --lock-shadow: rgba(200, 200, 200, 0.1) 0 0 6px 2px;
@@ -27,6 +29,23 @@ const ThemedBaseTable = React.forwardRef((props, ref) => {
   return <Table ref={ref} {...props} />
 })
 
+const DetailDiv = styled.div`
+  display: flex;
+  min-width: 800px;
+
+  p:first-child {
+    margin-top: 0;
+  }
+  p {
+    margin: 0;
+    line-height: 20px;
+  }
+
+  .right {
+    margin-left: 48px;
+  }
+`
+
 const ReactLiveScope = {
   React,
   ...React,
@@ -34,9 +53,12 @@ const ReactLiveScope = {
   BaseTable: ThemedBaseTable,
   fusion,
   antd,
+  styled,
   ...fusion,
   cx,
   assets,
+
+  DetailDiv,
 }
 
 export default ReactLiveScope

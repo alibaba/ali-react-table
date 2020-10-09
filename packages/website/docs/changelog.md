@@ -3,7 +3,15 @@ id: changelog
 title: 更新日志
 ---
 
-请注意日志中的加粗部分(break change)哦 ヾ(=･ω･=)o
+:::info
+日志中的 **加粗部分** 表示破坏性更新 (break changes)，请多留意 ヾ(=･ω･=)o
+:::
+
+### unreleased
+
+- feat: emptyCellHeight， components.LoadingContentWrapper, components.LoadingIcon
+- 其他：
+  - 全新的文档网站
 
 ### v1.2 2020-09-26
 
@@ -32,7 +40,11 @@ title: 更新日志
   - 自动开启虚拟滚动的行数/列数的阈值从 80 调整为 100
   - **Break Change supportsExpand=true 且 expandKeys=null/undefined 时，convertDrillTreeToCrossTree 将直接抛出异常**
 
-### v0.14 2020-08-04
+<details>
+
+<summary style={{ margin: '16px 0', cursor: 'pointer' }}>点击展开 v0.14 的日志</summary>
+
+#### v0.14 2020-08-04
 
 [迁移指南](https://github.com/alibaba/ali-react-table/blob/master/docs/from-0.13-to-0.14.md)
 
@@ -46,6 +58,8 @@ title: 更新日志
   - 文档目录优化
   - 支持 SSR
   - 新增 mergeCellProps 方法
+
+</details>
 
 <details>
 

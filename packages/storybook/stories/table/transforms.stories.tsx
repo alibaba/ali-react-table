@@ -22,7 +22,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { getAppTrafficData } from '../../assets/cdn-data'
 import { amount, ratio, time } from '../../assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import { BaseTable, BaseTableThemeContext } from '../../assets/theme-helpers'
+import { ThemedBaseTable, BaseTableThemeContext } from '../../assets/theme-helpers'
 
 export default { title: 'transforms 功能拓展（已过时）' }
 
@@ -66,7 +66,7 @@ export function 树状表格() {
     makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
   )
 
-  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 }
 
 export function 表格排序_多列() {
@@ -101,7 +101,7 @@ export function 表格排序_多列() {
           清除排序
         </button>
       </div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }
@@ -133,7 +133,7 @@ export function 表格排序_单列() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>点击表头的排序图标对表格数据进行排序</div>
       </div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }
@@ -151,7 +151,7 @@ export function 列高亮() {
     }),
   )
 
-  return <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+  return <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
 }
 
 export function 列的范围高亮() {
@@ -238,7 +238,7 @@ export function 列的范围高亮() {
   )
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       defaultColumnWidth={120}
       dataSource={renderData.dataSource}
       columns={renderData.columns}
@@ -303,7 +303,7 @@ export function 列气泡提示() {
 
   return (
     <div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource.slice(0, 10)} columns={renderData.columns} />
+      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource.slice(0, 10)} columns={renderData.columns} />
     </div>
   )
 }
@@ -341,7 +341,7 @@ export function 树状模式与层级排序() {
     makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
-  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 }
 
 export function 单元格自动合并() {
@@ -375,7 +375,7 @@ export function 单元格自动合并() {
   )
 
   return (
-    <BaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
+    <ThemedBaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
   )
 }
 
@@ -438,7 +438,7 @@ export function 自定义样式的排序表头() {
           清除排序
         </button>
       </div>
-      <BaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }
@@ -472,7 +472,7 @@ export function 拖拽调整列宽() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
-      <BaseTable
+      <ThemedBaseTable
         className="bordered"
         isLoading={isLoading}
         dataSource={renderData.dataSource}
@@ -535,7 +535,7 @@ export function 自适应列宽_demo() {
           切换数据
         </button>
       </div>
-      <BaseTable
+      <ThemedBaseTable
         ref={tableRef}
         className="bordered"
         isLoading={isLoading}

@@ -62,7 +62,5 @@ module.exports = {
       label: '交叉与透视',
       items: ['pivot/cross-table', 'pivot/cross-tree-table', 'pivot/pivot-utils'],
     },
-
-    'doc1',
   ],
 }

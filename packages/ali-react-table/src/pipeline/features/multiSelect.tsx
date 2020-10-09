@@ -14,12 +14,24 @@ function mergeArray(arr1: string[], arr2: string[]) {
 }
 
 export interface MultiSelectFeatureOptions {
+  /** 是否高亮被选中的行 */
   highlightRowWhenSelected?: boolean
+
+  /** 非受控用法：默认选中的 keys 与 lastKey */
   defaultValue?: string[] | { keys: string[]; lastKey?: string }
+
+  /** 受控用法：当前选中的 keys 与上一次操作的 key */
   value?: string[] | { keys: string[]; lastKey?: string }
+
+  /** 受控用法：状态改变回调  */
   onChange?: (next: { keys: string[]; lastKey: string }, keys: string[], action: 'check' | 'uncheck') => void
-  checkboxColumn?: Partial<ArtColumn>
+
+  /** 复选框所在列的位置 */
   checkboxPlacement?: 'start' | 'end'
+
+  /** 复选框所在列的 column 配置，可指定 width，lock 等属性 */
+  checkboxColumn?: Partial<ArtColumn>
+
 
   // todo isDisabled, clickArea: 'checkbox' | 'cell' | 'row'
 }

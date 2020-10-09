@@ -9,6 +9,7 @@ import * as antd from 'antd'
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import { AntdBaseTable } from './AntdBaseTable'
+import { FusionStyleReset } from './fusion-style-reset'
 import { HippoBaseTable } from './HippoBaseTable'
 
 export const BaseTableThemeContext = React.createContext('default')
@@ -17,13 +18,35 @@ const fusionCSSUrl = 'https://gw.alipayobjects.com/os/lib/alifd/next/1.21.6/dist
 const hippoCSSUrl = 'https://gw.alipayobjects.com/os/lib/alife/hippo/2.12.11/dist/hippo.css'
 const antdCSSUrl = 'https://gw.alipayobjects.com/os/lib/antd/4.6.6/dist/antd.css'
 
-export const WithCSS = ({ library }: { library: string }) => (
-  <Helmet>
-    <link rel="stylesheet" href={library === 'antd' ? antdCSSUrl : library === 'hippo' ? hippoCSSUrl : fusionCSSUrl} />
-  </Helmet>
+export const AntdStyles = () => (
+  <>
+    <Helmet>
+      <link rel="stylesheet" href={antdCSSUrl} />
+    </Helmet>
+    {/* todo <AntdStyleReset />*/}
+  </>
 )
 
-export const BaseTable = React.forwardRef<_BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
+export const FusionStyles = () => (
+  <>
+    <Helmet>
+      <link rel="stylesheet" href={fusionCSSUrl} />
+    </Helmet>
+    {/* 重置 fusion 样式给文档网站带来的影响 */}
+    <FusionStyleReset />
+  </>
+)
+
+export const HippoStyles = () => (
+  <>
+    <Helmet>
+      <link rel="stylesheet" href={hippoCSSUrl} />
+    </Helmet>
+    <FusionStyleReset />
+  </>
+)
+
+export const ThemedBaseTable = React.forwardRef<_BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
   const tableTheme = useContext(BaseTableThemeContext)
 
   let Table: any = _BaseTable
@@ -36,13 +59,13 @@ export const BaseTable = React.forwardRef<_BaseTable, BaseTableProps>(function (
 
   return (
     <>
-      <WithCSS library={tableTheme} />
+      {/*<WithCSS library={tableTheme} />*/}
       <Table ref={ref} {...props} />
     </>
   )
 })
 
-export function useTablePipeline(arg?: any) {
+export function useThemedTablePipeline(arg?: any) {
   const tableTheme = useContext(BaseTableThemeContext)
 
   let indents = TablePipeline.defaultIndents
@@ -67,8 +90,5 @@ export function useTablePipeline(arg?: any) {
     }
   }
 
-  return _useTablePipeline({
-    components,
-    indents,
-  })
+  return _useTablePipeline({ components, indents })
 }

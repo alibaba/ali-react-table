@@ -3,29 +3,57 @@ id: column-range-hover
 title: 列范围高亮
 ---
 
-```jsx
-function 树形表格() {
-  const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])
-  const pipeline = useTablePipeline()
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(features.treeMode({ openKeys, onChangeOpenKeys }))
+鼠标悬停在表格上时，高亮单元格所在的列与相应的表头。
 
-  const allParentKeys = collectNodes(dataSource4, 'pre')
-    .filter((row) => !isLeafNode(row))
-    .map((row) => row.id)
+### 示例
+
+```jsx live
+function 列高亮() {
+  const dataSource = assets.biz.dataSource6
+  const columns = assets.biz.columns6
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .use(features.columnRangeHover())
 
   return (
-    <div>
-      <Button.Group>
-        <Button onClick={() => onChangeOpenKeys(allParentKeys)}>展开全部</Button>
-        <Button onClick={() => onChangeOpenKeys([])}>收拢全部</Button>
-      </Button.Group>
-      <p>
-        openKeys: {openKeys.join(', ')} {openKeys.length === 0 && '[空]'}
-      </p>
+    <>
+      <assets.FusionStyles />
       <BaseTable {...pipeline.getProps()} />
-    </div>
+    </>
   )
 }
 ```
+
+### 使用方式
+
+```jsx
+pipeline.use(features.columnRangeHover(options))
+```
+
+options 结构如下：
+
+```ts
+export interface ColumnRangeHoverFeatureOptions {
+  /** 鼠标悬停时单元格的背景色，默认为 'var(--hover-bgcolor)' */
+  hoverColor?: string
+
+  /** 鼠标悬停时表头的背景色，默认为 'var(--header-hover-bgcolor)' */
+  headerHoverColor?: string
+
+  /** 非受控用法：默认的悬停范围 */
+  defaultHoverRange?: HoverRange
+
+  /** 受控用法：当前悬停范围 */
+  hoverRange?: HoverRange
+
+  /** 受控用法：悬停渲染改变的回调 */
+  onChangeHoverRange?(nextColIndexRange: HoverRange): void
+}
+
+export type HoverRange = {
+  start: number
+  end: number
+}
+```
+
+options 也可以传一个布尔值，表示开启或关闭该功能。

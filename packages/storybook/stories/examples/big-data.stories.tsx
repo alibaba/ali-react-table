@@ -1,14 +1,14 @@
 import { ArtColumn } from 'ali-react-table'
 import React from 'react'
 import { cols, useAllDataSource } from '../../assets/ncov19-assets'
-import { BaseTable } from '../../assets/theme-helpers'
+import { ThemedBaseTable } from '../../assets/theme-helpers'
 
 export default { title: '大数据测试' }
 
 export function 滚动容器为window() {
   const { dataSource, isLoading } = useAllDataSource()
   return (
-    <BaseTable
+    <ThemedBaseTable
       isLoading={isLoading}
       dataSource={dataSource}
       columns={[
@@ -32,7 +32,7 @@ export function 滚动容器为window() {
 export function 滚动容器为指定高度的div() {
   const { dataSource, isLoading } = useAllDataSource()
   return (
-    <BaseTable
+    <ThemedBaseTable
       style={{ height: 400, overflow: 'auto' }}
       useOuterBorder
       isLoading={isLoading}
@@ -66,7 +66,7 @@ export function 双向虚拟滚动() {
   }
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       isLoading={isLoading}
       useVirtual={true}
       dataSource={[dataSource, dataSource, dataSource, dataSource, dataSource].flat()}

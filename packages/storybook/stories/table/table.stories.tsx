@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { amount, time } from '../../assets/format'
 import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../../assets/biz-assets'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../assets/ncov19-assets'
-import { BaseTable } from '../../assets/theme-helpers'
+import { ThemedBaseTable } from '../../assets/theme-helpers'
 
 export default { title: 'BaseTable 示例' }
 
@@ -26,7 +26,7 @@ export function 基本用法() {
     { code: 'dead', name: '死亡', width: 100, align: 'right' },
     { code: 't', name: '最后更新时间', width: 180 },
   ]
-  return <BaseTable dataSource={dataSource} columns={columns} />
+  return <ThemedBaseTable dataSource={dataSource} columns={columns} />
 }
 
 export function 表格样式() {
@@ -59,7 +59,7 @@ export function 表格样式() {
           </Checkbox>
         </div>
       </div>
-      <BaseTable
+      <ThemedBaseTable
         className={cx({ compact, zebra, bordered })}
         isLoading={isLoading}
         hasHeader={hasHeader}
@@ -72,22 +72,22 @@ export function 表格样式() {
 
 export function 数据为空() {
   // 与基本表格相比，行高降低，通过较小的尺寸在屏幕中显示更多的数据，高度40px
-  return <BaseTable dataSource={[]} columns={columns2} />
+  return <ThemedBaseTable dataSource={[]} columns={columns2} />
 }
 
 export function 空数据加载() {
-  return <BaseTable isLoading dataSource={[]} columns={columns2} />
+  return <ThemedBaseTable isLoading dataSource={[]} columns={columns2} />
 }
 
 export function 表格数据加载() {
-  return <BaseTable isLoading dataSource={dataSource2} columns={columns2} />
+  return <ThemedBaseTable isLoading dataSource={dataSource2} columns={columns2} />
 }
 
 export function 左侧锁列() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       style={{ width: 500, height: 300, overflow: 'auto' }}
       useOuterBorder
       isLoading={isLoading}
@@ -109,7 +109,7 @@ export function 左侧与右侧锁列() {
 
   // 注意为表格设置 style.overflow = 'auto' 之后，必须同时设置 style.height 或 style.maxHeight
   return (
-    <BaseTable
+    <ThemedBaseTable
       style={{ width: 600, height: 400, overflow: 'auto' }}
       isLoading={isLoading}
       useOuterBorder
@@ -140,7 +140,7 @@ export function 表头吸顶() {
       >
         <div>表格操作栏，这里适合放置一些功能按钮</div>
       </div>
-      <BaseTable isStickyHead stickyTop={48} isLoading={isLoading} dataSource={dataSource} columns={testProvColumns} />
+      <ThemedBaseTable isStickyHead stickyTop={48} isLoading={isLoading} dataSource={dataSource} columns={testProvColumns} />
     </div>
   )
 }
@@ -149,7 +149,7 @@ export function 自定义表头单元格样式() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       isLoading={isLoading}
       dataSource={dataSource.slice(0, 5)}
       columns={[
@@ -186,7 +186,7 @@ export function 表格吸底() {
 
   return (
     <div>
-      <BaseTable
+      <ThemedBaseTable
         isStickyHead
         stickyBottom={48}
         isLoading={isLoading}
@@ -218,7 +218,7 @@ export function 列分组() {
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       isLoading={isLoading}
       dataSource={dataSource}
       columns={[
@@ -270,7 +270,7 @@ export function 单元格合并() {
       },
     },
   ]
-  return <BaseTable defaultColumnWidth={100} dataSource={dataSource} columns={columns} />
+  return <ThemedBaseTable defaultColumnWidth={100} dataSource={dataSource} columns={columns} />
 }
 
 export function 虚拟滚动与单元格合并() {
@@ -289,7 +289,7 @@ export function 虚拟滚动与单元格合并() {
   })
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       isLoading={isLoading}
       dataSource={dataSource.slice(0, 3).flatMap((d) => d.children)}
       useVirtual={true}
@@ -375,7 +375,7 @@ export function 自定义单元格样式() {
         </div>
       </div>
 
-      <BaseTable isLoading={isLoading} dataSource={dataSource} columns={columns} />
+      <ThemedBaseTable isLoading={isLoading} dataSource={dataSource} columns={columns} />
     </div>
   )
 }
@@ -386,7 +386,7 @@ export function 自定义表格行props() {
   const [lastClickRowIndex, setLastClickRowIndex] = useState(2)
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       style={{
         '--bgcolor': 'transparent',
       }}
@@ -431,7 +431,7 @@ export function 限定表格容器大小() {
   ]
 
   return (
-    <BaseTable
+    <ThemedBaseTable
       style={{ width: 800, height: 385, overflow: 'auto' }}
       dataSource={repeat(dataSource1, 10)}
       columns={[
@@ -454,7 +454,7 @@ export function 限定表格容器大小() {
 
 export function 不限定表格容器大小() {
   return (
-    <BaseTable
+    <ThemedBaseTable
       dataSource={repeat(dataSource1, 10)}
       columns={[
         {
@@ -573,7 +573,7 @@ export function Props组合() {
       <p style={{ color: '#353640' }}>
         tips: 为表格设置具体的高度之后记得添加 style.overflow=auto，不然高度仍然会被内容撑开.
       </p>
-      <BaseTable
+      <ThemedBaseTable
         hasHeader={config.hasHeader}
         isLoading={isLoading || config.isLoading}
         useOuterBorder={config.useOuterBorder}

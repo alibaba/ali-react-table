@@ -3,58 +3,13 @@ id: examples
 title: 示例
 ---
 
-:::note 样式冲突
-
-<b style={{ fontSize: '150%' }}>
-  本页中的拓展功能依赖于 fusion 组件库，但引入 fusion 会影响全局样式与暗色主题，所以当前文档页的样式现在比较糟糕。
-  z得花点修复一下样式 ORZ
-</b>
+:::info fusion
+表格拓展功能依赖组件库，本页面中的示例使用了 [fusion 组件库](https://fusion.design/) 作为组件库。示例中的 `<assets.FusionStyles />` 用于动态加载 fusion 的 CSS 样式。
 :::
 
-### 树形表格
-
-```jsx live
-function 树形表格() {
-  const { dataSource4, columns4 } = assets.biz
-  const pipeline = useTablePipeline({ components: fusion })
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(features.treeMode({ defaultOpenKeys: ['4', '4-2'] }))
-
-  return (
-    <>
-      <assets.WithCSS library="fusion" />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
-}
-```
-
-### 行多选
-
-```jsx live
-function 行多选() {
-  const { dataSource4, columns4 } = assets.biz
-
-  const pipeline = useTablePipeline({ components: fusion })
-    .input({ dataSource: dataSource4, columns: columns4 })
-    .primaryKey('id')
-    .use(
-      features.multiSelect({
-        highlightRowWhenSelected: true,
-        defaultValue: { keys: ['1', '2'], lastKey: '1' },
-      }),
-    )
-
-  return (
-    <>
-      <p>按下 shift 来选择多行</p>
-      <assets.WithCSS library="fusion" />
-      <BaseTable {...pipeline.getProps()} />
-    </>
-  )
-}
-```
+:::caution 暗色模式
+因为 fusion 对暗色模式的兼容性不佳，推荐使用亮色模式浏览当前页面。
+:::
 
 ### 行单选
 
@@ -76,7 +31,7 @@ function 行单选() {
 
   return (
     <>
-      <assets.WithCSS library="fusion" />
+      <assets.FusionStyles />
       <BaseTable {...pipeline.getProps()} />
     </>
   )
@@ -104,7 +59,39 @@ function 行展开() {
 
   return (
     <>
-      <assets.WithCSS library="fusion" />
+      <assets.FusionStyles />
+      <BaseTable {...pipeline.getProps()} />
+    </>
+  )
+}
+```
+
+
+
+### 树形可选择表格
+
+```jsx live
+function 树形可选择表格() {
+  const dataSource = assets.biz.dataSource4
+  const columns = assets.biz.columns4
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(features.treeMode())
+    .use(
+      features.treeSelect({
+        tree: dataSource,
+        rootKey: 'root',
+        defaultValue: ['1', '3'],
+        checkboxColumn: { lock: true },
+        highlightRowWhenSelected: true,
+      }),
+    )
+
+  return (
+    <>
+      <assets.FusionStyles />
       <BaseTable {...pipeline.getProps()} />
     </>
   )

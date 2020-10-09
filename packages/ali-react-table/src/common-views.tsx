@@ -1,10 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export const ExpansionCell = styled.div`
-  display: flex;
+export const InlineFlexCell = styled.div`
+  display: inline-flex;
   align-items: center;
+`
 
+export const ExpansionCell = styled(InlineFlexCell)`
   &.leaf {
     cursor: default;
   }

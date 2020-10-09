@@ -18,7 +18,7 @@ module.exports = {
           items: [
             'pipeline/features/multi-select',
             'pipeline/features/row-detail',
-            'pipeline/features/row-expand',
+            'pipeline/features/row-grouping',
             'pipeline/features/single-select',
             'pipeline/features/sort',
             'pipeline/features/tree-mode',

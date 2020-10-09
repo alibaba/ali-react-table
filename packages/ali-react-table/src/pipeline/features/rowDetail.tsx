@@ -69,6 +69,11 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         }),
       )
       .columns(processColumns(pipeline.getColumns()))
+      .appendRowPropsGetter((row) => {
+        if (row[rowDetailSymbol]) {
+          return { className: 'no-hover' }
+        }
+      })
 
     function processColumns(columns: ArtColumn[]) {
       if (columns.length === 0) {
@@ -104,8 +109,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         if (row[rowDetailSymbol]) {
           return {
             style: {
-              '--bgcolor': '#fbfbfb',
-              '--cell-padding': `8px ${textOffset}px`,
+              '--cell-padding': '0',
               overflow: 'hidden',
               ...opts.detailCellStyle,
             } as any,
@@ -137,12 +141,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         {
           ...firstCol,
           title: (
-            <div
-              style={{
-                display: 'inline-block',
-                marginLeft: textOffset,
-              }}
-            >
+            <div style={{ display: 'inline-block', marginLeft: textOffset }}>
               {internals.safeRenderHeader(firstCol)}
             </div>
           ),

@@ -173,8 +173,8 @@ export function 行展开() {
       columns: columns5,
     })
     .primaryKey('id')
-    // 受控用法：rowExpand({ openKeys, onChangeOpenKeys })
-    .use(features.rowExpand({ defaultOpenKeys: ['1', '2'] }))
+    // 受控用法：rowGrouping({ openKeys, onChangeOpenKeys })
+    .use(features.rowGrouping({ defaultOpenKeys: ['1', '2'] }))
 
   return <ThemedBaseTable {...pipeline.getProps()} />
 }

@@ -1,29 +1,32 @@
 import cx from 'classnames'
 import React from 'react'
-import { ExpansionCell, icons } from '../../common-views'
+import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, isLeafNode, mergeCellProps } from '../../utils'
 import { flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
-const rowExpandMeta = Symbol('row-expand-meta')
+const groupingMetaSymbol = Symbol('row-grouping-meta')
 
-type ExpandMeta = {
-  depth: 0 | 1
-  isLeaf: boolean
-  expanded?: boolean
+function attachGroupingMeta(row: any) {
+  return { [groupingMetaSymbol]: { expandable: !isLeafNode(row) }, ...row }
 }
 
-function rowExpandRowPropsGetter(row: any) {
-  const meta = row[rowExpandMeta]
-  if (meta.depth === 0) {
+function getGroupingMeta(row: any): { isGroupHeader: boolean; expandable: boolean } {
+  if (row[groupingMetaSymbol] == null) {
+    return { isGroupHeader: false, expandable: false }
+  }
+  return { isGroupHeader: true, expandable: row[groupingMetaSymbol].expandable }
+}
+
+function rowGroupingRowPropsGetter(row: any) {
+  if (getGroupingMeta(row).isGroupHeader) {
     return { className: 'alternative' }
   }
-  return {}
 }
 
-export interface RowExpandFeatureOptions {
+export interface RowGroupingFeatureOptions {
   /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
 
@@ -34,20 +37,20 @@ export interface RowExpandFeatureOptions {
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
 }
 
-export function rowExpand(opts: RowExpandFeatureOptions = {}) {
+export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
   return <P extends TablePipeline>(pipeline: P) => {
-    const stateKey = 'rowExpand'
+    const stateKey = 'rowGrouping'
     const indents = pipeline.ctx.indents
     const textOffset = indents.iconIndent + indents.iconWidth + indents.iconGap
 
-    const primaryKey = pipeline.ensurePrimaryKey('rowExpand') as string
+    const primaryKey = pipeline.ensurePrimaryKey('rowGrouping') as string
     if (typeof primaryKey !== 'string') {
-      throw new Error('rowExpand 仅支持字符串作为 primaryKey')
+      throw new Error('rowGrouping 仅支持字符串作为 primaryKey')
     }
     const openKeys: string[] = opts.openKeys ?? pipeline.state[stateKey] ?? opts.defaultOpenKeys ?? []
     const openKeySet = new Set(openKeys)
 
-    const onChangeOpenKeys: RowExpandFeatureOptions['onChangeOpenKeys'] = (nextKeys, key, action) => {
+    const onChangeOpenKeys: RowGroupingFeatureOptions['onChangeOpenKeys'] = (nextKeys, key, action) => {
       opts.onChangeOpenKeys?.(nextKeys, key, action)
       pipeline.setStateAtKey(stateKey, nextKeys, { key, action })
     }
@@ -55,25 +58,20 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
     return pipeline
       .mapDataSource(processDataSource)
       .mapColumns(processColumns)
-      .appendRowPropsGetter(rowExpandRowPropsGetter)
+      .appendRowPropsGetter(rowGroupingRowPropsGetter)
 
     function processDataSource(input: any[]) {
       return flatMap(input, (row) => {
-        const isLeaf = isLeafNode(row)
-        const expanded = openKeySet.has(row[primaryKey])
+        let result = [attachGroupingMeta(row)]
 
-        const parentMeta: ExpandMeta = { depth: 0, isLeaf, expanded }
-        if (isLeaf || !expanded) {
-          return [{ [rowExpandMeta]: parentMeta, ...row }]
-        } else {
-          return [
-            { [rowExpandMeta]: parentMeta, ...row },
-            ...row.children.map((child: any) => ({
-              [rowExpandMeta]: { depth: 1, isLeaf: true },
-              ...child,
-            })),
-          ]
+        const expanded = openKeySet.has(row[primaryKey])
+        if (expanded) {
+          if (Array.isArray(row.children)) {
+            result = result.concat(row.children)
+          }
         }
+
+        return result
       })
     }
 
@@ -84,42 +82,40 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
       const columnFlatCount = collectNodes(columns, 'leaf-only').length
       const [firstCol, ...others] = columns
 
-      const render = (value: any, record: any, recordIndex: number) => {
-        const content = internals.safeRender(firstCol, record, recordIndex)
-        if (record[rowExpandMeta] == null) {
-          // 没有 meta 信息的话，就返回原先的渲染结果
-          return content
+      const render = (value: any, row: any, rowIndex: number) => {
+        const content = internals.safeRender(firstCol, row, rowIndex)
+        const meta = getGroupingMeta(row)
+        if (!meta.isGroupHeader || !meta.expandable) {
+          const marginLeft = textOffset + (meta.isGroupHeader ? 0 : indents.indentSize)
+          return <InlineFlexCell style={{ marginLeft }}>{content}</InlineFlexCell>
         }
 
-        const { depth, isLeaf, expanded } = record[rowExpandMeta] as ExpandMeta
-
-        if (isLeaf) {
-          return (
-            <ExpansionCell className="expansion-cell leaf">
-              <span style={{ marginLeft: textOffset }}>{content}</span>
-            </ExpansionCell>
-          )
-        }
-
-        const marginLeft = indents.iconIndent + depth * indents.indentSize
+        const expanded = openKeySet.has(row[primaryKey])
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
           <ExpansionCell className={cx('expansion-cell', expandCls)}>
             <icons.CaretRight
               className={cx('expansion-icon', expandCls)}
-              style={{ marginLeft, marginRight: indents.iconGap }}
+              style={{ marginLeft: indents.iconIndent, marginRight: indents.iconGap }}
             />
-            {content}
+            {row.groupTitle ?? content}
           </ExpansionCell>
         )
       }
 
-      const getCellProps = (value: any, record: any, rowIndex: number) => {
-        const { isLeaf, expanded } = record[rowExpandMeta] as ExpandMeta
-        const rowKey = record[primaryKey]
+      const getCellProps = (value: any, row: any, rowIndex: number) => {
+        const meta = getGroupingMeta(row)
+        if (!meta.isGroupHeader) {
+          return
+        }
+
+        const { expandable } = meta
+
+        const rowKey = row[primaryKey]
+        const expanded = openKeySet.has(rowKey)
 
         let onClick: any
-        if (!isLeaf) {
+        if (expandable) {
           if (expanded) {
             onClick = () => {
               onChangeOpenKeys(
@@ -135,10 +131,10 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
           }
         }
 
-        const prevProps = firstCol.getCellProps?.(value, record, rowIndex)
+        const prevProps = firstCol.getCellProps?.(value, row, rowIndex)
         return mergeCellProps(prevProps, {
           onClick,
-          style: { cursor: isLeaf ? undefined : 'pointer' },
+          style: { cursor: expandable ? 'pointer' : undefined },
         })
       }
 
@@ -152,8 +148,8 @@ export function rowExpand(opts: RowExpandFeatureOptions = {}) {
           ),
           render,
           getCellProps,
-          getSpanRect(value: any, record: any, rowIndex: number) {
-            if (record[rowExpandMeta].depth === 0) {
+          getSpanRect(value: any, row: any, rowIndex: number) {
+            if (getGroupingMeta(row).isGroupHeader) {
               return { top: rowIndex, bottom: rowIndex + 1, left: 0, right: columnFlatCount }
             }
           },

@@ -17,7 +17,7 @@ function 行详情() {
         defaultOpenKeys: ['2'],
         renderDetail(row) {
           return (
-            <docHelpers.DetailDiv>
+            <docHelpers.DetailDiv style={{ margin: 8 }}>
               <div className="left">
                 <p>最近工作：高级经理｜{row.dept}｜2009-07-01 至今</p>
                 <p>工作职责：巴拉巴拉小魔仙</p>
@@ -86,7 +86,7 @@ function 表格嵌套() {
         renderDetail() {
           return (
             <BaseTable
-              style={{ boxShadow: '0 0 4px 1px #33333333' }}
+              style={{ boxShadow: '0 0 4px 1px #33333333', margin: 8 }}
               hasHeader={false}
               className="bordered compact"
               dataSource={dataSource}
@@ -121,7 +121,7 @@ function NestedTableExample({ depth = 0 }) {
     }
 
     return (
-      <div>
+      <div style={{ margin: 8 }}>
         {msg}
         <NestedTableExample depth={depth + 1} />
       </div>

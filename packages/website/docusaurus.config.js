@@ -41,8 +41,7 @@ module.exports = {
         {
           title: '文档',
           items: [
-            { /* todo*/ label: 'Style Guide', to: 'docs/' },
-            { label: 'Second Doc', to: 'docs/doc2/' },
+            { label: '表格示例', to: 'docs/table/examples' },
             { label: '更新日志', to: 'docs/changelog' },
           ],
         },

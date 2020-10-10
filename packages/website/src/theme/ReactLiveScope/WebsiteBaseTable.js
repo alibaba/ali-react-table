@@ -14,7 +14,7 @@ const darkThemeMixin = css`
   --header-highlight-bgcolor: #191a1b;
   --color: #dadde1;
   --header-color: #dadde1;
-  --lock-shadow: rgba(200, 200, 200, 0.1) 0 0 6px 2px;
+  --lock-shadow: rgb(37 37 37 / 0.5) 0 0 6px 2px;
   --border-color: #3c4045;
 `
 

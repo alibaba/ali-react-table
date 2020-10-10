@@ -38,7 +38,7 @@ function 行展开() {
     .primaryKey('id')
     .use(features.rowGrouping({ defaultOpenKeys: ['alibaba'] }))
 
-  return <WebsiteBaseTable {...pipeline.getProps()} />
+  return <BaseTable {...pipeline.getProps()} />
 }
 ```
 

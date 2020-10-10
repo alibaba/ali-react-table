@@ -35,6 +35,6 @@ function Example() {
     .use(features.sort({ mode: 'single', defaultSorts: [{ code: 'provinceName', order: 'desc' }] }))
     .use(features.autoRowSpan())
 
-  return <WebsiteBaseTable defaultColumnWidth={100} isLoading={isLoading} {...pipeline.getProps()} />
+  return <BaseTable defaultColumnWidth={100} isLoading={isLoading} {...pipeline.getProps()} />
 }
 ```

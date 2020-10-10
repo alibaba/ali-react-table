@@ -128,14 +128,7 @@ export function 表格排序_单列() {
     }),
   )
 
-  return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
-        <div style={{ marginLeft: 8 }}>点击表头的排序图标对表格数据进行排序</div>
-      </div>
-      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
-    </div>
-  )
+  return <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
 }
 
 export function 列高亮() {
@@ -303,7 +296,11 @@ export function 列气泡提示() {
 
   return (
     <div>
-      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource.slice(0, 10)} columns={renderData.columns} />
+      <ThemedBaseTable
+        isLoading={isLoading}
+        dataSource={renderData.dataSource.slice(0, 10)}
+        columns={renderData.columns}
+      />
     </div>
   )
 }
@@ -341,7 +338,14 @@ export function 树状模式与层级排序() {
     makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
-  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return (
+    <ThemedBaseTable
+      defaultColumnWidth={100}
+      dataSource={renderData.dataSource}
+      columns={renderData.columns}
+      isLoading={state.isLoading}
+    />
+  )
 }
 
 export function 单元格自动合并() {
@@ -375,7 +379,12 @@ export function 单元格自动合并() {
   )
 
   return (
-    <ThemedBaseTable isLoading={isLoading} useOuterBorder dataSource={renderData.dataSource} columns={renderData.columns} />
+    <ThemedBaseTable
+      isLoading={isLoading}
+      useOuterBorder
+      dataSource={renderData.dataSource}
+      columns={renderData.columns}
+    />
   )
 }
 

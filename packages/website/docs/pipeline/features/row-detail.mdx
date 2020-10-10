@@ -33,7 +33,7 @@ function 行详情() {
       }),
     )
 
-  return <WebsiteBaseTable {...pipeline.getProps()} />
+  return <BaseTable {...pipeline.getProps()} />
 }
 ```
 
@@ -97,7 +97,7 @@ function 表格嵌套() {
       }),
     )
 
-  return <WebsiteBaseTable {...pipeline.getProps()} />
+  return <BaseTable {...pipeline.getProps()} />
 }
 ```
 
@@ -136,6 +136,6 @@ function NestedTableExample({ depth = 0 }) {
     .primaryKey('id')
     .use(features.rowDetail({ renderDetail }))
 
-  return <WebsiteBaseTable isStickyHead={false} {...pipeline.getProps()} />
+  return <BaseTable isStickyHead={false} {...pipeline.getProps()} />
 }
 ```

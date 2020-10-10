@@ -49,7 +49,6 @@ module.exports = {
             'transforms/others',
           ],
         },
-        'transforms/examples',
       ],
     },
     {

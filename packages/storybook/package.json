@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@types/classnames": "^2.2.9",
+    "@types/react-inspector": "^4.0.1",
     "classnames": "^2.2.6",
     "react": "^16.9.0",
+    "react-inspector": "^5.1.0",
     "rxjs": "^6.5.4",
     "styled-components": "^3.4.10 || ^5.0.1"
   },
@@ -52,7 +54,6 @@
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-is": "^16.13.0",
-    "react-json-view": "^1.19.1",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "xlsx": "^0.16.0"
   }

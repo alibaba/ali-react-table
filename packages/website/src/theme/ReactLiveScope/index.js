@@ -17,10 +17,11 @@ const ReactLiveScope = {
   art,
   ...art,
 
-  WebsiteBaseTable,
-  BaseTable: WebsiteBaseTable,
   assets,
   docHelpers,
+
+  // 在网站中用 WebsiteBaseTable 代替 BaseTable，使得表格支持暗色模式
+  BaseTable: WebsiteBaseTable,
 }
 
 export default ReactLiveScope

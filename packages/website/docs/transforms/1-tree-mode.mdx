@@ -3,7 +3,7 @@ id: tree-mode
 title: 树状模式
 ---
 
-本页文档将介绍 ali-react-table 提供的树状模式的相关 API。本页中的示例源码可在 <LinkTo kind="表格 / 常用功能示例" story="树状表格">表格-常用功能示例</LinkTo> 查看。
+本页文档将介绍 ali-react-table 提供的树状模式的相关 API。
 
 ## buildTree 从列表数据中构建树状数据
 
@@ -65,24 +65,44 @@ function MyComponent() {
 
 ## 基本示例
 
-<Canvas>
-  <Story id="表格-常用功能示例--树状表格" />
-</Canvas>
+```jsx live
+function 树状表格() {
+  const { ratio } = assets.format
+  // prettier-ignore
+  const dataSource = [
+    { id: '114', parent_id: '310100', name: '上海交通大学分店', shop: '上海交通大学分店', pct: 0.33, pbt: '33.33元/件', amt: 33, },
+    { id: '113', parent_id: '110100', name: '北京大学分店', shop: '北京大学分店', pct: 0.11, pbt: '11.11元/件', amt: 11, },
+    { id: '110100', parent_id: 'B2C', name: '北京市', shop: '整体-北京市', pct: 0.33, pbt: '33.33元/件', amt: 33 },
+    { id: '510100', parent_id: 'B2C', name: '成都市', shop: '整体-成都市', pct: 0.44, pbt: '44.44元/件', amt: 44 },
+    { id: 'B2CCDLD', parent_id: '510100', name: '成都成都成都', shop: '成都成都成都', pct: 0.11, pbt: '11.11元/件', amt: 11 },
+    { id: '115', parent_id: '440100', name: '中山大学分店', shop: '中山大学分店', pct: 0.22, pbt: '22.22元/件', amt: 22, },
+    { id: '111', parent_id: '310100', name: '复旦大学分店', shop: '复旦大学分店', pct: 0.44, pbt: '44.44元/件', amt: 44, },
+    { id: 'B2C', parent_id: 'root', name: '盒马云超', shop: '整体-盒马云超', pct: 0.22, pbt: '22.22元/件', amt: 22 },
+    { id: '440100', parent_id: 'B2C', name: '广州市', shop: '整体-广州市', pct: 0.22, pbt: '22.22元/件', amt: 22 },
+    { id: '310100', parent_id: 'B2C', name: '上海市', shop: '整体-上海市', pct: 0.11, pbt: '11.11元/件', amt: 11 },
+    { id: '116', parent_id: '440100', name: '深圳深圳深圳', shop: '深圳深圳深圳', pct: 0.22, pbt: '22.22元/件', amt: 22, },
+    { id: '88', parent_id: '310100', name: '上海上海上海', shop: '上海上海上海', pct: 0.11, pbt: '11.11元/件', amt: 11, },
+  ]
+  const columns = [
+    { code: 'name', name: '数据维度', lock: true, width: 200 },
+    { code: 'shop', name: '门店' },
+    { code: 'pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
+    { code: 'pbt', name: 'APP件单价', align: 'right' },
+    { code: 'amt', name: 'APP成交金额汇总', align: 'right' },
+  ]
 
-## 进阶用法 —— 异步数据加载
+  const [openKeys, onChangeOpenKeys] = useState(['B2C'])
 
-异步数据加载场景下，因为此时前端只有整棵树中一小部分的数据，我们必须主动告诉表格哪些节点是父节点（可被展开），哪些节点是子节点（不可被展开）。设置 `TreeModeOptions#isLeafNode` 覆盖默认的子节点判断方式，并在 `TreeModeOptions#onChangeOpenKeys` 中根据展开的节点判断是否需要加载更多数据，可以实现树状模式下异步数据加载功能。
+  // 注意 renderData 要用起来
+  const renderData = applyTransforms(
+    { columns, dataSource },
 
-<Canvas>
-  <Story id="表格-pipeline-功能拓展--异步树状表格" />
-</Canvas>
+    // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
+    makeBuildTreeTransform('id', 'parent_id'),
 
-## 进阶用法 —— 对上次展开位置进行标记
+    makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
+  )
 
-在 onChangeOpenKeys 记录上一次用户展开的节点的 key，并使用 getRowProps 为相应的行设置 `className="last-open"`（也设置为其他类名）。这样就可以通过 CSS 来方便的控制「上次展开的位置」的样式。
-
-表格行的 CSS 类名为 `art-table-row`（推荐使用 `Classes.tableRow` 来引用），展开/收拢图标为 `expansion-icon`
-
-<Canvas>
-  <Story id="示例-表格交互-树状表格中的最近展开标记--树状表格中的最近展开标记" />
-</Canvas>
+  return <BaseTable defaultColumnWidth={100} dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```

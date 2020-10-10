@@ -15,7 +15,7 @@ function 树形表格() {
     .primaryKey('id')
     .use(features.treeMode({ defaultOpenKeys: ['4', '4-2'] }))
 
-  return <WebsiteBaseTable {...pipeline.getProps()} />
+  return <BaseTable {...pipeline.getProps()} />
 }
 ```
 
@@ -147,7 +147,7 @@ function 异步树状表格() {
       }),
     )
 
-  return <WebsiteBaseTable defaultColumnWidth={120} isLoading={state.isLoading} {...pipeline.getProps()} />
+  return <BaseTable defaultColumnWidth={120} isLoading={state.isLoading} {...pipeline.getProps()} />
 }
 ```
 
@@ -208,7 +208,7 @@ function 树状表格中的最近展开标记() {
     })
 
   /*
-    const StyledWebsiteBaseTable = styled(art.BaseTable)`
+    const StyledBaseTable = styled(art.BaseTable)`
       tr.last-open {
         --bgcolor: rgba(128, 243, 87, 0.32);
         --hover-bgcolor: rgba(128, 243, 87, 0.32);

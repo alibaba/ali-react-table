@@ -1,8 +1,7 @@
 import { Button } from '@alifd/next'
 import { ArtColumn, collectNodes, proto } from 'ali-react-table'
 import React, { useState } from 'react'
-// todo react-json-view 不支持 ssr
-// import ReactJson from 'react-json-view'
+import Inspector from 'react-inspector'
 import { CustomColumnsDialog } from './components'
 
 export default { title: '示例 / 其他组件 / 自定义列对话框组件' }
@@ -89,18 +88,14 @@ export function 自定义列对话框组件() {
         )}
         onChangeCheckedCodes={onChangeCheckedCodes}
       />
-      {/*<ReactJson*/}
-      {/*  style={{ marginTop: 12 }}*/}
-      {/*  src={columns.map((group) => ({*/}
-      {/*    ...group,*/}
-      {/*    children: group.children.map((col) => JSON.stringify(col, null, 1)),*/}
-      {/*  }))}*/}
-      {/*  name="对应的列配置："*/}
-      {/*  collapsed={0}*/}
-      {/*  enableClipboard={false}*/}
-      {/*  displayDataTypes={false}*/}
-      {/*  displayObjectSize={false}*/}
-      {/*/>*/}
+      {typeof window !== 'undefined' && (
+        <Inspector
+          data={columns.map((group) => ({
+            ...group,
+            children: group.children.map((col) => JSON.stringify(col, null, 1)),
+          }))}
+        />
+      )}
     </>
   )
 }

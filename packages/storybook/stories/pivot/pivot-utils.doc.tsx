@@ -8,8 +8,7 @@ import {
 } from 'ali-react-table/pivot'
 import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useState } from 'react'
-// todo react-json-view 不支持 ssr
-// import ReactJson from 'react-json-view'
+import Inspector from 'react-inspector'
 import MinimumPivotTableDesigner from './MinimumPivotTableDesigner'
 
 export function DrillTreeIllustration() {
@@ -36,14 +35,7 @@ export function DrillTreeIllustration() {
   return (
     <div style={{ border: '1px dashed #ccc', padding: 8 }}>
       <div style={{ fontSize: 14, lineHeight: 2 }}>1. 输入数据（输入格式为一个对象的数组）</div>
-      {/*<ReactJson*/}
-      {/*  name="输入数据"*/}
-      {/*  src={dwdData}*/}
-      {/*  collapsed={0}*/}
-      {/*  enableClipboard={false}*/}
-      {/*  displayObjectSize={false}*/}
-      {/*  displayDataTypes={false}*/}
-      {/*/>*/}
+      {typeof window !== 'undefined' && <Inspector data={dwdData} />}
 
       <div style={{ marginTop: 16, fontSize: 14, lineHeight: 2 }}>
         <div>2. 处理过程</div>
@@ -51,14 +43,7 @@ export function DrillTreeIllustration() {
       </div>
 
       <div style={{ marginTop: 16, fontSize: 14, lineHeight: 2 }}>3. 输出一个 DrillNode 的数组</div>
-      {/*<ReactJson*/}
-      {/*  name="输出结果"*/}
-      {/*  src={drillTree}*/}
-      {/*  collapsed={0}*/}
-      {/*  enableClipboard={false}*/}
-      {/*  displayObjectSize={false}*/}
-      {/*  displayDataTypes={false}*/}
-      {/*/>*/}
+      {typeof window !== 'undefined' && <Inspector data={drillTree} />}
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { CrossTableLeftMetaColumn, LeftCrossTreeNode, ROW_KEY, TopCrossTreeNode 
 import buildCrossTreeTable from './buildCrossTreeTable'
 
 export interface CrossTreeTableProps extends Omit<BaseTableProps, 'dataSource' | 'columns' | 'primaryKey'> {
+  BaseTableComponent?: any
   baseTableRef?: React.Ref<BaseTable>
   primaryColumn: CrossTableLeftMetaColumn
   leftTree: LeftCrossTreeNode[]
@@ -63,6 +64,7 @@ export default class CrossTreeTable extends React.Component<CrossTreeTableProps,
 
   render() {
     const {
+      BaseTableComponent = BaseTable,
       leftTree,
       topTree,
       getValue,
@@ -96,6 +98,14 @@ export default class CrossTreeTable extends React.Component<CrossTreeTableProps,
       isLeafNode,
     })
 
-    return <BaseTable ref={baseTableRef} {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />
+    return (
+      <BaseTableComponent
+        ref={baseTableRef}
+        {...others}
+        primaryKey={ROW_KEY}
+        dataSource={dataSource}
+        columns={columns}
+      />
+    )
   }
 }

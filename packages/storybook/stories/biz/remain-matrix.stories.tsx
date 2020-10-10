@@ -2,7 +2,7 @@ import { ArtColumn, BaseTable, Classes, proto } from 'ali-react-table'
 import * as d3 from 'd3'
 import React from 'react'
 import styled from 'styled-components'
-import { amount, ratio } from '../../../../assets/src/format'
+import { amount, ratio } from 'assets/src/format'
 
 const COLORS = [
   '#E8F3FF',

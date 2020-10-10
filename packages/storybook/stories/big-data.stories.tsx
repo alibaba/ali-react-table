@@ -1,7 +1,7 @@
 import { ArtColumn } from 'ali-react-table'
 import React from 'react'
-import { cols, useAllDataSource } from '../../../assets/src/ncov19-assets'
-import { ThemedBaseTable } from '../../../assets/src/theme-helpers'
+import { cols, useAllDataSource } from 'assets/src/ncov19-assets'
+import { ThemedBaseTable } from 'assets/src/theme-helpers'
 
 export default { title: '大数据测试' }
 

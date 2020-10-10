@@ -3,27 +3,27 @@ import React from 'react'
 import styled from 'styled-components'
 
 const PivotTableDesignerDiv = styled.div`
-  .row {
+  .designer-row {
     height: 36px;
     display: flex;
     align-items: center;
 
     .label {
-      width: 120px;
+      width: 160px;
     }
-  }
 
-  .prompt {
-    color: #999;
-  }
+    .prompt {
+      color: #999;
+    }
 
-  .spare-dim {
-    text-decoration: underline;
-    margin-left: 8px;
-    cursor: pointer;
-    :hover {
-      outline: 1px dashed #ccc;
-      outline-offset: 4px;
+    .spare-dim {
+      text-decoration: underline;
+      margin-left: 8px;
+      cursor: pointer;
+      :hover {
+        outline: 1px dashed #ccc;
+        outline-offset: 4px;
+      }
     }
   }
 `
@@ -60,7 +60,7 @@ export default function MinimumPivotTableDesigner({
 
   return (
     <PivotTableDesignerDiv>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">表格结构：</span>
         <Button.Group>
           <Button type={indicatorSide === 'left' ? 'primary' : 'normal'} onClick={() => onChangeIndicatorSide('left')}>
@@ -91,7 +91,7 @@ export default function MinimumPivotTableDesigner({
           </Button.Group>
         )}
       </div>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">清空维度：</span>
         <Button.Group>
           <Button onClick={() => onChangeLeftCodes([])} disabled={leftCodes.length === 0}>
@@ -102,7 +102,7 @@ export default function MinimumPivotTableDesigner({
           </Button>
         </Button.Group>
       </div>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">左侧的维度序列：</span>
         {leftCodes.length === 0 && <span className="prompt">暂无维度</span>}
         {leftCodes.map((code, i) => (
@@ -112,7 +112,7 @@ export default function MinimumPivotTableDesigner({
           </React.Fragment>
         ))}
       </div>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">左侧的可添加的维度：</span>
         {spareDims.length === 0 && <span className="prompt">暂无维度</span>}
         {spareDims.map((dim) => (
@@ -121,7 +121,7 @@ export default function MinimumPivotTableDesigner({
           </span>
         ))}
       </div>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">上方维度序列：</span>
         {topCodes.length === 0 && <span className="prompt">暂无维度</span>}
         {topCodes.map((code, i) => (
@@ -131,7 +131,7 @@ export default function MinimumPivotTableDesigner({
           </React.Fragment>
         ))}
       </div>
-      <div className="row">
+      <div className="designer-row">
         <span className="label">上方的可添加的维度：</span>
         {spareDims.length === 0 && <span className="prompt">暂无维度</span>}
         {spareDims.map((dim) => (

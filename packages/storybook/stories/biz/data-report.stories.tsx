@@ -2,7 +2,7 @@ import { applyTransforms, ArtColumn, BaseTable, isLeafNode, makeTreeModeTransfor
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
-import { getAppTrafficData } from '../../../../assets/src/cdn-data'
+import { getAppTrafficData } from 'assets/src/cdn-data'
 
 export default { title: '业务示例 / 典型数据报表' }
 

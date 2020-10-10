@@ -1,5 +1,8 @@
+import React from 'react'
 import styled from 'styled-components'
 import { WebsiteBaseTable } from './WebsiteBaseTable'
+import useThemeContext from '@theme/hooks/useThemeContext'
+import ReactInspector from 'react-inspector'
 
 export const DetailDiv = styled.div`
   display: flex;
@@ -37,3 +40,15 @@ export const StyledWebsiteBaseTable = styled(WebsiteBaseTable)`
     }
   }
 `
+
+export function Inspector(props) {
+  const { isDarkTheme } = useThemeContext()
+
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  const theme = isDarkTheme ? 'chromeDark' : 'chromeLight'
+
+  return <ReactInspector theme={theme} {...props} />
+}

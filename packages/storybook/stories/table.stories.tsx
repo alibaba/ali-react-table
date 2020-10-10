@@ -1,12 +1,12 @@
 import { Button, Checkbox } from '@alifd/next'
 import { ArtColumn, CellProps, SpanRect } from 'ali-react-table'
+import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from 'assets/src/biz-assets'
+import { amount, time } from 'assets/src/format'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'assets/src/ncov19-assets'
+import { ThemedBaseTable } from 'assets/src/theme-helpers'
 import cx from 'classnames'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { amount, time } from '../../../assets/src/format'
-import { columns1, columns2, dataSource1, dataSource2, operationCol, repeat } from '../../../assets/src/biz-assets'
-import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../../assets/src/ncov19-assets'
-import { ThemedBaseTable } from '../../../assets/src/theme-helpers'
 
 export default { title: 'BaseTable 示例' }
 
@@ -140,7 +140,13 @@ export function 表头吸顶() {
       >
         <div>表格操作栏，这里适合放置一些功能按钮</div>
       </div>
-      <ThemedBaseTable isStickyHead stickyTop={48} isLoading={isLoading} dataSource={dataSource} columns={testProvColumns} />
+      <ThemedBaseTable
+        isStickyHead
+        stickyTop={48}
+        isLoading={isLoading}
+        dataSource={dataSource}
+        columns={testProvColumns}
+      />
     </div>
   )
 }

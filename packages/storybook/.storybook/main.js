@@ -1,12 +1,5 @@
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
-const stories = [
-  'table/table.stories.tsx',
-  'table/pipeline.stories.tsx',
-  'table/transforms.stories.tsx',
-  'examples/**/*.stories.tsx',
-].map((file) => `../stories/${file}`)
-
 module.exports = {
   addons: ['@storybook/addon-storysource', '@storybook/addon-toolbars'],
 
@@ -14,7 +7,7 @@ module.exports = {
     check: false,
   },
 
-  stories,
+  stories: ['../stories/**/*.stories.tsx'],
 
   webpack: async (config) => {
     if (config.mode === 'production') {

@@ -7,11 +7,11 @@ import {
 } from 'ali-react-table/pivot'
 import { createAggregateFunction } from 'dvt-aggregation'
 import React, { useEffect, useState } from 'react'
-import { getIncomeData } from '../../../../assets/src/cdn-data'
-import { amount, lfl, ratio } from '../../../../assets/src/format'
-import MinimumPivotTableDesigner from '../MinimumPivotTableDesigner'
+import { MinimumPivotTableDesigner } from 'assets/src'
+import { getIncomeData } from 'assets/src/cdn-data'
+import { amount, lfl, ratio } from 'assets/src/format'
 
-export default { title: '交叉与透视 / 示例 / 简易透视表' }
+export default { title: '其他 / 简易透视表' }
 
 const dimensions = [
   { code: 'planet', name: '子公司', width: 150 },

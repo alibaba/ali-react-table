@@ -1,5 +1,4 @@
 import { Balloon } from '@alifd/next'
-import { Tooltip } from 'antd'
 import { Row16, ThumbsDown16, ThumbsUp16 } from '@carbon/icons-react'
 import {
   applyTransforms,
@@ -18,11 +17,12 @@ import {
   SortItem,
   useAutoWidthTransform,
 } from 'ali-react-table'
+import { Tooltip } from 'antd'
+import { getAppTrafficData } from 'assets/src/cdn-data'
+import { amount, ratio, time } from 'assets/src/format'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'assets/src/ncov19-assets'
+import { BaseTableThemeContext, ThemedBaseTable } from 'assets/src/theme-helpers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { getAppTrafficData } from '../../../assets/src/cdn-data'
-import { amount, ratio, time } from '../../../assets/src/format'
-import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from '../../../assets/src/ncov19-assets'
-import { ThemedBaseTable, BaseTableThemeContext } from '../../../assets/src/theme-helpers'
 
 export default { title: 'transforms 功能拓展（已过时）' }
 

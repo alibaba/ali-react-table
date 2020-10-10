@@ -15,11 +15,11 @@ import {
   dataSource6,
   operationCol,
   randomPick,
-} from '../../../assets/src/biz-assets'
-import { getAppTrafficData } from '../../../assets/src/cdn-data'
-import { ratio } from '../../../assets/src/format'
-import { RadioButtonGroup } from '../../../assets/src/RadioButtonGroup'
-import { ThemedBaseTable, useThemedTablePipeline } from '../../../assets/src/theme-helpers'
+} from 'assets/src/biz-assets'
+import { getAppTrafficData } from 'assets/src/cdn-data'
+import { ratio } from 'assets/src/format'
+import { RadioButtonGroup } from 'assets/src/RadioButtonGroup'
+import { ThemedBaseTable, useThemedTablePipeline } from 'assets/src/theme-helpers'
 
 export default { title: 'pipeline 功能拓展' }
 

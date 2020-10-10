@@ -4,14 +4,14 @@ import * as mobx from 'mobx'
 import { action } from 'mobx'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
-import { getIncomeData } from '../../../../../assets/src/cdn-data'
-import { amount, lfl, ratio } from '../../../../../assets/src/format'
+import { getIncomeData } from 'assets/src/cdn-data'
+import { amount, lfl, ratio } from 'assets/src/format'
 import { CheckedDimList, PrimaryColumnTitle } from './designers'
 import { Pivot, PivotView } from './models'
 
 mobx.configure({ enforceActions: 'observed' })
 
-export default { title: '交叉与透视 / 示例 / 支持下钻的树状表格' }
+export default { title: '其他 / 支持下钻的树状表格' }
 
 const ALL_DIMS = [
   { code: 'planet', name: '子公司' },

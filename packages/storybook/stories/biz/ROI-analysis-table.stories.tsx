@@ -2,7 +2,7 @@ import * as hippo from '@alifd/next'
 import { applyTransforms, ArtColumn, BaseTable, proto, traverseColumn } from 'ali-react-table'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { amount, lfl, ratio } from '../../../../assets/src/format'
+import { amount, lfl, ratio } from 'assets/src/format'
 
 const HintDiv = styled.div`
   margin-bottom: 16px;

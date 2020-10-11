@@ -54,6 +54,8 @@ export interface BaseTableProps {
 
   /** 是否开启虚拟滚动 */
   useVirtual?: VirtualEnum | { horizontal?: VirtualEnum; vertical?: VirtualEnum; header?: VirtualEnum }
+  /** 虚拟滚动开启情况下，表格中每一行的预估高度 */
+  estimatedRowHeight?: number
 
   /** 表格头部是否置顶，默认为 true */
   isStickyHead?: boolean
@@ -134,6 +136,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     stickyTop: 0,
     stickyBottom: 0,
     useVirtual: 'auto',
+    estimatedRowHeight: 48,
     hasHeader: true,
     isLoading: false,
     components: {},
@@ -143,7 +146,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   static getDerivedStateFromProps = getDerivedStateFromProps
 
-  private store = new ItemSizeStore()
+  private store = new ItemSizeStore(this.props.estimatedRowHeight)
 
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms

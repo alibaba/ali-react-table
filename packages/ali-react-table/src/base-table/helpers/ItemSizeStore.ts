@@ -1,9 +1,6 @@
 import { VerticalRenderRange } from '../interfaces'
 import { OVERSCAN_SIZE } from '../utils'
 
-// ITEM_SIZE 要允许上层传入
-export const ITEM_SIZE = 48
-
 interface Item {
   offset: number
   size: number
@@ -11,6 +8,12 @@ interface Item {
 
 export default class ItemSizeStore {
   private cache: Item[] = []
+
+  readonly estimatedRowHeight: number
+
+  constructor(estimatedRowHeight: number) {
+    this.estimatedRowHeight = estimatedRowHeight
+  }
 
   public static getFullRenderRange(itemCount: number): VerticalRenderRange {
     return {
@@ -67,11 +70,11 @@ export default class ItemSizeStore {
       const lack = offset - maxBottom
       // 快速滚动时，需要限制补足数量的最大值，防止元素数量超过 itemCount
       const maxLackCount = itemCount - this.cache.length
-      const lackCount = Math.min(Math.floor(lack / ITEM_SIZE), maxLackCount)
+      const lackCount = Math.min(Math.floor(lack / this.estimatedRowHeight), maxLackCount)
 
       // 中间缺失的直接使用 ITEM_SIZE 进行补足
-      for (let i = 0, cntOffset = maxBottom; i < lackCount; i += 1, cntOffset += ITEM_SIZE) {
-        this.cache.push({ offset: cntOffset, size: ITEM_SIZE })
+      for (let i = 0, cntOffset = maxBottom; i < lackCount; i += 1, cntOffset += this.estimatedRowHeight) {
+        this.cache.push({ offset: cntOffset, size: this.estimatedRowHeight })
       }
 
       const topIndex = this.cache.length - 1
@@ -123,7 +126,7 @@ export default class ItemSizeStore {
   }
 
   private getItemSize(index: number) {
-    return index < this.cache.length ? this.cache[index].size : ITEM_SIZE
+    return index < this.cache.length ? this.cache[index].size : this.estimatedRowHeight
   }
 
   public setMaxItemCount(itemCount: number) {
@@ -145,7 +148,7 @@ export default class ItemSizeStore {
       measuredTotalSize = lastItem.offset + lastItem.size
       measuredCount = size
     }
-    const unmeasuredTotalSize = (itemCount - measuredCount) * ITEM_SIZE
+    const unmeasuredTotalSize = (itemCount - measuredCount) * this.estimatedRowHeight
 
     return measuredTotalSize + unmeasuredTotalSize
   }

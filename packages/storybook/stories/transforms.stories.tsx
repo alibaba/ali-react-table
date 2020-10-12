@@ -21,8 +21,9 @@ import { Tooltip } from 'antd'
 import { getAppTrafficData } from 'assets/src/cdn-data'
 import { amount, ratio, time } from 'assets/src/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'assets/src/ncov19-assets'
-import { BaseTableThemeContext, ThemedBaseTable } from 'assets/src/theme-helpers'
+import { BaseTableThemeContext } from 'assets/src/theme-helpers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { ThemedBaseTable } from './themed-table'
 
 export default { title: 'transforms 功能拓展（已过时）' }
 

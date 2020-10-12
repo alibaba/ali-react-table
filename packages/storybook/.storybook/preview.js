@@ -1,4 +1,4 @@
-import { BaseTableThemeContext } from 'assets/src/index'
+import { AntdStyles, BaseTableThemeContext, FusionStyles, HippoStyles } from 'assets/src/index'
 import React from 'react'
 
 export const globalTypes = {
@@ -19,9 +19,18 @@ export const globalTypes = {
 
 function withThemeProvider(Story, context) {
   const { theme } = context.globals
+  let node
+  if (theme === 'hippo') {
+    node = <HippoStyles />
+  } else if (theme === 'antd') {
+    node = <AntdStyles />
+  } else {
+    node = <FusionStyles />
+  }
 
   return (
     <BaseTableThemeContext.Provider value={theme}>
+      {node}
       <Story {...context} />
     </BaseTableThemeContext.Provider>
   )

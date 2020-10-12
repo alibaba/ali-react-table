@@ -1,9 +1,7 @@
 import React from 'react'
 import { BaseTable } from 'ali-react-table'
 import styled, { css } from 'styled-components'
-import * as assets from 'assets'
 import useThemeContext from '@theme/hooks/useThemeContext'
-import { WebsiteStyleReset } from './WebsiteStyleReset'
 
 const darkThemeMixin = css`
   --bgcolor: #333;
@@ -25,13 +23,5 @@ const StyledBaseTable = styled(BaseTable)`
 export const WebsiteBaseTable = React.forwardRef((props, ref) => {
   const { isDarkTheme } = useThemeContext()
 
-  return (
-    <>
-      <StyledBaseTable isDarkTheme={isDarkTheme} ref={ref} {...props} />
-      {/* 动态引入 fusion 的样式 */}
-      <assets.FusionStyles />
-      {/* 重置 fusion 样式给文档网站带来的影响 */}
-      <WebsiteStyleReset />
-    </>
-  )
+  return <StyledBaseTable isDarkTheme={isDarkTheme} ref={ref} {...props} />
 })

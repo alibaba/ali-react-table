@@ -19,7 +19,7 @@ import {
 import { getAppTrafficData } from 'assets/src/cdn-data'
 import { ratio } from 'assets/src/format'
 import { RadioButtonGroup } from 'assets/src/RadioButtonGroup'
-import { ThemedBaseTable, useThemedTablePipeline } from 'assets/src/theme-helpers'
+import { ThemedBaseTable, useThemedTablePipeline } from './themed-table'
 
 export default { title: 'pipeline 功能拓展' }
 

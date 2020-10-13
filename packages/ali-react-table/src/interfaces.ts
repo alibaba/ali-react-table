@@ -20,7 +20,7 @@ export interface ArtColumnStaticPart {
   /** 单元格中的文本或内容的 对其方向 */
   align?: ArtColumnAlign
 
-  /** 是否隐藏 */
+  /** @deprecated 是否隐藏 */
   hidden?: boolean
 
   /** 是否锁列 */

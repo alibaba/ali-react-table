@@ -49,7 +49,7 @@ export function 树形表格() {
 }
 
 export function 行多选() {
-  const [value, onChange] = useState({ keys: ['1', '3'], lastKey: '' })
+  const [value, onChange] = useState(['1', '3'])
 
   // 实际使用时注意设置 ctx.components, 例如...
   //   import * as fusion from '@alifd/next'
@@ -59,22 +59,32 @@ export function 行多选() {
     .primaryKey('id')
     .mapDataSource((dataSource) => collectNodes(dataSource, 'pre'))
     .snapshot('flat')
-    .use(features.multiSelect({ value, onChange, highlightRowWhenSelected: true }))
+    .use(
+      features.multiSelect({
+        value,
+        onChange,
+        highlightRowWhenSelected: true,
+        isDisabled(row: any) {
+          return row.id.startsWith('4-')
+        },
+        checkboxPlacement: 'start',
+        checkboxColumn: { lock: true },
+        clickArea: 'row',
+      }),
+    )
+    .mapColumns(([a, ...b]) => [a, { name: 'id', code: 'id', width: 80 }, ...b])
 
   return (
     <div>
       <p>注意：行单选依赖于 pipeline.ctx.components.Checkbox 组件，需要配合组件库使用。</p>
       <Button.Group>
-        <Button onClick={() => onChange({ keys: [], lastKey: null })}>清空选中状态</Button>
+        <Button onClick={() => onChange([])}>清空选中状态</Button>
         <Button
           onClick={() => {
             const flatData = pipeline.getDataSource('flat')
             const primaryKey = pipeline.ctx.primaryKey as string
             const allKeys = flatData.map((row) => row[primaryKey])
-            onChange({
-              keys: allKeys.filter((key) => !value.keys.includes(key)),
-              lastKey: null,
-            })
+            onChange(allKeys.filter((key) => !value.includes(key)))
           }}
         >
           反转选中状态
@@ -84,7 +94,7 @@ export function 行多选() {
             const flatData = pipeline.getDataSource('flat')
             const primaryKey = pipeline.ctx.primaryKey as string
             const allKeys = flatData.map((row) => row[primaryKey])
-            onChange({ keys: allKeys.filter(() => Math.random() < 0.25), lastKey: null })
+            onChange(allKeys.filter(() => Math.random() < 0.25))
           }}
         >
           随机设置
@@ -259,6 +269,7 @@ export function 多选与提示信息() {
       features.multiSelect({
         defaultValue: ['1', '3'],
         highlightRowWhenSelected: true,
+        clickArea: 'cell',
       }),
     )
     .use(features.tips())

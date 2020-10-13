@@ -84,28 +84,28 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
 
     pipeline.columns(nextColumns)
 
-    if (opts.highlightRowWhenSelected) {
-      pipeline.appendRowPropsGetter((row, rowIndex) => {
-        const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
+    pipeline.appendRowPropsGetter((row, rowIndex) => {
+      const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
 
-        let style: any = {}
-        let className: string
-        let onClick: any
+      let style: any = {}
+      let className: string
+      let onClick: any
 
+      if (opts.highlightRowWhenSelected) {
         if (value === rowKey) {
           className = 'highlight'
         }
-        if (clickArea === 'row') {
-          style.cursor = 'pointer'
-          onClick = () => {
-            opts.onChange?.(rowKey)
-            pipeline.setStateAtKey(stateKey, rowKey)
-          }
+      }
+      if (clickArea === 'row') {
+        style.cursor = 'pointer'
+        onClick = () => {
+          opts.onChange?.(rowKey)
+          pipeline.setStateAtKey(stateKey, rowKey)
         }
+      }
 
-        return { className, style, onClick }
-      })
-    }
+      return { className, style, onClick }
+    })
 
     return pipeline
   }

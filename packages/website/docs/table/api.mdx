@@ -5,6 +5,10 @@ title: BaseTable API
 
 ## 组件 props
 
+:::caution
+目前表格仍处于 beta 版本，API 可能会发生变化。
+:::
+
 :::info
 dataSource 和 columns 是必传 props，其他 props 均可选。
 :::
@@ -56,7 +60,7 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 | `title`           | `ReactNode`                                                | 列标题的展示名称；在页面中进行展示时，该字段将覆盖 `name` 字段 |
 | `width`           | `number`                                                   | 列的宽度，如果该列是锁定的，则宽度为必传项                     |
 | `align`           | `'left' / 'center' / 'right'`                              | 单元格对其方向                                                 |
-| `hidden`          | `boolean`                                                  | 是否隐藏                                                       |
+| ~~`hidden`~~      | ~~`boolean`~~                                              | ~~是否隐藏~~                                                   |
 | `lock`            | `boolean`                                                  | 是否锁列                                                       |
 | `children`        | `ArtColumn[]`                                              | 该列的子节点                                                   |
 | `headerCellProps` | `React.ThHTMLAttributes`                                   | 表头单元格的 props                                             |

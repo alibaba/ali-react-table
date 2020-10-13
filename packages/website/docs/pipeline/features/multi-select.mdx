@@ -3,7 +3,7 @@ id: multi-select
 title: 行多选
 ---
 
-行的多选：在表格最左侧或最右侧新增一列，为每一行生成一个复选框。
+行多选：在每一行的左侧或右侧 渲染一个复选框，表示当前行是否被选中。
 
 :::tip 批量选择
 点击复选框时，按住 shift 键可以进行批量选择/反选。
@@ -21,9 +21,11 @@ function 行多选() {
     .use(
       features.multiSelect({
         highlightRowWhenSelected: true,
-        defaultValue: { keys: ['1', '2'], lastKey: '1' },
+        defaultValue: ['1', '2'],
+        defaultLastKey: '1',
         checkboxPlacement: 'start',
         checkboxColumn: { lock: true },
+        clickArea: 'cell',
       }),
     )
 
@@ -33,9 +35,8 @@ function 行多选() {
 
 ### 使用方式
 
-- 启用行多选功能之前，pipeline 必须已经设置了 primaryKey。
-- 行多选依赖复选框组件，使用 multiSelect 之前需要通过 pipeline context 设置 components.Checkbox。
-- 避免同时使用 非受控和受控的用法。
+- 启用行多选功能之前，pipeline 必须已经设置了 primaryKey
+- 行多选依赖复选框组件，使用之前需要先设置 `pipeline.ctx.components.Checkbox`
 
 ```jsx
 pipeline.use(features.multiSelect(options))
@@ -45,28 +46,85 @@ options 结构如下：
 
 ```ts
 export interface MultiSelectFeatureOptions {
-  /** 是否高亮被选中的行 */
-  highlightRowWhenSelected?: boolean
+  /** 非受控用法：默认选中的值 */
+  defaultValue?: string[]
 
-  /** 非受控用法：默认选中的 keys 与 lastKey */
-  defaultValue?: string[] | { keys: string[]; lastKey?: string }
+  /** 非受控用法：默认 lastKey */
+  defaultLastKey?: string
 
-  /** 受控用法：当前选中的 keys 与上一次操作的 key */
-  value?: string[] | { keys: string[]; lastKey?: string }
+  /** 受控用法：当前选中的 keys */
+  value?: string[]
+
+  /** 受控用法：上一次操作对应的 rowKey */
+  lastKey?: string
 
   /** 受控用法：状态改变回调  */
-  onChange?: (next: { keys: string[]; lastKey: string }, keys: string[], action: 'check' | 'uncheck') => void
+  onChange?: (nextValue: string[], key: string, keys: string[], action: 'check' | 'uncheck') => void
 
   /** 复选框所在列的位置 */
   checkboxPlacement?: 'start' | 'end'
 
-  /** 复选框所在列的 column 配置，可指定 width，lock 等属性 */
-  checkboxColumn?: Partial<ArtColumn>
+  /** 复选框所在列的 column 配置，可指定 width，lock, title, align, features 等属性 */
+  checkboxColumn?: Partial<ArtColumnStaticPart>
 
-  // todo isDisabled, clickArea: 'checkbox' | 'cell' | 'row'
+  /** 是否高亮被选中的行 */
+  highlightRowWhenSelected?: boolean
+
+  /** 判断一行中的 checkbox 是否要禁用 */
+  isDisabled?(row: any, rowIndex: number): boolean
+
+  /** 点击事件的响应区域 */
+  clickArea?: 'checkbox' | 'cell' | 'row'
 }
 ```
 
-:::note value 的格式
-因为要实现「批量选择/反选」的功能，multiSelect 需要记录上一次操作的 key，故 value 的格式为 `{ keys: string[]; lastKey?: string }`。
-:::
+### 受控用法
+
+受控用法下可以对状态进行更多的控制，实现自定义的多选交互。
+
+设置 `options.clickArea='row'` 可以将点击事件的回调放在表格行上，让多选交互更易用。
+
+```jsx live
+function 受控用法() {
+  const dataSource = assets.biz.dataSource1
+  const columns = assets.biz.columns1
+
+  const [value, onChange] = useState(['1', '2'])
+
+  const allKeys = dataSource.map((row) => row.id)
+  const isAllChecked = value.length === allKeys.length
+  const isAnyChecked = value.length > 0
+
+  const title = (
+    <>
+      <Checkbox
+        checked={isAllChecked}
+        indeterminate={!isAllChecked && isAnyChecked}
+        onChange={() => {
+          onChange(isAllChecked ? [] : allKeys)
+        }}
+      />
+      <MenuButton size="small" text>
+        <Menu.Item onClick={() => onChange(allKeys)}>全选</Menu.Item>
+        <Menu.Item onClick={() => onChange([])}>清空</Menu.Item>
+        <Menu.Item onClick={() => onChange(allKeys.filter((key) => !value.includes(key)))}>反选</Menu.Item>
+        <Menu.Item onClick={() => onChange(allKeys.filter(() => Math.random() < 0.4))}>随机选择</Menu.Item>
+      </MenuButton>
+    </>
+  )
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id') // 每一行数据由 id 字段唯一标记
+    .use(
+      features.multiSelect({
+        value,
+        onChange,
+        clickArea: 'row',
+        checkboxColumn: { width: 60, title },
+      }),
+    )
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```

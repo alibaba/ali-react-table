@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArtColumn, CellProps } from '../../interfaces'
+import { ArtColumn, ArtColumnStaticPart, CellProps } from '../../interfaces'
 import { internals } from '../../internals'
 import { TablePipeline } from '../pipeline'
 
@@ -17,13 +17,13 @@ export interface SingleSelectFeatureOptions {
   onChange?: (next: string) => void
 
   /** 判断一行是否禁用 */
-  isDisabled?(row: any): boolean
+  isDisabled?(row: any, rowIndex: number): boolean
 
   /** 点击事件的响应区域 */
   clickArea?: 'radio' | 'cell' | 'row'
 
   /** 单选框所在列的 column 配置，可指定 width，lock 等属性 */
-  radioColumn?: Partial<ArtColumn>
+  radioColumn?: Partial<ArtColumnStaticPart>
 
   /** 单选框所在列的位置 */
   radioPlacement?: 'start' | 'end'
@@ -55,9 +55,10 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
       getCellProps(value: any, row: any, rowIndex: number): CellProps {
         if (clickArea === 'cell') {
           const rowKey = internals.safeGetRowKey(primaryKey, row, rowIndex)
+          const disabled = isDisabled(row, rowIndex)
           return {
-            style: { cursor: 'pointer' },
-            onClick: () => onChange(rowKey),
+            style: { cursor: disabled ? 'not-allowed' : 'pointer' },
+            onClick: disabled ? undefined : () => onChange(rowKey),
           }
         }
       },
@@ -66,7 +67,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
         return (
           <Radio
             checked={value === rowKey}
-            disabled={isDisabled(row)}
+            disabled={isDisabled(row, rowIndex)}
             onChange={clickArea === 'radio' ? () => onChange(rowKey) : undefined}
           />
         )
@@ -96,7 +97,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
           className = 'highlight'
         }
       }
-      if (clickArea === 'row') {
+      if (clickArea === 'row' && !isDisabled(row, rowIndex)) {
         style.cursor = 'pointer'
         onClick = () => {
           opts.onChange?.(rowKey)

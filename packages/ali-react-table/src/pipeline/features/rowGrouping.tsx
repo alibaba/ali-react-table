@@ -27,6 +27,9 @@ function rowGroupingRowPropsGetter(row: any) {
 }
 
 export interface RowGroupingFeatureOptions {
+  /** 非受控用法：是否默认展开所有分组 */
+  defaultOpenAll?: boolean
+
   /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
 
@@ -47,7 +50,11 @@ export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
     if (typeof primaryKey !== 'string') {
       throw new Error('rowGrouping 仅支持字符串作为 primaryKey')
     }
-    const openKeys: string[] = opts.openKeys ?? pipeline.state[stateKey] ?? opts.defaultOpenKeys ?? []
+    const openKeys: string[] =
+      opts.openKeys ??
+      pipeline.state[stateKey] ??
+      (opts.defaultOpenAll ? pipeline.getDataSource().map((row) => row[primaryKey]) : opts.defaultOpenKeys) ??
+      []
     const openKeySet = new Set(openKeys)
 
     const onChangeOpenKeys: RowGroupingFeatureOptions['onChangeOpenKeys'] = (nextKeys, key, action) => {
@@ -87,7 +94,11 @@ export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
         const meta = getGroupingMeta(row)
         if (!meta.isGroupHeader || !meta.expandable) {
           const marginLeft = textOffset + (meta.isGroupHeader ? 0 : indents.indentSize)
-          return <InlineFlexCell style={{ marginLeft }}>{content}</InlineFlexCell>
+          return (
+            <InlineFlexCell style={{ marginLeft }}>
+              {meta.isGroupHeader ? row.groupTitle ?? content : content}
+            </InlineFlexCell>
+          )
         }
 
         const expanded = openKeySet.has(row[primaryKey])

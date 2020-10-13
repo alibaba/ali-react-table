@@ -3,10 +3,6 @@ id: row-grouping
 title: 行分组
 ---
 
-:::caution
-目前表格仍处于 beta 版本，API 可能会发生变化。
-:::
-
 对行进行分组，点击「分组标题」展示该组下的数据。「分组标题」总是独占一行。
 
 :::info
@@ -34,13 +30,13 @@ function 行展开() {
         { id: '2-2', title: '二级标题', dept: '消费者事业部-淘宝-UED', dest: '云南大理', guide: 'Douglas Lee' },
       ],
     },
-    { id: 'other', title: 'group without children' },
+    { id: 'other', groupTitle: 'group without children' },
   ]
   const columns = assets.biz.columns5
   const pipeline = useTablePipeline({ components: fusion })
     .input({ dataSource, columns })
     .primaryKey('id')
-    .use(features.rowGrouping({ defaultOpenKeys: ['alibaba'] }))
+    .use(features.rowGrouping({ defaultOpenAll: true }))
 
   return <BaseTable {...pipeline.getProps()} />
 }
@@ -61,6 +57,9 @@ options 结构如下：
 
 ```typescript
 export interface RowGroupingFeatureOptions {
+  /** 非受控用法：是否默认展开所有分组 */
+  defaultOpenAll?: boolean
+
   /** 非受控用法：默认展开的 keys */
   defaultOpenKeys?: string[]
 

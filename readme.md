@@ -6,7 +6,9 @@
 
 ## 更新日志
 
-- **NEWS** ali-react-table v1.0 发布，详见 [changelog](stories/changelog.stories.mdx)
+- **NEWS** v2.0 beta 发布，详见 [beta 版本文档](https://ali-react-table.js.org/beta/)
+  - 如果你第一次使用 ali-react-table，推荐使用 v2 版本。
+- v1.0 发布，详见 [changelog](stories/changelog.stories.mdx)
 - [从 0.14 升级到 1.0](docs/from-0.14-to-1.0.md)
 - [从 0.13 升级到 0.14](docs/from-0.13-to-0.14.md)
 - 具体的更新日志详见 [该文档](stories/changelog.stories.mdx)

@@ -1,7 +1,56 @@
 ---
 id: pipeline
-title: 拓展机制介绍(todo)
+title: 拓展机制介绍
 slug: /pipeline/
 ---
 
-## TODO 拓展机制介绍
+## 拓展机制介绍
+
+特点：
+
+- 同时支持受控用法 和 非受控用法
+- 支持 tree shaking
+
+TODO 详细介绍
+
+## 使用 pipeline
+
+### hooks 用法
+
+在函数组件中，可以中引入 hooks `useTablePipeline` 来创建 pipeline。
+
+创建之后，你可以使用 ali-react-table 提供的 [默认拓展功能](features/multi-select)，或是 [实现自定义的表格拓展](extends)。
+
+```jsx
+import { useTablePipeline, features, BaseTable } from 'ali-react-table'
+import { Checkbox } from '@alifd/next'
+// or...  import { Checkbox } from 'antd'
+
+function SomeFunctionComponent() {
+  const pipeline = useTablePipeline({ components: { Checkbox } })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(features.sort(sortOptions))
+    .use(features.multiSelect(selectOptions))
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```
+
+创建 pipeline 时，要根据后续用到的表格拓展为 pipeline 提供 components。每个拓展所需求的组件可能不同，例如 [行多选](features/multi-select) 需要 Checkbox 组件，[行单选](features/single-select) 则需要 Radio 组件。
+
+如果对打包体积要求不高，可以采用下面的写法：
+
+```jsx
+// 对于 fusion 用户...
+import * as fusion from '@alifd/next'
+useTablePipeline({ components: fusion })
+
+// 对于 antd 用户...
+import * as antd from 'antd'
+useTablePipeline({ components: antd })
+```
+
+### 在 class component 中使用 pipeline
+
+todo

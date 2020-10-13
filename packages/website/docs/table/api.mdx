@@ -13,7 +13,7 @@ title: BaseTable API
 dataSource 和 columns 是必传 props，其他 props 均可选。
 :::
 
-**主要字段**
+### 主要字段
 
 | 字段          | 类型                                                    |                                                                                                                                                                         |
 | ------------- | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -23,31 +23,56 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 | `primaryKey`  | `string` <br/> 或 `(row: any) => string`                | 用于指定每一行的 key<br/>传入字符串表示从数据中获取对应字段的值作为 key<br/>传入函数时将调用该函数来生成每一行的 key<br/>不传该 prop 时，表格将使用下标作为每一行的 key |
 | `getRowProps` | `(record: any, rowIndex: number): React.HTMLAttributes` | 自定义每一行的 props                                                                                                                                                    |
 
-**表格样式与结构**
+### 表格样式与结构
 
-| 字段                        | 类型                  |                                               |
-| --------------------------- | --------------------- | --------------------------------------------- |
-| `className`                 | `number`              | 自定义类名                                    |
-| `style`                     | `React.CSSProperties` | 自定义内联样式                                |
-| `isStickyHead`              | `boolean`             | 表格头部是否吸顶，默认为 true                 |
-| `stickyTop`                 | `number`              | 表头吸顶后，距离顶部的距离                    |
-| `hasHeader`                 | `boolean`             | 表格是否具有头部                              |
-| `useOuterBorder`            | `boolean`             | 是否使用来自外层 div 的边框代替单元格的外边框 |
-| `emptyContent` (deprecated) | `ReactNode`           | 数据为空的时候的表格内容展现                  |
-| `defaultColumnWidth`        | `number`              | 列的默认宽度                                  |
+| 字段                 | 类型                  |                                               |
+| -------------------- | --------------------- | --------------------------------------------- |
+| `className`          | `number`              | 自定义类名                                    |
+| `style`              | `React.CSSProperties` | 自定义内联样式                                |
+| `isStickyHead`       | `boolean`             | 表格头部是否吸顶，默认为 true                 |
+| `stickyTop`          | `number`              | 表头吸顶后，距离顶部的距离                    |
+| `hasHeader`          | `boolean`             | 表格是否具有头部                              |
+| `useOuterBorder`     | `boolean`             | 是否使用来自外层 div 的边框代替单元格的外边框 |
+| ~~`emptyContent`~~   | `ReactNode`           | ~~数据为空的时候的表格内容展现~~              |
+| `defaultColumnWidth` | `number`              | 列的默认宽度                                  |
 
-**其他不常用的属性**
+### 其他不常用的属性
 
-| 字段           | 类型                                                  |                                            |
-| -------------- | ----------------------------------------------------- | ------------------------------------------ |
-| `useVirtual`   | `'auto'` <br/> 或 `boolean` <br/> 或一个对象          | 是否开启虚拟滚动，详见下方「虚拟滚动」说明 |
-| `stickyBottom` | `number`                                              | 表格底部距离页面下边缘的距离               |
-| `flowRoot` \*  | `'auto' / 'self' / HTMLElement / (() => HTMLElement)` | 表格所处于的块格式化上下文(BFC)            |
-| `components`   | todo                                                  | todo                                       |
+| 字段                               | 类型                                                  |                                                          |
+| ---------------------------------- | ----------------------------------------------------- | -------------------------------------------------------- |
+| `useVirtual`                       | `'auto'` <br/> 或 `boolean` <br/> 或一个对象          | 是否开启虚拟滚动，详见下方「虚拟滚动」说明               |
+| `emptyCellHeight`                  | `number`                                              | 数据为空时，单元格的高度                                 |
+| `stickyBottom`                     | `number`                                              | 表格底部距离页面下边缘的距离                             |
+| `flowRoot` \*                      | `'auto' / 'self' / HTMLElement / (() => HTMLElement)` | 表格所处于的块格式化上下文(BFC)                          |
+| `estimatedRowHeight`               | `number`                                              | 虚拟滚动开启情况下，表格中每一行的预估高度               |
+| `components`                       | `object`                                              | 自定义表格内部使用的子组件                               |
+| `components.LoadingIcon`           | `React.ComponentType`                                 | 自定义加载图标                                           |
+| `components.EmptyContent`          | `React.ComponentType`                                 | 自定义数据为空时表格的展示内容                           |
+| `components.LoadingContentWrapper` | `React.ComponentType`                                 | 自定义表格内容的 wrapper div，可用于实现自定义的加载效果 |
+
+`components.LoadingContentWrapper` 的默认值如下：
+
+```tsx
+function DefaultLoadingContentWrapper({ children, visible }: LoadingContentWrapperProps) {
+  // visible 表示表格是否处于加载状态中
+  // children 是表格的实际内容
+  return (
+    <div className="art-loading-content-wrapper" style={{ filter: visible ? 'blur(1px)' : 'none' }}>
+      {children}
+    </div>
+  )
+}
+```
 
 - flowRoot \* [块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context) 用于在开启虚拟滚动的情况下计算表格的可见范围。
 
 ## column 对象结构
+
+列配置注意事项：
+
+- `name` 为必传字段
+- 对于锁定的列（`lock=true`），宽度 `width` 为必传项
+  - 推荐给所有的列都配置上宽度，或是给表格配置一个默认的列宽度
 
 | 字段              | 类型                                                       |                                                                |
 | ----------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
@@ -59,18 +84,12 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 | `getSpanRect`     | `(value: any, record: any, rowIndex: number) => SpanRect`  | 在虚拟滚动的情况下设置单元格合并                               |
 | `title`           | `ReactNode`                                                | 列标题的展示名称；在页面中进行展示时，该字段将覆盖 `name` 字段 |
 | `width`           | `number`                                                   | 列的宽度，如果该列是锁定的，则宽度为必传项                     |
-| `align`           | `'left' / 'center' / 'right'`                              | 单元格对其方向                                                 |
+| `align`           | `'left' / 'center' / 'right'`                              | 单元格对齐方向                                                 |
 | ~~`hidden`~~      | ~~`boolean`~~                                              | ~~是否隐藏~~                                                   |
 | `lock`            | `boolean`                                                  | 是否锁列                                                       |
 | `children`        | `ArtColumn[]`                                              | 该列的子节点                                                   |
 | `headerCellProps` | `React.ThHTMLAttributes`                                   | 表头单元格的 props                                             |
 | `features`        | `{ [key: string]: any }`                                   | 功能开关标记，用于对表格功能进行拓展                           |
-
-列配置中的部分字段为必传或必选的字段，规则如下：
-
-- `name` 字段必选
-- 对于叶子节点，即 `column.children == null || column.children.length === 0`，`code` 或 `getValue` 二者中至少提供一个
-- 对于锁定的列（`lock=true`），宽度 `width` 为必传项；推荐给所有的列都配置上宽度，或是给表格配置一个默认的列宽度
 
 ## 表格样式
 

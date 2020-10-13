@@ -5,7 +5,7 @@ module.exports = {
     {
       type: 'category',
       label: 'BaseTable',
-      items: ['table/basic-usage', 'table/examples', 'table/advanced-usage', 'table/api'],
+      items: ['table/basic-usage', 'table/examples', 'table/advanced-usage', 'table/theming', 'table/api'],
     },
     {
       type: 'category',
@@ -30,6 +30,7 @@ module.exports = {
             'pipeline/features/filter',
           ],
         },
+        'pipeline/extends',
       ],
     },
     {

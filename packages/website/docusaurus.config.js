@@ -70,11 +70,11 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/alibaba/ali-react-table/docusaurus/edit/master/website/',
+          editUrl: 'https://github.com/alibaba/ali-react-table/edit/dev/packages/website/',
         },
         blog: {
           showReadingTime: true,
-          editUrl: 'https://github.com/alibaba/ali-react-table/edit/master/website/blog/',
+          editUrl: 'https://github.com/alibaba/ali-react-table/edit/dev/packages/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

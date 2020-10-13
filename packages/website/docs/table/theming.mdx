@@ -1,0 +1,103 @@
+---
+id: theming
+title: 表格主题
+---
+
+`<BaseTable />` 中大部分样式都是通过 CSS variables 来定义的。 通过覆盖 CSS variables 的值，可以快速定制出一套新的表格主题。
+
+BaseTable 默认只提供了亮色主题，下面的 WebsiteBaseTable.js 展示了在文档网站中，我们是如何实现暗色主题的：
+
+```typescript title="WebsiteBaseTable.js"
+import React from 'react'
+import { BaseTable } from 'ali-react-table'
+import styled from 'styled-components'
+import useThemeContext from '@theme/hooks/useThemeContext'
+
+const DarkBaseTable = styled(BaseTable)`
+  --bgcolor: #333;
+  --header-bgcolor: #45494f;
+  --hover-bgcolor: #46484a;
+  --header-hover-bgcolor: #606164;
+  --highlight-bgcolor: #191a1b;
+  --header-highlight-bgcolor: #191a1b;
+  --color: #dadde1;
+  --header-color: #dadde1;
+  --lock-shadow: rgb(37 37 37 / 0.5) 0 0 6px 2px;
+  --border-color: #3c4045;
+`
+
+export const WebsiteBaseTable = React.forwardRef((props, ref) => {
+  const { isDarkTheme } = useThemeContext()
+
+  // 下面的写法下，切换主题将导致组件重新加载
+  // 如果要避免重新加载，可以使用 styled-components 提供的 css 方法
+  const Table = isDarkTheme ? DarkBaseTable : BaseTable
+
+  return <Table ref={ref} {...props} />
+})
+```
+
+### 主题切换示例
+
+```jsx live
+function 限定表格容器大小() {
+  const { dataSource1, operationCol } = assets.biz
+
+  const nameCol = { lock: true, code: 'name', width: 200, name: '公司名称' }
+  const repeats = [
+    { code: 'amount', width: 160, align: 'right', name: '金额' },
+    { code: 'dept', width: 160, name: '金融机构' },
+    { code: 'applier', width: 120, name: '申请人' },
+  ]
+
+  function repeat(arr, n) {
+    let result = []
+    for (let i = 0; i < n; i++) {
+      result = result.concat(arr)
+    }
+    return result
+  }
+
+  const [theme, setTheme] = useState('default')
+
+  let Table = BaseTable
+  if (theme === 'antd') {
+    Table = assets.AntdBaseTable
+  } else if (theme === 'hippo') {
+    Table = assets.HippoBaseTable
+  }
+
+  return (
+    <div>
+      <div>
+        <span style={{ marginRight: 24 }}>选择主题（注意只有 default 支持暗色模式）：</span>
+        <assets.RadioButtonGroup
+          value={theme}
+          onChange={setTheme}
+          dataSource={['default', 'antd', 'hippo'].map((v) => ({ label: v, value: v }))}
+        />
+      </div>
+      <Table
+        style={{ marginTop: 12, maxWidth: 800, height: 400, overflow: 'auto' }}
+        dataSource={repeat(dataSource1, 5)}
+        columns={[
+          {
+            name: '序号',
+            width: 70,
+            align: 'right',
+            lock: true,
+            getValue(_, rowIndex) {
+              return String(rowIndex + 1)
+            },
+          },
+          nameCol,
+          ...repeat(repeats, 5),
+          operationCol,
+        ]}
+      />
+    </div>
+  )
+}
+```
+
+如果你是 antd 用户，可以参考[该文件](https://github.com/alibaba/ali-react-table/blob/dev/packages/assets/src/AntdBaseTable.tsx)来实现 antd 样式的表格组件。

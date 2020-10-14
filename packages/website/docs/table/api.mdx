@@ -89,31 +89,46 @@ function DefaultLoadingContentWrapper({ children, visible }: LoadingContentWrapp
 
 ## 表格样式
 
-BaseTable 透出了一些 CSS 变量来自定义表格的样式，你可以通过下面的方式对表格进行风格化：
+`<BaseTable />` 中大部分样式都是通过 CSS variables 来定义的，你可以通过下面的方式对表格进行风格化：
 
 ```js
 <BaseTable style={{ '--color': '#333', '--cell-border': 'none' }} />
 ```
 
-(todo 需要更新) 自定义 CSS 变量如下：
+目前组件支持的自定义 CSS 变量如下：
 
 ```typescript
 export type BaseTableCSSVariables = Partial<{
+  /** 表格一行的高度，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
+  '--row-height': string
   /** 表格的字体颜色 */
   '--color': string
   /** 表格背景颜色 */
   '--bgcolor': string
   /** 鼠标悬停时的背景色 */
-  '--hover-color': string
-  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
-  '--row-height': string
+  '--hover-bgcolor': string
+  /** 单元格高亮时的背景色 */
+  '--highlight-bgcolor': string
 
-  /** 表头的字体颜色 */
-  '--header-color': string
-  /** 表头的背景颜色 */
-  '--header-bgcolor': string
-  /** 表格行高，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
+  /** 表头中一行的高度，注意该属性将被作为 CSS variable，不能使用数字作为简写 */
   '--header-row-height': string
+  /** 表头中的字体颜色 */
+  '--header-color': string
+  /** 表头的背景色 */
+  '--header-bgcolor': string
+  /** 表头上鼠标悬停时的背景色 */
+  '--header-hover-bgcolor': string
+  /** 表头上单元格高亮时的背景色 */
+  '--header-highlight-bgcolor': string
+
+  /** 单元格 padding */
+  '--cell-padding': string
+  /** 字体大小 */
+  '--font-size': string
+  /** 表格内字体的行高 */
+  '--line-height': string
+  /** 锁列阴影，默认为 rgba(152, 152, 152, 0.5) 0 0 6px 2px */
+  '--lock-shadow': string
 
   /** 单元格的边框颜色 */
   '--border-color': string
@@ -134,4 +149,4 @@ export type BaseTableCSSVariables = Partial<{
 
 当 CSS 变量无法满足自定义样式需求时，推荐通过 styled-components 来覆盖表格的默认样式。表格内各部分的 CSS 类名可以通过 `Classes` 对象来获取。
 
-在更精细的场景下，可以使用 getCellProps/headerCellProps 来定制每个单元格的样式。
+在更精细的场景下，可以使用 getCellProps 来定制每个单元格的样式。

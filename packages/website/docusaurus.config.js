@@ -2,14 +2,14 @@ const path = require('path')
 const artPkg = require('../ali-react-table/package.json')
 
 module.exports = {
-  title: `ali-react-table (${artPkg.version})`,
+  title: 'ali-react-table',
   tagline: '现代化的高性能 React 表格组件',
   url: 'https://ali-react-table.js.org',
   baseUrl: '/',
   onBrokenLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'alibaba', // Usually your GitHub org/user name.
-  projectName: 'ali-react-table', // Usually your repo name.
+  organizationName: 'alibaba',
+  projectName: 'ali-react-table',
 
   themeConfig: {
     navbar: {

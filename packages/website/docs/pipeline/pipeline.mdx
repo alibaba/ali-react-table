@@ -31,11 +31,23 @@ function SomeFunctionComponent() {
     .use(features.sort(sortOptions))
     .use(features.multiSelect(selectOptions))
 
+  // pipeline.getProps() 将生成以下 props
+  //    dataSource, columns, primaryKey, getRowProps
+  // 使用时注意不要覆盖这些 props
+
   return <BaseTable {...pipeline.getProps()} />
 }
 ```
 
 创建 pipeline 时，要根据后续用到的表格拓展为 pipeline 提供 components。每个拓展所需求的组件可能不同，例如 [行多选](features/multi-select) 需要 Checkbox 组件，[行单选](features/single-select) 则需要 Radio 组件。
+
+创建之后，你可以使用 ali-react-table 提供的 [拓展功能](features/multi-select)，或是 [实现自定义的表格拓展](extends)。
+
+:::warning
+如果你想要使用自定义的 `getRowProps`，要调用 `pipeline.appendRowPropsGetter(getRowProps)` 来将该方法添加加 pipeline 中。
+:::
+
+###
 
 如果对打包体积要求不高，可以采用下面的写法：
 
@@ -48,8 +60,6 @@ useTablePipeline({ components: fusion })
 import * as antd from 'antd'
 useTablePipeline({ components: antd })
 ```
-
-创建之后，你可以使用 ali-react-table 提供的 [拓展功能](features/multi-select)，或是 [实现自定义的表格拓展](extends)。
 
 ### 非 hooks 用法
 

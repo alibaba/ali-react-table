@@ -4,9 +4,11 @@ title: 基本信息
 slug: /
 ---
 
-[![NPM Package](https://img.shields.io/npm/v/ali-react-table.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
+[![NPM Package](https://img.shields.io/npm/v/ali-react-table/latest.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
 
-高性能 React 表格组件
+[![NPM Package](https://img.shields.io/npm/v/ali-react-table/beta.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
+
+现代化的高性能 React 表格组件
 
 ### 安装
 

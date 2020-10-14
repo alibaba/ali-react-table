@@ -1,7 +1,7 @@
 import React from 'react'
 
 export function Story({ id, height = 400 }) {
-  const prefix = process.env.NODE_ENV === 'production' ? '/beta/storybook/' : 'http://localhost:2333/'
+  const prefix = process.env.NODE_ENV === 'production' ? '/storybook/' : 'http://localhost:2333/'
   const docUrl = `${prefix}?path=/story/${id}`
   const canvasUrl = `${prefix}iframe.html?id=${id}&viewMode=story`
 

@@ -6,9 +6,7 @@ function StorybookIframe() {
   return (
     <iframe
       src={
-        process.env.NODE_ENV !== 'production'
-          ? 'http://localhost:2333/'
-          : 'https://ali-react-table.js.org/beta/storybook/'
+        process.env.NODE_ENV !== 'production' ? 'http://localhost:2333/' : 'https://ali-react-table.js.org/storybook/'
       }
       style={{ display: 'block', width: '100%', height: 'calc(100vh - 60px)', border: 'none' }}
     />
@@ -20,11 +18,7 @@ function Home(props) {
   const { siteConfig = {} } = context
 
   return (
-    <Layout
-      title="示例"
-      description="ali-react-table 示例（powered by storybook）"
-      noFooter
-    >
+    <Layout title="示例" description="ali-react-table 示例（powered by storybook）" noFooter>
       <StorybookIframe />
     </Layout>
   )

@@ -1,1 +1,1 @@
-See changelog [here](https://ali-react-table.js.org/beta/docs/changelog)
+See changelog [here](https://ali-react-table.js.org/docs/changelog)

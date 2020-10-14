@@ -1,0 +1,301 @@
+---
+id: examples
+title: 表格示例
+---
+
+组件引入方式：
+
+```jsx
+import { BaseTable } from 'ali-react-table'
+```
+
+### 基本用法
+
+通过 `dataSource` 设置表格的数据源，通过 columns 设置表格的列。 注意 `column.code` 要与 dataSource 中的数据字段相对应。
+
+```jsx live
+function 基本用法() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns = [
+    { code: 'prov', name: '省份', width: 150 },
+    { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+    { code: 'cured', name: '治愈', width: 100, align: 'right' },
+    { code: 'dead', name: '死亡', width: 100, align: 'right' },
+    { code: 't', name: '最后更新时间', width: 180 },
+  ]
+
+  return <BaseTable dataSource={dataSource} columns={columns} />
+}
+```
+
+### 数据为空状态
+
+`dataSource` 的长度为 0 时，表格将展现空状态。上层可以通过 `components.EmptyContent` 对空状态进行定制。
+
+```jsx live
+function 数据为空() {
+  return (
+    <BaseTable
+      dataSource={[]}
+      columns={assets.biz.columns2}
+      // components={{ EmptyContent: () => <h1>数据为空~~</h1> }}
+    />
+  )
+}
+```
+
+### 数据加载状态
+
+设置 `isLoading=true` 即可展示加载动画。
+
+上层可以通过 `components.LoadingContentWrapper` 与 `components.LoadingIcon` 来定制加载动画。
+
+```jsx live
+function 表格数据加载() {
+  return <BaseTable isLoading dataSource={assets.biz.dataSource2} columns={assets.biz.columns2} />
+}
+```
+
+### 左侧锁列
+
+设置 `column.lock=true` 即可锁列，锁列的方向与嵌套关系详见 [该文档](advanced-usage#锁列与嵌套的列结构)
+
+```jsx live
+function 左侧锁列() {
+  const { dataSource, isLoading } = assets.ncov19.useProvinceDataSource()
+  const { time, amount } = assets.format
+
+  return (
+    <BaseTable
+      style={{ width: 500, height: 300, overflow: 'auto' }}
+      useOuterBorder
+      isLoading={isLoading}
+      dataSource={dataSource}
+      columns={[
+        { lock: true, code: 'provinceName', name: '省份', width: 150 },
+        { code: 'confirmedCount', name: '确诊', width: 100, render: amount, align: 'right' },
+        { code: 'suspectedCount', name: '疑似', width: 100, render: amount, align: 'right' },
+        { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right' },
+        { code: 'deadCount', name: '死亡', width: 100, render: amount, align: 'right' },
+        { code: 'updateTime', name: '最后更新时间', width: 180, render: time },
+      ]}
+    />
+  )
+}
+```
+
+### 表头吸顶
+
+默认情况下表格已经开启了表头吸顶功能。设置 `isStickyHead=false` 可以关闭吸顶。
+
+```jsx live
+function 表头吸顶() {
+  const { dataSource, isLoading } = assets.ncov19.useProvinceDataSource()
+
+  const WEBSITE_NAV_HEIGHT = 60
+
+  return (
+    <div>
+      <div
+        style={{
+          position: 'sticky',
+          top: WEBSITE_NAV_HEIGHT,
+          height: 48,
+          border: '1px solid #ccc',
+          zIndex: 30,
+          background: 'var(--ifm-background-surface-color)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div>表格操作栏，这里适合放置一些功能按钮</div>
+      </div>
+      <BaseTable
+        isStickyHead // isStickyHead 的默认值为 true；设置为 false 可以关闭表头吸顶
+        stickyTop={WEBSITE_NAV_HEIGHT + 48}
+        isLoading={isLoading}
+        dataSource={dataSource.slice(0, 6)}
+        columns={assets.ncov19.testProvColumns}
+      />
+    </div>
+  )
+}
+```
+
+### 表头分组
+
+在 `columns.children=[...]` 中添加子节点，`<BaseTable />` 会绘制相应的嵌套表头结构。
+
+```jsx live
+function 表头分组() {
+  const WEBSITE_NAV_HEIGHT = 60
+  const { useProvinceDataSource, cols } = assets.ncov19
+  const { dataSource, isLoading } = useProvinceDataSource()
+
+  return (
+    <BaseTable
+      stickyTop={WEBSITE_NAV_HEIGHT}
+      isLoading={isLoading}
+      dataSource={dataSource.slice(0, 6)}
+      columns={[
+        {
+          name: '基本信息',
+          lock: true,
+          children: [cols.provinceName, cols.updateTime],
+        },
+        {
+          name: '指标分组',
+          children: [
+            { name: '指标分组1', children: [cols.confirmedCount, cols.suspectedCount] },
+            { name: '指标分组2', children: [cols.curedCount, cols.deadCount] },
+          ],
+        },
+      ]}
+    />
+  )
+}
+```
+
+### 单元格合并与自定义单元格样式
+
+通过 `column.getCellProps(...)` 返回 colSpan/rowSpan 可实现单元格合并。
+
+除了 colSpan, rowSpan 之外，getCellProps 也可以返回 td 元素的其他 props，例如 className, style, onClick 等。
+
+```jsx live
+function 单元格合并() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, t: '2020-02-15 19:52:02' },
+  ]
+
+  const columns = [
+    {
+      code: 'prov',
+      name: '省份',
+      getCellProps(value, record, rowIndex) {
+        if (rowIndex === 3) {
+          return {
+            colSpan: 2,
+            rowSpan: 2,
+            style: { background: '#141414', color: '#ccc', fontWeight: 'bold' },
+          }
+        }
+      },
+    },
+    { code: 'confirmed', name: '确诊', align: 'right' },
+    { code: 'cured', name: '治愈', align: 'right' },
+    {
+      code: 't',
+      name: '最后更新时间',
+      getCellProps(value, record, rowIndex) {
+        if (rowIndex === 1) {
+          return { rowSpan: 3 }
+        }
+      },
+    },
+  ]
+  return <BaseTable defaultColumnWidth={100} dataSource={dataSource} columns={columns} />
+}
+```
+
+### 自定义表格行样式
+
+通过 `getRowProps(...)` 设置 tr 元素上的 props，例如 className, style, onClick 等。
+
+```jsx live
+function 自定义表格行props() {
+  const { useProvinceDataSource, testProvColumns } = assets.ncov19
+  const { isLoading, dataSource } = useProvinceDataSource()
+
+  const [lastClickRowIndex, setLastClickRowIndex] = useState(2)
+
+  return (
+    <div>
+      <p>点击表格行以改变该行样式</p>
+      <BaseTable
+        style={{ '--bgcolor': 'transparent' }}
+        isLoading={isLoading}
+        dataSource={dataSource.slice(0, 6)}
+        columns={testProvColumns}
+        getRowProps={(record, rowIndex) => {
+          return {
+            style:
+              rowIndex === lastClickRowIndex
+                ? {
+                    outlineOffset: -2,
+                    outline: '2px solid gold',
+                    '--hover-bgcolor': 'transparent',
+                    background: 'linear-gradient(140deg, #ff000038, #009cff3d)',
+                  }
+                : {
+                    // 覆盖 website 中自带的 style，实际使用时可以忽略
+                    backgroundColor: 'transparent',
+                  },
+            onClick() {
+              setLastClickRowIndex(rowIndex)
+            },
+          }
+        }}
+      />
+    </div>
+  )
+}
+```
+
+### 限定表格容器大小
+
+通过 style.width/style.maxWidth 来限定表格的宽度；通过 style.height/style.maxHeight 来限定高度。限定宽度或高度时，要同时设置 `style.overflow=auto`。
+
+```jsx live
+function 限定表格容器大小() {
+  const { dataSource1, operationCol } = assets.biz
+
+  const nameCol = { lock: true, code: 'name', width: 200, name: '公司名称' }
+  const repeats = [
+    { code: 'amount', width: 160, align: 'right', name: '金额' },
+    { code: 'dept', width: 160, name: '金融机构' },
+    { code: 'applier', width: 120, name: '申请人' },
+  ]
+
+  function repeat(arr, n) {
+    let result = []
+    for (let i = 0; i < n; i++) {
+      result = result.concat(arr)
+    }
+    return result
+  }
+
+  return (
+    <BaseTable
+      style={{ maxWidth: 800, height: 385, overflow: 'auto' }}
+      dataSource={repeat(dataSource1, 5)}
+      columns={[
+        {
+          name: '序号',
+          width: 70,
+          align: 'right',
+          lock: true,
+          getValue(_, rowIndex) {
+            return String(rowIndex + 1)
+          },
+        },
+        nameCol,
+        ...repeat(repeats, 5),
+        operationCol,
+      ]}
+    />
+  )
+}
+```

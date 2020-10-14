@@ -1,0 +1,137 @@
+---
+id: proto
+title: proto
+---
+
+在实际开发中过程中，一个表格可能会包含大量维度和指标（在盒马内部，超过 50 列的表格十分常见），列配置的书写工作量会很大。这其中很多的列往往具有相同的宽度、对齐方向或是类似的格式化方法，重复配置较多。`ali-react-table` 导出了 `proto` 来简化这些重复配置的书写，有效减少列配置的工作量。
+
+注：本页文档中，「原型」指的是使用 proto 创建出来的函数，而不是指 JavaScript 中的函数原型。
+
+## 创建对象原型
+
+`proto.object(baseObject)` 是一个工厂方法，接受一个基础对象 `baseRecord`，返回一个函数；调用该函数时，将以 `baseRecord` 为「原型」并根据输入的参数来创建一个新的对象。
+
+在下面的例子中，我们创建了 `columnProto`，并用 `columnProto` 来生成其他的列，避免书写相同的默认配置。
+
+```js
+import { proto } from 'ali-react-table'
+
+const columnProto = proto.object({ width: 120, align: 'right' })
+
+const col1 = columnProto({})
+// 参数为空对象，则所有字段都来自于 baseRecord
+// { width: 120, align: 'right' }
+
+const col2 = columnProto({ width: 150 })
+// 参数提供了 width 字段，其他字段来自于 baseRecord
+// { width: 150, align: 'right' }
+
+const col3 = columnProto({ code: 'code-1', align: 'left', lock: false })
+// { code: 'code-1', align: 'left', lock: false, width: 120 }
+```
+
+## 创建数组原型
+
+`proto.array(baseRecord)` 与 `proto.object` 非常类似，也会生成一个函数，但函数的输入参数为一个数组。该函数被调用时，会遍历输入的数组，并根据 baseRecord 来生成对象。
+
+```js
+import { proto } from 'ali-react-table'
+
+const columnProto = proto.array({ width: 120, align: 'right', format: amount })
+
+const columns = columnProto([
+  { code: 'code-1' },
+  { code: 'code-2' },
+  { code: 'code-3', width: 200 },
+  { code: 'code-4', align: 'left' },
+])
+// [
+//   { code: 'code-1', width: 120, align: 'right', format: amount },
+//   { code: 'code-2', width: 120, align: 'right', format: amount },
+//   { code: 'code-3', width: 200, align: 'right', format: amount },
+//   { code: 'code-4', width: 120, align: 'left',  format: amount }
+// ]
+```
+
+## 嵌套原型
+
+在生成对象原型或数组原型时，baseRecord 中的字段值(`subProto`)也可以为一个对象原型或数组原型，生成新对象时 `subProto` 将被调用用于对应字段的值。
+
+```js
+const columnProto = proto.array({
+  width: 120,
+  align: 'right',
+  features: proto.object({ defaultVisible: true }),
+})
+
+const columns = columnProto([
+  { code: 'code-1' },
+  { code: 'code-2', features: { defaultVisible: false } },
+  { code: 'code-3', features: { sortable: true } },
+])
+// [
+//   { code: 'code-1', width: 120, align: 'right', features: { defaultVisible: true } },
+//   { code: 'code-2', width: 120, align: 'right', features: { defaultVisible: false } },
+//   { code: 'code-3', width: 120, align: 'right', features: { defaultVisible: true, sortable: true } },
+// ]
+```
+
+## `proto.string` 与 `proto.number`
+
+有的时候某个字段并没有默认值，但我们又希望创建出来的对象必须包含某个对象，此时可以使用 `proto.string` 或 `proto.number` 来创建原型。
+
+```js
+const columnProto = proto.array({
+  code: proto.string,
+  width: proto.number,
+  align: 'right',
+})
+
+// 调用 columnProto 时，输入参数中的 code 字段必须为字符串，width 字段必须为数字
+const columns = columnProto([
+  { code: 'code-1', width: 100 },
+  { code: 'code-2', width: 120, features: { defaultVisible: false } },
+  { code: 'code-3', width: 120, features: { sortable: true } },
+])
+```
+
+此外，`proto.notNull` 用于确保输入参数中某个字段不能为 null/undefine。
+
+## 原型的继承
+
+通过 `proto.object` / `proto.array` 生成的对象上有一个 extends 的方法，可以在已有的原型基础上生成新的原型。
+
+```js
+const column = proto.object({ width: 120, align: 'left' })
+const alignRightColumn = column.extends({ align: 'right' })
+const wideColumn = column.extends({ width: 200 })
+
+const col1 = alignRightColumn({}) // { align: "right", width: 120 }
+
+const col2 = wideColumn({}) // { width: 200, align: "left" }
+```
+
+用继承的原型生成最终的对象时，会先根据继承的配置处理数据，然后调用基础的配置处理数据。
+
+## `proto.empty`
+
+`proto.empty` 是一个特殊的 symbol，其作用是从结果中移除特定字段。
+
+```js
+const columnProto = proto.array({
+  width: 120,
+  align: 'right',
+  features: proto.object({ defaultVisible: true }),
+})
+
+const columns = columnProto([
+  { code: 'code-1' },
+  { code: 'code-2', align: proto.empty },
+  { code: 'code-3', features: proto.empty },
+])
+// [
+//   { code: 'code-1', width: 120, align: 'right', features: { defaultVisible: true } },
+//   { code: 'code-2', width: 120, features: { defaultVisible: true } },
+//   { code: 'code-3', width: 120, align: 'right' },
+// ]
+```

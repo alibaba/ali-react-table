@@ -1,0 +1,127 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks'
+
+<Meta title="示例 / 其他组件 / 表格操作栏 hooks" />
+
+# `hooks useOperationBar`
+
+**这是一个已经在 1.0 被移除的组件，1.0 版本之后无法使用**
+
+ali-react-table/biz 提供了一个简单的表格操作栏组件，并实现了一些常见的表格操作。和 transforms 不同，hooks 可以拥有自己的状态，故 `useOperationBar` 内部维护了若干表格操作栏的状态。
+
+## API
+
+`function useOperationBar(options): { transforms, nodes, view }`
+
+- `options.features` 是一个配置对象的数组，每个对象表示开启一个特性，特性见下方
+- `options.columns`：表格的列配置
+- `options.components`：操作栏相关 UI 所使用的的组件；因为操作栏本身并没有依赖任何组件库，所以需要有由层向操作栏提供组件
+  - 组件库目前支持 hippo v1, hippo v2、fusion v1，任选一个即可
+  - `import * as hippo from '@alife/hippo'`，并将 hippo 传递给 components 参数
+  - `import * as fusion from '@alifd/next'`，并将 fusion 传递给 components 参数
+- `options.actionColor`：操作按钮的颜色，默认为 hippo 的配色(`#23a3ff`)
+
+`useOperationBar(options)` 会返回一个对象 `operationBar`，该对象包含以下三个字段：
+
+- `operation.transforms` 是一个 transform 的数组，包含了来自 features 中的所有 transform；
+  - 记得使用 `applyTransforms` 来使用这些 transform，不然是不会生效的哟 (￣３￣)a
+- `operation.nodes` 是 features 对应的 UI，用于渲染操作栏中的功能按钮
+- `operation.view` 是一个 React 组件，提供了表格操作栏的**容器样式**，用法与普通的 div 相同
+
+```js
+function MyComponent() {
+  const operationBar = useOperationBar(options)
+
+  // 注意一定要把 operationBar.transforms 用起来
+  const renderData = applyTransforms(inputData, ...operationBar.transforms)
+
+  return (
+    <div>
+      // operationBar.view 是一个普通的 React 组件，用法与 div 相同
+      <operationBar.view>{operationBar.nodes}</operationBar.view>
+      <BaseTable
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+        isLoading={state.isLoading}
+        stickyTop={32}
+      />
+    </div>
+  )
+}
+```
+
+## features 特性列表
+
+- `{ type: 'custom-columns' }`
+  - 自定义列
+  - 设置自定义列时，每一列是否默认可见需要在 `column.features.defaultVisible` 中配置
+    - 设置 `column.features.enforceVisible` 来使得一列总是可见
+  - 一般来说大部分的列都应当是默认可见的，此时推荐使用 `proto` 工具来简化重复配置声明
+- `{ type: 'export'; onExport(): void }`
+  - 数据导出
+  - 注意 onExport 需要自己实现，一般情况下可以调用 ali-react-table/biz 提供的工具方法 `exportTableAsExcel` 来将数据导出到 Excel 文件
+- `{ type: 'separator' }`
+  - 分隔符，没有逻辑，只影响工具栏的布局样式
+- ~~`{ type: 'toggle'; key: string; title: ReactNode; transform?(checked: boolean): TableTransform }`~~
+  - ~~在工具栏中添加一个 Checkbox；并根据 Checkbox 勾选状态生成一个 transform~~
+  - 不推荐使用 toggle，请用 custom 代替 toggle
+- `{ type: 'click'; node?: ReactNode; transform?: TableTransform }`
+  - 在工具栏中添加一个可点击的文本区域
+- `{ type: 'custom'; node?: ReactNode; transform?: TableTransform }`
+  - 自定义的文本内容或 ReactNode
+
+## 示例
+
+这个例子展示了一个表格同时使用多个拓展功能的情况：
+
+- 表格操作工具栏
+- 「展示环比」切换 —— 动态修改列的能力
+- Excel 导出功能
+- 自定义列
+- 展示数据量 —— 自定义工具栏的特性
+
+`useOperationBar` 返回的 transform 与其他 transform 可以组合在一起，一同构建复杂表格。
+
+```javascript
+/* 这是一份示例代码，不能直接运行 */
+
+import * as fusion from '@alifd/next'
+import { BaseTable, applyTransforms } from 'ali-react-table'
+import { useOperationBar } from 'ali-react-table/biz'
+
+function MyComponent({ inputDataSource, inputColumns }) {
+  const operationBar = useOperationBar({
+    features: [
+      { type: 'toggle', key: 'lfl', title: '展示环比', transform: transformLfl },
+      { type: 'separator' },
+      { type: 'export', onExport },
+      { type: 'custom-columns' },
+      { type: 'custom', node: `共 ${state.isLoading ? '-' : state.data.length} 条数据` },
+    ],
+    components: fusion,
+    columns,
+  })
+
+  const renderData = applyTransforms(
+    { columns: inputColumns, dataSource: inputDataSource },
+    ...operationBar.transforms,
+    commonTransforms.orderField(),
+    commonTransforms.flatten(),
+  )
+
+  return (
+    <div>
+      <operationBar.view>{operationBar.nodes}</operationBar.view>
+      <BaseTable
+        dataSource={renderData.dataSource}
+        columns={renderData.columns}
+        isLoading={state.isLoading}
+        stickyTop={32}
+      />
+    </div>
+  )
+}
+```
+
+<Canvas>
+  <Story id="示例-其他组件-表格操作栏示例--表格操作栏示例" />
+</Canvas>

@@ -1,0 +1,40 @@
+---
+id: auto-row-span
+title: 自动合并多行
+---
+
+根据上下单元格的值相等 自动合并单元格。
+
+### 使用方式
+
+```jsx
+pipeline.use(features.autoRowSpan())
+```
+
+在设置 `column.features.autoRowSpan` 之后，如果该列中相连的两个单元格的值相等，则自动合并这两个单元格。如果连续的多个单元格的值都相等，则合并这些单元格。 autoRowSpan 会覆盖原有的 `column.getSpanRect`，注意避免冲突。
+
+`column.features.autoRowSpan` 也可以设置为一个比较函数，用来自定义「两个单元格中的值相等」的判断逻辑。其函数签名为 `(v1: any, v2: any. row1: any, row2: any) => boolean`
+
+### 示例
+
+```jsx live
+function Example() {
+  const { dataSource: cityData, isLoading } = assets.ncov19.useCityDataSource()
+  const dataSource = cityData.slice(16, 19).flatMap((d) => d.children.slice(0, 4))
+
+  const columns = [
+    { code: 'provinceName', name: '省份', width: 150, features: { autoRowSpan: true, sortable: true } },
+    { code: 'cityName', name: '城市', width: 150, features: { autoRowSpan: true, sortable: true } },
+    { code: 'confirmedCount', name: '确诊', align: 'right', features: { autoRowSpan: true, sortable: true } },
+    { code: 'curedCount', name: '治愈', align: 'right', features: { autoRowSpan: true, sortable: true } },
+    { code: 'deadCount', name: '死亡', align: 'right', features: { autoRowSpan: true, sortable: true } },
+  ]
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .use(features.sort({ mode: 'single', defaultSorts: [{ code: 'provinceName', order: 'desc' }] }))
+    .use(features.autoRowSpan())
+
+  return <BaseTable defaultColumnWidth={100} isLoading={isLoading} {...pipeline.getProps()} />
+}
+```

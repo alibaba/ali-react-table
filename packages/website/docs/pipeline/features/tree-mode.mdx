@@ -1,0 +1,250 @@
+---
+id: tree-mode
+title: 树状模式
+---
+
+让表格支持树形数据的展示，当数据中有 children 字段时会自动展示为树形表格。可以通过设置 indentSize 以控制每一层的缩进宽度。
+
+### 示例
+
+```jsx live
+function 树形表格() {
+  const { dataSource4, columns4 } = assets.biz
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource: dataSource4, columns: columns4 })
+    .primaryKey('id')
+    .use(
+      features.treeMode({
+        defaultOpenKeys: ['4', '4-2'],
+        clickArea: 'cell',
+      }),
+    )
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```
+
+### 用法
+
+- 启用行多选功能之前，pipeline 必须已经设置了 primaryKey。
+
+```jsx
+pipeline.use(features.treeMode(options))
+```
+
+options 结构如下：
+
+```typescript
+export interface TreeModeFeatureOptions {
+  /** 非受控用法：默认展开的 keys */
+  defaultOpenKeys?: string[]
+
+  /** 受控用法：当前展开的 keys */
+  openKeys?: string[]
+
+  /** 受控用法：展开 keys 改变的回调 */
+  onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  /** 自定义叶子节点的判定逻辑 */
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+
+  /** icon 的缩进值。一般为负数，此时 icon 将向左偏移，默认从 pipeline.ctx.indents 中获取 */
+  iconIndent?: number
+
+  /** icon 与右侧文本的距离，默认从 pipeline.ctx.indents 中获取 */
+  iconGap?: number
+
+  /** 每一级缩进产生的距离，默认从 pipeline.ctx.indents 中获取 */
+  indentSize?: number
+
+  /** 点击事件的响应区域，默认为 cell */
+  clickArea?: 'cell' | 'content' | 'icon'
+
+  /** 是否对触发展开/收拢的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
+
+  /** 指定表格每一行元信息的记录字段 */
+  treeMetaKey?: string | symbol
+}
+```
+
+### `features.buildTree`
+
+用法： `pipeline.use(features.buildTree(idProp, parentIdProp))`
+
+根据数据中的 idProp/parentIdProp，将 平铺的数据 转换为树状结构。树状结构下，父节点中的 children 字段会包含其子节点的列表。
+
+ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
+
+如果你已经有了树状结构的数据，那就可以跳过 features.buildTree，直接使用 treeMode 即可。
+
+### 异步数据加载
+
+异步数据加载场景下，因为前端只保存了整棵树中的其中一部分数据，我们需要设置 `isLeafNode` 覆盖默认的判断方式，告诉表格哪些节点是父节点（可被展开），哪些节点是子节点（不可被展开）。
+
+在 `onChangeOpenKeys` 中根据展开的节点判断是否需要加载更多数据，可以实现树状模式下异步数据加载功能。
+
+```jsx live
+function 异步树状表格() {
+  const { amount, lfl, ratio } = assets.format
+
+  const [state, setState] = useState({ isLoading: true, data: [] })
+
+  const dataServiceRef = useRef()
+
+  useEffect(() => {
+    dataServiceRef.current = new assets.MockTreeDataService()
+
+    dataServiceRef.current.loadRootNodeData().then((rootNodeData) => {
+      setState({ data: [rootNodeData], isLoading: false })
+    })
+  }, [])
+
+  function loadNodeDataByParentKey(parentKey) {
+    setState((prev) => ({ isLoading: true, data: prev.data }))
+    dataServiceRef.current.loadNodeDataByParentKey(parentKey).then((newData) => {
+      setState((prev) => {
+        return {
+          isLoading: false,
+          data: prev.data.concat(newData),
+        }
+      })
+    })
+  }
+
+  const [openKeys, onChangeOpenKeys] = useState([])
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({
+      dataSource: state.data,
+      columns: [
+        { name: '名称', code: 'name', width: 180, lock: true },
+        { code: 'a', name: '目标收入', render: amount, align: 'right' },
+        { code: 'b', name: '实际收入', render: amount, align: 'right' },
+        { code: 'd', name: '重点商品收入', render: amount, align: 'right' },
+        { code: 'lfl', name: '收入月环比', render: lfl, align: 'right' },
+        { code: 'rate', name: '重点商品收入占比', render: ratio, align: 'right' },
+      ],
+    })
+    .primaryKey('key')
+    .mapColumns(([firstCol, ...rest]) => [
+      firstCol,
+      // 重复几次 columns，看起来更加丰满
+      ...rest,
+      ...rest,
+      ...rest,
+      ...rest,
+    ])
+    .use(features.buildTree('key', 'parentKey'))
+    .use(
+      features.treeMode({
+        openKeys,
+
+        onChangeOpenKeys(nextKeys, key, action) {
+          if (state.isLoading) {
+            return
+          }
+          onChangeOpenKeys(nextKeys)
+
+          const needLoadData = state.data.every((d) => d.parentKey !== key)
+          if (action === 'expand' && needLoadData) {
+            // 如果当前展开了某一个节点，且该节点的子节点数据尚未加载，
+            //  则调用 loadNodeDataByParentKey 加载更多数据
+            loadNodeDataByParentKey(key)
+          }
+        },
+
+        // 提供一个自定义的 isLeafNode 方法，使得表格为父节点正确渲染收拢/展开按钮
+        isLeafNode(node) {
+          return node.childCount === 0
+        },
+      }),
+    )
+
+  return <BaseTable defaultColumnWidth={120} isLoading={state.isLoading} {...pipeline.getProps()} />
+}
+```
+
+### 对上次展开位置进行标记
+
+在 onChangeOpenKeys 记录上一次用户展开的节点的 key，并使用 `pipeline.appendRowPropsGetter` 为相应的行设置 `className="last-open"`。这样就可以通过 CSS 来方便的控制「上次展开的位置」的样式。
+
+```jsx live
+function 树状表格中的最近展开标记() {
+  const { ratio } = assets.format
+
+  const columns = [
+    { code: 'name', name: '数据维度', width: 200 },
+    { code: 'shop_name', name: '门店' },
+    { code: 'imp_uv_dau_pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
+    { code: 'app_qty_pbt', name: 'APP件单价', align: 'right' },
+    { code: 'all_app_trd_amt_1d', name: 'APP成交金额汇总', align: 'right' },
+  ]
+
+  const [state, setState] = useState({
+    isLoading: true,
+    data: [],
+    lastOpenKey: '',
+    lastCollapseKey: '',
+  })
+
+  useEffect(() => {
+    assets.cdnData.getAppTrafficData().then((data) => {
+      setState({ isLoading: false, data, lastOpenKey: 'B2C', lastCollapseKey: '' })
+    })
+  }, [])
+
+  const [openKeys, onChangeOpenKeys] = useState(['B2C'])
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ columns: columns, dataSource: state.data })
+    .primaryKey('id')
+    .use(features.buildTree('id', 'parent_id'))
+    .use(
+      features.treeMode({
+        openKeys,
+        onChangeOpenKeys(nextKeys, key, action) {
+          onChangeOpenKeys(nextKeys)
+          if (action === 'expand') {
+            setState({ ...state, lastOpenKey: key, lastCollapseKey: '' })
+          } else {
+            setState({ ...state, lastOpenKey: '', lastCollapseKey: key })
+          }
+        },
+      }),
+    )
+    .appendRowPropsGetter((record) => {
+      if (record.id === state.lastOpenKey) {
+        return { className: 'last-open' }
+      } else if (record.id === state.lastCollapseKey) {
+        return { className: 'last-collapse' }
+      }
+    })
+
+  /*
+    const StyledBaseTable = styled(art.BaseTable)`
+      tr.last-open {
+        --bgcolor: rgba(128, 243, 87, 0.32);
+        --hover-bgcolor: rgba(128, 243, 87, 0.32);
+
+        .expansion-icon {
+          fill: #4de247;
+        }
+      }
+
+      tr.last-collapse {
+        --bgcolor: rgba(253, 32, 32, 0.32);
+        --hover-bgcolor: rgba(253, 32, 32, 0.32);
+
+        .expansion-icon {
+          fill: #e54950;
+        }
+      }
+    `
+   */
+
+  return (
+    <docHelpers.StyledWebsiteBaseTable defaultColumnWidth={150} isLoading={state.isLoading} {...pipeline.getProps()} />
+  )
+}
+```

@@ -1,0 +1,35 @@
+---
+id: tips
+title: 提示信息
+---
+
+在列标题旁边展示一个 ℹ 符号，鼠标悬停时展示提示气泡，气泡内容由 `column.features.tips` 提供。
+
+### 使用方式
+
+```jsx
+pipeline.use(features.tips())
+```
+
+- tips 依赖 fusion Balloon 或 antd Tooltip 组件，使用 tips 之前需要通过 pipeline context 设置 components.Ballon 或 components.Tooltip。
+
+### 示例
+
+```jsx live
+function 提示信息() {
+  const columns = [
+    { code: 'title', name: '标题', width: 200, features: { tips: '我是指标的详细信息~~' } },
+    { code: 'dept', name: '部门名称', width: 180, features: { tips: '部门名称部门名称部门名称' } },
+    { code: 'dest', name: '团建目的地', width: 160, features: { tips: '团建目的地团建目的地' } },
+    { code: 'guide', name: '当地导游', width: 160 },
+  ]
+  const dataSource = assets.biz.dataSource4
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(features.tips())
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```

@@ -1,0 +1,63 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks'
+
+<Meta title="示例 / 其他组件 / 自定义列对话框" />
+
+# `CustomColumnsDialog`
+
+**这是一个已经在 1.0 被移除的组件，1.0 版本之后无法使用**
+
+自定义列对话框组件。
+
+<Canvas>
+  <Story id="示例-其他组件-自定义列对话框组件--自定义列对话框组件" />
+</Canvas>
+
+## 必传的 props 列表
+
+| 字段                   | 类型                               | 说明                                |
+| ---------------------- | ---------------------------------- | ----------------------------------- |
+| `trigger`              | `(onOpen: () => void)=> ReactNode` | 渲染自定列对话框的打开按钮/触发控件 |
+| `checkedCodes`         | `string[]`                         | 当前勾选的 code 列表                |
+| `onChangeCheckedCodes` | `(nextCodes: string[])=> void`     | 勾选 code 列表被改变时的回调函数    |
+| `columns`              | `ArtColumn[]`                      | 表格的列配置                        |
+| `components`           | `typeof import('@alifd/next')`     | 自定义列对话框使用的组件            |
+
+## 可选的 props 列表
+
+| 字段                  | 类型                  | 说明                       |
+| --------------------- | --------------------- | -------------------------- |
+| `defaultCheckedCodes` | `string[]`            | 默认勾选的 code 列表       |
+| `defaultVisible`      | `boolean`             | 自定义列对话框是否默认可见 |
+| `style`               | `React.CSSProperties` | 自定义样式                 |
+| `className`           | `string`              | 自定义 CSS 类名            |
+| `enforceCheckedCodes` | `string[]`            | 总是被选中的 字段列表      |
+| `drawerProps`         | `any`                 | 透传给 Drawer 组件的 props |
+| `showCheckAll`        | `boolean`             | 是否展示「全选」按钮       |
+| `showUncheckAll`      | `boolean`             | 是否展示「全不选」按钮     |
+| `drawerComponent`     | `React.ComponentType` | 优先使用的 Drawer 组件     |
+
+## 使用说明
+
+- `components` 目前支持 fusion v0/v1（对应 hippo v1/v2），使用时选择其中一个组件库即可。
+  - 自定义列对话框并没有用到所有的 fusion/hippo 组件，实际用到的组件如下：Button, Checkbox, PageDialog/Drawer
+- `defaultCheckedCodes` 并不是 `checkedCodes` 的默认值，而是指点击「恢复默认」按钮时调用 `onChangeCheckedCodes(...)` 时的参数的值
+  - 当 `defaultCheckedCodes` 非空时，「恢复默认」的按钮才会被渲染
+- `columns` 一般对应的表格的列配置
+  - 自定义列对话框只用到了列配置中的三个字段： code, name, children
+- 通过 `style['--action-color']` 可以调整「全选」、「全不选」的颜色
+- 配合 styled-components v3 使用时，需要手动传入 drawerComponent 属性，具体传入方式如下：
+
+```js
+import { Drawer } from '@alifd/next'
+
+const StyledDrawer = CustomColumnsDialog.makeStyledDrawer(Drawer)
+// 或是 const StyledDrawer = CustomColumnsDialog.makeStyledDrawer(PageDialog)
+
+// 然后将 StyledDrawer 传递给 CustomColumnsDialog 组件：
+<CustomColumnsDialog drawerComponent={StyledDrawer} {...othersProps} />
+
+// 如果你是通过表格操作栏使用自定义列对话框组件，那么要在 feature 中设置 drawerComponent：
+const features = [ { type: 'custom-columns', drawerComponent: StyledDrawer } ]
+```
+
+- styled-components 目前的最新版本为 v5，推荐使用最新的版本

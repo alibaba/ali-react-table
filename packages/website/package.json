@@ -1,0 +1,41 @@
+{
+  "name": "website",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "serve": "docusaurus serve"
+  },
+  "dependencies": {
+    "@alifd/next": "^1.20.28",
+    "@docusaurus/core": "2.0.0-alpha.65",
+    "@docusaurus/preset-classic": "2.0.0-alpha.65",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.65",
+    "@mdx-js/react": "^1.5.8",
+    "clsx": "^1.1.1",
+    "moment": "^2.29.1",
+    "numeral": "^2.0.6",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-live": "^2.2.2",
+    "styled-components": "^5.2.0",
+    "ts-loader": "^8.0.4",
+    "tsconfig-paths-webpack-plugin": "^3.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

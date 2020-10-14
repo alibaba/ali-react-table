@@ -1,0 +1,54 @@
+{
+  "name": "ali-react-table",
+  "version": "2.0.0-beta.0",
+  "description": "高性能 React 表格组件",
+  "sideEffects": false,
+  "module": "dist/ali-react-table.esm.js",
+  "main": "dist/ali-react-table.js",
+  "types": "dist/ali-react-table.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alibaba/ali-react-table.git"
+  },
+  "homepage": "https://github.com/alibaba/ali-react-table",
+  "author": {
+    "name": "Shi Feichao",
+    "email": "842351815@qq.com"
+  },
+  "scripts": {
+    "watch": "rollup --config rollup.config.js --watch",
+    "build": "rimraf dist/ && rollup --config rollup.config.js",
+    "preversion": "npm run build",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "pivot"
+  ],
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "all"
+  },
+  "dependencies": {
+    "@types/classnames": "^2.2.9",
+    "classnames": "^2.2.6",
+    "react": "^16.9.0",
+    "resize-observer-polyfill": "^1.5.1",
+    "rxjs": "^6.5.4",
+    "styled-components": "^3.4.10 || ^5.0.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@types/styled-components": "5.1.2",
+    "react-dom": "^16.13.1",
+    "react-is": "^16.13.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.3.1",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "typescript": "^4.0.2",
+    "xlsx": "^0.16.0"
+  }
+}

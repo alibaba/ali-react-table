@@ -1,0 +1,159 @@
+---
+id: row-detail
+title: 行详情
+---
+
+### 示例
+
+```jsx live
+function 行详情() {
+  const dataSource = assets.biz.dataSource1
+  const columns = assets.biz.columns1.slice(0, 4)
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(
+      features.rowDetail({
+        defaultOpenKeys: ['2'],
+        hasDetail(row) {
+          return ['1', '2', '3'].includes(row.id)
+        },
+        renderDetail(row) {
+          return (
+            <docHelpers.DetailDiv style={{ margin: 8 }}>
+              <div className="left">
+                <p>最近工作：高级经理｜{row.dept}｜2009-07-01 至今</p>
+                <p>工作职责：巴拉巴拉小魔仙</p>
+                <p>联系方式：67676767｜1212121@163.con</p>
+              </div>
+              <div className="right">
+                <p>教育经理：北京大学｜工商管理｜2007-09-01 至 2006-06-01</p>
+                <p>中央财经大学｜2004-09-01 至 2007-06-01</p>
+              </div>
+            </docHelpers.DetailDiv>
+          )
+        },
+      }),
+    )
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```
+
+### 使用方式
+
+- 启用行多选功能之前，pipeline 必须已经设置了 primaryKey，且 primaryKey 只能为字符串。
+
+```jsx
+pipeline.use(features.rowDetail(options))
+```
+
+options 结构如下：
+
+```ts
+export interface RowDetailFeatureOptions {
+  /** 非受控用法：是否默认展开所有详情单元格 */
+  defaultOpenAll?: boolean
+
+  /** 非受控用法：默认展开的 keys */
+  defaultOpenKeys?: string[]
+
+  /** 受控用法：当前展开的 keys */
+  openKeys?: string[]
+
+  /** 受控用法：openKeys 改变的回调 */
+  onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  /** 详情单元格的渲染方法 */
+  renderDetail?(row: any, rowIndex: number): ReactNode
+
+  /** 是否包含详情单元格 */
+  hasDetail?(row: any, rowIndex: number): ReactNode
+
+  /** 获取详情单元格所在行的 key，默认为 `(row) => row[primaryKey] + '_detail'` */
+  getDetailKey?(row: any, rowIndex: number): string
+
+  /** 详情单元格 td 的额外样式 */
+  detailCellStyle?: React.CSSProperties
+
+  /** 点击事件的响应区域 */
+  clickArea?: 'cell' | 'content' | 'icon'
+
+  /** 是否对触发展开/收拢的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
+
+  /** 指定表格每一行元信息的记录字段 */
+  rowDetailMetaKey?: string | symbol
+}
+```
+
+### 表格嵌套示例
+
+通过 `options.renderDetail` 渲染 BaseTable 可以实现表格嵌套。
+
+```jsx live
+function 表格嵌套() {
+  const dataSource = assets.biz.dataSource1.slice(0, 3)
+  const columns = assets.biz.columns1.slice(0, 4)
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(
+      features.rowDetail({
+        defaultOpenKeys: ['2'],
+        renderDetail() {
+          return (
+            <BaseTable
+              style={{ boxShadow: '0 0 4px 1px #33333333', margin: 8 }}
+              hasHeader={false}
+              className="bordered compact"
+              dataSource={dataSource}
+              columns={columns}
+            />
+          )
+        },
+      }),
+    )
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```
+
+### 表格套娃
+
+递归的表格嵌套。注意此时要设置 `isStickyHead={false}`，避免多个表头吸附在同一个位置。
+
+```jsx live
+function NestedTableExample({ depth = 0 }) {
+  function renderDetail() {
+    let msg
+    if (depth < 2) {
+    } else if (depth <= 4) {
+      msg = '加油，马上就到底了'
+    } else if (depth <= 6) {
+      msg = '还剩最后几层了'
+    } else if (depth <= 8) {
+      msg = '加油，还差一点点'
+    } else {
+      return <div>到底了~</div>
+    }
+
+    return (
+      <div style={{ margin: 8 }}>
+        {msg}
+        <NestedTableExample depth={depth + 1} />
+      </div>
+    )
+  }
+
+  const dataSource = assets.biz.dataSource1.slice(0, 3)
+  const columns = assets.biz.columns1.slice(0, 4)
+
+  const pipeline = useTablePipeline({ components: fusion })
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(features.rowDetail({ renderDetail }))
+
+  return <BaseTable isStickyHead={false} {...pipeline.getProps()} />
+}
+```

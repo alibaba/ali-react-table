@@ -1,0 +1,108 @@
+---
+id: tree-mode
+title: 树状模式
+---
+
+本页文档将介绍 ali-react-table 提供的树状模式的相关 API。
+
+## buildTree 从列表数据中构建树状数据
+
+`makeBuildTreeTransform(idProp: string, parentIdProp: string): TableTransform`
+
+根据数据中的 idProp/parentIdProp，将 dataSource 转换为树状结构。树状结构下，父节点的 children 数组中包含对其子节点的引用。
+
+ali-react-table 还导出了一个静态的 buildTree 函数，如果你只需要对数据进行处理，可以使用静态的 buildTree 函数。
+
+如果你已经有了树状结构的数据，那就可以跳过 buildTree 的调用，直接使用 treeMode 来进行渲染。
+
+## treeMode 使用树状结构来渲染表格
+
+`makeTreeModeTransform(options?: TreeModeOptions): TableTransform`
+
+- 该 transform 要求输入的 dataSource 为树状结构，即子节点位于父节点的 children 数组中
+- 该 transform 会对 dataSource 和 columns 进行更新，根据逻辑如下：
+  - 根据 options.openKeys 计算出需要展示的表格行，并计算每一行的缩进和展开信息
+    - 缩进等信息会存放在输出的 dataSource 中，可以通过 `record[treeMetaSymbol]` 来获取该信息
+  - 该 transform 会对 `columns[0]` 进行更新，使其在渲染时处理缩进并绘制树状模式的展开/收拢按钮
+
+`TreeModeOptions` 具体定义：
+
+```typescript
+export interface TreeModeOptions {
+  primaryKey: string
+  openKeys: string[]
+  onChangeOpenKeys(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  indentSize?: number
+  isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
+}
+```
+
+- **transform 都是纯函数，所需的状态需要由上层提供**
+  - 上层需要提供 `options.openKeys` 来告诉 treeMode 哪些节点是展开的，哪些行节点是收拢的
+- `options.onChangeOpenKeys`: 除了 `nextKeys` 之外，该回调函数还会接受到 `key` 与 `action` 参数，分别表示本次操作「对应的 key」与「操作类型」
+- `options.isLeafNode`: 该选项可用于自定义叶子节点的判定逻辑
+  - 对于每一个树中的节点，该回调函数都将被调用一次；调用时除了节点的数据本身（node 参数，即 dataSource 中的元素），回调函数还可以接收到该节点在树状模式下的一些元信息（深度、是否展开等）
+  - 若对于某一个节点，该函数返回了 false，则 treeMode 会认为该节点是「非叶节点」，将渲染收拢或展开按钮
+    - 如果该函数返回了 true，则 treeMode 认为该节点是「叶子节点」，将 **不渲染** 收拢或展开按钮
+- `options.indentSize` 可以配置子节点的缩进宽度。
+
+### treeMode 非受控用法
+
+ali-react-table 也提供了非受控的使用方式，useTreeModeTransform 是一个自定义 React hooks，其参数与 makeTreeModeTransform 类似，但移除了 openKeys/onChangeOpenKeys，同时新增了 defaultOpenKeys 参数（默认为空数组）.
+
+```javascript
+import { useTreeModeTransform } from 'ali-react-table'
+
+function MyComponent() {
+  const treeModeTransform = useTreeModeTransform({ primaryKey: 'id', defaultOpenKeys: ['B2C'] })
+
+  const renderData = applyTransforms({ columns: columns, dataSource: state.data }, treeModeTransform)
+
+  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```
+
+## 基本示例
+
+```jsx live
+function 树状表格() {
+  const { ratio } = assets.format
+  // prettier-ignore
+  const dataSource = [
+    { id: '114', parent_id: '310100', name: '上海交通大学分店', shop: '上海交通大学分店', pct: 0.33, pbt: '33.33元/件', amt: 33, },
+    { id: '113', parent_id: '110100', name: '北京大学分店', shop: '北京大学分店', pct: 0.11, pbt: '11.11元/件', amt: 11, },
+    { id: '110100', parent_id: 'B2C', name: '北京市', shop: '整体-北京市', pct: 0.33, pbt: '33.33元/件', amt: 33 },
+    { id: '510100', parent_id: 'B2C', name: '成都市', shop: '整体-成都市', pct: 0.44, pbt: '44.44元/件', amt: 44 },
+    { id: 'B2CCDLD', parent_id: '510100', name: '成都成都成都', shop: '成都成都成都', pct: 0.11, pbt: '11.11元/件', amt: 11 },
+    { id: '115', parent_id: '440100', name: '中山大学分店', shop: '中山大学分店', pct: 0.22, pbt: '22.22元/件', amt: 22, },
+    { id: '111', parent_id: '310100', name: '复旦大学分店', shop: '复旦大学分店', pct: 0.44, pbt: '44.44元/件', amt: 44, },
+    { id: 'B2C', parent_id: 'root', name: '盒马云超', shop: '整体-盒马云超', pct: 0.22, pbt: '22.22元/件', amt: 22 },
+    { id: '440100', parent_id: 'B2C', name: '广州市', shop: '整体-广州市', pct: 0.22, pbt: '22.22元/件', amt: 22 },
+    { id: '310100', parent_id: 'B2C', name: '上海市', shop: '整体-上海市', pct: 0.11, pbt: '11.11元/件', amt: 11 },
+    { id: '116', parent_id: '440100', name: '深圳深圳深圳', shop: '深圳深圳深圳', pct: 0.22, pbt: '22.22元/件', amt: 22, },
+    { id: '88', parent_id: '310100', name: '上海上海上海', shop: '上海上海上海', pct: 0.11, pbt: '11.11元/件', amt: 11, },
+  ]
+  const columns = [
+    { code: 'name', name: '数据维度', lock: true, width: 200 },
+    { code: 'shop', name: '门店' },
+    { code: 'pct', name: '曝光UV占DAU比例', render: ratio, align: 'right' },
+    { code: 'pbt', name: 'APP件单价', align: 'right' },
+    { code: 'amt', name: 'APP成交金额汇总', align: 'right' },
+  ]
+
+  const [openKeys, onChangeOpenKeys] = useState(['B2C'])
+
+  // 注意 renderData 要用起来
+  const renderData = applyTransforms(
+    { columns, dataSource },
+
+    // 从平铺的数据中，根据 id/parent_id 字段构建出树状结构
+    makeBuildTreeTransform('id', 'parent_id'),
+
+    makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
+  )
+
+  return <BaseTable defaultColumnWidth={100} dataSource={renderData.dataSource} columns={renderData.columns} />
+}
+```

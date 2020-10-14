@@ -31,17 +31,24 @@ export interface RowDetailFeatureOptions {
 
   /** 详情单元格 td 的额外样式 */
   detailCellStyle?: React.CSSProperties
+
+  /** 点击事件的响应区域 */
+  clickArea?: 'cell' | 'content' | 'icon'
+
+  /** 是否对触发展开/收拢的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
+
+  /** 指定表格每一行元信息的记录字段 */
+  rowDetailMetaKey?: string | symbol
 }
 
 const rowDetailSymbol = Symbol('row-detail')
 
-const fallbackRenderDetail = (row: any) => (
-  <div>
+const fallbackRenderDetail = () => (
+  <div style={{ margin: '8px 24px' }}>
     <b style={{ color: 'indianred' }}>
       设置 <code>rowDetail.renderDetail</code> 来自定义详情内容
     </b>
-    <br />
-    <span style={{ wordBreak: 'break-all' }}>ROW DETAIL of {JSON.stringify(row)}</span>
   </div>
 )
 
@@ -54,8 +61,10 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       throw new Error('rowDetail 仅支持字符串作为 primaryKey')
     }
 
+    const rowDetailMetaKey = opts.rowDetailMetaKey ?? rowDetailSymbol
     const indents = pipeline.ctx.indents
     const textOffset = indents.iconIndent + indents.iconWidth + indents.iconGap
+    const clickArea = opts.clickArea ?? 'cell'
 
     const getDetailKey = opts.getDetailKey ?? ((row) => row[primaryKey] + '_detail')
     const renderDetail = opts.renderDetail ?? fallbackRenderDetail
@@ -78,11 +87,24 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
     const openKeySet = new Set(openKeys)
 
+    const toggle = (rowKey: string) => {
+      const expanded = openKeySet.has(rowKey)
+      if (expanded) {
+        onChangeOpenKeys(
+          openKeys.filter((key) => key !== rowKey),
+          rowKey,
+          'collapse',
+        )
+      } else {
+        onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
+      }
+    }
+
     return pipeline
       .dataSource(
         flatMap(pipeline.getDataSource(), (row, rowIndex) => {
           if (openKeySet.has(row[primaryKey])) {
-            return [row, { [rowDetailSymbol]: true, ...row, [primaryKey]: getDetailKey(row, rowIndex) }]
+            return [row, { [rowDetailMetaKey]: true, ...row, [primaryKey]: getDetailKey(row, rowIndex) }]
           } else {
             return [row]
           }
@@ -90,7 +112,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       )
       .columns(processColumns(pipeline.getColumns()))
       .appendRowPropsGetter((row) => {
-        if (row[rowDetailSymbol]) {
+        if (row[rowDetailMetaKey]) {
           return { className: 'no-hover' }
         }
       })
@@ -103,26 +125,40 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       const [firstCol, ...others] = columns
 
       const render = (value: any, row: any, rowIndex: number) => {
-        if (row[rowDetailSymbol]) {
+        if (row[rowDetailMetaKey]) {
           return renderDetail(row, rowIndex)
         }
 
         const content = internals.safeRender(firstCol, row, rowIndex)
+
         if (!hasDetail(row, rowIndex)) {
           return <InlineFlexCell style={{ marginLeft: textOffset }}>{content}</InlineFlexCell>
         }
 
-        const expanded = openKeySet.has(row[primaryKey])
+        const rowKey = row[primaryKey]
+        const expanded = openKeySet.has(rowKey)
+        const onClick = (e: React.MouseEvent) => {
+          if (opts.stopClickEventPropagation) {
+            e.stopPropagation()
+          }
+          toggle(rowKey)
+        }
 
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
-          <ExpansionCell className={cx('expansion-cell', expandCls)}>
+          <ExpansionCell
+            className={cx('expansion-cell', expandCls)}
+            style={{ cursor: clickArea === 'content' ? 'pointer' : undefined }}
+            onClick={clickArea === 'content' ? onClick : undefined}
+          >
             <icons.CaretRight
-              className={cx('expansion-icon', expandCls)}
               style={{
+                cursor: clickArea === 'icon' ? 'pointer' : undefined,
                 marginLeft: indents.iconIndent,
                 marginRight: indents.iconGap,
               }}
+              className={cx('expansion-icon', expandCls)}
+              onClick={clickArea === 'icon' ? onClick : undefined}
             />
             {content}
           </ExpansionCell>
@@ -130,7 +166,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       }
 
       const getCellProps = (value: any, row: any, rowIndex: number) => {
-        if (row[rowDetailSymbol]) {
+        if (row[rowDetailMetaKey]) {
           return {
             style: {
               '--cell-padding': '0',
@@ -146,24 +182,15 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
           return prevProps
         }
 
-        const rowKey = row[primaryKey]
-        const expanded = openKeySet.has(rowKey)
-
-        let onClick: any
-        if (expanded) {
-          onClick = () => {
-            onChangeOpenKeys(
-              openKeys.filter((key) => key !== rowKey),
-              rowKey,
-              'collapse',
-            )
-          }
-        } else {
-          onClick = () => {
-            onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
-          }
-        }
-        return mergeCellProps(prevProps, { onClick, style: { cursor: 'pointer' } })
+        return mergeCellProps(prevProps, {
+          onClick(e) {
+            if (opts.stopClickEventPropagation) {
+              e.stopPropagation()
+            }
+            toggle(row[primaryKey])
+          },
+          style: { cursor: 'pointer' },
+        })
       }
 
       return [
@@ -175,9 +202,9 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             </div>
           ),
           render,
-          getCellProps,
+          getCellProps: clickArea === 'cell' ? getCellProps : undefined,
           getSpanRect(value: any, row: any, rowIndex: number) {
-            if (row[rowDetailSymbol]) {
+            if (row[rowDetailMetaKey]) {
               // detail 总是成一行
               return { top: rowIndex, bottom: rowIndex + 1, left: 0, right: columnFlatCount }
             }

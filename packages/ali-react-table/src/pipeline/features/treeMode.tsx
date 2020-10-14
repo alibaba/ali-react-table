@@ -23,6 +23,15 @@ export interface TreeModeFeatureOptions {
 
   /** 每一级缩进产生的距离，默认从 pipeline.ctx.indents 中获取 */
   indentSize?: number
+
+  /** 点击事件的响应区域 */
+  clickArea?: 'cell' | 'content' | 'icon'
+
+  /** 是否对触发展开/收拢的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
+
+  /** 指定表格每一行元信息的记录字段 */
+  treeMetaKey?: string | symbol
 }
 
 export function treeMode(opts: TreeModeFeatureOptions = {}) {
@@ -50,6 +59,9 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
           opts.onChangeOpenKeys?.(nextKeys, key, action)
           pipeline.setStateAtKey(stateKey, nextKeys, { key, action })
         },
+        treeMetaKey: opts.treeMetaKey,
+        clickArea: opts.clickArea,
+        stopClickEventPropagation: opts.stopClickEventPropagation,
       }),
     )
   }

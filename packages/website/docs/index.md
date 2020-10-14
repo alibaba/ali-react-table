@@ -8,10 +8,6 @@ slug: /
 
 高性能 React 表格组件
 
-:::caution
-目前表格仍处于 beta 版本，API 可能会发生变化。 
-:::
-
 ### 安装
 
 `npm install ali-react-table@beta`

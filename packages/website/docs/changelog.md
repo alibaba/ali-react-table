@@ -3,15 +3,23 @@ id: changelog
 title: 更新日志
 ---
 
-:::info
+:::note
 日志中的 **加粗部分** 表示破坏性更新 (break changes)，请多留意 ヾ(=･ω･=)o
 :::
 
-### unreleased
+### v2.0 unreleased
 
-- feat: emptyCellHeight， components.LoadingContentWrapper, components.LoadingIcon
+- feat：新的表格功能拓展机制 pipeline 与默认的拓展功能
+- feat：新的 BaseTable props
+  - emptyCellHeight
+  - components
+  - estimatedRowHeight 虚拟滚动开启情况下，表格中每一行的预估高度
+- refactor:
+  - **表格 DOM 结构优化，CSS 变量重构**
 - 其他：
-  - 全新的文档网站
+  - ✨ 全新的文档网站
+  - **BaseTable props primaryKey 函数用法参数修改**
+  - 更美观的锁列阴影
 
 ### v1.2 2020-09-26
 

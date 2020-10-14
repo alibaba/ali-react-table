@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React, { useState } from 'react'
-import { ExpansionCell, icons } from '../common-views'
+import { ExpansionCell, icons, InlineFlexCell } from '../common-views'
 import { ArtColumn, TableTransform } from '../interfaces'
 import { internals } from '../internals'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
@@ -21,6 +21,10 @@ export interface TreeModeOptions {
   iconGap?: number
   /** 每一级缩进产生的距离，默认为 16 */
   indentSize?: number
+
+  clickArea?: 'cell' | 'content' | 'icon'
+  treeMetaKey?: string | symbol
+  stopClickEventPropagation?: boolean
 }
 
 export function makeTreeModeTransform({
@@ -31,8 +35,24 @@ export function makeTreeModeTransform({
   iconGap = 0,
   indentSize = 16,
   isLeafNode = standardIsLeafNode,
+  clickArea = 'cell',
+  treeMetaKey = treeMetaSymbol,
+  stopClickEventPropagation,
 }: TreeModeOptions): TableTransform {
   const openKeySet = new Set(openKeys)
+
+  const toggle = (rowKey: string) => {
+    const expanded = openKeySet.has(rowKey)
+    if (expanded) {
+      onChangeOpenKeys(
+        openKeys.filter((key) => key !== rowKey),
+        rowKey,
+        'collapse',
+      )
+    } else {
+      onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
+    }
+  }
 
   return ({ columns, dataSource }) => {
     return {
@@ -54,7 +74,7 @@ export function makeTreeModeTransform({
 
           const isLeaf = isLeafNode(node, { depth, expanded, rowKey })
           const treeMeta = { depth, isLeaf, expanded, rowKey }
-          result.push({ [treeMetaSymbol]: treeMeta, ...node })
+          result.push({ [treeMetaKey]: treeMeta, ...node })
 
           if (!isLeaf && expanded) {
             dfs(node.children, depth + 1)
@@ -72,29 +92,47 @@ export function makeTreeModeTransform({
 
       const render = (value: any, record: any, recordIndex: number) => {
         const content = internals.safeRender(firstCol, record, recordIndex)
-        if (record[treeMetaSymbol] == null) {
+        if (record[treeMetaKey] == null) {
           // 没有 treeMeta 信息的话，就返回原先的渲染结果
           return content
         }
 
-        const { depth, isLeaf, expanded } = record[treeMetaSymbol]
+        const { rowKey, depth, isLeaf, expanded } = record[treeMetaKey]
 
         const indent = iconIndent + depth * indentSize
 
         if (isLeaf) {
           return (
-            <ExpansionCell className="expansion-cell leaf">
+            <InlineFlexCell className="expansion-cell leaf">
               <span style={{ marginLeft: indent + ICON_WIDTH + iconGap }}>{content}</span>
-            </ExpansionCell>
+            </InlineFlexCell>
           )
+        }
+
+        const onClick = (e: React.MouseEvent) => {
+          if (stopClickEventPropagation) {
+            e.stopPropagation()
+          }
+          toggle(rowKey)
         }
 
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
-          <ExpansionCell className={cx('expansion-cell', expandCls)}>
+          <ExpansionCell
+            className={cx('expansion-cell', expandCls)}
+            style={{
+              cursor: clickArea === 'content' ? 'pointer' : undefined,
+            }}
+            onClick={clickArea === 'content' ? onClick : undefined}
+          >
             <icons.CaretRight
               className={cx('expansion-icon', expandCls)}
-              style={{ marginLeft: indent, marginRight: iconGap }}
+              style={{
+                cursor: clickArea === 'icon' ? 'pointer' : undefined,
+                marginLeft: indent,
+                marginRight: iconGap,
+              }}
+              onClick={clickArea === 'icon' ? onClick : undefined}
             />
             {content}
           </ExpansionCell>
@@ -102,34 +140,25 @@ export function makeTreeModeTransform({
       }
 
       const getCellProps = (value: any, record: any, rowIndex: number) => {
-        if (record[treeMetaSymbol] == null) {
+        const prevProps = internals.safeGetCellProps(firstCol, record, rowIndex)
+        if (record[treeMetaKey] == null) {
           // 没有 treeMeta 信息的话，就返回原先的 cellProps
-          return internals.safeGetCellProps(firstCol, record, rowIndex)
+          return prevProps
         }
 
-        const { isLeaf, rowKey, expanded } = record[treeMetaSymbol]
-
-        let onClick: any
-        if (!isLeaf) {
-          if (expanded) {
-            onClick = () => {
-              onChangeOpenKeys(
-                openKeys.filter((key) => key !== rowKey),
-                rowKey,
-                'collapse',
-              )
-            }
-          } else {
-            onClick = () => {
-              onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
-            }
-          }
+        const { isLeaf, rowKey } = record[treeMetaKey]
+        if (isLeaf) {
+          return prevProps
         }
 
-        const prevProps = firstCol.getCellProps?.(value, record, rowIndex)
         return mergeCellProps(prevProps, {
-          onClick,
-          style: { cursor: isLeaf ? undefined : 'pointer' },
+          onClick(e) {
+            if (stopClickEventPropagation) {
+              e.stopPropagation()
+            }
+            toggle(rowKey)
+          },
+          style: { cursor: 'pointer' },
         })
       }
 
@@ -142,7 +171,7 @@ export function makeTreeModeTransform({
             </span>
           ),
           render,
-          getCellProps,
+          getCellProps: clickArea === 'cell' ? getCellProps : undefined,
         },
         ...others,
       ]
@@ -151,13 +180,13 @@ export function makeTreeModeTransform({
 }
 
 export function useTreeModeTransform({
-  isLeafNode,
-  indentSize,
-  primaryKey,
   defaultOpenKeys = [],
-  iconGap,
-  iconIndent,
+  ...others
 }: Omit<TreeModeOptions, 'openKeys' | 'onChangeOpenKeys'> & { defaultOpenKeys?: string[] }) {
   const [openKeys, onChangeOpenKeys] = useState(defaultOpenKeys)
-  return makeTreeModeTransform({ indentSize, primaryKey, isLeafNode, iconGap, iconIndent, openKeys, onChangeOpenKeys })
+  return makeTreeModeTransform({
+    openKeys,
+    onChangeOpenKeys,
+    ...others,
+  })
 }

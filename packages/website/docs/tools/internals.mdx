@@ -7,11 +7,11 @@ title: Internal Getters
 
 ali-react-table 导出的内部方法如下：
 
-- safeRenderHeader(column) 获取表头的渲染内容
-- safeGetValue(column, record, rowIndex) 获取单元格的值
-- safeGetRowKey(primaryKey, record, rowIndex) 获取某一行的 key
-- safeGetCellProps(column, record, rowIndex) 获取单元格的 props
-- safeRender(column, record, rowIndex) 获取单元格的渲染内容
+- `safeRenderHeader(column)` 获取表头的渲染内容
+- `safeGetValue(column, row, rowIndex)` 获取单元格的值
+- `safeGetRowKey(primaryKey, row, rowIndex)` 获取某一行的 key
+- `safeGetCellProps(column, row, rowIndex)` 获取单元格的 props
+- `safeRender(column, row, rowIndex)` 获取单元格的渲染内容
 
 使用示例：
 
@@ -20,9 +20,9 @@ import { internals } from 'ali-react-table'
 
 const column = { code: 'hello', name: 'world' }
 const rowIndex = 3
-const record = dataSource[rowIndex]
+const row = dataSource[rowIndex]
 
-const cellProps = internals.safeRender(column, record, rowIndex)
+const cellProps = internals.safeGetCellProps(column, row, rowIndex)
 ```
 
 每个内部的数据方法的实现其实都很简单，详见 [源码](https://github.com/alibaba/ali-react-table/blob/master/src/internals.ts).

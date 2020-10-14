@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { BaseTableProps, PrimaryKey } from '../base-table'
 import { ArtColumn, TableTransform, Transform } from '../interfaces'
-import { mergeCellProps, traverseColumn } from '../utils'
+import { mergeCellProps } from '../utils'
 
 type RowPropsGetter = BaseTableProps['getRowProps']
 
@@ -11,11 +11,19 @@ interface PipelineSnapshot {
   rowPropsGetters: RowPropsGetter[]
 }
 
-interface IndentsConfig {
+export interface TablePipelineIndentsConfig {
   iconIndent: number
   iconWidth: 16
   iconGap: number
   indentSize: number
+}
+
+export interface TablePipelineCtx {
+  primaryKey?: PrimaryKey
+  components: { [name: string]: React.ComponentType<any> }
+  indents: TablePipelineIndentsConfig
+
+  [key: string]: any
 }
 
 /**
@@ -32,24 +40,20 @@ interface IndentsConfig {
  * 4. snapshots，调用 pipeline.snapshot(name) 可以记录当前的状态，后续可以通过 name 来读取保存的状态
  * */
 export class TablePipeline {
-  private readonly snapshots: { [key: string]: PipelineSnapshot } = {}
-  private readonly rowPropsGetters: Array<RowPropsGetter> = []
+  private readonly _snapshots: { [key: string]: PipelineSnapshot } = {}
+  private readonly _rowPropsGetters: Array<RowPropsGetter> = []
   private _dataSource: any[]
   private _columns: any[]
 
-  static defaultIndents: IndentsConfig = {
+  static defaultIndents: TablePipelineIndentsConfig = {
     iconIndent: -8,
     iconWidth: 16,
     iconGap: 0,
     indentSize: 16,
   }
 
-  readonly ctx: Partial<{
-    primaryKey: PrimaryKey
-    components: { [name: string]: React.ComponentType<any> }
-    indents: IndentsConfig
-    [key: string]: any
-  }> = {
+  readonly ctx: TablePipelineCtx = {
+    components: {},
     indents: TablePipeline.defaultIndents,
   }
 
@@ -59,19 +63,19 @@ export class TablePipeline {
   constructor({
     state,
     setState,
-    context,
+    ctx,
   }: {
     state: any
     setState: (nextFullState: any, stateKey: string, partialState: any, extraInfo?: any) => void
-    context: TablePipeline['ctx']
+    ctx: TablePipeline['ctx']
   }) {
     this.state = state
     this.setState = setState
-    Object.assign(this.ctx, context)
+    Object.assign(this.ctx, ctx)
   }
 
   appendRowPropsGetter(getter: RowPropsGetter) {
-    this.rowPropsGetters.push(getter)
+    this._rowPropsGetters.push(getter)
     return this
   }
 
@@ -79,7 +83,7 @@ export class TablePipeline {
     if (name == null) {
       return this._dataSource
     } else {
-      return this.snapshots[name].dataSource
+      return this._snapshots[name].dataSource
     }
   }
 
@@ -87,7 +91,7 @@ export class TablePipeline {
     if (name == null) {
       return this._columns
     } else {
-      return this.snapshots[name].columns
+      return this._snapshots[name].columns
     }
   }
 
@@ -97,14 +101,14 @@ export class TablePipeline {
   }
 
   /** 确保 primaryKey 已被设置，并返回 primaryKey  */
-  ensurePrimaryKey(prefix: string): PrimaryKey {
+  ensurePrimaryKey(hint?: string): PrimaryKey {
     if (this.ctx.primaryKey == null) {
-      throw new Error(`使用 ${prefix} 之前必须先设置 primaryKey`)
+      throw new Error(hint ? `使用 ${hint} 之前必须先设置 primaryKey` : '必须先设置 primaryKey')
     }
     return this.ctx.primaryKey
   }
 
-  /** 设置流水线的输入数据  */
+  /** 设置流水线的输入数据 */
   input(input: { dataSource: any[]; columns: ArtColumn[] }) {
     if (this._dataSource != null || this._columns != null) {
       throw new Error('input 不能调用两次')
@@ -138,10 +142,10 @@ export class TablePipeline {
 
   /** 保存快照 */
   snapshot(name: string) {
-    this.snapshots[name] = {
+    this._snapshots[name] = {
       dataSource: this._dataSource,
       columns: this._columns,
-      rowPropsGetters: this.rowPropsGetters.slice(),
+      rowPropsGetters: this._rowPropsGetters.slice(),
     }
     return this
   }
@@ -155,6 +159,7 @@ export class TablePipeline {
     return this.dataSource(next.dataSource).columns(next.columns)
   }
 
+  /** 使用 pipeline 功能拓展 */
   use(step: (pipeline: this) => this) {
     return step(this)
   }
@@ -169,17 +174,7 @@ export class TablePipeline {
     return this.columns(mapper(this.getColumns()))
   }
 
-  /** 利用 ali-react-table 提供的 traverseColumn 工具来遍历所有 columns */
-  traverseColumn(
-    fn: (
-      column: ArtColumn,
-      ctx: { range: { start: number; end: number }; dataSource: any[] },
-    ) => ArtColumn | ArtColumn[] | null,
-  ) {
-    return this.useTransform(traverseColumn(fn))
-  }
-
-  /** 获取 BaseTable 的 props */
+  /** 获取 BaseTable 的 props，结果中包含 dataSource/columns/primaryKey/getRowProps 四个字段 */
   getProps() {
     const result: BaseTableProps = {
       dataSource: this._dataSource,
@@ -190,9 +185,9 @@ export class TablePipeline {
       result.primaryKey = this.ctx.primaryKey
     }
 
-    if (this.rowPropsGetters.length > 0) {
+    if (this._rowPropsGetters.length > 0) {
       result.getRowProps = (row, rowIndex) => {
-        return this.rowPropsGetters.reduce<any>((res, get) => {
+        return this._rowPropsGetters.reduce<any>((res, get) => {
           return mergeCellProps(res, get(row, rowIndex) as any)
         }, {})
       }
@@ -202,7 +197,7 @@ export class TablePipeline {
   }
 }
 
-export function useTablePipeline(context?: TablePipeline['ctx']) {
+export function useTablePipeline(ctx?: TablePipeline['ctx']) {
   const [state, setState] = useState<any>({})
-  return new TablePipeline({ state, setState, context })
+  return new TablePipeline({ state, setState, ctx })
 }

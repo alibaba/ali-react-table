@@ -27,7 +27,12 @@ export interface MultiSelectFeatureOptions {
   lastKey?: string
 
   /** 受控用法：状态改变回调  */
-  onChange?: (nextValue: string[], key: string, keys: string[], action: 'check' | 'uncheck') => void
+  onChange?: (
+    nextValue: string[],
+    key: string,
+    keys: string[],
+    action: 'check' | 'uncheck' | 'check-all' | 'uncheck-all',
+  ) => void
 
   /** 复选框所在列的位置 */
   checkboxPlacement?: 'start' | 'end'
@@ -76,7 +81,7 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
       .filter((key) => key != null)
 
     const set = new Set(value)
-    const isAllChecked = allKeys.every((key) => set.has(key))
+    const isAllChecked = allKeys.length > 0 && allKeys.every((key) => set.has(key))
     const isAnyChecked = allKeys.some((key) => set.has(key))
 
     const defaultCheckboxColumnTitle = (
@@ -85,9 +90,9 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
         indeterminate={!isAllChecked && isAnyChecked}
         onChange={(_: any) => {
           if (isAllChecked) {
-            onChange(diffArray(value, allKeys), '', allKeys, 'uncheck')
+            onChange(diffArray(value, allKeys), '', allKeys, 'uncheck-all')
           } else {
-            onChange(mergeArray(value, allKeys), '', allKeys, 'check')
+            onChange(mergeArray(value, allKeys), '', allKeys, 'check-all')
           }
         }}
       />
@@ -129,6 +134,8 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
                     // antd: arg1.nativeEvent
                     const nativeEvent: KeyboardEvent = arg2?.nativeEvent ?? arg1.nativeEvent
                     if (nativeEvent) {
+                      // todo 是否要添加一个额外的选项来 可选地禁用该行为?
+                      nativeEvent.stopPropagation()
                       onCheckboxChange(checked, key, nativeEvent.shiftKey)
                     }
                   }

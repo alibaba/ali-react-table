@@ -4,24 +4,22 @@ title: 拓展机制介绍
 slug: /pipeline/
 ---
 
-## 拓展机制介绍
+pipeline 特点：
 
-特点：
+- 按需引入表格拓展，更好地支持 tree shaking
+- 默认提供 [多种拓展功能](features/multi-select)
+  - 支持 antd 或 fusion 组件库（二选一）
+  - 支持「受控用法」与「非受控用法」
+  - 支持「hooks 用法」与「非 hooks 用法」
+- 支持 [自定义的表格拓展](extends)
 
-- 同时支持受控用法 和 非受控用法
-- 支持 tree shaking
-
-TODO 详细介绍
-
-## 使用 pipeline
+## 创建 pipeline
 
 ### hooks 用法
 
-在函数组件中，可以中引入 hooks `useTablePipeline` 来创建 pipeline。
+在函数组件中，可以引入 hooks `useTablePipeline` 来创建 pipeline。
 
-创建之后，你可以使用 ali-react-table 提供的 [默认拓展功能](features/multi-select)，或是 [实现自定义的表格拓展](extends)。
-
-```jsx
+```jsx {6}
 import { useTablePipeline, features, BaseTable } from 'ali-react-table'
 import { Checkbox } from '@alifd/next'
 // or...  import { Checkbox } from 'antd'
@@ -51,6 +49,79 @@ import * as antd from 'antd'
 useTablePipeline({ components: antd })
 ```
 
-### 在 class component 中使用 pipeline
+创建之后，你可以使用 ali-react-table 提供的 [拓展功能](features/multi-select)，或是 [实现自定义的表格拓展](extends)。
 
-todo
+### 非 hooks 用法
+
+在类组件中，需要调用 `new TablePipeline(...)` 来使用创建 pipeline。创建时，通过 `state / setState` 为 pipeline 提供状态管理能力。
+
+```jsx {13-17}
+import { TablePipeline, features } from 'ali-react-table'
+
+class MyComponent extends React.Component {
+  state = {
+    pipelineState: {},
+  }
+
+  setPipelineState = (pipelineState) => {
+    this.setState({ pipelineState })
+  }
+
+  render() {
+    const pipeline = new TablePipeline({
+      state: this.state.pipelineState,
+      setState: this.setPipelineState,
+      ctx: { components: fusion },
+    })
+
+    pipeline.input({ dataSource, columns })
+    pipeline.primaryKey('id')
+    pipeline.use(features.autoRowSpan())
+    pipeline.use(features.autoRowSpan())
+
+    return <BaseTable {...pipeline.getProps()} />
+  }
+}
+```
+
+## 使用 pipeline
+
+### 常规用法
+
+创建 pipeline 之后，一般需要先设置 input 和 primaryKey，然后可以使用各个表格拓展。常规用法推荐直接参考 [具体拓展功能](features/multi-select) 中的示例。
+
+#### `pipeline.input({ dataSource, columns })`
+
+input 方法用于设置 pipeline 的输入，调用后 pipeline 中当前的 dataSource/columns 将被更新。该方法会返回 pipeline 对象，方便链式调用。
+
+#### `pipeline.primaryKey(primaryKey)`
+
+设置 primaryKey。primaryKey 一般是一个字符串，例如 `'id'`，表示数据中的 id 字段可以唯一确定一行。primaryKey 也可以是一个函数，详情可参考 [BaseTable api](../table/api)。很多表格拓展功会要求 `primaryKey` 预先被设置，部分拓展还要求 `primaryKey` 必须为一个字符串。该方法会返回 pipeline 对象，方便链式调用。
+
+#### `pipeline.use(someTableFeature)`
+
+使用指定的表格功能拓展。该方法会返回 pipeline 对象，方便链式调用。
+
+#### `pipeline.getProps()`
+
+获取 `<BaseTable />` 的 props，返回结果会包含 `{ dataSource, columns, primaryKey, getRowProps }` 这四个字段。
+
+### 手动处理数据
+
+pipeline 内部保存了一份**「当前」**的 dataSource 与 columns。调用 `pipeline.getProps()` 时，「当前」的这份状态将被返回。
+
+以下几个 api 可以用来读取或更新当前状态：
+
+- `pipeline.getDataSource(name?: string)` 获取当前的 dataSource；如果提供了 name 参数，则获取 name 对应的 dataSource
+- `pipeline.getColumns(name?: string)` 获取当前的 columns；如果提供了 name 参数，则获取 name 对应的 columns
+- `pipeline.dataSource(rows)` 设置当前 dataSource，并返回 pipeline 对象本身
+- `pipeline.columns(cols)` 设置当前 columns，并返回 pipeline 对象本身
+- `pipeline.mapDataSource(mapper)` 对 dataSource 进行变换，mapper 会接受当前 dataSource 作为参数，需要返回一份新的 dataSource。该方法返回 pipeline 对象本身
+- `pipeline.mapColumns(mapper)` 对 columns 进行变换，mapper 会接受当前 columns 作为参数，需要返回一份新的 columns。注意 columns 不一定是简单的数组，可能存在嵌套的情况。该方法返回 pipeline 对象本身
+- `pipeline.snapshot(name: string)` 将当前的 dataSource/columns 保存为快照，后续可以通过 name 来获取此时的 dataSource/columns
+
+考虑到一个 pipeline 上可能会有多个拓展定制了表格行的 props ，pipeline 内部维护了一个 `getRowProps` 的数组。该数组会收集所有的 getRowProps 回调，并在 `pipeline.getProps()` 时将这些回调合并为一个完整的 `getRowProps`。
+
+- `pipeline.appendRowPropsGetter(fn)` 追加一个 getRowProps 回调函数，用于自定义表格行的 props。该方法返回 pipeline 对象本身
+
+### pipeline 操作示例（todo）

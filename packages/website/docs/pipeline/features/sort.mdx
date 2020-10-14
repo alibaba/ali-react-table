@@ -5,6 +5,10 @@ title: 排序
 
 对表格数据行进行排序，支持单列排序、多列排序、树形数据排序、自定义比较函数等功能。
 
+:::note
+本页文档需要优化
+:::
+
 ### 基本示例
 
 ```jsx live
@@ -36,10 +40,11 @@ function 表格排序() {
 - 设置 `column.features.sortable` 来启用该列的排序
   - 注意默认情况下，列都是不可排序的
   - 设置 sortable=true 表示启用默认的比较函数（字符串使用字典序，数字使用自然序），设置 sortable=function 表示使用自定义的比较函数。
-- 该 transform 会根据 options.sorts 来排序 dataSource
+- sort 会根据 options.sorts 来排序 dataSource
   - options.mode=multiple （默认值）时支持多字段排序（先按字段 1 排序，然后按字段 2 排序，依次类推）
   - options.mode=single 时表现为单字段排序
   - 无论是多字段还是单字段排序，**options.sorts 始终为一个数组**
+  - 设置 `options.keepDataSource=true` 可以 「保持 dataSource 不变」，适用于「后端已返回排好序的数据」的场景
 
 ```jsx
 pipeline.use(features.sort(options))
@@ -79,12 +84,10 @@ export type SortOrder = 'desc' | 'asc' | 'none'
 export type SortItem = { code: string; order: SortOrder }
 ```
 
-### 多列排序
+### (todo) 多列排序
 
-### 树形数据排序
+### (todo) 树形数据排序
 
 features.sort 默认就支持了树形数据排序，即对于树中的某一个父节点，对其子节点进行排序。但使用时注意 feature 的使用顺序。
 
-todo demo
-
-### 自定义排序函数
+### (todo) 自定义排序函数

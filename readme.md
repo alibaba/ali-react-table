@@ -1,16 +1,12 @@
 # ali-react-table
 
-[![NPM Package](https://img.shields.io/npm/v/ali-react-table/latest.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
-
-[![NPM Package](https://img.shields.io/npm/v/ali-react-table/beta.svg?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
+[![NPM Package](https://img.shields.io/npm/v/ali-react-table?style=flat-square)](https://www.npmjs.org/package/ali-react-table)
 
 高性能 React 表格组件. https://ali-react-table.js.org/
 
-## 更新日志
+## NEWS
 
-**NEWS** v2.0 beta 发布，详见 [官方文档](https://ali-react-table.js.org/docs/changelog)
-
-如果你第一次使用 ali-react-table，推荐使用 v2 版本。
+v2.0 发布，详见 [官方文档](https://ali-react-table.js.org/docs/changelog)
 
 ## 安装
 

@@ -7,7 +7,7 @@ title: 更新日志
 日志中的 **加粗部分** 表示破坏性更新 (break changes)，请多留意 ヾ(=･ω･=)o
 :::
 
-### v2.0 unreleased
+### v2.0 2020-10-15
 
 - feat：新的表格功能拓展机制 pipeline 与默认的拓展功能
 - feat：新的 BaseTable props，例如 emptyCellHeight、components、estimatedRowHeight

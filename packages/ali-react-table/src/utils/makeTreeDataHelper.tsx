@@ -3,6 +3,8 @@ import isLeafNode from './isLeafNode'
 
 // todo 改成 class Wrapper { ... }
 
+// todo 支持 isDisabled 来忽略部分 key/value
+
 interface Wrapper<N extends AbstractTreeNode> {
   /** 是否为根节点 */
   root?: boolean

@@ -10,10 +10,7 @@ title: 更新日志
 ### v2.0 unreleased
 
 - feat：新的表格功能拓展机制 pipeline 与默认的拓展功能
-- feat：新的 BaseTable props
-  - emptyCellHeight
-  - components
-  - estimatedRowHeight 虚拟滚动开启情况下，表格中每一行的预估高度
+- feat：新的 BaseTable props，例如 emptyCellHeight、components、estimatedRowHeight
 - refactor:
   - **表格 DOM 结构优化，CSS 变量重构**
 - 其他：

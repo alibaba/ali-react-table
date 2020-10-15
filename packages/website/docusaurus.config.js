@@ -13,7 +13,7 @@ module.exports = {
 
   themeConfig: {
     navbar: {
-      title: `ali-react-table (${artPkg.version})`,
+      title: 'ali-react-table',
       logo: {
         alt: 'ali-react-table Logo',
         src: 'img/logo.svg',

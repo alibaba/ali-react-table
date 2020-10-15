@@ -48,6 +48,9 @@ export interface MultiSelectFeatureOptions {
 
   /** 点击事件的响应区域 */
   clickArea?: 'checkbox' | 'cell' | 'row'
+
+  /** 是否对触发 onChange 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 
 export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
@@ -113,8 +116,11 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
             style: { cursor: disabled ? 'not-allowed' : 'pointer' },
             onClick: disabled
               ? undefined
-              : (event) => {
-                  onCheckboxChange(prevChecked, key, event.shiftKey)
+              : (e) => {
+                  if (opts.stopClickEventPropagation) {
+                    e.stopPropagation()
+                  }
+                  onCheckboxChange(prevChecked, key, e.shiftKey)
                 },
           }
         }
@@ -132,10 +138,11 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
                     // 这里要同时兼容 antd 和 fusion 的用法
                     // fusion: arg2?.nativeEvent
                     // antd: arg1.nativeEvent
-                    const nativeEvent: KeyboardEvent = arg2?.nativeEvent ?? arg1.nativeEvent
+                    const nativeEvent: MouseEvent = arg2?.nativeEvent ?? arg1.nativeEvent
                     if (nativeEvent) {
-                      // todo 是否要添加一个额外的选项来 可选地禁用该行为?
-                      nativeEvent.stopPropagation()
+                      if (opts.stopClickEventPropagation) {
+                        nativeEvent.stopPropagation()
+                      }
                       onCheckboxChange(checked, key, nativeEvent.shiftKey)
                     }
                   }
@@ -173,6 +180,9 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
         if (!disabled) {
           style.cursor = 'pointer'
           onClick = (e: MouseEvent) => {
+            if (opts.stopClickEventPropagation) {
+              e.stopPropagation()
+            }
             onCheckboxChange(checked, rowKey, e.shiftKey)
           }
         }

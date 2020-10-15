@@ -68,5 +68,8 @@ export interface RowGroupingFeatureOptions {
 
   /** 受控用法：当前展开 keys 改变回调 */
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 ```

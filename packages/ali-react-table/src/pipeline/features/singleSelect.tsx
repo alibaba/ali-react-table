@@ -27,6 +27,9 @@ export interface SingleSelectFeatureOptions {
 
   /** 单选框所在列的位置 */
   radioPlacement?: 'start' | 'end'
+
+  /** 是否对触发 onChange 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 
 export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
@@ -58,7 +61,14 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
           const disabled = isDisabled(row, rowIndex)
           return {
             style: { cursor: disabled ? 'not-allowed' : 'pointer' },
-            onClick: disabled ? undefined : () => onChange(rowKey),
+            onClick: disabled
+              ? undefined
+              : (e) => {
+                  if (opts.stopClickEventPropagation) {
+                    e.stopPropagation()
+                  }
+                  onChange(rowKey)
+                },
           }
         }
       },
@@ -68,7 +78,17 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
           <Radio
             checked={value === rowKey}
             disabled={isDisabled(row, rowIndex)}
-            onChange={clickArea === 'radio' ? () => onChange(rowKey) : undefined}
+            onChange={
+              clickArea === 'radio'
+                ? (arg1: any, arg2: any) => {
+                    const nativeEvent: MouseEvent = arg2?.nativeEvent ?? arg1?.nativeEvent
+                    if (nativeEvent && opts.stopClickEventPropagation) {
+                      nativeEvent.stopPropagation()
+                    }
+                    onChange(rowKey)
+                  }
+                : undefined
+            }
           />
         )
       },
@@ -99,9 +119,11 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
       }
       if (clickArea === 'row' && !isDisabled(row, rowIndex)) {
         style.cursor = 'pointer'
-        onClick = () => {
-          opts.onChange?.(rowKey)
-          pipeline.setStateAtKey(stateKey, rowKey)
+        onClick = (e: React.MouseEvent) => {
+          if (opts.stopClickEventPropagation) {
+            e.stopPropagation()
+          }
+          onChange(rowKey)
         }
       }
 

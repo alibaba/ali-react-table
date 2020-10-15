@@ -38,6 +38,9 @@ export interface RowGroupingFeatureOptions {
 
   /** 受控用法：当前展开 keys 改变回调 */
   onChangeOpenKeys?(nextKeys: string[], key: string, action: 'expand' | 'collapse'): void
+
+  /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 
 export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
@@ -127,16 +130,17 @@ export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
 
         let onClick: any
         if (expandable) {
-          if (expanded) {
-            onClick = () => {
+          onClick = (e: React.MouseEvent) => {
+            if (opts.stopClickEventPropagation) {
+              e.stopPropagation()
+            }
+            if (expanded) {
               onChangeOpenKeys(
                 openKeys.filter((key) => key !== rowKey),
                 rowKey,
                 'collapse',
               )
-            }
-          } else {
-            onClick = () => {
+            } else {
               onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
             }
           }

@@ -80,6 +80,9 @@ export interface MultiSelectFeatureOptions {
 
   /** 点击事件的响应区域 */
   clickArea?: 'checkbox' | 'cell' | 'row'
+
+  /** 是否对触发 onChange 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 ```
 

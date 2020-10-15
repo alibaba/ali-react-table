@@ -87,7 +87,7 @@ export interface SortHeaderCellProps {
   column: ArtColumn
 
   /** 切换排序的回调 */
-  onToggle(): void
+  onToggle(e: React.MouseEvent): void
 }
 
 export interface SortOptions {
@@ -112,8 +112,10 @@ export interface SortOptions {
   /** 排序激活时 是否高亮这一列的单元格 */
   highlightColumnWhenActive?: boolean
 
-  // todo 排序点击触发位置
-  //  clickArea
+  // todo 排序点击触发位置 clickArea
+
+  /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
+  stopClickEventPropagation?: boolean
 }
 
 export function makeSortTransform({
@@ -124,6 +126,7 @@ export function makeSortTransform({
   SortHeaderCell = DefaultSortHeaderCell,
   keepDataSource,
   highlightColumnWhenActive,
+  stopClickEventPropagation,
 }: SortOptions): TableTransform {
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
@@ -145,6 +148,7 @@ export function makeSortTransform({
     mode,
     keepDataSource,
     highlightColumnWhenActive,
+    stopClickEventPropagation,
   }
 
   const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
@@ -242,7 +246,12 @@ export function makeSortTransform({
 
           result.title = (
             <SortHeaderCell
-              onToggle={() => toggle(col.code)}
+              onToggle={(e) => {
+                if (stopClickEventPropagation) {
+                  e.stopPropagation()
+                }
+                toggle(col.code)
+              }}
               sortOrder={sortOrder}
               column={col}
               sortIndex={sortIndex}

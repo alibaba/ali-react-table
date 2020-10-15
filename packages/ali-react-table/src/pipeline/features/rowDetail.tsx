@@ -202,7 +202,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             </div>
           ),
           render,
-          getCellProps: clickArea === 'cell' ? getCellProps : undefined,
+          getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
           getSpanRect(value: any, row: any, rowIndex: number) {
             if (row[rowDetailMetaKey]) {
               // detail 总是成一行

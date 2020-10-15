@@ -171,7 +171,7 @@ export function makeTreeModeTransform({
             </span>
           ),
           render,
-          getCellProps: clickArea === 'cell' ? getCellProps : undefined,
+          getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
         },
         ...others,
       ]

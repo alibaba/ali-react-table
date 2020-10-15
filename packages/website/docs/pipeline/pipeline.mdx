@@ -63,18 +63,23 @@ useTablePipeline({ components: antd })
 
 ### 非 hooks 用法
 
-在类组件中，需要调用 `new TablePipeline(...)` 来使用创建 pipeline。创建时，通过 `state / setState` 为 pipeline 提供状态管理能力。
+在类组件中，需要调用 `new TablePipeline(...)` 来创建 pipeline。创建时，通过 `state / setState` 为 pipeline 提供状态管理能力。
 
-```jsx {13-17}
+```jsx {18-22}
+import * as fusion from '@alifd/next'
 import { TablePipeline, features } from 'ali-react-table'
 
 class MyComponent extends React.Component {
   state = {
-    pipelineState: {},
+    pipelineState: {}, // pipelineState 的默认值必须为一个对象
   }
 
-  setPipelineState = (pipelineState) => {
-    this.setState({ pipelineState })
+  setPipelineState = (updater) => {
+    // this.setPipelineState 被调用时，第一个参数 updater 是一个函数
+    // updater 接受原来的 pipelineState，返回新的 pipelineState
+    this.setState((prev) => ({
+      pipelineState: updater(prev.pipelineState),
+    }))
   }
 
   render() {
@@ -87,7 +92,7 @@ class MyComponent extends React.Component {
     pipeline.input({ dataSource, columns })
     pipeline.primaryKey('id')
     pipeline.use(features.autoRowSpan())
-    pipeline.use(features.autoRowSpan())
+    pipeline.use(features.someOtherFeature())
 
     return <BaseTable {...pipeline.getProps()} />
   }

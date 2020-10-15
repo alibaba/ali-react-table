@@ -57,8 +57,8 @@ export class TablePipeline {
     indents: TablePipeline.defaultIndents,
   }
 
-  readonly state
-  readonly setState
+  readonly state: any
+  readonly setState: (fn: (prevState: any) => any, stateKey: string, partialState: any, extraInfo?: any) => any
 
   constructor({
     state,
@@ -66,7 +66,7 @@ export class TablePipeline {
     ctx,
   }: {
     state: any
-    setState: (nextFullState: any, stateKey: string, partialState: any, extraInfo?: any) => void
+    setState: TablePipeline['setState']
     ctx: Partial<TablePipelineCtx>
   }) {
     this.state = state
@@ -97,7 +97,7 @@ export class TablePipeline {
 
   /** 将 stateKey 对应的状态设置为 partialState  */
   setStateAtKey(stateKey: string, partialState: any, extraInfo?: any) {
-    this.setState({ ...this.state, [stateKey]: partialState }, stateKey, partialState, extraInfo)
+    this.setState((prev: any) => ({ ...prev, [stateKey]: partialState }), stateKey, partialState, extraInfo)
   }
 
   /** 确保 primaryKey 已被设置，并返回 primaryKey  */

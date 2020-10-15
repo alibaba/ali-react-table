@@ -67,7 +67,7 @@ export class TablePipeline {
   }: {
     state: any
     setState: (nextFullState: any, stateKey: string, partialState: any, extraInfo?: any) => void
-    ctx: TablePipeline['ctx']
+    ctx: Partial<TablePipelineCtx>
   }) {
     this.state = state
     this.setState = setState
@@ -197,7 +197,7 @@ export class TablePipeline {
   }
 }
 
-export function useTablePipeline(ctx?: TablePipeline['ctx']) {
+export function useTablePipeline(ctx?: Partial<TablePipelineCtx>) {
   const [state, setState] = useState<any>({})
   return new TablePipeline({ state, setState, ctx })
 }

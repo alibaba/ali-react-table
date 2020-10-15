@@ -23,15 +23,10 @@ export interface ColumnHoverFeatureOptions {
   onChangeHoverColIndex?(nextColIndex: number): void
 }
 
-export function columnHover(inputOpts: boolean | ColumnHoverFeatureOptions = {}) {
+export function columnHover(opts: ColumnHoverFeatureOptions = {}) {
   const stateKey = 'columnHover'
 
   return <P extends TablePipeline>(pipeline: P) => {
-    if (inputOpts === false) {
-      return pipeline
-    }
-    const opts: ColumnHoverFeatureOptions = typeof inputOpts === 'boolean' ? {} : inputOpts
-
     const hoverColIndex = opts.hoverColIndex ?? pipeline.state[stateKey] ?? opts.defaultHoverColIndex ?? -1
 
     return pipeline.useTransform(
@@ -64,14 +59,10 @@ export interface ColumnRangeHoverFeatureOptions {
   onChangeHoverRange?(nextColIndexRange: HoverRange): void
 }
 
-export function columnRangeHover(inputOpts: boolean | ColumnRangeHoverFeatureOptions = {}) {
+export function columnRangeHover(opts: ColumnRangeHoverFeatureOptions = {}) {
   const stateKey = 'columnHover'
 
   return <P extends TablePipeline>(pipeline: P) => {
-    if (inputOpts === false) {
-      return pipeline
-    }
-    const opts: ColumnRangeHoverFeatureOptions = typeof inputOpts === 'boolean' ? {} : inputOpts
     const hoverRange = opts.hoverRange ?? pipeline.state[stateKey] ?? opts.defaultHoverRange ?? { start: -1, end: -1 }
 
     return pipeline.useTransform(

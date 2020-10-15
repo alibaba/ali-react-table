@@ -8,8 +8,10 @@ type RecursiveFlatMapInfo<T> = {
   isLeaf: boolean
 }
 
-export default function makeRecursiveMapper<T extends AbstractTreeNode>(tree: T[]) {
-  return (fn: (node: T, info: RecursiveFlatMapInfo<T>) => null | T | T[]) => {
+export default function makeRecursiveMapper<T extends AbstractTreeNode>(
+  fn: (node: T, info: RecursiveFlatMapInfo<T>) => null | T | T[],
+) {
+  return (tree: T[]) => {
     return dfs(tree, 0, []).result
 
     function dfs(nodes: T[], parentStartIndex: number, path: T[]): { flatCount: number; result: T[] } {

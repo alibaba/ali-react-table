@@ -1,5 +1,5 @@
 const path = require('path')
-const artPkg = require('../ali-react-table/package.json')
+// const artPkg = require('../ali-react-table/package.json')
 
 module.exports = {
   title: 'ali-react-table',
@@ -78,11 +78,15 @@ module.exports = {
           editUrl: 'https://github.com/alibaba/ali-react-table/edit/master/packages/blog/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [
+            require.resolve('./src/css/custom.css'),
+            require.resolve('./src/css/fusion.css'),
+            require.resolve('./src/css/style-reset.scss'),
+          ],
         },
       },
     ],
   ],
   themes: ['@docusaurus/theme-live-codeblock'],
-  plugins: [path.resolve(__dirname, 'tspaths-docusaurus-plugin.js')],
+  plugins: [path.resolve(__dirname, 'tspaths-docusaurus-plugin.js'), 'docusaurus-plugin-sass'],
 }

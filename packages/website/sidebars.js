@@ -36,21 +36,7 @@ module.exports = {
     {
       type: 'category',
       label: '表格功能拓展(transforms)',
-      items: [
-        'transforms/transforms',
-        {
-          type: 'category',
-          label: '具体拓展(已过时)',
-          items: [
-            'transforms/tree-mode',
-            'transforms/sort',
-            'transforms/auto-row-span',
-            'transforms/column-hover',
-            'transforms/column-resize',
-            'transforms/others',
-          ],
-        },
-      ],
+      items: ['transforms/transforms'],
     },
     {
       type: 'category',

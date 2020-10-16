@@ -101,8 +101,6 @@ class MyComponent extends React.Component {
 
 ## 使用 pipeline
 
-### 常规用法
-
 :::tip
 常规用法推荐直接参考 [具体拓展功能](features/multi-select) 中的示例。
 :::
@@ -125,44 +123,6 @@ input 方法用于设置 pipeline 的输入，调用后 pipeline 中当前的 da
 
 获取 `<BaseTable />` 的 props，返回结果会包含 `{ dataSource, columns, primaryKey, getRowProps }` 这四个字段。
 
-### 手动处理数据
+---
 
-pipeline 内部保存了一份**「当前」**的 dataSource 与 columns。调用 `pipeline.getProps()` 时，「当前」的这份状态将被返回。
-
-以下几个 api 可以用来读取或更新当前状态：
-
-#### `pipeline.getDataSource(name?: string)`
-
-获取当前的 dataSource；如果提供了 name 参数，则获取 name 对应的 dataSource
-
-#### `pipeline.getColumns(name?: string)`
-
-获取当前的 columns；如果提供了 name 参数，则获取 name 对应的 columns
-
-#### `pipeline.dataSource(rows)`
-
-设置当前 dataSource，并返回 pipeline 对象本身
-
-#### `pipeline.columns(cols)`
-
-设置当前 columns，并返回 pipeline 对象本身
-
-#### `pipeline.mapDataSource(mapper)`
-
-对 dataSource 进行变换，mapper 会接受当前 dataSource 作为参数，需要返回一份新的 dataSource。该方法返回 pipeline 对象本身
-
-#### `pipeline.mapColumns(mapper)`
-
-对 columns 进行变换，mapper 会接受当前 columns 作为参数，需要返回一份新的 columns。注意 columns 不一定是简单的数组，可能存在嵌套的情况。该方法返回 pipeline 对象本身
-
-#### `pipeline.snapshot(name: string)`
-
-将当前的 dataSource/columns 保存为快照，后续可以通过 name 来获取此时的 dataSource/columns
-
-#### `pipeline.appendRowPropsGetter(fn)`
-
-考虑到一个 pipeline 上可能会有多个拓展定制了表格行的 props ，pipeline 内部维护了一个 `getRowProps` 的数组。该数组会收集所有的 getRowProps 回调，并在 `pipeline.getProps()` 时将这些回调合并为一个完整的 `getRowProps`。
-
-`pipeline.appendRowPropsGetter(...)` 可向 pipeline 中添加一个 getRowProps 回调函数，用于自定义表格行的 props。该方法返回 pipeline 对象本身
-
-### todo pipeline 操作示例
+以上 4 个 API 可以满足大部分的日常使用，如果你想对 pipeline 中的数据进行加工，详见 [实现自定义的表格拓展](extends)。

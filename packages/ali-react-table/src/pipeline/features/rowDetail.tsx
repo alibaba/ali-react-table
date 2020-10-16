@@ -72,7 +72,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
     const openKeys: string[] =
       opts.openKeys ??
-      pipeline.state[stateKey] ??
+      pipeline.getStateAtKey(stateKey) ??
       (opts.defaultOpenAll
         ? pipeline
             .getDataSource()

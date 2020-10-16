@@ -65,8 +65,8 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
     const isDisabled = opts.isDisabled ?? (() => false)
     const clickArea = opts.clickArea ?? 'checkbox'
 
-    const value: string[] = opts.value ?? pipeline.state[stateKey]?.value ?? opts.defaultValue ?? []
-    const lastKey: string = opts.lastKey ?? pipeline.state[stateKey]?.lastKey ?? opts.defaultLastKey ?? ''
+    const value: string[] = opts.value ?? pipeline.getStateAtKey(stateKey)?.value ?? opts.defaultValue ?? []
+    const lastKey: string = opts.lastKey ?? pipeline.getStateAtKey(stateKey)?.lastKey ?? opts.defaultLastKey ?? ''
     const onChange: MultiSelectFeatureOptions['onChange'] = (nextValue, key, keys, action) => {
       opts.onChange?.(nextValue, key, keys, action)
       pipeline.setStateAtKey(stateKey, { value: nextValue, lastKey: key }, { keys, action })

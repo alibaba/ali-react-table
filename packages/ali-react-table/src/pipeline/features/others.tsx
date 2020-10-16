@@ -27,7 +27,7 @@ export function columnHover(opts: ColumnHoverFeatureOptions = {}) {
   const stateKey = 'columnHover'
 
   return <P extends TablePipeline>(pipeline: P) => {
-    const hoverColIndex = opts.hoverColIndex ?? pipeline.state[stateKey] ?? opts.defaultHoverColIndex ?? -1
+    const hoverColIndex = opts.hoverColIndex ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultHoverColIndex ?? -1
 
     return pipeline.useTransform(
       makeColumnHoverTransform({
@@ -63,7 +63,9 @@ export function columnRangeHover(opts: ColumnRangeHoverFeatureOptions = {}) {
   const stateKey = 'columnHover'
 
   return <P extends TablePipeline>(pipeline: P) => {
-    const hoverRange = opts.hoverRange ?? pipeline.state[stateKey] ?? opts.defaultHoverRange ?? { start: -1, end: -1 }
+    const hoverRange = opts.hoverRange ??
+      pipeline.getStateAtKey(stateKey) ??
+      opts.defaultHoverRange ?? { start: -1, end: -1 }
 
     return pipeline.useTransform(
       makeColumnRangeHoverTransform({

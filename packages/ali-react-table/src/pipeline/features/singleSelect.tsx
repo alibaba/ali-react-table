@@ -44,7 +44,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
     const isDisabled = opts.isDisabled ?? (() => false)
 
     const primaryKey = pipeline.ensurePrimaryKey('singleSelect')
-    const value = opts.value ?? pipeline.state[stateKey] ?? opts.defaultValue
+    const value = opts.value ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultValue
     const onChange = (rowKey: string) => {
       opts.onChange?.(rowKey)
       pipeline.setStateAtKey(stateKey, rowKey)

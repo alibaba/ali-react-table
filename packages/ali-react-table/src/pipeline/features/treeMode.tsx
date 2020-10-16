@@ -54,7 +54,7 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
         ...indents,
         isLeafNode: opts.isLeafNode,
         primaryKey,
-        openKeys: opts.openKeys ?? pipeline.state[stateKey] ?? opts.defaultOpenKeys ?? [],
+        openKeys: opts.openKeys ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultOpenKeys ?? [],
         onChangeOpenKeys: (nextKeys: string[], key, action) => {
           opts.onChangeOpenKeys?.(nextKeys, key, action)
           pipeline.setStateAtKey(stateKey, nextKeys, { key, action })

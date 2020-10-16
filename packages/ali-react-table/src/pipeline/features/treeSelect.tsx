@@ -27,7 +27,7 @@ export function treeSelect(opts: TreeSelectFeatureOptions) {
     if (typeof primaryKey !== 'string') {
       throw new Error('treeSelect 仅支持字符串作为 primaryKey')
     }
-    const value = opts.value ?? pipeline.state[STATE_KEY] ?? opts.defaultValue ?? []
+    const value = opts.value ?? pipeline.getStateAtKey(STATE_KEY) ?? opts.defaultValue ?? []
 
     const treeDataHelper = makeTreeDataHelper<any>({
       tree: opts.rootKey != null ? [{ [primaryKey]: opts.rootKey, children: opts.tree }] : opts.tree,

@@ -55,7 +55,7 @@ export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
     }
     const openKeys: string[] =
       opts.openKeys ??
-      pipeline.state[stateKey] ??
+      pipeline.getStateAtKey(stateKey) ??
       (opts.defaultOpenAll ? pipeline.getDataSource().map((row) => row[primaryKey]) : opts.defaultOpenKeys) ??
       []
     const openKeySet = new Set(openKeys)

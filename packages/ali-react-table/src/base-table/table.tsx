@@ -7,7 +7,7 @@ import { internals } from '../internals'
 import EmptyTable from './empty'
 import getDerivedStateFromProps from './getDerivedStateFromProps'
 import TableHeader from './header'
-import ItemSizeStore from './helpers/ItemSizeStore'
+import { getFullRenderRange, makeRowHeightManager } from './helpers/rowHeightManager'
 import SpanManager from './helpers/SpanManager'
 import { getVisiblePartObservable } from './helpers/visible-part'
 import {
@@ -146,7 +146,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   static getDerivedStateFromProps = getDerivedStateFromProps
 
-  private store = new ItemSizeStore(this.props.estimatedRowHeight)
+  private rowHeightManager = makeRowHeightManager(this.props.dataSource.length, this.props.estimatedRowHeight)
 
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private doms: TableDoms
@@ -272,23 +272,11 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   private getVerticalRenderRange(): VerticalRenderRange {
     const { dataSource } = this.props
     const { useVirtual, offsetY, maxRenderHeight } = this.state
-    const itemCount = dataSource.length
+    const rowCount = dataSource.length
     if (useVirtual.vertical) {
-      if (maxRenderHeight <= 0) {
-        // maxRenderHeight <= 0 说明表格目前在 viewport 之外
-        if (offsetY <= 0) {
-          // 表格在 viewport 下方
-          return this.store.getRenderRangeWhenBelowView(itemCount)
-        } else {
-          // 表格在 viewport 上方
-          return this.store.getRenderRangeWhenAboveView(itemCount)
-        }
-      } else {
-        // 表格与 viewport 相交
-        return this.store.getRenderRangeWhenInView(offsetY, maxRenderHeight, itemCount)
-      }
+      return this.rowHeightManager.getRenderRange(offsetY, maxRenderHeight, rowCount)
     } else {
-      return ItemSizeStore.getFullRenderRange(itemCount)
+      return getFullRenderRange(rowCount)
     }
   }
 
@@ -614,11 +602,10 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   private didMountOrUpdate(prevProps?: Readonly<BaseTableProps>, prevState?: Readonly<BaseTableState>) {
-    // todo 整理 sync/adjust/update/reset 等方法，现在稍微有点乱
     this.syncHorizontalScrollFromTableBody()
     this.updateStickyScroll()
     this.adjustNeedRenderLock()
-    this.updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps)
+    this.updateRowHeightManager(prevProps)
     this.resetStickyScrollIfNecessary(prevState)
   }
 
@@ -743,13 +730,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private updateItemSizeStoreAndTriggerRerenderIfNecessary(prevProps?: Readonly<BaseTableProps>) {
-    if (prevProps != null) {
-      if (prevProps.dataSource.length !== this.props.dataSource.length) {
-        this.store.setMaxItemCount(this.props.dataSource.length)
-      }
-    }
-
+  private updateRowHeightManager(prevProps?: Readonly<BaseTableProps>) {
     const virtualTop = this.doms.artTable.querySelector<HTMLDivElement>(`.${Classes.virtualBlank}.top`)
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
@@ -765,16 +746,15 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       const offset = tr.offsetTop + virtualTopHeight
       const size = tr.offsetHeight
       maxTrBottom = Math.max(maxTrBottom, offset + size)
-      this.store.updateItem(rowIndex, offset, size)
+      this.rowHeightManager.updateRow(rowIndex, offset, size)
     }
 
+    // 当 estimatedRowHeight 过大时，可能出现「渲染行数过少，无法覆盖可视范围」的情况
+    // 出现这种情况时，我们判断「下一次渲染能够渲染更多行」是否满足，满足的话就直接调用 forceUpdate
     if (maxTrRowIndex !== -1) {
       if (maxTrBottom < this.state.offsetY + this.state.maxRenderHeight) {
-        // 页面上出现的元素过少
-        const { vertical } = this.getRenderRange()
-        // 确保下一次渲染 能够渲染更多行
+        const vertical = this.getVerticalRenderRange()
         if (vertical.bottomIndex - 1 > maxTrRowIndex) {
-          // 重新触发 render
           this.forceUpdate()
         }
       }

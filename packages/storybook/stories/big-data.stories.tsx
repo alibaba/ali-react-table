@@ -1,4 +1,4 @@
-import { ArtColumn, BaseTable, features } from 'ali-react-table'
+import { ArtColumn, features } from 'ali-react-table'
 import { repeat } from 'assets/src/biz-assets'
 import { cols, useAllDataSource } from 'assets/src/ncov19-assets'
 import React, { useState } from 'react'
@@ -91,7 +91,6 @@ export function 双向虚拟滚动() {
 }
 
 const DetailDiv = styled.div`
-  margin: 16px;
   display: flex;
   min-width: 800px;
 
@@ -108,6 +107,68 @@ const DetailDiv = styled.div`
   }
 `
 
+export function 动态行数量() {
+  const dataSource = repeat(
+    [
+      { name: '阿里巴巴', amount: '600,000.00(CNY)', dept: '招商银行丨杭州分行', applier: 'James Collier' },
+      { name: '蚂蚁金服', amount: '600,000.00(CNY)', dept: '建设银行丨未来科技城', applier: 'Philip Burke' },
+      { name: '菜鸟', amount: '600,000.00(CNY)', dept: '交通银行丨浙大路支行', applier: 'Wesley Cruz' },
+    ],
+    500,
+  ).map((row, i) => ({ ...row, id: String(i + 1) }))
+
+  const columns: ArtColumn[] = [
+    { code: 'name', width: 180, name: '公司名称' },
+    { code: 'amount', width: 160, align: 'right', name: '金额' },
+    { code: 'dept', width: 160, name: '金融机构' },
+    { code: 'id', width: 80, name: '#', render: (v: string) => `#${v}` },
+    { code: 'applier', width: 200, name: '申请人' },
+  ]
+
+  function renderDetail(row: any) {
+    return (
+      <div>
+        <DetailDiv style={{ margin: 8 }}>
+          <div className="left">
+            <p>最近工作：高级经理｜{row.dept}｜2009-07-01 至今</p>
+            <p>工作职责：巴拉巴拉小魔仙</p>
+          </div>
+          <div className="right">
+            <p>教育经理：北京大学｜工商管理｜2007-09-01 至 2006-06-01</p>
+            <p>中央财经大学｜2004-09-01 至 2007-06-01</p>
+          </div>
+        </DetailDiv>
+      </div>
+    )
+  }
+
+  const [openKeys, onChangeOpenKeys] = useState<string[]>([])
+
+  const pipeline = useThemedTablePipeline()
+    .input({ dataSource, columns })
+    .primaryKey('id')
+    .use(features.rowDetail({ openKeys, onChangeOpenKeys, renderDetail }))
+
+  return (
+    <div>
+      <p>展开/收拢详情单元格时，行的数量会发生变化，组件会动态调整内部的缓存以适应此类情况。</p>
+      <p>
+        表格行的数量： {pipeline.getDataSource().length}
+        <button
+          style={{ marginLeft: 24 }}
+          onClick={function () {
+            const allKeys = dataSource.map((row) => row.id)
+            onChangeOpenKeys(openKeys.length === allKeys.length ? [] : allKeys)
+          }}
+        >
+          展开/收拢全部
+        </button>
+      </p>
+      <ThemedBaseTable useOuterBorder style={{ maxHeight: 450, overflow: 'auto' }} {...pipeline.getProps()} />
+    </div>
+  )
+}
+
 export function 动态表格行高度() {
   const dataSource = repeat(
     [
@@ -118,32 +179,17 @@ export function 动态表格行高度() {
     500,
   ).map((row, i) => ({ ...row, id: String(i + 1) }))
 
-  const applierTitle = (
-    <>
-      <span>申请人</span>
-      <button
-        onClick={function () {
-          const allKeys = dataSource.map((row) => row.id)
-          onChangeOpenKeys(openKeys.length === allKeys.length ? [] : allKeys)
-        }}
-        style={{ marginLeft: 12 }}
-      >
-        展开/收拢全部
-      </button>
-    </>
-  )
-
   const columns: ArtColumn[] = [
-    { code: 'name', width: 220, name: '公司名称' },
+    { code: 'name', width: 180, name: '公司名称' },
     { code: 'amount', width: 160, align: 'right', name: '金额' },
     { code: 'dept', width: 160, name: '金融机构' },
-    { code: 'id', width: 60, name: '#', render: (v: string) => `#${v}` },
-    { code: 'applier', width: 120, name: '申请人', title: applierTitle },
+    { code: 'id', width: 80, name: '#', render: (v: string) => `#${v}` },
+    { code: 'applier', width: 200, name: '申请人' },
   ]
 
   function renderDetail(row: any) {
     return (
-      <div>
+      <div style={{ margin: 16 }}>
         <DetailDiv>
           <div className="left">
             <p>最近工作：高级经理｜{row.dept}｜2009-07-01 至今</p>
@@ -168,5 +214,27 @@ export function 动态表格行高度() {
     .primaryKey('id')
     .use(features.rowDetail({ openKeys, onChangeOpenKeys, renderDetail }))
 
-  return <BaseTable {...pipeline.getProps()} />
+  return (
+    <div>
+      <p>
+        在下面的例子中，普通的行与详情行的高度差别较大。这会影响到组件内部对表格行的预估高度的准确性，导致页面/表格滚动时，滚动条发生跳动。
+        <br />
+        我们推荐在开启虚拟滚动的情况下，每一行的高度最好保持大致相等，同时设置合理的{' '}
+        <code>props.estimatedRowHeight</code> 让组件内部的预估高度更加准确。
+      </p>
+      <p>
+        表格行的数量： {pipeline.getDataSource().length}
+        <button
+          style={{ marginLeft: 24 }}
+          onClick={function () {
+            const allKeys = dataSource.map((row) => row.id)
+            onChangeOpenKeys(openKeys.length === allKeys.length ? [] : allKeys)
+          }}
+        >
+          展开/收拢全部
+        </button>
+      </p>
+      <ThemedBaseTable {...pipeline.getProps()} />
+    </div>
+  )
 }

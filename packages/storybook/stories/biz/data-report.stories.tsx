@@ -1,8 +1,9 @@
-import { applyTransforms, ArtColumn, BaseTable, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
+import { applyTransforms, ArtColumn, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
+import { getAppTrafficData } from 'assets/src/cdn-data'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
-import { getAppTrafficData } from 'assets/src/cdn-data'
+import { ThemedBaseTable } from '../themed-table'
 
 export default { title: '业务示例 / 典型数据报表' }
 
@@ -79,7 +80,7 @@ export function 典型数据报表() {
     makeTreeModeTransform({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
-  return <BaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 
   function convertDrillTreeToColumns(recordMap: Map<string, any>, nodes: DrillNode[]): ArtColumn[] {
     const result: ArtColumn[] = []

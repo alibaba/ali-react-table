@@ -9,9 +9,9 @@ export const globalTypes = {
     toolbar: {
       icon: 'cog',
       items: [
-        { value: 'default', title: '默认样式，使用一小部分 alibaba fusion 样式' },
+        { value: 'default', title: '默认样式' },
         { value: 'hippo', title: '盒马 Hippo Design' },
-        { value: 'antd', title: 'Ant Design，开发中，敬请期待' },
+        { value: 'antd', title: 'Ant Design' },
       ],
     },
   },

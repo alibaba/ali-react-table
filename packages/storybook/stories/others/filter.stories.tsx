@@ -1,5 +1,4 @@
-import { Range, Button, Checkbox, Overlay, Input } from '@alifd/next'
-import * as d3 from 'd3'
+import { Button, Checkbox, Input, Overlay, Range } from '@alifd/next'
 import { Filter16 } from '@carbon/icons-react'
 import {
   applyTransforms,
@@ -11,9 +10,12 @@ import {
   TableTransform,
   traverseColumn,
 } from 'ali-react-table'
+import { FusionStyles } from 'assets/src'
+import { cols, useCityDataSource } from 'assets/src/ncov19-assets'
+import * as d3 from 'd3'
 import _ from 'lodash'
 import React, { ReactNode, useRef, useState } from 'react'
-import { cols, useCityDataSource } from 'assets/src/ncov19-assets'
+import { ThemedBaseTable } from '../themed-table'
 
 export default { title: '其他 / 筛选' }
 
@@ -323,7 +325,8 @@ export function 筛选() {
       <div>
         <Button onClick={() => onChangeFilterState({})}>重置筛选</Button>
       </div>
-      <BaseTable
+      <FusionStyles/>
+      <ThemedBaseTable
         ref={tableRef}
         style={{ marginTop: 8 }}
         isLoading={isLoading}

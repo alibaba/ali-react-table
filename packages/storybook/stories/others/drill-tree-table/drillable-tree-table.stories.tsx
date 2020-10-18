@@ -1,4 +1,5 @@
 import { CrossTreeTable } from 'ali-react-table/pivot'
+import { FusionStyles } from 'assets/src'
 import _ from 'lodash'
 import * as mobx from 'mobx'
 import { action } from 'mobx'
@@ -6,6 +7,7 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import { getIncomeData } from 'assets/src/cdn-data'
 import { amount, lfl, ratio } from 'assets/src/format'
+import { ThemedBaseTable } from '../../themed-table'
 import { CheckedDimList, PrimaryColumnTitle } from './designers'
 import { Pivot, PivotView } from './models'
 
@@ -102,8 +104,10 @@ const Inner = observer(() => {
 
   return (
     <div>
+      <FusionStyles />
       <CheckedDimList pivot={pivot} />
       <CrossTreeTable
+        BaseTableComponent={ThemedBaseTable}
         style={{ marginTop: 8 }}
         primaryColumn={{
           lock: true,

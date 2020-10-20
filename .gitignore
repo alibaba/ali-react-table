@@ -1,5 +1,4 @@
 node_modules/
-storybook-dist/
 .out
 build/
 dist/
@@ -29,4 +28,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 website-deploy/
-storybook-dist

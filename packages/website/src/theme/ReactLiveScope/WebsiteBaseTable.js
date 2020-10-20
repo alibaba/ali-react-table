@@ -16,6 +16,7 @@ const DarkBaseTable = styled(BaseTable)`
   --border-color: #3c4045;
 `
 
+/** @type {typeof BaseTable} */
 export const WebsiteBaseTable = React.forwardRef((props, ref) => {
   const { isDarkTheme } = useThemeContext()
 

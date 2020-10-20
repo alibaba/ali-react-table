@@ -1,0 +1,41 @@
+---
+id: theme
+title: 表格主题切换
+---
+
+import { BaseTable } from 'ali-react-table'
+import { AntdBaseTable, HippoBaseTable } from 'assets'
+
+export const dataSource = [
+  { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+  { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+  { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+  { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+  { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+]
+
+export const columns = [
+  { code: 'prov', name: '省份', width: 150 },
+  { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+  { code: 'cured', name: '治愈', width: 100, align: 'right' },
+  { code: 'dead', name: '死亡', width: 100, align: 'right' },
+  { code: 't', name: '最后更新时间', width: 180 },
+]
+
+(todo) 切换介绍
+
+:::note
+目前文档网站中的主题切换还不支持暗色模式
+:::
+
+### 默认表格主题
+
+<BaseTable dataSource={dataSource} columns={columns} />
+
+### Ant Design
+
+<AntdBaseTable dataSource={dataSource} columns={columns} />
+
+### Hippo Design
+
+<HippoBaseTable dataSource={dataSource} columns={columns} />

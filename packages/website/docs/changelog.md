@@ -232,7 +232,6 @@ fix: 修复 rollup 打包错误
 
 #### v0.3.1 2019-12-28
 
-- 文档网站优化，升级到 storybook 5.3.0-rc.3，总算可以看到 stories 的源代码了
 - biz-utils 新增构建树的方法，commonTransform.buildTree
 - biz-utils 新增树状模式，commonTransform.treeMode
 

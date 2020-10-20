@@ -25,9 +25,9 @@ module.exports = {
           label: '文档',
           position: 'left',
         },
-        { to: 'blog', label: '博客', position: 'left' },
         { to: 'examples', label: '示例', position: 'left' },
-        { href: '/v1', label: '1.x 文档', position: 'left' },
+        { to: 'blog', label: '博客', position: 'left' },
+        { href: 'https://ali-react-table.js.org/v1/', label: '1.x 文档', position: 'left' },
         {
           href: 'https://github.com/alibaba/ali-react-table',
           label: 'GitHub',
@@ -79,7 +79,7 @@ module.exports = {
         },
         theme: {
           customCss: [
-            require.resolve('./src/css/custom.css'),
+            require.resolve('./src/css/custom.scss'),
             require.resolve('./src/css/fusion.css'),
             require.resolve('./src/css/style-reset.scss'),
           ],
@@ -88,5 +88,19 @@ module.exports = {
     ],
   ],
   themes: ['@docusaurus/theme-live-codeblock'],
-  plugins: [path.resolve(__dirname, 'tspaths-docusaurus-plugin.js'), 'docusaurus-plugin-sass'],
+  plugins: [
+    path.resolve(__dirname, 'tspaths-docusaurus-plugin.js'),
+    'docusaurus-plugin-sass',
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'examples',
+        path: 'examples',
+        routeBasePath: 'examples',
+        editUrl: 'https://github.com/alibaba/ali-react-table/edit/master/packages/website/',
+        sidebarPath: require.resolve('./example-sidebars.js'),
+        docLayoutComponent: '@theme/ExamplesDocPage',
+      },
+    ],
+  ],
 }

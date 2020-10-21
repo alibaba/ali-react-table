@@ -12360,10 +12360,10 @@ url-parse@^1.4.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-search-params-polyfill@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.npm.alibaba-inc.com/url-search-params-polyfill/download/url-search-params-polyfill-8.1.0.tgz#5c15b69687165bfd4f6c7d8a161d70d85385885b"
-  integrity sha1-XBW2locWW/1PbH2KFh1w2FOFiFs=
+url-polyfill@^1.1.11:
+  version "1.1.11"
+  resolved "https://registry.npm.alibaba-inc.com/url-polyfill/download/url-polyfill-1.1.11.tgz#85d2b2e67292f6d825297d4bed01d66da0b20dc3"
+  integrity sha1-hdKy5nKS9tglKX1L7QHWbaCyDcM=
 
 url@^0.11.0:
   version "0.11.0"

@@ -5,6 +5,8 @@ title: 进阶用法
 
 ## 虚拟滚动
 
+### 开关配置
+
 数据量较大时，表格会自动开启虚拟滚动。你也可以通过表格的 `useVirtual` 属性来调整虚拟滚动功能，目前 `useVirtual` 支持以下几个值：
 
 - `'auto'` （默认值）表示根据表格的行数或列数自动调整是否开启虚拟滚动
@@ -16,21 +18,42 @@ title: 进阶用法
 - 传入一个对象可以分别指定 横向/纵向/表头 是否开启虚拟滚动
   - 对象的结构为 `{ horizontal?: boolean | 'auto', vertical?: boolean | 'auto', header?: boolean | 'auto' }`
 
-**虚拟滚动注意事项：**
+此外，水平方向的虚拟滚动 要求「所有的列都有一个指定的宽度」。推荐设置 `<BaseTable defaultColumnWidth={...} />`，确保所有的列都有一个指定的宽度
 
-- 水平方向的虚拟滚动 要求「所有的列都有一个指定的宽度」，推荐设置 `defaultColumnWidth`，避免部分列缺失宽度
-- 如果需要设置表格的高度或最大高度，注意要**将 height/maxHeight 设置在表格上**，不要设置在父节点上
-- 设置 `style.overflow = 'auto'` 时，必须为表格设置高度或最大高度；
-  - 此时表格的外层 div 会被认为是表格所处的 BFC，该 div 的高度将决定表格渲染多少行，故这个 div 的最大高度必须是确定的
-- 在虚拟滚动开启的情况下，如果想要进行单元格合并，则要使用 `column.getSpanRect` 来进行设定：
-  - `column.getSpanRect` 返回一个 `SpanRect` 的对象来表示对应单元所处的合并后的位置。
-  - `SpanRect` 的具体类型为 `{ left: number, right: number, top: number, bottom: number }`，注意其中 left/top 是 inclusive 的，right/bottom 是 exclusive 的。
+### 虚拟滚动与单元格合并
 
-**todo estimatedRowHeight**
+在虚拟滚动开启的情况下，如果想要进行单元格合并，则要使用 `column.getSpanRect` 来进行设定：
+
+- `column.getSpanRect` 返回一个 `SpanRect` 的对象来表示对应单元所处的合并后的位置。
+- `SpanRect` 的具体类型为 `{ left: number, right: number, top: number, bottom: number }`
+  - 注意其中 left/top 是 inclusive 的，right/bottom 是 exclusive 的。
+
+不开启虚拟滚动时，单元格合并可以通过 `column.getCellProps(...)` 返回 `colSpan / rowSpan` 进行实现。
+
+### 滚动容器
+
+一般来说表格有如下两种滚动模式：
+
+- 不限制表格容器的尺寸，表格随着整个页面发生滚动
+  - 此时的写法： `<BaseTable ... />` （不设置 style.overflow，也不限制表格高度或宽度）
+- 限制表格容器的尺寸，表格容器内发生滚动
+  - 此时注意设置表格的高度或最大高度（宽度同理），并设置 `style.overflow = 'auto'`
+  - 注意 height/width/maxWidth/maxHeight 是设置在表格上的，而不是设置在父节点上：
+    - 正确的写法：`<BaseTable style={{ overflow: 'auto', maxHeight: 400 }} ... />`
+    - **错误的写法**：~~`<div style={{ overflow: 'auto', maxHeight: 400 }}> <BaseTable ... /> </div>`~~
+  - 从另一个角度讲，如果为表格设置了 `style.overflow = 'auto'`，则必须为表格设置高度或最大高度
+
+除了以上两种滚动模式之外，如果你想让表格在指定的容器内进行滚动，可以配置 `props.flowRoot`，该 prop 可指定表格发生滚动的 [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)。
+
+表格的上层元素**不能**设置 `style.transform`。上层元素中出现缩放或平移时，表格内部可能无法获取正确的 DOM 尺寸。
+
+### 预估行高
+
+在元素被渲染在页面之前，组件是无法获取该元素的尺寸的。为了展示尽量真实的滚动条，表格组件内部需要算出所有行的高度之和。在一行没有被渲染之前，表格内部会使用 `props.estimatedRowHeight` (默认值为 48）来作为该行的高度，从而计算所有行的高度和。
+
+在实际使用时，实际行高可能与预估行高有较大出入，此时可以设置 `estimatedRowHeight` 来提升预估高度的准确性。
 
 ## 锁列与嵌套的列结构
-
-todo 锁列的方向：左侧锁列 or 右侧锁列？
 
 在有列嵌套的情况下（通过 column.children 设置列的子节点，形成列的嵌套结构），锁列具有传递性，从而避免了锁定列与非锁定列出现在同一个父节点下的情况：
 
@@ -38,6 +61,11 @@ todo 锁列的方向：左侧锁列 or 右侧锁列？
 - 如果一个节点设置了锁列 lock=true，则其父节点和所有祖先节点将被设置为 lock=true
 
 此外，如果所有的列都设置了 lock=true，则整个表格的锁列将不生效。
+
+**锁定方向** 取决于该列在 columns 中的下标：
+
+- 下标为 0, 1, 2, ... 左侧锁定
+- 下标为 n-1, n-2, n-3, ... 右侧锁定
 
 ## todo getValue 与 render
 

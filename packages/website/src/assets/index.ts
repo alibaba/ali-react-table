@@ -1,4 +1,5 @@
 export { AntdBaseTable } from './AntdBaseTable'
+export { MinimumPivotTableDesigner } from './MinimumPivotTableDesigner'
 export * as cdnData from './cdn-data'
 export * as format from './format'
 export { HippoBaseTable } from './HippoBaseTable'

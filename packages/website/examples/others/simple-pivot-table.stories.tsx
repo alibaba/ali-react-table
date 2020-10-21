@@ -5,9 +5,9 @@ import {
   CrossTable,
   DrillNode,
 } from 'ali-react-table/pivot'
-import MinimumPivotTableDesigner from 'assets/MinimumPivotTableDesigner'
 import { getIncomeData } from 'assets/cdn-data'
 import { amount, lfl, ratio } from 'assets/format'
+import { MinimumPivotTableDesigner } from 'assets/MinimumPivotTableDesigner'
 import { createAggregateFunction } from 'dvt-aggregation'
 import { ThemedBaseTable } from 'examples/themed-table'
 import React, { useEffect, useState } from 'react'
@@ -76,6 +76,8 @@ const indicators = [
   },
 ]
 
+const visibleIndicators = indicators.filter((ind) => !ind.hidden)
+
 function generateSubtotalNode(drillNode: DrillNode) {
   return {
     position: 'start' as const,
@@ -103,7 +105,7 @@ export function 简易透视表() {
     isExpand: !supportsExpand ? undefined : (key) => leftExpandKeySet.has(key),
   })
   const [leftTreeRoot] = convertDrillTreeToCrossTree(leftDrillTree, {
-    indicators: indicatorSide === 'left' ? indicators : null,
+    indicators: indicatorSide === 'left' ? visibleIndicators : null,
     generateSubtotalNode: showSubtotal ? generateSubtotalNode : null,
     supportsExpand,
     expandKeys: leftExpandKeys,
@@ -117,7 +119,7 @@ export function 简易透视表() {
     isExpand: !supportsExpand ? undefined : (key) => topExpandKeySet.has(key),
   })
   const [topTreeRoot] = convertDrillTreeToCrossTree(topDrillTree, {
-    indicators: indicatorSide === 'top' ? indicators : null,
+    indicators: indicatorSide === 'top' ? visibleIndicators : null,
     generateSubtotalNode: showSubtotal ? generateSubtotalNode : null,
     supportsExpand,
     expandKeys: topExpandKeys,

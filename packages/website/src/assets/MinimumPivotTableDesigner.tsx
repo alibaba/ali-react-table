@@ -29,7 +29,7 @@ const PivotTableDesignerDiv = styled.div`
   }
 `
 
-export default function MinimumPivotTableDesigner({
+export function MinimumPivotTableDesigner({
   dimensions,
   leftCodes,
   topCodes,

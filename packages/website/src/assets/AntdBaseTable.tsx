@@ -43,18 +43,6 @@ const StyledBaseTable = (styled(BaseTable)`
   th {
     font-weight: 500;
   }
-
-  &.compact {
-    --row-height: 48px;
-    --header-row-height: 48px;
-    --cell-padding: 12px 8px;
-  }
-
-  //&.zebra tr.odd,
-  //tr.alternative {
-  //  --bgcolor: #f9f9f9;
-  //  // 仍然需要 hover 效果，故 --hover-bgcolor 还是保持原样
-  //}
 ` as unknown) as typeof BaseTable
 
 const AntEmptyContent = React.memo(() => (
@@ -104,6 +92,7 @@ export const AntdBaseTable = React.forwardRef<BaseTable, BaseTableProps>(functio
       ref={ref}
       {...props}
       className={cx(props.className, {
+        // 根据表头的深度设置 className，可以用于调整表头单元格的高度
         'header-depth-0': headerDepth === 0,
         'header-depth-1': headerDepth === 1,
       })}

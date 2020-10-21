@@ -1,7 +1,8 @@
 import { Button, Select } from '@alifd/next'
+// @ts-ignore
+import BrowserOnly from '@docusaurus/BrowserOnly'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import 'url-search-params-polyfill'
 
 function FallbackStory({ exampleName }: { exampleName: string }) {
   return (
@@ -15,7 +16,7 @@ function FallbackStory({ exampleName }: { exampleName: string }) {
 
 const base = 'https://github.com/alibaba/ali-react-table/blob/master/packages/website/examples/'
 
-export function Stories({ stories, path }: { stories: any; path?: string }) {
+function Inner({ stories, path }: { stories: any; path?: string }) {
   const location = useLocation()
   const history = useHistory()
 
@@ -59,10 +60,12 @@ export function Stories({ stories, path }: { stories: any; path?: string }) {
   }
 
   return (
-    <div>
+    <>
       {allExampleNames.length > 1 ? (
         <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-          <span>选择示例：</span>
+          <span>
+            示例（{exampleIndex + 1} / {allExampleNames.length}）：
+          </span>
           <Select
             style={{ marginLeft: 8, width: 200 }}
             dataSource={allExampleNames}
@@ -84,6 +87,10 @@ export function Stories({ stories, path }: { stories: any; path?: string }) {
       )}
 
       <StoryComp exampleName={exampleName} />
-    </div>
+    </>
   )
+}
+
+export function Stories(props: { stories: any; path?: string }) {
+  return <BrowserOnly fallback={'示例载入中...'}>{() => <Inner {...props} />}</BrowserOnly>
 }

@@ -207,7 +207,7 @@ API: `(x: any, y: any) => number`
 ### `traverseColumn`
 
 :::danger deprecated
-该 API 已经过时，请使用 xxx
+该 API 已经过时，请使用 `makeRecursiveMapper`
 :::
 
 API: `(fn: (column, ctx) => NormalizeAsArrayInput<ArtColumn>) => TableTransform`
@@ -222,3 +222,7 @@ API: `(fn: (column, ctx) => NormalizeAsArrayInput<ArtColumn>) => TableTransform`
 - fn 的返回结果：
   - 返回 `null` 时，对应的列将被移除；
   - 返回 `ArtColumn` 或一个数组时，返回的结果会替换对应的列。
+
+### `makeRecursiveMapper`
+
+(todo)

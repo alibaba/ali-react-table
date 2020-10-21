@@ -1,7 +1,7 @@
-import 'url-search-params-polyfill'
 import { Button, Select } from '@alifd/next'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import 'url-search-params-polyfill'
 
 function FallbackStory({ exampleName }: { exampleName: string }) {
   return (
@@ -50,12 +50,7 @@ export function Stories({ stories, path }: { stories: any; path?: string }) {
   const renderSourceButton = () => {
     if (path) {
       return (
-        <Button
-          onClick={() => {
-            const url = new URL(path, base)
-            window.open(String(url), '_blank')
-          }}
-        >
+        <Button component="a" href={String(new URL(path, base))}>
           查看源码
         </Button>
       )

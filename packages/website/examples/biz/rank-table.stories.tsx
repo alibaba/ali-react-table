@@ -1,7 +1,7 @@
 import React from 'react'
-import { amount, lfl } from 'src/assets/format'
+import { amount, lfl } from 'assets/format'
 import styled from 'styled-components'
-import { WebsiteBaseTable } from '../../src/theme/ReactLiveScope/WebsiteBaseTable'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 
 export default { title: '业务示例 / 商品排行榜' }
 

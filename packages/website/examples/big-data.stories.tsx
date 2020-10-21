@@ -1,6 +1,6 @@
 import { ArtColumn, features } from 'ali-react-table'
-import { repeat } from 'src/assets/biz-assets'
-import { cols, useAllDataSource } from 'src/assets/ncov19-assets'
+import { repeat } from 'assets/biz-assets'
+import { cols, useAllDataSource } from 'assets/ncov19-assets'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ThemedBaseTable, useThemedTablePipeline } from './themed-table'

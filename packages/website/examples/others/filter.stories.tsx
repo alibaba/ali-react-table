@@ -10,12 +10,11 @@ import {
   TableTransform,
   traverseColumn,
 } from 'ali-react-table'
-import { FusionStyles } from 'assets'
-import { cols, useCityDataSource } from 'src/assets/ncov19-assets'
+import { cols, useCityDataSource } from 'assets/ncov19-assets'
 import * as d3 from 'd3'
+import { ThemedBaseTable } from 'examples/themed-table'
 import _ from 'lodash'
 import React, { ReactNode, useRef, useState } from 'react'
-import { ThemedBaseTable } from 'examples/themed-table'
 
 export default { title: '其他 / 筛选' }
 
@@ -325,7 +324,6 @@ export function 筛选() {
       <div>
         <Button onClick={() => onChangeFilterState({})}>重置筛选</Button>
       </div>
-      <FusionStyles/>
       <ThemedBaseTable
         ref={tableRef}
         style={{ marginTop: 8 }}

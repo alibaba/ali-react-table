@@ -10,8 +10,8 @@ import {
   useColumnHoverTransform,
 } from 'ali-react-table'
 import React, { useEffect, useState } from 'react'
-import { getAppTrafficData } from '../cdn-data'
-import { amount, ratio } from '../format'
+import { getAppTrafficData } from 'assets/cdn-data'
+import { amount, ratio } from 'assets/format'
 import { useOperationBar } from './components'
 
 export default { title: '示例 / 其他组件 / 表格操作栏示例' }

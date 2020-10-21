@@ -1,7 +1,5 @@
 import { Button } from '@alifd/next'
 import { ArtColumn, collectNodes, features, isLeafNode } from 'ali-react-table'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import {
   columns1,
   columns3,
@@ -15,10 +13,12 @@ import {
   dataSource6,
   operationCol,
   randomPick,
-} from 'src/assets/biz-assets'
-import { getAppTrafficData } from 'src/assets/cdn-data'
-import { ratio } from 'src/assets/format'
-import { RadioButtonGroup } from 'src/assets/RadioButtonGroup'
+} from 'assets/biz-assets'
+import { getAppTrafficData } from 'assets/cdn-data'
+import { ratio } from 'assets/format'
+import { RadioButtonGroup } from 'assets/RadioButtonGroup'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { ThemedBaseTable, useThemedTablePipeline } from './themed-table'
 
 export default { title: 'pipeline 功能拓展' }

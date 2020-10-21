@@ -6,9 +6,11 @@ import {
   useTablePipeline as _useTablePipeline,
 } from 'ali-react-table'
 import * as antd from 'antd'
-import { AntdBaseTable, BaseTableThemeContext, HippoBaseTable } from 'assets'
+import { AntdBaseTable } from 'assets/AntdBaseTable'
+import { HippoBaseTable } from 'assets/HippoBaseTable'
+import { BaseTableThemeContext } from 'assets/theme-helpers'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useContext } from 'react'
-import { WebsiteBaseTable } from '../src/theme/ReactLiveScope/WebsiteBaseTable'
 
 // todo
 export const ThemedBaseTable = WebsiteBaseTable

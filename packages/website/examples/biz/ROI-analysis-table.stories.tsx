@@ -1,10 +1,10 @@
 import * as hippo from '@alifd/next'
 import { applyTransforms, ArtColumn, proto, traverseColumn } from 'ali-react-table'
-import { FusionStyles } from 'assets'
+import { amount, lfl, ratio } from 'assets/format'
+import { FusionStyles } from 'assets/theme-helpers'
+import { ThemedBaseTable } from 'examples/themed-table'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { amount, lfl, ratio } from 'src/assets/format'
-import { ThemedBaseTable } from 'examples/themed-table'
 
 const HintDiv = styled.div`
   margin-bottom: 16px;

@@ -18,10 +18,10 @@ import {
   useAutoWidthTransform,
 } from 'ali-react-table'
 import { Tooltip } from 'antd'
-import { getAppTrafficData } from 'src/assets/cdn-data'
-import { amount, ratio, time } from 'src/assets/format'
-import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'src/assets/ncov19-assets'
-import { BaseTableThemeContext } from 'src/assets/theme-helpers'
+import { getAppTrafficData } from 'assets/cdn-data'
+import { amount, ratio, time } from 'assets/format'
+import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'assets/ncov19-assets'
+import { BaseTableThemeContext } from 'assets/theme-helpers'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { ThemedBaseTable } from './themed-table'
 

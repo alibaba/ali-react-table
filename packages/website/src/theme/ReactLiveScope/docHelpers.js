@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { WebsiteBaseTable } from './WebsiteBaseTable'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import useThemeContext from '@theme/hooks/useThemeContext'
 import ReactInspector from 'react-inspector'
 

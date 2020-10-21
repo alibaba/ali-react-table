@@ -5,12 +5,12 @@ import {
   CrossTable,
   DrillNode,
 } from 'ali-react-table/pivot'
-import { FusionStyles, MinimumPivotTableDesigner } from 'assets'
-import { getIncomeData } from 'src/assets/cdn-data'
-import { amount, lfl, ratio } from 'src/assets/format'
+import MinimumPivotTableDesigner from 'assets/MinimumPivotTableDesigner'
+import { getIncomeData } from 'assets/cdn-data'
+import { amount, lfl, ratio } from 'assets/format'
 import { createAggregateFunction } from 'dvt-aggregation'
-import React, { useEffect, useState } from 'react'
 import { ThemedBaseTable } from 'examples/themed-table'
+import React, { useEffect, useState } from 'react'
 
 export default { title: '其他 / 简易透视表' }
 
@@ -150,7 +150,6 @@ export function 简易透视表() {
         indicatorSide={indicatorSide}
         onChangeIndicatorSide={onChangeIndicatorSide}
       />
-      <FusionStyles />
       <CrossTable
         className="bordered"
         BaseTableComponent={ThemedBaseTable}

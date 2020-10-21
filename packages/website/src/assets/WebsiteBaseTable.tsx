@@ -1,7 +1,8 @@
-import React from 'react'
-import { BaseTable } from 'ali-react-table'
-import styled from 'styled-components'
+// @ts-ignore
 import useThemeContext from '@theme/hooks/useThemeContext'
+import { BaseTable, BaseTableProps } from 'ali-react-table'
+import React from 'react'
+import styled from 'styled-components'
 
 const DarkBaseTable = styled(BaseTable)`
   --bgcolor: #333;
@@ -16,13 +17,12 @@ const DarkBaseTable = styled(BaseTable)`
   --border-color: #3c4045;
 `
 
-/** @type {typeof BaseTable} */
-export const WebsiteBaseTable = React.forwardRef((props, ref) => {
+export const WebsiteBaseTable: React.ComponentClass<BaseTableProps> = React.forwardRef((props, ref) => {
   const { isDarkTheme } = useThemeContext()
 
   // 下面的写法下，切换主题将导致组件重新加载
   // 如果要避免重新加载，可以使用 styled-components 提供的 css 方法
-  const Table = isDarkTheme ? DarkBaseTable : BaseTable
+  const Table: any = isDarkTheme ? DarkBaseTable : BaseTable
 
   return <Table ref={ref} {...props} />
-})
+}) as any

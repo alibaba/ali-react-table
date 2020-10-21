@@ -1,9 +1,9 @@
-import { ArtColumn, BaseTable, Classes, proto } from 'ali-react-table'
+import { ArtColumn, Classes, proto } from 'ali-react-table'
+import { amount, ratio } from 'assets/format'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import * as d3 from 'd3'
 import React from 'react'
 import styled from 'styled-components'
-import { amount, ratio } from 'src/assets/format'
-import { WebsiteBaseTable } from '../../src/theme/ReactLiveScope/WebsiteBaseTable'
 
 const COLORS = [
   '#E8F3FF',

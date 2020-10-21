@@ -1,9 +1,9 @@
 import { applyTransforms, ArtColumn, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
-import { getAppTrafficData } from 'src/assets/cdn-data'
+import { getAppTrafficData } from 'assets/cdn-data'
+import { ThemedBaseTable } from 'examples/themed-table'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
-import { ThemedBaseTable } from 'examples/themed-table'
 
 export default { title: '业务示例 / 典型数据报表' }
 

@@ -6,9 +6,9 @@ import { CrossTable, CrossTreeTable } from 'ali-react-table/pivot'
 import { createAggregateFunction } from 'dvt-aggregation'
 import styled from 'styled-components'
 import * as fusion from '@alifd/next'
-import * as assets from 'assets'
+import * as assets from '../../assets'
 import * as docHelpers from './docHelpers'
-import { WebsiteBaseTable } from './WebsiteBaseTable'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 
 const ReactLiveScope = {
   React,

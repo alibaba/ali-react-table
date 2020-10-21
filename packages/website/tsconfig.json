@@ -17,8 +17,7 @@
     "paths": {
       "ali-react-table": ["../ali-react-table/src/ali-react-table.ts"],
       "ali-react-table/pivot": ["../ali-react-table/src/ali-react-table-pivot.ts"],
-      // todo remove this alias
-      "assets": ["./src/assets/index.ts"]
+      "assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src/**/*", "docs/**/*", "examples/**/*"]

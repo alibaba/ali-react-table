@@ -1,5 +1,6 @@
+// @ts-ignore
+import BrowserOnly from '@docusaurus/BrowserOnly'
 import { CrossTreeTable } from 'ali-react-table/pivot'
-import { FusionStyles } from 'assets'
 import { ThemedBaseTable } from 'examples/themed-table'
 import _ from 'lodash'
 import { action } from 'mobx'
@@ -100,32 +101,35 @@ export const DrillableTreeTableExample = observer(() => {
   const { recordMap, leftTree, topTree } = pivotView
 
   return (
-    <div>
-      <FusionStyles />
-      <CheckedDimList pivot={pivot} />
-      <CrossTreeTable
-        BaseTableComponent={ThemedBaseTable}
-        style={{ marginTop: 8 }}
-        primaryColumn={{
-          lock: true,
-          name: '数据维度',
-          width: 180,
-          title: <PrimaryColumnTitle pivot={pivot} />,
-        }}
-        defaultColumnWidth={120}
-        isLoading={pivot.isLoading}
-        leftTree={leftTree}
-        topTree={topTree}
-        getValue={(leftNode, topNode) => {
-          const record = recordMap.get(leftNode.key)
-          const ind = topNode.data.indicator
-          return record?.[ind.code]
-        }}
-        render={(value, leftNode, topNode) => {
-          const ind = topNode.data.indicator
-          return ind.render ? ind.render(value) : value
-        }}
-      />
-    </div>
+    <BrowserOnly fallback={<div>loading...</div>}>
+      {() => (
+        <>
+          <CheckedDimList pivot={pivot} />
+          <CrossTreeTable
+            BaseTableComponent={ThemedBaseTable}
+            style={{ marginTop: 8 }}
+            primaryColumn={{
+              lock: true,
+              name: '数据维度',
+              width: 180,
+              title: <PrimaryColumnTitle pivot={pivot} />,
+            }}
+            defaultColumnWidth={120}
+            isLoading={pivot.isLoading}
+            leftTree={leftTree}
+            topTree={topTree}
+            getValue={(leftNode, topNode) => {
+              const record = recordMap.get(leftNode.key)
+              const ind = topNode.data.indicator
+              return record?.[ind.code]
+            }}
+            render={(value, leftNode, topNode) => {
+              const ind = topNode.data.indicator
+              return ind.render ? ind.render(value) : value
+            }}
+          />
+        </>
+      )}
+    </BrowserOnly>
   )
 })

@@ -9,17 +9,17 @@ import styles from './styles.module.css'
 const features = [
   {
     title: '高性能',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    // imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: <>内置虚拟滚动，数据量较大时自动开启，轻松应对 10 万行 / 10 万列的数据规模。</>,
   },
   {
     title: '实用表格特性',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
+    // imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: <>表头吸顶；左侧/右侧锁列；粘性滚动条；优化的加载图标位置</>,
   },
   {
     title: '可定制性',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    // imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>简单灵活的 API，丰富的定制能力。一套代码同时适配 Ant Design, Alibaba Fusion Design，盒马内部的 Hippo Design</>
     ),

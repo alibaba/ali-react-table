@@ -12360,11 +12360,6 @@ url-parse@^1.4.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-polyfill@^1.1.11:
-  version "1.1.11"
-  resolved "https://registry.npm.alibaba-inc.com/url-polyfill/download/url-polyfill-1.1.11.tgz#85d2b2e67292f6d825297d4bed01d66da0b20dc3"
-  integrity sha1-hdKy5nKS9tglKX1L7QHWbaCyDcM=
-
 url@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npm.taobao.org/url/download/url-0.11.0.tgz#3838e97cfc60521eb73c525a8e55bfdd9e2e28f1"

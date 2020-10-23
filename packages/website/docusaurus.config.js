@@ -63,6 +63,13 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Alibaba Inc. Built with ❤️ by feichao.`,
     },
+
+    algolia: {
+      apiKey: '10375f97d074db729b52cd376905287c',
+      indexName: 'ali-react-table',
+      contextualSearch: true,
+      searchParameters: {},
+    },
   },
 
   presets: [

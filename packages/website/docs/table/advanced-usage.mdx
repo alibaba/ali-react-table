@@ -53,28 +53,42 @@ title: 进阶用法
 
 在实际使用时，实际行高可能与预估行高有较大出入，此时可以设置 `estimatedRowHeight` 来提升预估高度的准确性。
 
-## 锁列与嵌套的列结构
+## 锁列
 
-在有列嵌套的情况下（通过 column.children 设置列的子节点，形成列的嵌套结构），锁列具有传递性，从而避免了锁定列与非锁定列出现在同一个父节点下的情况：
+### 锁列的传递性
 
-- 如果一个父节点设置了锁列 lock=true，则其所有子节点将自动被设置为 lock=true
-- 如果一个节点设置了锁列 lock=true，则其父节点和所有祖先节点将被设置为 lock=true
+在有列嵌套的情况下（通过 `column.children` 设置列的子节点，形成列的嵌套结构），锁列具有传递性：
 
-此外，如果所有的列都设置了 lock=true，则整个表格的锁列将不生效。
+- 如果一个父节点设置了锁列 `lock=true`，则其所有子节点将自动被设置为 `lock=true`
+- 如果一个节点设置了锁列 `lock=true`，则其父节点和所有祖先节点将被设置为 `lock=true`
 
-**锁定方向** 取决于该列在 columns 中的下标：
+此外，如果所有的列都设置了 `lock=true`，则整个表格的锁列将不生效。
+
+### 左侧锁列 or 右侧锁列
+
+锁定方向 取决于该列在 columns 中的下标：
 
 - 下标为 0, 1, 2, ... 左侧锁定
 - 下标为 n-1, n-2, n-3, ... 右侧锁定
 
-## todo getValue 与 render
+## getValue 与 render
 
-todo 介绍一下两者的差别，说明两者的用途
+`column.getValue` 与 `column.render` 都会影响到单元格的渲染内容，但两者有「语义」上的区别：
 
-## todo 表格样式覆盖
+- `column.getValue` 用于自定义取数方法
+  - 默认的取数方法为 `row => row[column.code]`
+  - getValue 的返回值应当是一个可被序列化的值，该返回值将作为「单元格的值」
+- `column.render` 用于自定义单元格的渲染方法
+  - render 可以返回 ReactNode 以在页面上渲染更加丰富的元素
 
-todo 介绍如何覆盖表格的默认样式，介绍 --bgcolor, --hover-bgcolor, --highlight-bgcolor 的含义与作用
+导出表格数据时，「单元格的值」将会导出至 excel 或 json 文件。
 
-## todo components 替换
+## components 替换
 
-todo 介绍表格的可定制能力
+表格内部用到一些子组件来实现加载动画、空表格展现效果等，上层可以通过 `props.components` 覆盖内部的默认子组件，实现一些自定义的效果。
+
+目标表格支持的自定义子组件较少，列表如下：
+
+- `LoadingIcon` 自定义加载图标
+- `EmptyContent` 数据为空时表格的展示内容
+- `LoadingContentWrapper` 自定义表格内容的 wrapper div，可用于实现自定义的加载效果

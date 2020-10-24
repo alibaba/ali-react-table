@@ -67,8 +67,6 @@ module.exports = {
     algolia: {
       apiKey: '10375f97d074db729b52cd376905287c',
       indexName: 'ali-react-table',
-      contextualSearch: true,
-      searchParameters: {},
     },
   },
 

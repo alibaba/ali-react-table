@@ -1,6 +1,7 @@
 import React from 'react'
 import { ArtColumn, ArtColumnStaticPart, CellProps } from '../../interfaces'
 import { internals } from '../../internals'
+import { always } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
 export interface SingleSelectFeatureOptions {
@@ -41,7 +42,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
 
     const stateKey = 'singleSelect'
     const clickArea = opts.clickArea ?? 'radio'
-    const isDisabled = opts.isDisabled ?? (() => false)
+    const isDisabled = opts.isDisabled ?? always(false)
 
     const primaryKey = pipeline.ensurePrimaryKey('singleSelect')
     const value = opts.value ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultValue

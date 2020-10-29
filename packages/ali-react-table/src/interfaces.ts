@@ -35,16 +35,16 @@ export interface ArtColumnStaticPart {
 
 export interface ArtColumnDynamicPart {
   /** 自定义取数方法 */
-  getValue?(record: any, rowIndex: number): any
+  getValue?(row: any, rowIndex: number): any
 
   /** 自定义渲染方法 */
-  render?(value: any, record: any, rowIndex: number): ReactNode
+  render?(value: any, row: any, rowIndex: number): ReactNode
 
   /** 自定义的获取单元格 props 的方法 */
-  getCellProps?(value: any, record: any, rowIndex: number): CellProps
+  getCellProps?(value: any, row: any, rowIndex: number): CellProps
 
   /** 自定义的获取单元格 SpanRect 方法 */
-  getSpanRect?(value: any, record: any, rowIndex: number): SpanRect
+  getSpanRect?(value: any, row: any, rowIndex: number): SpanRect
 }
 
 export interface ArtColumn extends ArtColumnStaticPart, ArtColumnDynamicPart {

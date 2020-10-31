@@ -29,7 +29,7 @@ export default function buildDrillTree(
     encode = simpleEncode,
     totalValue = '总计',
     includeTopWrapper = false,
-    isExpand = always(false),
+    isExpand = always(true),
     enforceExpandTotalNode = true,
   }: BuildDrillTreeOptions<DrillNode> = {},
 ): DrillNode[] {

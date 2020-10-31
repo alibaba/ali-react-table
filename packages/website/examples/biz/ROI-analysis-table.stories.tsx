@@ -1,7 +1,6 @@
 import * as hippo from '@alifd/next'
 import { applyTransforms, ArtColumn, proto, traverseColumn } from 'ali-react-table'
 import { amount, lfl, ratio } from 'assets/format'
-import { FusionStyles } from 'assets/theme-helpers'
 import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
@@ -236,7 +235,6 @@ export function 投入产出分析表格() {
 
   return (
     <div>
-      <FusionStyles />
       <HintDiv>交互提示：点击分日情况单元格 查看详细数据</HintDiv>
       <WebsiteBaseTable columns={renderData.columns} dataSource={renderData.dataSource} />
     </div>

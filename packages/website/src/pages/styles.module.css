@@ -33,3 +33,11 @@
   height: 200px;
   width: 200px;
 }
+
+.getStarted {
+  color: white !important;
+}
+
+.getStarted.getStarted:hover {
+  color: var(--ifm-color-gray-900) !important;
+}

@@ -9,17 +9,17 @@ import styles from './styles.module.css'
 const features = [
   {
     title: '高性能',
-    // imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    imageUrl: 'img/feature-virtual-scrolling.svg',
     description: <>内置虚拟滚动，数据量较大时自动开启，轻松应对 10 万行 / 10 万列的数据规模。</>,
   },
   {
     title: '实用表格特性',
-    // imageUrl: 'img/undraw_docusaurus_tree.svg',
+    imageUrl: 'img/feature-rich-builtins.svg',
     description: <>表头吸顶；左侧/右侧锁列；粘性滚动条；优化的加载图标位置</>,
   },
   {
     title: '可定制性',
-    // imageUrl: 'img/undraw_docusaurus_react.svg',
+    imageUrl: 'img/feature-highly-customizable.svg',
     description: (
       <>简单灵活的 API，丰富的定制能力。一套代码同时适配 Ant Design, Alibaba Fusion Design，盒马内部的 Hippo Design</>
     ),
@@ -43,10 +43,20 @@ function Feature({ imageUrl, title, description }) {
 
 function Home() {
   const context = useDocusaurusContext()
+
   const { siteConfig = {} } = context
+  const heroBgImgUrl = useBaseUrl('img/herobg.svg')
+
   return (
     <Layout title="ali-react-table" description="ali-react-table: 现代化的高性能 React 表格组件">
-      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+      <header
+        className={clsx('hero hero--primary', styles.heroBanner)}
+        style={{
+          background: `url(${heroBgImgUrl}) no-repeat`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'bottom left',
+        }}
+      >
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
           <p className="hero__subtitle">{siteConfig.tagline}</p>
@@ -61,7 +71,7 @@ function Home() {
         </div>
       </header>
       <main>
-        {features && features.length > 0 && (
+        {features.length > 0 && (
           <section className={styles.features}>
             <div className="container">
               <div className="row">

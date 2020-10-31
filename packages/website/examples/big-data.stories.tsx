@@ -1,16 +1,17 @@
-import { ArtColumn, features } from 'ali-react-table'
+import { ArtColumn, features, useTablePipeline } from 'ali-react-table'
+import * as fusion from '@alifd/next'
 import { repeat } from 'assets/biz-assets'
 import { cols, useAllDataSource } from 'assets/ncov19-assets'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ThemedBaseTable, useThemedTablePipeline } from './themed-table'
 
 export default { title: '大数据测试' }
 
 export function 滚动容器为window() {
   const { dataSource, isLoading } = useAllDataSource()
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       isLoading={isLoading}
       dataSource={dataSource}
       columns={[
@@ -34,7 +35,7 @@ export function 滚动容器为window() {
 export function 滚动容器为指定高度的div() {
   const { dataSource, isLoading } = useAllDataSource()
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       style={{ height: 400, overflow: 'auto' }}
       useOuterBorder
       isLoading={isLoading}
@@ -68,7 +69,7 @@ export function 双向虚拟滚动() {
   }
 
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       isLoading={isLoading}
       useVirtual={true}
       dataSource={[dataSource, dataSource, dataSource, dataSource, dataSource].flat()}
@@ -144,7 +145,7 @@ export function 动态行数量() {
 
   const [openKeys, onChangeOpenKeys] = useState<string[]>([])
 
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource, columns })
     .primaryKey('id')
     .use(features.rowDetail({ openKeys, onChangeOpenKeys, renderDetail }))
@@ -164,7 +165,7 @@ export function 动态行数量() {
           展开/收拢全部
         </button>
       </p>
-      <ThemedBaseTable useOuterBorder style={{ maxHeight: 450, overflow: 'auto' }} {...pipeline.getProps()} />
+      <WebsiteBaseTable useOuterBorder style={{ maxHeight: 450, overflow: 'auto' }} {...pipeline.getProps()} />
     </div>
   )
 }
@@ -209,7 +210,7 @@ export function 动态表格行高度() {
 
   const [openKeys, onChangeOpenKeys] = useState<string[]>([])
 
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource, columns })
     .primaryKey('id')
     .use(features.rowDetail({ openKeys, onChangeOpenKeys, renderDetail }))
@@ -234,7 +235,7 @@ export function 动态表格行高度() {
           展开/收拢全部
         </button>
       </p>
-      <ThemedBaseTable {...pipeline.getProps()} />
+      <WebsiteBaseTable {...pipeline.getProps()} />
     </div>
   )
 }

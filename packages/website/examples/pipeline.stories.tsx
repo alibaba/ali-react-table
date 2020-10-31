@@ -1,3 +1,4 @@
+import * as fusion from '@alifd/next'
 import { Button } from '@alifd/next'
 import { ArtColumn, collectNodes, features, isLeafNode, useTablePipeline } from 'ali-react-table'
 import {
@@ -17,15 +18,15 @@ import {
 import { getAppTrafficData } from 'assets/cdn-data'
 import { ratio } from 'assets/format'
 import { RadioButtonGroup } from 'assets/RadioButtonGroup'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { ThemedBaseTable, useThemedTablePipeline } from './themed-table'
 
 export default { title: 'pipeline 功能拓展' }
 
 export function 树形表格() {
   const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource4, columns: columns4 })
     .primaryKey('id')
     .use(features.treeMode({ openKeys, onChangeOpenKeys }))
@@ -43,7 +44,7 @@ export function 树形表格() {
       <p>
         openKeys: {openKeys.join(', ')} {openKeys.length === 0 && '[空]'}
       </p>
-      <ThemedBaseTable {...pipeline.getProps()} />
+      <WebsiteBaseTable {...pipeline.getProps()} />
     </div>
   )
 }
@@ -54,7 +55,7 @@ export function 行多选() {
   // 实际使用时注意设置 ctx.components, 例如...
   //   import * as fusion from '@alifd/next'
   //   useTablePipeline({ components: fusion })
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource4, columns: columns4 })
     .primaryKey('id')
     .mapDataSource((dataSource) => collectNodes(dataSource, 'pre'))
@@ -100,7 +101,7 @@ export function 行多选() {
           随机设置
         </Button>
       </Button.Group>
-      <ThemedBaseTable style={{ marginTop: 16 }} {...pipeline.getProps()} />
+      <WebsiteBaseTable style={{ marginTop: 16 }} {...pipeline.getProps()} />
     </div>
   )
 }
@@ -114,7 +115,7 @@ export function 行单选() {
   // 实际使用时注意设置 ctx.components, 例如...
   //   import * as fusion from '@alifd/next'
   //   useTablePipeline({ components: fusion })
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource1, columns: columns1 })
     .primaryKey('id')
     .use(features.singleSelect({ value, onChange, highlightRowWhenSelected, radioPlacement, clickArea }))
@@ -167,13 +168,13 @@ export function 行单选() {
         <p>当前选中的 key： {value || '[空]'}</p>
       </div>
 
-      <ThemedBaseTable {...pipeline.getProps()} />
+      <WebsiteBaseTable {...pipeline.getProps()} />
     </div>
   )
 }
 
 export function 行展开() {
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({
       // dataSource 结构：
       //  [ { id: '1', title: '阿里巴巴网络技术有限公司', children: [...] },
@@ -186,11 +187,11 @@ export function 行展开() {
     // 受控用法：rowGrouping({ openKeys, onChangeOpenKeys })
     .use(features.rowGrouping({ defaultOpenKeys: ['1', '2'] }))
 
-  return <ThemedBaseTable {...pipeline.getProps()} />
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 
 export function 表格排序() {
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource3, columns: columns3 })
     .use(
       features.sort({
@@ -200,11 +201,11 @@ export function 表格排序() {
       }),
     )
 
-  return <ThemedBaseTable {...pipeline.getProps()} />
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 
 export function 多列排序() {
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource3, columns: columns3 })
     .use(
       features.sort({
@@ -214,7 +215,7 @@ export function 多列排序() {
       }),
     )
 
-  return <ThemedBaseTable {...pipeline.getProps()} />
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 
 export function 树状模式与层级排序() {
@@ -234,22 +235,22 @@ export function 树状模式与层级排序() {
     })
   }, [])
 
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ columns, dataSource: state.data })
     .primaryKey('id')
     .use(features.buildTree('id', 'parent_id'))
     .use(features.sort({ mode: 'single', highlightColumnWhenActive: true }))
     .use(features.treeMode({ defaultOpenKeys: ['B2C'] }))
 
-  return <ThemedBaseTable isLoading={state.isLoading} {...pipeline.getProps()} />
+  return <WebsiteBaseTable isLoading={state.isLoading} {...pipeline.getProps()} />
 }
 
 export function 表头分组与列高亮() {
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource6, columns: columns6 })
     .use(features.columnRangeHover())
 
-  return <ThemedBaseTable className="bordered" {...pipeline.getProps()} />
+  return <WebsiteBaseTable className="bordered" {...pipeline.getProps()} />
 }
 
 export function 多选与提示信息() {
@@ -261,7 +262,7 @@ export function 多选与提示信息() {
     operationCol,
   ]
 
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource4, columns })
     .primaryKey('id')
     .mapDataSource((dataSource) => collectNodes(dataSource, 'pre'))
@@ -274,7 +275,7 @@ export function 多选与提示信息() {
     )
     .use(features.tips())
 
-  return <ThemedBaseTable {...pipeline.getProps()} />
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 
 const DetailDiv = styled.div`
@@ -296,7 +297,7 @@ const DetailDiv = styled.div`
 `
 
 export function 行详情() {
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource1, columns: columns1.slice(0, 4) })
     .primaryKey('id')
     .use(
@@ -320,7 +321,7 @@ export function 行详情() {
       }),
     )
 
-  return <ThemedBaseTable {...pipeline.getProps()} />
+  return <WebsiteBaseTable {...pipeline.getProps()} />
 }
 
 export function 树形可选择表格() {
@@ -333,7 +334,7 @@ export function 树形可选择表格() {
     { code: 'guide', name: '当地导游', width: 160 },
   ]
 
-  const pipeline = useThemedTablePipeline()
+  const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource, columns })
     .primaryKey('id')
     .use(features.treeMode())
@@ -361,7 +362,7 @@ export function 树形可选择表格() {
   return (
     <div>
       <p>注意 id=2 的行 detached 属性为 true，选中状态不与其父节点关联</p>
-      <ThemedBaseTable {...pipeline.getProps()} />
+      <WebsiteBaseTable {...pipeline.getProps()} />
     </div>
   )
 }

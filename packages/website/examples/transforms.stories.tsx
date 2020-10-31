@@ -22,8 +22,8 @@ import { getAppTrafficData } from 'assets/cdn-data'
 import { amount, ratio, time } from 'assets/format'
 import { cols, testProvColumns, useCityDataSource, useProvinceDataSource } from 'assets/ncov19-assets'
 import { BaseTableThemeContext } from 'assets/theme-helpers'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { ThemedBaseTable } from './themed-table'
 
 export default { title: 'transforms 功能拓展（已过时）' }
 
@@ -67,7 +67,7 @@ export function 树状表格() {
     makeTreeModeTransform({ primaryKey: 'id', openKeys, onChangeOpenKeys }),
   )
 
-  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return <WebsiteBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
 }
 
 export function 表格排序_多列() {
@@ -102,7 +102,7 @@ export function 表格排序_多列() {
           清除排序
         </button>
       </div>
-      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <WebsiteBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }
@@ -129,7 +129,7 @@ export function 表格排序_单列() {
     }),
   )
 
-  return <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+  return <WebsiteBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
 }
 
 export function 列高亮() {
@@ -145,7 +145,7 @@ export function 列高亮() {
     }),
   )
 
-  return <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+  return <WebsiteBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
 }
 
 export function 列的范围高亮() {
@@ -232,7 +232,7 @@ export function 列的范围高亮() {
   )
 
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       defaultColumnWidth={120}
       dataSource={renderData.dataSource}
       columns={renderData.columns}
@@ -297,7 +297,7 @@ export function 列气泡提示() {
 
   return (
     <div>
-      <ThemedBaseTable
+      <WebsiteBaseTable
         isLoading={isLoading}
         dataSource={renderData.dataSource.slice(0, 10)}
         columns={renderData.columns}
@@ -340,7 +340,7 @@ export function 树状模式与层级排序() {
   )
 
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       defaultColumnWidth={100}
       dataSource={renderData.dataSource}
       columns={renderData.columns}
@@ -380,7 +380,7 @@ export function 单元格自动合并() {
   )
 
   return (
-    <ThemedBaseTable
+    <WebsiteBaseTable
       isLoading={isLoading}
       useOuterBorder
       dataSource={renderData.dataSource}
@@ -448,7 +448,7 @@ export function 自定义样式的排序表头() {
           清除排序
         </button>
       </div>
-      <ThemedBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
+      <WebsiteBaseTable isLoading={isLoading} dataSource={renderData.dataSource} columns={renderData.columns} />
     </div>
   )
 }
@@ -482,7 +482,7 @@ export function 拖拽调整列宽() {
       <div style={{ display: 'flex', alignItems: 'center', height: 40 }}>
         <div style={{ marginLeft: 8 }}>拖拽调整列宽</div>
       </div>
-      <ThemedBaseTable
+      <WebsiteBaseTable
         className="bordered"
         isLoading={isLoading}
         dataSource={renderData.dataSource}
@@ -545,7 +545,7 @@ export function 自适应列宽_demo() {
           切换数据
         </button>
       </div>
-      <ThemedBaseTable
+      <WebsiteBaseTable
         ref={tableRef}
         className="bordered"
         isLoading={isLoading}

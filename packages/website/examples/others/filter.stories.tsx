@@ -11,8 +11,8 @@ import {
   traverseColumn,
 } from 'ali-react-table'
 import { cols, useCityDataSource } from 'assets/ncov19-assets'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import * as d3 from 'd3'
-import { ThemedBaseTable } from 'examples/themed-table'
 import _ from 'lodash'
 import React, { ReactNode, useRef, useState } from 'react'
 
@@ -324,7 +324,7 @@ export function 筛选() {
       <div>
         <Button onClick={() => onChangeFilterState({})}>重置筛选</Button>
       </div>
-      <ThemedBaseTable
+      <WebsiteBaseTable
         ref={tableRef}
         style={{ marginTop: 8 }}
         isLoading={isLoading}

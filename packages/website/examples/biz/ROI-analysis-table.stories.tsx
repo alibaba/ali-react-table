@@ -2,7 +2,7 @@ import * as hippo from '@alifd/next'
 import { applyTransforms, ArtColumn, proto, traverseColumn } from 'ali-react-table'
 import { amount, lfl, ratio } from 'assets/format'
 import { FusionStyles } from 'assets/theme-helpers'
-import { ThemedBaseTable } from 'examples/themed-table'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 
@@ -163,7 +163,7 @@ function pbpRatioRender(v: number, col: ArtColumn, row: any) {
         border: '1px solid var(--ifm-color-emphasis-200)',
       }}
     >
-      <ThemedBaseTable
+      <WebsiteBaseTable
         columns={[
           { name: '明细', code: 'name' },
           {
@@ -238,7 +238,7 @@ export function 投入产出分析表格() {
     <div>
       <FusionStyles />
       <HintDiv>交互提示：点击分日情况单元格 查看详细数据</HintDiv>
-      <ThemedBaseTable columns={renderData.columns} dataSource={renderData.dataSource} />
+      <WebsiteBaseTable columns={renderData.columns} dataSource={renderData.dataSource} />
     </div>
   )
 }

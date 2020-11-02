@@ -25,13 +25,6 @@ export const arrayUtils = {
     const set = new Set(arr1)
     return arr1.concat(arr2.filter((x) => !set.has(x)))
   },
-  stabilize(prevArray: string[], targetArray: string[]) {
-    const prevSet = new Set(prevArray)
-    const nextSet = new Set(targetArray)
-    const existing = prevArray.filter((v) => nextSet.has(v))
-    const adding = targetArray.filter((v) => !prevSet.has(v))
-    return existing.concat(adding)
-  },
 } as const
 
 export function always<T>(value: T) {

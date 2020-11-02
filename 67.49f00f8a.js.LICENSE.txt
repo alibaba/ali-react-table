@@ -1,0 +1,7 @@
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+
+/*! algoliasearch-lite.umd.js | 4.5.1 | © Algolia, inc. | https://github.com/algolia/algoliasearch-client-javascript */

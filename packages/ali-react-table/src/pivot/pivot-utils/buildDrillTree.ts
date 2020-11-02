@@ -1,4 +1,5 @@
 import { groupBy } from '../../utils'
+import { always } from '../../utils/others'
 import { DrillNode } from './interfaces'
 import simpleEncode from './simpleEncode'
 
@@ -28,7 +29,7 @@ export default function buildDrillTree(
     encode = simpleEncode,
     totalValue = '总计',
     includeTopWrapper = false,
-    isExpand = () => true,
+    isExpand = always(true),
     enforceExpandTotalNode = true,
   }: BuildDrillTreeOptions<DrillNode> = {},
 ): DrillNode[] {

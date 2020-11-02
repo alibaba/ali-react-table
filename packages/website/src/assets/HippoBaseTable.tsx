@@ -26,8 +26,8 @@ const StyledBaseTable = (styled(BaseTable)`
   --header-bgcolor: #f9f9f9;
   --hover-bgcolor: #eff3fb;
   --header-hover-bgcolor: #eff2fb;
-  --highlight-bgcolor: #e2e6ef; // todo 该颜色需要调整
-  --header-highlight-bgcolor: #e2e6ef; // todo 该颜色需要调整
+  --highlight-bgcolor: #e2e6ef;
+  --header-highlight-bgcolor: #e2e6ef;
 
   &.header-depth-1 {
     --header-row-height: 40px;

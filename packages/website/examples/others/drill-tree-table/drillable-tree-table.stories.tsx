@@ -1,13 +1,13 @@
 // @ts-ignore
 import BrowserOnly from '@docusaurus/BrowserOnly'
 import { CrossTreeTable } from 'ali-react-table/pivot'
-import { ThemedBaseTable } from 'examples/themed-table'
+import { getIncomeData } from 'assets/cdn-data'
+import { amount, lfl, ratio } from 'assets/format'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import _ from 'lodash'
 import { action } from 'mobx'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
-import { getIncomeData } from 'assets/cdn-data'
-import { amount, lfl, ratio } from 'assets/format'
 import { CheckedDimList, PrimaryColumnTitle } from './designers'
 import { Pivot, PivotView } from './models'
 
@@ -106,7 +106,7 @@ export const DrillableTreeTableExample = observer(() => {
         <>
           <CheckedDimList pivot={pivot} />
           <CrossTreeTable
-            BaseTableComponent={ThemedBaseTable}
+            BaseTableComponent={WebsiteBaseTable}
             style={{ marginTop: 8 }}
             primaryColumn={{
               lock: true,

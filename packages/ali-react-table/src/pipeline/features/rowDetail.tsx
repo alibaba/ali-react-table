@@ -4,7 +4,7 @@ import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, mergeCellProps } from '../../utils'
-import { flatMap } from '../../utils/others'
+import { always, flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
 export interface RowDetailFeatureOptions {
@@ -68,7 +68,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
     const getDetailKey = opts.getDetailKey ?? ((row) => row[primaryKey] + '_detail')
     const renderDetail = opts.renderDetail ?? fallbackRenderDetail
-    const hasDetail = opts.hasDetail ?? (() => true)
+    const hasDetail = opts.hasDetail ?? always(true)
 
     const openKeys: string[] =
       opts.openKeys ??

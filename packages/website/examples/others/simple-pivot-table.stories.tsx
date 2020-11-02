@@ -8,8 +8,8 @@ import {
 import { getIncomeData } from 'assets/cdn-data'
 import { amount, lfl, ratio } from 'assets/format'
 import { MinimumPivotTableDesigner } from 'assets/MinimumPivotTableDesigner'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import { createAggregateFunction } from 'dvt-aggregation'
-import { ThemedBaseTable } from 'examples/themed-table'
 import React, { useEffect, useState } from 'react'
 
 export default { title: '其他 / 简易透视表' }
@@ -154,7 +154,7 @@ export function 简易透视表() {
       />
       <CrossTable
         className="bordered"
-        BaseTableComponent={ThemedBaseTable}
+        BaseTableComponent={WebsiteBaseTable}
         isLoading={isLoading}
         defaultColumnWidth={100}
         useVirtual={true}

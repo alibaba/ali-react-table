@@ -1,17 +1,8 @@
 import React from 'react'
 import { ArtColumn, ArtColumnStaticPart, CellProps } from '../../interfaces'
 import { internals } from '../../internals'
+import { always, arrayUtils } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
-
-function diffArray(arr1: string[], arr2: string[]) {
-  const set = new Set(arr2)
-  return arr1.filter((x) => !set.has(x))
-}
-
-function mergeArray(arr1: string[], arr2: string[]) {
-  const set = new Set(arr1)
-  return arr1.concat(arr2.filter((x) => !set.has(x)))
-}
 
 export interface MultiSelectFeatureOptions {
   /** 非受控用法：默认选中的值 */
@@ -62,7 +53,7 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
     }
     const primaryKey = pipeline.ensurePrimaryKey('multiSelect')
 
-    const isDisabled = opts.isDisabled ?? (() => false)
+    const isDisabled = opts.isDisabled ?? always(false)
     const clickArea = opts.clickArea ?? 'checkbox'
 
     const value: string[] = opts.value ?? pipeline.getStateAtKey(stateKey)?.value ?? opts.defaultValue ?? []
@@ -99,9 +90,9 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
         indeterminate={!isAllChecked && isAnyChecked}
         onChange={(_: any) => {
           if (isAllChecked) {
-            onChange(diffArray(value, allKeys), '', allKeys, 'uncheck-all')
+            onChange(arrayUtils.diff(value, allKeys), '', allKeys, 'uncheck-all')
           } else {
-            onChange(mergeArray(value, allKeys), '', allKeys, 'check-all')
+            onChange(arrayUtils.merge(value, allKeys), '', allKeys, 'check-all')
           }
         }}
       />
@@ -213,9 +204,9 @@ export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
       }
 
       if (prevChecked) {
-        onChange(diffArray(value, batchKeys), key, batchKeys, 'uncheck')
+        onChange(arrayUtils.diff(value, batchKeys), key, batchKeys, 'uncheck')
       } else {
-        onChange(mergeArray(value, batchKeys), key, batchKeys, 'check')
+        onChange(arrayUtils.merge(value, batchKeys), key, batchKeys, 'check')
       }
     }
   }

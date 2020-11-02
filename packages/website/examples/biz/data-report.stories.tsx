@@ -1,7 +1,7 @@
 import { applyTransforms, ArtColumn, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import { getAppTrafficData } from 'assets/cdn-data'
-import { ThemedBaseTable } from 'examples/themed-table'
+import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useEffect, useState } from 'react'
 import { identity } from 'rxjs'
 
@@ -80,7 +80,9 @@ export function 典型数据报表() {
     makeTreeModeTransform({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
   )
 
-  return <ThemedBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  return (
+    <WebsiteBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
+  )
 
   function convertDrillTreeToColumns(recordMap: Map<string, any>, nodes: DrillNode[]): ArtColumn[] {
     const result: ArtColumn[] = []

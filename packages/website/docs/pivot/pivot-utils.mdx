@@ -140,10 +140,6 @@ function buildRecordMatrix(buildConfig: BuildRecordMatrixConfig): RecordMatrix
 
 - 如果提供了 `prebuiltLeftTree`，预构建的左侧下钻树必须使用相同的 leftCodes 和 data 进行构建，且构建时必须包含总计节点。（同理于 prebuiltTopTree）
 
-### `buildRecordMatrix` 的详细 api 文档
-
-TODO
-
 ### `buildRecordMatrix` 示例
 
 下面的例子描述了 buildDrillTree，buildRecordMatrix 以及交叉表是如何配套使用的。在下面的示例中，我们直接将 下钻树作为了交叉表组件的 leftTree 和 topTree，故 leftTree/topTree 中节点的 key 与 matrix 中的索引是一致的。在交叉表的 getValue 回调中，我们直接使用 leftNode.key 与 topNode.key 就能从 matrix 取出对应单元格的数据。

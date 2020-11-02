@@ -1,5 +1,5 @@
 import { groupBy, isLeafNode } from '../../utils'
-import { fromEntries } from '../../utils/others'
+import { always, fromEntries } from '../../utils/others'
 import buildDrillTree from './buildDrillTree'
 import { DrillNode, RecordMatrix } from './interfaces'
 import simpleEncode from './simpleEncode'
@@ -31,8 +31,8 @@ export function buildRecordMatrix({
   topCodes,
   aggregate = fallbackAggregate,
   encode = simpleEncode,
-  isLeftExpand = () => true,
-  isTopExpand = () => true,
+  isLeftExpand = always(true),
+  isTopExpand = always(true),
   prebuiltLeftTree,
   prebuiltTopTree,
 }: BuildRecordMatrixConfig): RecordMatrix {

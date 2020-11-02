@@ -225,4 +225,35 @@ API: `(fn: (column, ctx) => NormalizeAsArrayInput<ArtColumn>) => TableTransform`
 
 ### `makeRecursiveMapper`
 
-(todo)
+根据 `fn` 生成一个递归的映射函数，该函数可以递归地处理树形数据。
+
+API: `<T extends AbstractTreeNode>( fn: (node: T, info: RecursiveFlatMapInfo<T>) => null | T | T[] ) => (rows: T[]) => T[]`
+
+其中 RecursiveFlatMapInfo 如下
+
+```ts
+type RecursiveFlatMapInfo<T> = {
+  startIndex: number
+  endIndex: number
+  path: T[]
+  isLeaf: boolean
+}
+```
+
+示例：
+
+```js
+const tree1 = [
+  { value: 1, children: [{ value: 2 }, { value: 22 }] },
+  { value: 11, children: [{ value: 22, children: [{ value: 33 }, { value: 333 }] }] },
+]
+
+// 将节点中的 value 变为原来的 2 倍
+const mapper = makeRecursiveMapper((node) => ({ ...node, value: node.value * 2 }))
+
+// 调用 mapper(tree1) 可以得到以下结果：
+const result = [
+  { value: 2, children: [{ value: 4 }, { value: 44 }] },
+  { value: 22, children: [{ value: 44, children: [{ value: 66 }, { value: 666 }] }] },
+]
+```

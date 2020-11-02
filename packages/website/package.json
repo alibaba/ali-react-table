@@ -5,13 +5,14 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
-    "build": "docusaurus build --no-minify",
+    "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "serve": "docusaurus serve"
   },
   "dependencies": {
     "@alifd/next": "^1.20.28",
+    "@babel/runtime": "^7.12.1",
     "@carbon/icons-react": "^10.19.0",
     "@types/carbon__icons-react": "^10.17.1",
     "@types/d3": "^5.16.3",

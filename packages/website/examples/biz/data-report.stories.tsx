@@ -1,4 +1,4 @@
-import { applyTransforms, ArtColumn, isLeafNode, makeTreeModeTransform } from 'ali-react-table'
+import { ArtColumn, features, isLeafNode, useTablePipeline } from 'ali-react-table'
 import { buildDrillTree, buildRecordMap, DrillNode } from 'ali-react-table/pivot'
 import { getAppTrafficData } from 'assets/cdn-data'
 import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
@@ -74,15 +74,18 @@ export function 典型数据报表() {
 
   const [openKeys, onChangeOpenKeys] = useState(['APP指标', '转换率'])
 
-  const renderData = applyTransforms(
-    // 使用 indicatorTree 作为 dataSource，因为现在表格行和指标树是对应的
-    { columns: [mainCol, ...state.columns], dataSource: indicatorTree },
-    makeTreeModeTransform({ primaryKey: 'name', openKeys, onChangeOpenKeys, indentSize: 20 }),
-  )
+  const pipeline = useTablePipeline()
+    .input({ columns: [mainCol, ...state.columns], dataSource: indicatorTree })
+    .primaryKey('name')
+    .use(
+      features.treeMode({
+        openKeys,
+        onChangeOpenKeys,
+        indentSize: 20,
+      }),
+    )
 
-  return (
-    <WebsiteBaseTable dataSource={renderData.dataSource} columns={renderData.columns} isLoading={state.isLoading} />
-  )
+  return <WebsiteBaseTable {...pipeline.getProps()} isLoading={state.isLoading} />
 
   function convertDrillTreeToColumns(recordMap: Map<string, any>, nodes: DrillNode[]): ArtColumn[] {
     const result: ArtColumn[] = []

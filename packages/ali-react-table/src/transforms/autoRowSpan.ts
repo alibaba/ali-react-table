@@ -1,12 +1,16 @@
 import { SpanRect, TableTransform } from '../interfaces'
 import { internals } from '../internals'
 import { isLeafNode, traverseColumn } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 function isIdentity(x: any, y: any) {
   return x === y
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeAutoRowSpanTransform(): TableTransform {
+  warnTransformsDeprecated('makeAutoRowSpanTransform')
+
   return traverseColumn((col, { dataSource, range }) => {
     if (!col.features?.autoRowSpan) {
       return col

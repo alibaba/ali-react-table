@@ -53,7 +53,7 @@ const fallbackRenderDetail = () => (
 )
 
 export function rowDetail(opts: RowDetailFeatureOptions = {}) {
-  return function rowDetailStep<P extends TablePipeline>(pipeline: P) {
+  return function rowDetailStep(pipeline: TablePipeline) {
     const stateKey = 'rowDetail'
 
     const primaryKey = pipeline.ensurePrimaryKey('rowDetail') as string

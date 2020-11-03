@@ -154,7 +154,8 @@ export class TablePipeline {
     return this
   }
 
-  /** 应用一个 ali-react-table Table transform */
+  /** @deprecated
+   *  应用一个 ali-react-table Table transform */
   useTransform(transform: TableTransform) {
     const next = transform({
       dataSource: this.getDataSource(),

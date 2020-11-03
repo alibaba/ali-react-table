@@ -4,6 +4,7 @@ import { BaseTable, Classes } from '../base-table'
 import { TableTransform } from '../interfaces'
 import { internals } from '../internals'
 import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 const AUTO_WIDTH_WRAPPER_CLS = 'auto-width-wrapper'
 const AUTO_WIDTH_EXPANDER_CLS = 'auto-width-expander'
@@ -21,6 +22,8 @@ function isSameArray(arr1: number[], arr2: number[]) {
 }
 
 /** 自适应列宽
+ *
+ * @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展
  *
  * @param tableRef BaseTable 的 ref
  * @param options 参数
@@ -44,6 +47,7 @@ export function useAutoWidthTransform(
   },
   deps?: any[],
 ): TableTransform {
+  warnTransformsDeprecated('useAutoWidthTransform')
   const [widthList, setWidthList] = useState<number[]>([])
 
   useEffect(() => {

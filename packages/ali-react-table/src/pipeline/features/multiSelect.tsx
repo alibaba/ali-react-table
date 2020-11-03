@@ -45,7 +45,7 @@ export interface MultiSelectFeatureOptions {
 }
 
 export function multiSelect(opts: MultiSelectFeatureOptions = {}) {
-  return function multiSelectStep<P extends TablePipeline>(pipeline: P) {
+  return function multiSelectStep(pipeline: TablePipeline) {
     const stateKey = 'multiSelect'
     const Checkbox = pipeline.ctx.components.Checkbox
     if (Checkbox == null) {

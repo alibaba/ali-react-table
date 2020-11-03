@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import { TableTransform } from '../interfaces'
 import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export interface ColumnHoverOptions {
   hoverColor?: string
   hoverColIndex: number
   onChangeHoverColIndex(nextColIndex: number): void
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeColumnHoverTransform({
   hoverColor = 'var(--hover-bgcolor)',
   hoverColIndex,
   onChangeHoverColIndex,
 }: ColumnHoverOptions): TableTransform {
+  warnTransformsDeprecated('makeColumnHoverTransform')
+
   return traverseColumn((col, { range }) => {
     if (!isLeafNode(col)) {
       return col
@@ -41,6 +46,7 @@ export function makeColumnHoverTransform({
   })
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function useColumnHoverTransform({
   hoverColor,
   defaultHoverColIndex = -1,

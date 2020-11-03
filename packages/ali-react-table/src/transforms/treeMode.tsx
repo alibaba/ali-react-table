@@ -3,12 +3,13 @@ import React, { useState } from 'react'
 import { ExpansionCell, icons, InlineFlexCell } from '../common-views'
 import { ArtColumn, TableTransform } from '../interfaces'
 import { internals } from '../internals'
+import { treeMetaSymbol } from '../pipeline/features'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../utils'
-
-export const treeMetaSymbol = Symbol('treeMetaSymbol')
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 const ICON_WIDTH = 16
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export interface TreeModeOptions {
   primaryKey: string
   openKeys: string[]
@@ -27,6 +28,7 @@ export interface TreeModeOptions {
   stopClickEventPropagation?: boolean
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeTreeModeTransform({
   onChangeOpenKeys,
   openKeys,
@@ -39,6 +41,8 @@ export function makeTreeModeTransform({
   treeMetaKey = treeMetaSymbol,
   stopClickEventPropagation,
 }: TreeModeOptions): TableTransform {
+  warnTransformsDeprecated('makeTreeModeTransform')
+
   const openKeySet = new Set(openKeys)
 
   const toggle = (rowKey: string) => {
@@ -179,6 +183,7 @@ export function makeTreeModeTransform({
   }
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function useTreeModeTransform({
   defaultOpenKeys = [],
   ...others

@@ -35,12 +35,15 @@
   "dependencies": {
     "@types/classnames": "^2.2.9",
     "classnames": "^2.2.6",
-    "react": "^16.9.0 || ^17.0.1",
     "resize-observer-polyfill": "^1.5.1",
     "rxjs": "^6.5.4",
     "styled-components": "^3.4.10 || ^5.0.1"
   },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.1"
+  },
   "devDependencies": {
+    "react": "^16.14.0",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",

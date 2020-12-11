@@ -13,10 +13,6 @@
     "collect-files": "rimraf website-deploy && copyfiles --up=3 \"packages/website/build/**/*\" website-deploy/",
     "prepare-website-deploy": "yarn website:build && yarn collect-files"
   },
-  "resolutions": {
-    "react": "16.14.0",
-    "react-dom": "16.14.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alibaba/ali-react-table.git"

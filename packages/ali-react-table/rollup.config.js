@@ -3,7 +3,10 @@ import resolve from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2'
 
 // @carbon/icons-react 依赖了 prop-types
-const external = Object.keys(pkg.dependencies).concat(['rxjs/operators', 'prop-types'])
+const external = Object.keys(pkg.dependencies).concat(Object.keys(pkg.peerDependencies), [
+  'rxjs/operators',
+  'prop-types',
+])
 
 const config = (arg) => ({
   plugins: [

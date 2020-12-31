@@ -25,7 +25,7 @@ type WithChildren<T> = T & { children?: WithChildren<T>[] }
  *       {
  *         id: 'node-4',
  *         parent: 'node-2',
- *         children: [{ id: 'node-5', parent: 'node-3' }],
+ *         children: [{ id: 'node-5', parent: 'node-4' }],
  *       },
  *     ],
  *   },
@@ -61,6 +61,7 @@ export default function buildTree<ID extends string, PID extends string, T exten
 
   return unwrapRecursively(topLevelWrappers)
 
+  // todo 可能存在无线递归的情况
   function unwrapRecursively(wrapperArray: Wrapper[]) {
     const result: WithChildren<T>[] = []
     for (const wrapper of wrapperArray) {

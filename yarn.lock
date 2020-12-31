@@ -108,16 +108,16 @@
 
 "@alifd/field@~1.4.1":
   version "1.4.6"
-  resolved "https://registry.npm.taobao.org/@alifd/field/download/@alifd/field-1.4.6.tgz#74797bb9f640adf83507aa39283eb89bc1f00830"
+  resolved "https://registry.npm.alibaba-inc.com/@alifd/field/download/@alifd/field-1.4.6.tgz#74797bb9f640adf83507aa39283eb89bc1f00830"
   integrity sha1-dHl7ufZArfg1B6o5KD64m8HwCDA=
   dependencies:
     "@alifd/validate" "^1.2.0"
     prop-types "^15.5.8"
 
 "@alifd/next@^1.20.28":
-  version "1.21.12"
-  resolved "https://registry.npm.taobao.org/@alifd/next/download/@alifd/next-1.21.12.tgz#8c9c240ea9cd583e5ad9855828361689751609cb"
-  integrity sha1-jJwkDqnNWD5a2YVYKDYWiXUWCcs=
+  version "1.21.16"
+  resolved "https://registry.npm.alibaba-inc.com/@alifd/next/download/@alifd/next-1.21.16.tgz#4419c7ab0cc5f9fcd57c7222702bae0f1bece801"
+  integrity sha1-RBnHqwzF+fzVfHIicCuuDxvs6AE=
   dependencies:
     "@alifd/field" "~1.4.1"
     "@alifd/validate" "~1.2.0"
@@ -132,29 +132,24 @@
 
 "@alifd/validate@^1.2.0", "@alifd/validate@~1.2.0":
   version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@alifd/validate/download/@alifd/validate-1.2.0.tgz#252e0add24e64efd54fe611ba8c66d0147d850f6"
+  resolved "https://registry.npm.alibaba-inc.com/@alifd/validate/download/@alifd/validate-1.2.0.tgz#252e0add24e64efd54fe611ba8c66d0147d850f6"
   integrity sha1-JS4K3STmTv1U/mEbqMZtAUfYUPY=
 
 "@ant-design/colors@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npm.taobao.org/@ant-design/colors/download/@ant-design/colors-5.0.0.tgz#46b73b4cc6935b35fc8b84555e8e42c8cfc190e6"
-  integrity sha1-Rrc7TMaTWzX8i4RVXo5CyM/BkOY=
+  version "5.0.1"
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/colors/download/@ant-design/colors-5.0.1.tgz#09670f2f44a7473d7bc01be901c48ec10f12c7a4"
+  integrity sha1-CWcPL0SnRz17wBvpAcSOwQ8Sx6Q=
   dependencies:
-    "@ctrl/tinycolor" "^3.1.6"
-
-"@ant-design/css-animation@^1.7.2":
-  version "1.7.3"
-  resolved "https://registry.npm.taobao.org/@ant-design/css-animation/download/@ant-design/css-animation-1.7.3.tgz#60a1c970014e86b28f940510d69e503e428f1136"
-  integrity sha1-YKHJcAFOhrKPlAUQ1p5QPkKPETY=
+    "@ctrl/tinycolor" "^3.3.1"
 
 "@ant-design/icons-svg@^4.0.0":
   version "4.1.0"
-  resolved "https://registry.npm.taobao.org/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/icons-svg/download/@ant-design/icons-svg-4.1.0.tgz#480b025f4b20ef7fe8f47d4a4846e4fee84ea06c"
   integrity sha1-SAsCX0sg73/o9H1KSEbk/uhOoGw=
 
 "@ant-design/icons@^4.2.2", "@ant-design/icons@^4.3.0":
   version "4.3.0"
-  resolved "https://registry.npm.taobao.org/@ant-design/icons/download/@ant-design/icons-4.3.0.tgz#420e0cd527486c0fe57f81310d681950fc4cfacf"
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/icons/download/@ant-design/icons-4.3.0.tgz#420e0cd527486c0fe57f81310d681950fc4cfacf"
   integrity sha1-Qg4M1SdIbA/lf4ExDWgZUPxM+s8=
   dependencies:
     "@ant-design/colors" "^5.0.0"
@@ -166,7 +161,7 @@
 
 "@ant-design/react-slick@~0.27.0":
   version "0.27.14"
-  resolved "https://registry.npm.taobao.org/@ant-design/react-slick/download/@ant-design/react-slick-0.27.14.tgz?cache=0&sync_timestamp=1605582622428&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ant-design%2Freact-slick%2Fdownload%2F%40ant-design%2Freact-slick-0.27.14.tgz#a1082c4734e57c7ba9c41d035375f5bf577f3b5e"
+  resolved "https://registry.npm.alibaba-inc.com/@ant-design/react-slick/download/@ant-design/react-slick-0.27.14.tgz#a1082c4734e57c7ba9c41d035375f5bf577f3b5e"
   integrity sha1-oQgsRzTlfHupxB0DU3X1v1d/O14=
   dependencies:
     "@babel/runtime" "^7.10.4"
@@ -182,16 +177,23 @@
   dependencies:
     "@babel/highlight" "^7.8.3"
 
-"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
+"@babel/code-frame@^7.0.0":
   version "7.10.4"
   resolved "https://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
   integrity sha1-Fo2ho26Q2miujUnA8bSMfGJJITo=
   dependencies:
     "@babel/highlight" "^7.10.4"
 
+"@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.11":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/code-frame/download/@babel/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
+  integrity sha1-9K1DWqJj25NbjxDyxVLSP7cWpj8=
+  dependencies:
+    "@babel/highlight" "^7.10.4"
+
 "@babel/compat-data@^7.12.5", "@babel/compat-data@^7.12.7":
   version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/compat-data/download/@babel/compat-data-7.12.7.tgz#9329b4782a7d6bbd7eef57e11addf91ee3ef1e41"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/compat-data/download/@babel/compat-data-7.12.7.tgz#9329b4782a7d6bbd7eef57e11addf91ee3ef1e41"
   integrity sha1-kym0eCp9a71+71fhGt35HuPvHkE=
 
 "@babel/core@7.11.6":
@@ -216,7 +218,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@^7.1.0", "@babel/core@^7.12.3", "@babel/core@^7.7.5":
+"@babel/core@^7.1.0", "@babel/core@^7.7.5":
   version "7.12.9"
   resolved "https://registry.npm.taobao.org/@babel/core/download/@babel/core-7.12.9.tgz?cache=0&sync_timestamp=1606252532429&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fcore%2Fdownload%2F%40babel%2Fcore-7.12.9.tgz#fd450c4ec10cdbb980e2928b7aa7a28484593fc8"
   integrity sha1-/UUMTsEM27mA4pKLeqeihIRZP8g=
@@ -238,7 +240,28 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/generator@^7.11.6", "@babel/generator@^7.12.5":
+"@babel/core@^7.12.3":
+  version "7.12.10"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/core/download/@babel/core-7.12.10.tgz#b79a2e1b9f70ed3d84bbfb6d8c4ef825f606bccd"
+  integrity sha1-t5ouG59w7T2Eu/ttjE74JfYGvM0=
+  dependencies:
+    "@babel/code-frame" "^7.10.4"
+    "@babel/generator" "^7.12.10"
+    "@babel/helper-module-transforms" "^7.12.1"
+    "@babel/helpers" "^7.12.5"
+    "@babel/parser" "^7.12.10"
+    "@babel/template" "^7.12.7"
+    "@babel/traverse" "^7.12.10"
+    "@babel/types" "^7.12.10"
+    convert-source-map "^1.7.0"
+    debug "^4.1.0"
+    gensync "^1.0.0-beta.1"
+    json5 "^2.1.2"
+    lodash "^4.17.19"
+    semver "^5.4.1"
+    source-map "^0.5.0"
+
+"@babel/generator@^7.11.6":
   version "7.12.5"
   resolved "https://registry.npm.taobao.org/@babel/generator/download/@babel/generator-7.12.5.tgz?cache=0&sync_timestamp=1604443729171&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fgenerator%2Fdownload%2F%40babel%2Fgenerator-7.12.5.tgz#a2c50de5c8b6d708ab95be5e6053936c1884a4de"
   integrity sha1-osUN5ci21wirlb5eYFOTbBiEpN4=
@@ -247,16 +270,32 @@
     jsesc "^2.5.1"
     source-map "^0.5.0"
 
-"@babel/helper-annotate-as-pure@^7.0.0", "@babel/helper-annotate-as-pure@^7.10.4":
+"@babel/generator@^7.12.10", "@babel/generator@^7.12.11", "@babel/generator@^7.12.5":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/generator/download/@babel/generator-7.12.11.tgz#98a7df7b8c358c9a37ab07a24056853016aba3af"
+  integrity sha1-mKffe4w1jJo3qweiQFaFMBaro68=
+  dependencies:
+    "@babel/types" "^7.12.11"
+    jsesc "^2.5.1"
+    source-map "^0.5.0"
+
+"@babel/helper-annotate-as-pure@^7.0.0":
   version "7.10.4"
   resolved "https://registry.npm.taobao.org/@babel/helper-annotate-as-pure/download/@babel/helper-annotate-as-pure-7.10.4.tgz#5bf0d495a3f757ac3bda48b5bf3b3ba309c72ba3"
   integrity sha1-W/DUlaP3V6w72ki1vzs7ownHK6M=
   dependencies:
     "@babel/types" "^7.10.4"
 
+"@babel/helper-annotate-as-pure@^7.10.4":
+  version "7.12.10"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-annotate-as-pure/download/@babel/helper-annotate-as-pure-7.12.10.tgz#54ab9b000e60a93644ce17b3f37d313aaf1d115d"
+  integrity sha1-VKubAA5gqTZEzhez830xOq8dEV0=
+  dependencies:
+    "@babel/types" "^7.12.10"
+
 "@babel/helper-builder-binary-assignment-operator-visitor@^7.10.4":
   version "7.10.4"
-  resolved "https://registry.npm.taobao.org/@babel/helper-builder-binary-assignment-operator-visitor/download/@babel/helper-builder-binary-assignment-operator-visitor-7.10.4.tgz#bb0b75f31bf98cbf9ff143c1ae578b87274ae1a3"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-builder-binary-assignment-operator-visitor/download/@babel/helper-builder-binary-assignment-operator-visitor-7.10.4.tgz#bb0b75f31bf98cbf9ff143c1ae578b87274ae1a3"
   integrity sha1-uwt18xv5jL+f8UPBrleLhydK4aM=
   dependencies:
     "@babel/helper-explode-assignable-expression" "^7.10.4"
@@ -281,7 +320,7 @@
 
 "@babel/helper-compilation-targets@^7.12.5":
   version "7.12.5"
-  resolved "https://registry.npm.taobao.org/@babel/helper-compilation-targets/download/@babel/helper-compilation-targets-7.12.5.tgz#cb470c76198db6a24e9dbc8987275631e5d29831"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-compilation-targets/download/@babel/helper-compilation-targets-7.12.5.tgz#cb470c76198db6a24e9dbc8987275631e5d29831"
   integrity sha1-y0cMdhmNtqJOnbyJhydWMeXSmDE=
   dependencies:
     "@babel/compat-data" "^7.12.5"
@@ -291,7 +330,7 @@
 
 "@babel/helper-create-class-features-plugin@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-create-class-features-plugin/download/@babel/helper-create-class-features-plugin-7.12.1.tgz#3c45998f431edd4a9214c5f1d3ad1448a6137f6e"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-create-class-features-plugin/download/@babel/helper-create-class-features-plugin-7.12.1.tgz#3c45998f431edd4a9214c5f1d3ad1448a6137f6e"
   integrity sha1-PEWZj0Me3UqSFMXx060USKYTf24=
   dependencies:
     "@babel/helper-function-name" "^7.10.4"
@@ -302,7 +341,7 @@
 
 "@babel/helper-create-regexp-features-plugin@^7.12.1":
   version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/helper-create-regexp-features-plugin/download/@babel/helper-create-regexp-features-plugin-7.12.7.tgz#2084172e95443fa0a09214ba1bb328f9aea1278f"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-create-regexp-features-plugin/download/@babel/helper-create-regexp-features-plugin-7.12.7.tgz#2084172e95443fa0a09214ba1bb328f9aea1278f"
   integrity sha1-IIQXLpVEP6CgkhS6G7Mo+a6hJ48=
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.10.4"
@@ -310,7 +349,7 @@
 
 "@babel/helper-define-map@^7.10.4":
   version "7.10.5"
-  resolved "https://registry.npm.taobao.org/@babel/helper-define-map/download/@babel/helper-define-map-7.10.5.tgz#b53c10db78a640800152692b13393147acb9bb30"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-define-map/download/@babel/helper-define-map-7.10.5.tgz#b53c10db78a640800152692b13393147acb9bb30"
   integrity sha1-tTwQ23imQIABUmkrEzkxR6y5uzA=
   dependencies:
     "@babel/helper-function-name" "^7.10.4"
@@ -319,37 +358,37 @@
 
 "@babel/helper-explode-assignable-expression@^7.10.4":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-explode-assignable-expression/download/@babel/helper-explode-assignable-expression-7.12.1.tgz#8006a466695c4ad86a2a5f2fb15b5f2c31ad5633"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-explode-assignable-expression/download/@babel/helper-explode-assignable-expression-7.12.1.tgz#8006a466695c4ad86a2a5f2fb15b5f2c31ad5633"
   integrity sha1-gAakZmlcSthqKl8vsVtfLDGtVjM=
   dependencies:
     "@babel/types" "^7.12.1"
 
-"@babel/helper-function-name@^7.10.4":
-  version "7.10.4"
-  resolved "https://registry.npm.taobao.org/@babel/helper-function-name/download/@babel/helper-function-name-7.10.4.tgz#d2d3b20c59ad8c47112fa7d2a94bc09d5ef82f1a"
-  integrity sha1-0tOyDFmtjEcRL6fSqUvAnV74Lxo=
+"@babel/helper-function-name@^7.10.4", "@babel/helper-function-name@^7.12.11":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-function-name/download/@babel/helper-function-name-7.12.11.tgz#1fd7738aee5dcf53c3ecff24f1da9c511ec47b42"
+  integrity sha1-H9dziu5dz1PD7P8k8dqcUR7Ee0I=
   dependencies:
-    "@babel/helper-get-function-arity" "^7.10.4"
-    "@babel/template" "^7.10.4"
-    "@babel/types" "^7.10.4"
+    "@babel/helper-get-function-arity" "^7.12.10"
+    "@babel/template" "^7.12.7"
+    "@babel/types" "^7.12.11"
 
-"@babel/helper-get-function-arity@^7.10.4":
-  version "7.10.4"
-  resolved "https://registry.npm.taobao.org/@babel/helper-get-function-arity/download/@babel/helper-get-function-arity-7.10.4.tgz#98c1cbea0e2332f33f9a4661b8ce1505b2c19ba2"
-  integrity sha1-mMHL6g4jMvM/mkZhuM4VBbLBm6I=
+"@babel/helper-get-function-arity@^7.12.10":
+  version "7.12.10"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-get-function-arity/download/@babel/helper-get-function-arity-7.12.10.tgz#b158817a3165b5faa2047825dfa61970ddcc16cf"
+  integrity sha1-sViBejFltfqiBHgl36YZcN3MFs8=
   dependencies:
-    "@babel/types" "^7.10.4"
+    "@babel/types" "^7.12.10"
 
 "@babel/helper-hoist-variables@^7.10.4":
   version "7.10.4"
-  resolved "https://registry.npm.taobao.org/@babel/helper-hoist-variables/download/@babel/helper-hoist-variables-7.10.4.tgz#d49b001d1d5a68ca5e6604dda01a6297f7c9381e"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-hoist-variables/download/@babel/helper-hoist-variables-7.10.4.tgz#d49b001d1d5a68ca5e6604dda01a6297f7c9381e"
   integrity sha1-1JsAHR1aaMpeZgTdoBpil/fJOB4=
   dependencies:
     "@babel/types" "^7.10.4"
 
-"@babel/helper-member-expression-to-functions@^7.12.1":
+"@babel/helper-member-expression-to-functions@^7.12.1", "@babel/helper-member-expression-to-functions@^7.12.7":
   version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/helper-member-expression-to-functions/download/@babel/helper-member-expression-to-functions-7.12.7.tgz#aa77bd0396ec8114e5e30787efa78599d874a855"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-member-expression-to-functions/download/@babel/helper-member-expression-to-functions-7.12.7.tgz#aa77bd0396ec8114e5e30787efa78599d874a855"
   integrity sha1-qne9A5bsgRTl4weH76eFmdh0qFU=
   dependencies:
     "@babel/types" "^7.12.7"
@@ -376,12 +415,12 @@
     "@babel/types" "^7.12.1"
     lodash "^4.17.19"
 
-"@babel/helper-optimise-call-expression@^7.10.4":
-  version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/helper-optimise-call-expression/download/@babel/helper-optimise-call-expression-7.12.7.tgz#7f94ae5e08721a49467346aa04fd22f750033b9c"
-  integrity sha1-f5SuXghyGklGc0aqBP0i91ADO5w=
+"@babel/helper-optimise-call-expression@^7.10.4", "@babel/helper-optimise-call-expression@^7.12.10":
+  version "7.12.10"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-optimise-call-expression/download/@babel/helper-optimise-call-expression-7.12.10.tgz#94ca4e306ee11a7dd6e9f42823e2ac6b49881e2d"
+  integrity sha1-lMpOMG7hGn3W6fQoI+Ksa0mIHi0=
   dependencies:
-    "@babel/types" "^7.12.7"
+    "@babel/types" "^7.12.10"
 
 "@babel/helper-plugin-utils@7.10.4", "@babel/helper-plugin-utils@^7.0.0", "@babel/helper-plugin-utils@^7.10.4", "@babel/helper-plugin-utils@^7.8.0", "@babel/helper-plugin-utils@^7.8.3":
   version "7.10.4"
@@ -390,7 +429,7 @@
 
 "@babel/helper-remap-async-to-generator@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-remap-async-to-generator/download/@babel/helper-remap-async-to-generator-7.12.1.tgz#8c4dbbf916314f6047dc05e6a2217074238347fd"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-remap-async-to-generator/download/@babel/helper-remap-async-to-generator-7.12.1.tgz#8c4dbbf916314f6047dc05e6a2217074238347fd"
   integrity sha1-jE27+RYxT2BH3AXmoiFwdCODR/0=
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.10.4"
@@ -398,49 +437,49 @@
     "@babel/types" "^7.12.1"
 
 "@babel/helper-replace-supers@^7.12.1":
-  version "7.12.5"
-  resolved "https://registry.npm.taobao.org/@babel/helper-replace-supers/download/@babel/helper-replace-supers-7.12.5.tgz?cache=0&sync_timestamp=1604443729886&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fhelper-replace-supers%2Fdownload%2F%40babel%2Fhelper-replace-supers-7.12.5.tgz#f009a17543bbbbce16b06206ae73b63d3fca68d9"
-  integrity sha1-8AmhdUO7u84WsGIGrnO2PT/KaNk=
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-replace-supers/download/@babel/helper-replace-supers-7.12.11.tgz#ea511658fc66c7908f923106dd88e08d1997d60d"
+  integrity sha1-6lEWWPxmx5CPkjEG3YjgjRmX1g0=
   dependencies:
-    "@babel/helper-member-expression-to-functions" "^7.12.1"
-    "@babel/helper-optimise-call-expression" "^7.10.4"
-    "@babel/traverse" "^7.12.5"
-    "@babel/types" "^7.12.5"
+    "@babel/helper-member-expression-to-functions" "^7.12.7"
+    "@babel/helper-optimise-call-expression" "^7.12.10"
+    "@babel/traverse" "^7.12.10"
+    "@babel/types" "^7.12.11"
 
 "@babel/helper-simple-access@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-simple-access/download/@babel/helper-simple-access-7.12.1.tgz?cache=0&sync_timestamp=1602802634851&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fhelper-simple-access%2Fdownload%2F%40babel%2Fhelper-simple-access-7.12.1.tgz#32427e5aa61547d38eb1e6eaf5fd1426fdad9136"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-simple-access/download/@babel/helper-simple-access-7.12.1.tgz#32427e5aa61547d38eb1e6eaf5fd1426fdad9136"
   integrity sha1-MkJ+WqYVR9OOsebq9f0UJv2tkTY=
   dependencies:
     "@babel/types" "^7.12.1"
 
 "@babel/helper-skip-transparent-expression-wrappers@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-skip-transparent-expression-wrappers/download/@babel/helper-skip-transparent-expression-wrappers-7.12.1.tgz#462dc63a7e435ade8468385c63d2b84cce4b3cbf"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-skip-transparent-expression-wrappers/download/@babel/helper-skip-transparent-expression-wrappers-7.12.1.tgz#462dc63a7e435ade8468385c63d2b84cce4b3cbf"
   integrity sha1-Ri3GOn5DWt6EaDhcY9K4TM5LPL8=
   dependencies:
     "@babel/types" "^7.12.1"
 
-"@babel/helper-split-export-declaration@^7.10.4", "@babel/helper-split-export-declaration@^7.11.0":
-  version "7.11.0"
-  resolved "https://registry.npm.taobao.org/@babel/helper-split-export-declaration/download/@babel/helper-split-export-declaration-7.11.0.tgz#f8a491244acf6a676158ac42072911ba83ad099f"
-  integrity sha1-+KSRJErPamdhWKxCBykRuoOtCZ8=
+"@babel/helper-split-export-declaration@^7.10.4", "@babel/helper-split-export-declaration@^7.11.0", "@babel/helper-split-export-declaration@^7.12.11":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-split-export-declaration/download/@babel/helper-split-export-declaration-7.12.11.tgz#1b4cc424458643c47d37022223da33d76ea4603a"
+  integrity sha1-G0zEJEWGQ8R9NwIiI9oz126kYDo=
   dependencies:
-    "@babel/types" "^7.11.0"
+    "@babel/types" "^7.12.11"
 
-"@babel/helper-validator-identifier@^7.10.4":
-  version "7.10.4"
-  resolved "https://registry.npm.taobao.org/@babel/helper-validator-identifier/download/@babel/helper-validator-identifier-7.10.4.tgz#a78c7a7251e01f616512d31b10adcf52ada5e0d2"
-  integrity sha1-p4x6clHgH2FlEtMbEK3PUq2l4NI=
+"@babel/helper-validator-identifier@^7.10.4", "@babel/helper-validator-identifier@^7.12.11":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-validator-identifier/download/@babel/helper-validator-identifier-7.12.11.tgz#c9a1f021917dcb5ccf0d4e453e399022981fc9ed"
+  integrity sha1-yaHwIZF9y1zPDU5FPjmQIpgfye0=
 
-"@babel/helper-validator-option@^7.12.1":
-  version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/helper-validator-option/download/@babel/helper-validator-option-7.12.1.tgz?cache=0&sync_timestamp=1602802621757&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fhelper-validator-option%2Fdownload%2F%40babel%2Fhelper-validator-option-7.12.1.tgz#175567380c3e77d60ff98a54bb015fe78f2178d9"
-  integrity sha1-F1VnOAw+d9YP+YpUuwFf548heNk=
+"@babel/helper-validator-option@^7.12.1", "@babel/helper-validator-option@^7.12.11":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-validator-option/download/@babel/helper-validator-option-7.12.11.tgz#d66cb8b7a3e7fe4c6962b32020a131ecf0847f4f"
+  integrity sha1-1my4t6Pn/kxpYrMgIKEx7PCEf08=
 
 "@babel/helper-wrap-function@^7.10.4":
   version "7.12.3"
-  resolved "https://registry.npm.taobao.org/@babel/helper-wrap-function/download/@babel/helper-wrap-function-7.12.3.tgz#3332339fc4d1fbbf1c27d7958c27d34708e990d9"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/helper-wrap-function/download/@babel/helper-wrap-function-7.12.3.tgz#3332339fc4d1fbbf1c27d7958c27d34708e990d9"
   integrity sha1-MzIzn8TR+78cJ9eVjCfTRwjpkNk=
   dependencies:
     "@babel/helper-function-name" "^7.10.4"
@@ -466,15 +505,20 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.1.0", "@babel/parser@^7.11.5", "@babel/parser@^7.12.5", "@babel/parser@^7.12.7":
+"@babel/parser@^7.1.0", "@babel/parser@^7.11.5", "@babel/parser@^7.12.5":
   version "7.12.7"
   resolved "https://registry.npm.taobao.org/@babel/parser/download/@babel/parser-7.12.7.tgz?cache=0&sync_timestamp=1605904887067&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fparser%2Fdownload%2F%40babel%2Fparser-7.12.7.tgz#fee7b39fe809d0e73e5b25eecaf5780ef3d73056"
   integrity sha1-/uezn+gJ0Oc+WyXuyvV4DvPXMFY=
 
+"@babel/parser@^7.12.10", "@babel/parser@^7.12.11", "@babel/parser@^7.12.7":
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/parser/download/@babel/parser-7.12.11.tgz#9ce3595bcd74bc5c466905e86c535b8b25011e79"
+  integrity sha1-nONZW810vFxGaQXobFNbiyUBHnk=
+
 "@babel/plugin-proposal-async-generator-functions@^7.12.1":
-  version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-async-generator-functions/download/@babel/plugin-proposal-async-generator-functions-7.12.1.tgz?cache=0&sync_timestamp=1602802638761&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-async-generator-functions%2Fdownload%2F%40babel%2Fplugin-proposal-async-generator-functions-7.12.1.tgz#dc6c1170e27d8aca99ff65f4925bd06b1c90550e"
-  integrity sha1-3GwRcOJ9isqZ/2X0klvQaxyQVQ4=
+  version "7.12.12"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-async-generator-functions/download/@babel/plugin-proposal-async-generator-functions-7.12.12.tgz#04b8f24fd4532008ab4e79f788468fd5a8476566"
+  integrity sha1-BLjyT9RTIAirTnn3iEaP1ahHZWY=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
     "@babel/helper-remap-async-to-generator" "^7.12.1"
@@ -482,7 +526,7 @@
 
 "@babel/plugin-proposal-class-properties@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-class-properties/download/@babel/plugin-proposal-class-properties-7.12.1.tgz?cache=0&sync_timestamp=1602802520476&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-class-properties%2Fdownload%2F%40babel%2Fplugin-proposal-class-properties-7.12.1.tgz#a082ff541f2a29a4821065b8add9346c0c16e5de"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-class-properties/download/@babel/plugin-proposal-class-properties-7.12.1.tgz#a082ff541f2a29a4821065b8add9346c0c16e5de"
   integrity sha1-oIL/VB8qKaSCEGW4rdk0bAwW5d4=
   dependencies:
     "@babel/helper-create-class-features-plugin" "^7.12.1"
@@ -490,7 +534,7 @@
 
 "@babel/plugin-proposal-dynamic-import@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-dynamic-import/download/@babel/plugin-proposal-dynamic-import-7.12.1.tgz?cache=0&sync_timestamp=1602802624550&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-dynamic-import%2Fdownload%2F%40babel%2Fplugin-proposal-dynamic-import-7.12.1.tgz#43eb5c2a3487ecd98c5c8ea8b5fdb69a2749b2dc"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-dynamic-import/download/@babel/plugin-proposal-dynamic-import-7.12.1.tgz#43eb5c2a3487ecd98c5c8ea8b5fdb69a2749b2dc"
   integrity sha1-Q+tcKjSH7NmMXI6otf22midJstw=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -498,7 +542,7 @@
 
 "@babel/plugin-proposal-export-namespace-from@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-export-namespace-from/download/@babel/plugin-proposal-export-namespace-from-7.12.1.tgz?cache=0&sync_timestamp=1602802622582&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-export-namespace-from%2Fdownload%2F%40babel%2Fplugin-proposal-export-namespace-from-7.12.1.tgz#8b9b8f376b2d88f5dd774e4d24a5cc2e3679b6d4"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-export-namespace-from/download/@babel/plugin-proposal-export-namespace-from-7.12.1.tgz#8b9b8f376b2d88f5dd774e4d24a5cc2e3679b6d4"
   integrity sha1-i5uPN2stiPXdd05NJKXMLjZ5ttQ=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -506,7 +550,7 @@
 
 "@babel/plugin-proposal-json-strings@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-json-strings/download/@babel/plugin-proposal-json-strings-7.12.1.tgz#d45423b517714eedd5621a9dfdc03fa9f4eb241c"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-json-strings/download/@babel/plugin-proposal-json-strings-7.12.1.tgz#d45423b517714eedd5621a9dfdc03fa9f4eb241c"
   integrity sha1-1FQjtRdxTu3VYhqd/cA/qfTrJBw=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -514,7 +558,7 @@
 
 "@babel/plugin-proposal-logical-assignment-operators@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-logical-assignment-operators/download/@babel/plugin-proposal-logical-assignment-operators-7.12.1.tgz?cache=0&sync_timestamp=1602802623336&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-logical-assignment-operators%2Fdownload%2F%40babel%2Fplugin-proposal-logical-assignment-operators-7.12.1.tgz#f2c490d36e1b3c9659241034a5d2cd50263a2751"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-logical-assignment-operators/download/@babel/plugin-proposal-logical-assignment-operators-7.12.1.tgz#f2c490d36e1b3c9659241034a5d2cd50263a2751"
   integrity sha1-8sSQ024bPJZZJBA0pdLNUCY6J1E=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -522,7 +566,7 @@
 
 "@babel/plugin-proposal-nullish-coalescing-operator@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-nullish-coalescing-operator/download/@babel/plugin-proposal-nullish-coalescing-operator-7.12.1.tgz?cache=0&sync_timestamp=1602802623075&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-nullish-coalescing-operator%2Fdownload%2F%40babel%2Fplugin-proposal-nullish-coalescing-operator-7.12.1.tgz#3ed4fff31c015e7f3f1467f190dbe545cd7b046c"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-nullish-coalescing-operator/download/@babel/plugin-proposal-nullish-coalescing-operator-7.12.1.tgz#3ed4fff31c015e7f3f1467f190dbe545cd7b046c"
   integrity sha1-PtT/8xwBXn8/FGfxkNvlRc17BGw=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -530,7 +574,7 @@
 
 "@babel/plugin-proposal-numeric-separator@^7.12.7":
   version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-numeric-separator/download/@babel/plugin-proposal-numeric-separator-7.12.7.tgz#8bf253de8139099fea193b297d23a9d406ef056b"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-numeric-separator/download/@babel/plugin-proposal-numeric-separator-7.12.7.tgz#8bf253de8139099fea193b297d23a9d406ef056b"
   integrity sha1-i/JT3oE5CZ/qGTspfSOp1AbvBWs=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -547,7 +591,7 @@
 
 "@babel/plugin-proposal-object-rest-spread@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-object-rest-spread/download/@babel/plugin-proposal-object-rest-spread-7.12.1.tgz?cache=0&sync_timestamp=1602802329071&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-object-rest-spread%2Fdownload%2F%40babel%2Fplugin-proposal-object-rest-spread-7.12.1.tgz#def9bd03cea0f9b72283dac0ec22d289c7691069"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-object-rest-spread/download/@babel/plugin-proposal-object-rest-spread-7.12.1.tgz#def9bd03cea0f9b72283dac0ec22d289c7691069"
   integrity sha1-3vm9A86g+bcig9rA7CLSicdpEGk=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -556,7 +600,7 @@
 
 "@babel/plugin-proposal-optional-catch-binding@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-optional-catch-binding/download/@babel/plugin-proposal-optional-catch-binding-7.12.1.tgz?cache=0&sync_timestamp=1602802625025&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-optional-catch-binding%2Fdownload%2F%40babel%2Fplugin-proposal-optional-catch-binding-7.12.1.tgz#ccc2421af64d3aae50b558a71cede929a5ab2942"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-optional-catch-binding/download/@babel/plugin-proposal-optional-catch-binding-7.12.1.tgz#ccc2421af64d3aae50b558a71cede929a5ab2942"
   integrity sha1-zMJCGvZNOq5QtVinHO3pKaWrKUI=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -573,7 +617,7 @@
 
 "@babel/plugin-proposal-private-methods@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-private-methods/download/@babel/plugin-proposal-private-methods-7.12.1.tgz#86814f6e7a21374c980c10d38b4493e703f4a389"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-private-methods/download/@babel/plugin-proposal-private-methods-7.12.1.tgz#86814f6e7a21374c980c10d38b4493e703f4a389"
   integrity sha1-hoFPbnohN0yYDBDTi0ST5wP0o4k=
   dependencies:
     "@babel/helper-create-class-features-plugin" "^7.12.1"
@@ -581,7 +625,7 @@
 
 "@babel/plugin-proposal-unicode-property-regex@^7.12.1", "@babel/plugin-proposal-unicode-property-regex@^7.4.4":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-proposal-unicode-property-regex/download/@babel/plugin-proposal-unicode-property-regex-7.12.1.tgz?cache=0&sync_timestamp=1602802514976&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-proposal-unicode-property-regex%2Fdownload%2F%40babel%2Fplugin-proposal-unicode-property-regex-7.12.1.tgz#2a183958d417765b9eae334f47758e5d6a82e072"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-proposal-unicode-property-regex/download/@babel/plugin-proposal-unicode-property-regex-7.12.1.tgz#2a183958d417765b9eae334f47758e5d6a82e072"
   integrity sha1-Khg5WNQXdluerjNPR3WOXWqC4HI=
   dependencies:
     "@babel/helper-create-regexp-features-plugin" "^7.12.1"
@@ -617,7 +661,7 @@
 
 "@babel/plugin-syntax-export-namespace-from@^7.8.3":
   version "7.8.3"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-syntax-export-namespace-from/download/@babel/plugin-syntax-export-namespace-from-7.8.3.tgz#028964a9ba80dbc094c915c487ad7c4e7a66465a"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-syntax-export-namespace-from/download/@babel/plugin-syntax-export-namespace-from-7.8.3.tgz#028964a9ba80dbc094c915c487ad7c4e7a66465a"
   integrity sha1-AolkqbqA28CUyRXEh618TnpmRlo=
   dependencies:
     "@babel/helper-plugin-utils" "^7.8.3"
@@ -708,14 +752,14 @@
 
 "@babel/plugin-transform-arrow-functions@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-arrow-functions/download/@babel/plugin-transform-arrow-functions-7.12.1.tgz#8083ffc86ac8e777fbe24b5967c4b2521f3cb2b3"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-arrow-functions/download/@babel/plugin-transform-arrow-functions-7.12.1.tgz#8083ffc86ac8e777fbe24b5967c4b2521f3cb2b3"
   integrity sha1-gIP/yGrI53f74ktZZ8SyUh88srM=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-async-to-generator@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-async-to-generator/download/@babel/plugin-transform-async-to-generator-7.12.1.tgz#3849a49cc2a22e9743cbd6b52926d30337229af1"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-async-to-generator/download/@babel/plugin-transform-async-to-generator-7.12.1.tgz#3849a49cc2a22e9743cbd6b52926d30337229af1"
   integrity sha1-OEmknMKiLpdDy9a1KSbTAzcimvE=
   dependencies:
     "@babel/helper-module-imports" "^7.12.1"
@@ -724,21 +768,21 @@
 
 "@babel/plugin-transform-block-scoped-functions@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-block-scoped-functions/download/@babel/plugin-transform-block-scoped-functions-7.12.1.tgz#f2a1a365bde2b7112e0a6ded9067fdd7c07905d9"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-block-scoped-functions/download/@babel/plugin-transform-block-scoped-functions-7.12.1.tgz#f2a1a365bde2b7112e0a6ded9067fdd7c07905d9"
   integrity sha1-8qGjZb3itxEuCm3tkGf918B5Bdk=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
-"@babel/plugin-transform-block-scoping@^7.12.1":
-  version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-block-scoping/download/@babel/plugin-transform-block-scoping-7.12.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-block-scoping%2Fdownload%2F%40babel%2Fplugin-transform-block-scoping-7.12.1.tgz#f0ee727874b42a208a48a586b84c3d222c2bbef1"
-  integrity sha1-8O5yeHS0KiCKSKWGuEw9IiwrvvE=
+"@babel/plugin-transform-block-scoping@^7.12.11":
+  version "7.12.12"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-block-scoping/download/@babel/plugin-transform-block-scoping-7.12.12.tgz#d93a567a152c22aea3b1929bb118d1d0a175cdca"
+  integrity sha1-2TpWehUsIq6jsZKbsRjR0KF1zco=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-classes@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-classes/download/@babel/plugin-transform-classes-7.12.1.tgz?cache=0&sync_timestamp=1602802519287&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-classes%2Fdownload%2F%40babel%2Fplugin-transform-classes-7.12.1.tgz#65e650fcaddd3d88ddce67c0f834a3d436a32db6"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-classes/download/@babel/plugin-transform-classes-7.12.1.tgz#65e650fcaddd3d88ddce67c0f834a3d436a32db6"
   integrity sha1-ZeZQ/K3dPYjdzmfA+DSj1DajLbY=
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.10.4"
@@ -752,21 +796,21 @@
 
 "@babel/plugin-transform-computed-properties@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-computed-properties/download/@babel/plugin-transform-computed-properties-7.12.1.tgz?cache=0&sync_timestamp=1602802627593&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-computed-properties%2Fdownload%2F%40babel%2Fplugin-transform-computed-properties-7.12.1.tgz#d68cf6c9b7f838a8a4144badbe97541ea0904852"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-computed-properties/download/@babel/plugin-transform-computed-properties-7.12.1.tgz#d68cf6c9b7f838a8a4144badbe97541ea0904852"
   integrity sha1-1oz2ybf4OKikFEutvpdUHqCQSFI=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-destructuring@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-destructuring/download/@babel/plugin-transform-destructuring-7.12.1.tgz#b9a570fe0d0a8d460116413cb4f97e8e08b2f847"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-destructuring/download/@babel/plugin-transform-destructuring-7.12.1.tgz#b9a570fe0d0a8d460116413cb4f97e8e08b2f847"
   integrity sha1-uaVw/g0KjUYBFkE8tPl+jgiy+Ec=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-dotall-regex@^7.12.1", "@babel/plugin-transform-dotall-regex@^7.4.4":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-dotall-regex/download/@babel/plugin-transform-dotall-regex-7.12.1.tgz?cache=0&sync_timestamp=1602802515252&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-dotall-regex%2Fdownload%2F%40babel%2Fplugin-transform-dotall-regex-7.12.1.tgz#a1d16c14862817b6409c0a678d6f9373ca9cd975"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-dotall-regex/download/@babel/plugin-transform-dotall-regex-7.12.1.tgz#a1d16c14862817b6409c0a678d6f9373ca9cd975"
   integrity sha1-odFsFIYoF7ZAnApnjW+Tc8qc2XU=
   dependencies:
     "@babel/helper-create-regexp-features-plugin" "^7.12.1"
@@ -774,14 +818,14 @@
 
 "@babel/plugin-transform-duplicate-keys@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-duplicate-keys/download/@babel/plugin-transform-duplicate-keys-7.12.1.tgz#745661baba295ac06e686822797a69fbaa2ca228"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-duplicate-keys/download/@babel/plugin-transform-duplicate-keys-7.12.1.tgz#745661baba295ac06e686822797a69fbaa2ca228"
   integrity sha1-dFZhuropWsBuaGgieXpp+6osoig=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-exponentiation-operator@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-exponentiation-operator/download/@babel/plugin-transform-exponentiation-operator-7.12.1.tgz#b0f2ed356ba1be1428ecaf128ff8a24f02830ae0"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-exponentiation-operator/download/@babel/plugin-transform-exponentiation-operator-7.12.1.tgz#b0f2ed356ba1be1428ecaf128ff8a24f02830ae0"
   integrity sha1-sPLtNWuhvhQo7K8Sj/iiTwKDCuA=
   dependencies:
     "@babel/helper-builder-binary-assignment-operator-visitor" "^7.10.4"
@@ -789,14 +833,14 @@
 
 "@babel/plugin-transform-for-of@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-for-of/download/@babel/plugin-transform-for-of-7.12.1.tgz#07640f28867ed16f9511c99c888291f560921cfa"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-for-of/download/@babel/plugin-transform-for-of-7.12.1.tgz#07640f28867ed16f9511c99c888291f560921cfa"
   integrity sha1-B2QPKIZ+0W+VEcmciIKR9WCSHPo=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-function-name@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-function-name/download/@babel/plugin-transform-function-name-7.12.1.tgz#2ec76258c70fe08c6d7da154003a480620eba667"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-function-name/download/@babel/plugin-transform-function-name-7.12.1.tgz#2ec76258c70fe08c6d7da154003a480620eba667"
   integrity sha1-LsdiWMcP4IxtfaFUADpIBiDrpmc=
   dependencies:
     "@babel/helper-function-name" "^7.10.4"
@@ -804,21 +848,21 @@
 
 "@babel/plugin-transform-literals@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-literals/download/@babel/plugin-transform-literals-7.12.1.tgz#d73b803a26b37017ddf9d3bb8f4dc58bfb806f57"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-literals/download/@babel/plugin-transform-literals-7.12.1.tgz#d73b803a26b37017ddf9d3bb8f4dc58bfb806f57"
   integrity sha1-1zuAOiazcBfd+dO7j03Fi/uAb1c=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-member-expression-literals@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-member-expression-literals/download/@babel/plugin-transform-member-expression-literals-7.12.1.tgz?cache=0&sync_timestamp=1602802629539&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-member-expression-literals%2Fdownload%2F%40babel%2Fplugin-transform-member-expression-literals-7.12.1.tgz#496038602daf1514a64d43d8e17cbb2755e0c3ad"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-member-expression-literals/download/@babel/plugin-transform-member-expression-literals-7.12.1.tgz#496038602daf1514a64d43d8e17cbb2755e0c3ad"
   integrity sha1-SWA4YC2vFRSmTUPY4Xy7J1Xgw60=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-modules-amd@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-amd/download/@babel/plugin-transform-modules-amd-7.12.1.tgz#3154300b026185666eebb0c0ed7f8415fefcf6f9"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-modules-amd/download/@babel/plugin-transform-modules-amd-7.12.1.tgz#3154300b026185666eebb0c0ed7f8415fefcf6f9"
   integrity sha1-MVQwCwJhhWZu67DA7X+EFf789vk=
   dependencies:
     "@babel/helper-module-transforms" "^7.12.1"
@@ -827,7 +871,7 @@
 
 "@babel/plugin-transform-modules-commonjs@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-commonjs/download/@babel/plugin-transform-modules-commonjs-7.12.1.tgz?cache=0&sync_timestamp=1602802521057&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-modules-commonjs%2Fdownload%2F%40babel%2Fplugin-transform-modules-commonjs-7.12.1.tgz#fa403124542636c786cf9b460a0ffbb48a86e648"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-modules-commonjs/download/@babel/plugin-transform-modules-commonjs-7.12.1.tgz#fa403124542636c786cf9b460a0ffbb48a86e648"
   integrity sha1-+kAxJFQmNseGz5tGCg/7tIqG5kg=
   dependencies:
     "@babel/helper-module-transforms" "^7.12.1"
@@ -837,7 +881,7 @@
 
 "@babel/plugin-transform-modules-systemjs@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-systemjs/download/@babel/plugin-transform-modules-systemjs-7.12.1.tgz?cache=0&sync_timestamp=1602802350800&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-modules-systemjs%2Fdownload%2F%40babel%2Fplugin-transform-modules-systemjs-7.12.1.tgz#663fea620d593c93f214a464cd399bf6dc683086"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-modules-systemjs/download/@babel/plugin-transform-modules-systemjs-7.12.1.tgz#663fea620d593c93f214a464cd399bf6dc683086"
   integrity sha1-Zj/qYg1ZPJPyFKRkzTmb9txoMIY=
   dependencies:
     "@babel/helper-hoist-variables" "^7.10.4"
@@ -848,7 +892,7 @@
 
 "@babel/plugin-transform-modules-umd@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-modules-umd/download/@babel/plugin-transform-modules-umd-7.12.1.tgz#eb5a218d6b1c68f3d6217b8fa2cc82fec6547902"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-modules-umd/download/@babel/plugin-transform-modules-umd-7.12.1.tgz#eb5a218d6b1c68f3d6217b8fa2cc82fec6547902"
   integrity sha1-61ohjWscaPPWIXuPosyC/sZUeQI=
   dependencies:
     "@babel/helper-module-transforms" "^7.12.1"
@@ -856,21 +900,21 @@
 
 "@babel/plugin-transform-named-capturing-groups-regex@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-named-capturing-groups-regex/download/@babel/plugin-transform-named-capturing-groups-regex-7.12.1.tgz#b407f5c96be0d9f5f88467497fa82b30ac3e8753"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-named-capturing-groups-regex/download/@babel/plugin-transform-named-capturing-groups-regex-7.12.1.tgz#b407f5c96be0d9f5f88467497fa82b30ac3e8753"
   integrity sha1-tAf1yWvg2fX4hGdJf6grMKw+h1M=
   dependencies:
     "@babel/helper-create-regexp-features-plugin" "^7.12.1"
 
 "@babel/plugin-transform-new-target@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-new-target/download/@babel/plugin-transform-new-target-7.12.1.tgz?cache=0&sync_timestamp=1602802505443&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-new-target%2Fdownload%2F%40babel%2Fplugin-transform-new-target-7.12.1.tgz#80073f02ee1bb2d365c3416490e085c95759dec0"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-new-target/download/@babel/plugin-transform-new-target-7.12.1.tgz#80073f02ee1bb2d365c3416490e085c95759dec0"
   integrity sha1-gAc/Au4bstNlw0FkkOCFyVdZ3sA=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-object-super@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-object-super/download/@babel/plugin-transform-object-super-7.12.1.tgz?cache=0&sync_timestamp=1602802640327&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-object-super%2Fdownload%2F%40babel%2Fplugin-transform-object-super-7.12.1.tgz#4ea08696b8d2e65841d0c7706482b048bed1066e"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-object-super/download/@babel/plugin-transform-object-super-7.12.1.tgz#4ea08696b8d2e65841d0c7706482b048bed1066e"
   integrity sha1-TqCGlrjS5lhB0MdwZIKwSL7RBm4=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -885,7 +929,7 @@
 
 "@babel/plugin-transform-property-literals@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-property-literals/download/@babel/plugin-transform-property-literals-7.12.1.tgz#41bc81200d730abb4456ab8b3fbd5537b59adecd"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-property-literals/download/@babel/plugin-transform-property-literals-7.12.1.tgz#41bc81200d730abb4456ab8b3fbd5537b59adecd"
   integrity sha1-QbyBIA1zCrtEVquLP71VN7Wa3s0=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -947,14 +991,14 @@
 
 "@babel/plugin-transform-regenerator@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-regenerator/download/@babel/plugin-transform-regenerator-7.12.1.tgz#5f0a28d842f6462281f06a964e88ba8d7ab49753"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-regenerator/download/@babel/plugin-transform-regenerator-7.12.1.tgz#5f0a28d842f6462281f06a964e88ba8d7ab49753"
   integrity sha1-Xwoo2EL2RiKB8GqWToi6jXq0l1M=
   dependencies:
     regenerator-transform "^0.14.2"
 
 "@babel/plugin-transform-reserved-words@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-reserved-words/download/@babel/plugin-transform-reserved-words-7.12.1.tgz#6fdfc8cc7edcc42b36a7c12188c6787c873adcd8"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-reserved-words/download/@babel/plugin-transform-reserved-words-7.12.1.tgz#6fdfc8cc7edcc42b36a7c12188c6787c873adcd8"
   integrity sha1-b9/IzH7cxCs2p8EhiMZ4fIc63Ng=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -971,14 +1015,14 @@
 
 "@babel/plugin-transform-shorthand-properties@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-shorthand-properties/download/@babel/plugin-transform-shorthand-properties-7.12.1.tgz#0bf9cac5550fce0cfdf043420f661d645fdc75e3"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-shorthand-properties/download/@babel/plugin-transform-shorthand-properties-7.12.1.tgz#0bf9cac5550fce0cfdf043420f661d645fdc75e3"
   integrity sha1-C/nKxVUPzgz98ENCD2YdZF/cdeM=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-spread@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-spread/download/@babel/plugin-transform-spread-7.12.1.tgz?cache=0&sync_timestamp=1602802639374&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-spread%2Fdownload%2F%40babel%2Fplugin-transform-spread-7.12.1.tgz#527f9f311be4ec7fdc2b79bb89f7bf884b3e1e1e"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-spread/download/@babel/plugin-transform-spread-7.12.1.tgz#527f9f311be4ec7fdc2b79bb89f7bf884b3e1e1e"
   integrity sha1-Un+fMRvk7H/cK3m7ife/iEs+Hh4=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
@@ -986,22 +1030,22 @@
 
 "@babel/plugin-transform-sticky-regex@^7.12.7":
   version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-sticky-regex/download/@babel/plugin-transform-sticky-regex-7.12.7.tgz#560224613ab23987453948ed21d0b0b193fa7fad"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-sticky-regex/download/@babel/plugin-transform-sticky-regex-7.12.7.tgz#560224613ab23987453948ed21d0b0b193fa7fad"
   integrity sha1-VgIkYTqyOYdFOUjtIdCwsZP6f60=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-template-literals@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-template-literals/download/@babel/plugin-transform-template-literals-7.12.1.tgz#b43ece6ed9a79c0c71119f576d299ef09d942843"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-template-literals/download/@babel/plugin-transform-template-literals-7.12.1.tgz#b43ece6ed9a79c0c71119f576d299ef09d942843"
   integrity sha1-tD7ObtmnnAxxEZ9XbSme8J2UKEM=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
-"@babel/plugin-transform-typeof-symbol@^7.12.1":
-  version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-typeof-symbol/download/@babel/plugin-transform-typeof-symbol-7.12.1.tgz?cache=0&sync_timestamp=1602802632311&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-typeof-symbol%2Fdownload%2F%40babel%2Fplugin-transform-typeof-symbol-7.12.1.tgz#9ca6be343d42512fbc2e68236a82ae64bc7af78a"
-  integrity sha1-nKa+ND1CUS+8LmgjaoKuZLx694o=
+"@babel/plugin-transform-typeof-symbol@^7.12.10":
+  version "7.12.10"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-typeof-symbol/download/@babel/plugin-transform-typeof-symbol-7.12.10.tgz#de01c4c8f96580bd00f183072b0d0ecdcf0dec4b"
+  integrity sha1-3gHEyPllgL0A8YMHKw0Ozc8N7Es=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
@@ -1016,29 +1060,29 @@
 
 "@babel/plugin-transform-unicode-escapes@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-unicode-escapes/download/@babel/plugin-transform-unicode-escapes-7.12.1.tgz#5232b9f81ccb07070b7c3c36c67a1b78f1845709"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-unicode-escapes/download/@babel/plugin-transform-unicode-escapes-7.12.1.tgz#5232b9f81ccb07070b7c3c36c67a1b78f1845709"
   integrity sha1-UjK5+BzLBwcLfDw2xnobePGEVwk=
   dependencies:
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/plugin-transform-unicode-regex@^7.12.1":
   version "7.12.1"
-  resolved "https://registry.npm.taobao.org/@babel/plugin-transform-unicode-regex/download/@babel/plugin-transform-unicode-regex-7.12.1.tgz?cache=0&sync_timestamp=1602802516121&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fplugin-transform-unicode-regex%2Fdownload%2F%40babel%2Fplugin-transform-unicode-regex-7.12.1.tgz#cc9661f61390db5c65e3febaccefd5c6ac3faecb"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/plugin-transform-unicode-regex/download/@babel/plugin-transform-unicode-regex-7.12.1.tgz#cc9661f61390db5c65e3febaccefd5c6ac3faecb"
   integrity sha1-zJZh9hOQ21xl4/66zO/Vxqw/rss=
   dependencies:
     "@babel/helper-create-regexp-features-plugin" "^7.12.1"
     "@babel/helper-plugin-utils" "^7.10.4"
 
 "@babel/preset-env@^7.12.1":
-  version "7.12.7"
-  resolved "https://registry.npm.taobao.org/@babel/preset-env/download/@babel/preset-env-7.12.7.tgz#54ea21dbe92caf6f10cb1a0a576adc4ebf094b55"
-  integrity sha1-VOoh2+ksr28QyxoKV2rcTr8JS1U=
+  version "7.12.11"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/preset-env/download/@babel/preset-env-7.12.11.tgz#55d5f7981487365c93dbbc84507b1c7215e857f9"
+  integrity sha1-VdX3mBSHNlyT27yEUHscchXoV/k=
   dependencies:
     "@babel/compat-data" "^7.12.7"
     "@babel/helper-compilation-targets" "^7.12.5"
     "@babel/helper-module-imports" "^7.12.5"
     "@babel/helper-plugin-utils" "^7.10.4"
-    "@babel/helper-validator-option" "^7.12.1"
+    "@babel/helper-validator-option" "^7.12.11"
     "@babel/plugin-proposal-async-generator-functions" "^7.12.1"
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-dynamic-import" "^7.12.1"
@@ -1067,7 +1111,7 @@
     "@babel/plugin-transform-arrow-functions" "^7.12.1"
     "@babel/plugin-transform-async-to-generator" "^7.12.1"
     "@babel/plugin-transform-block-scoped-functions" "^7.12.1"
-    "@babel/plugin-transform-block-scoping" "^7.12.1"
+    "@babel/plugin-transform-block-scoping" "^7.12.11"
     "@babel/plugin-transform-classes" "^7.12.1"
     "@babel/plugin-transform-computed-properties" "^7.12.1"
     "@babel/plugin-transform-destructuring" "^7.12.1"
@@ -1093,17 +1137,17 @@
     "@babel/plugin-transform-spread" "^7.12.1"
     "@babel/plugin-transform-sticky-regex" "^7.12.7"
     "@babel/plugin-transform-template-literals" "^7.12.1"
-    "@babel/plugin-transform-typeof-symbol" "^7.12.1"
+    "@babel/plugin-transform-typeof-symbol" "^7.12.10"
     "@babel/plugin-transform-unicode-escapes" "^7.12.1"
     "@babel/plugin-transform-unicode-regex" "^7.12.1"
     "@babel/preset-modules" "^0.1.3"
-    "@babel/types" "^7.12.7"
-    core-js-compat "^3.7.0"
+    "@babel/types" "^7.12.11"
+    core-js-compat "^3.8.0"
     semver "^5.5.0"
 
 "@babel/preset-modules@^0.1.3":
   version "0.1.4"
-  resolved "https://registry.npm.taobao.org/@babel/preset-modules/download/@babel/preset-modules-0.1.4.tgz#362f2b68c662842970fdb5e254ffc8fc1c2e415e"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/preset-modules/download/@babel/preset-modules-0.1.4.tgz#362f2b68c662842970fdb5e254ffc8fc1c2e415e"
   integrity sha1-Ni8raMZihClw/bXiVP/I/BwuQV4=
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
@@ -1158,7 +1202,7 @@
     "@babel/parser" "^7.12.7"
     "@babel/types" "^7.12.7"
 
-"@babel/traverse@^7.1.0", "@babel/traverse@^7.10.4", "@babel/traverse@^7.11.5", "@babel/traverse@^7.12.1", "@babel/traverse@^7.12.5", "@babel/traverse@^7.12.9", "@babel/traverse@^7.4.5":
+"@babel/traverse@^7.1.0", "@babel/traverse@^7.11.5", "@babel/traverse@^7.4.5":
   version "7.12.9"
   resolved "https://registry.npm.taobao.org/@babel/traverse/download/@babel/traverse-7.12.9.tgz?cache=0&sync_timestamp=1606251950708&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Ftraverse%2Fdownload%2F%40babel%2Ftraverse-7.12.9.tgz#fad26c972eabbc11350e0b695978de6cc8e8596f"
   integrity sha1-+tJsly6rvBE1DgtpWXjebMjoWW8=
@@ -1173,7 +1217,22 @@
     globals "^11.1.0"
     lodash "^4.17.19"
 
-"@babel/types@^7.0.0", "@babel/types@^7.10.4", "@babel/types@^7.10.5", "@babel/types@^7.11.0", "@babel/types@^7.11.5", "@babel/types@^7.12.1", "@babel/types@^7.12.5", "@babel/types@^7.12.6", "@babel/types@^7.12.7", "@babel/types@^7.3.0", "@babel/types@^7.3.3", "@babel/types@^7.4.4":
+"@babel/traverse@^7.10.4", "@babel/traverse@^7.12.1", "@babel/traverse@^7.12.10", "@babel/traverse@^7.12.5", "@babel/traverse@^7.12.9":
+  version "7.12.12"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/traverse/download/@babel/traverse-7.12.12.tgz#d0cd87892704edd8da002d674bc811ce64743376"
+  integrity sha1-0M2HiScE7djaAC1nS8gRzmR0M3Y=
+  dependencies:
+    "@babel/code-frame" "^7.12.11"
+    "@babel/generator" "^7.12.11"
+    "@babel/helper-function-name" "^7.12.11"
+    "@babel/helper-split-export-declaration" "^7.12.11"
+    "@babel/parser" "^7.12.11"
+    "@babel/types" "^7.12.12"
+    debug "^4.1.0"
+    globals "^11.1.0"
+    lodash "^4.17.19"
+
+"@babel/types@^7.0.0", "@babel/types@^7.11.5", "@babel/types@^7.12.6", "@babel/types@^7.3.0", "@babel/types@^7.3.3":
   version "7.12.7"
   resolved "https://registry.npm.taobao.org/@babel/types/download/@babel/types-7.12.7.tgz?cache=0&sync_timestamp=1605904888635&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Ftypes%2Fdownload%2F%40babel%2Ftypes-7.12.7.tgz#6039ff1e242640a29452c9ae572162ec9a8f5d13"
   integrity sha1-YDn/HiQmQKKUUsmuVyFi7JqPXRM=
@@ -1182,22 +1241,32 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@babel/types@^7.10.4", "@babel/types@^7.10.5", "@babel/types@^7.12.1", "@babel/types@^7.12.10", "@babel/types@^7.12.11", "@babel/types@^7.12.12", "@babel/types@^7.12.5", "@babel/types@^7.12.7", "@babel/types@^7.4.4":
+  version "7.12.12"
+  resolved "https://registry.npm.alibaba-inc.com/@babel/types/download/@babel/types-7.12.12.tgz#4608a6ec313abbd87afa55004d373ad04a96c299"
+  integrity sha1-Rgim7DE6u9h6+lUATTc60EqWwpk=
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.12.11"
+    lodash "^4.17.19"
+    to-fast-properties "^2.0.0"
+
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
   resolved "https://registry.npm.taobao.org/@bcoe/v8-coverage/download/@bcoe/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha1-daLotRy3WKdVPWgEpZMteqznXDk=
 
-"@carbon/icon-helpers@^10.9.0":
-  version "10.9.0"
-  resolved "https://registry.npm.taobao.org/@carbon/icon-helpers/download/@carbon/icon-helpers-10.9.0.tgz#5aee08e9d253d3bf6f996bc61f739660c62cbb21"
-  integrity sha1-Wu4I6dJT079vmWvGH3OWYMYsuyE=
+"@carbon/icon-helpers@^10.10.0":
+  version "10.10.0"
+  resolved "https://registry.npm.alibaba-inc.com/@carbon/icon-helpers/download/@carbon/icon-helpers-10.10.0.tgz#be6591539cc32a39965aecce8f871aaed5a3a120"
+  integrity sha1-vmWRU5zDKjmWWuzOj4cartWjoSA=
 
 "@carbon/icons-react@^10.19.0":
-  version "10.21.0"
-  resolved "https://registry.npm.taobao.org/@carbon/icons-react/download/@carbon/icons-react-10.21.0.tgz#7f943b6b9aff44913c209b8f02bcc2aa173b5bff"
-  integrity sha1-f5Q7a5r/RJE8IJuPArzCqhc7W/8=
+  version "10.22.0"
+  resolved "https://registry.npm.alibaba-inc.com/@carbon/icons-react/download/@carbon/icons-react-10.22.0.tgz#5b49a08c94036db2cc5d2642a65e2b5cf6cfb45e"
+  integrity sha1-W0mgjJQDbbLMXSZCpl4rXPbPtF4=
   dependencies:
-    "@carbon/icon-helpers" "^10.9.0"
+    "@carbon/icon-helpers" "^10.10.0"
+    prop-types "^15.7.2"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
@@ -1212,10 +1281,10 @@
   resolved "https://registry.npm.taobao.org/@csstools/convert-colors/download/@csstools/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
-"@ctrl/tinycolor@^3.1.6":
-  version "3.2.0"
-  resolved "https://registry.npm.taobao.org/@ctrl/tinycolor/download/@ctrl/tinycolor-3.2.0.tgz?cache=0&sync_timestamp=1606349454493&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40ctrl%2Ftinycolor%2Fdownload%2F%40ctrl%2Ftinycolor-3.2.0.tgz#77a8a33edb2fdc02318c828be78f6fb3d6c65eb2"
-  integrity sha1-d6ijPtsv3AIxjIKL549vs9bGXrI=
+"@ctrl/tinycolor@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/@ctrl/tinycolor/download/@ctrl/tinycolor-3.3.1.tgz#fa0efcf813daa43f8a6aef3ddaa80f7e66f1278e"
+  integrity sha1-+g78+BPapD+Kau892qgPfmbxJ44=
 
 "@docsearch/css@^1.0.0-alpha.28":
   version "1.0.0-alpha.28"
@@ -1796,7 +1865,7 @@
 
 "@jest/types@^26.6.2":
   version "26.6.2"
-  resolved "https://registry.npm.taobao.org/@jest/types/download/@jest/types-26.6.2.tgz?cache=0&sync_timestamp=1604321690386&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40jest%2Ftypes%2Fdownload%2F%40jest%2Ftypes-26.6.2.tgz#bef5a532030e1d88a2f5a6d933f84e97226ed48e"
+  resolved "https://registry.npm.alibaba-inc.com/@jest/types/download/@jest/types-26.6.2.tgz#bef5a532030e1d88a2f5a6d933f84e97226ed48e"
   integrity sha1-vvWlMgMOHYii9abZM/hOlyJu1I4=
   dependencies:
     "@types/istanbul-lib-coverage" "^2.0.0"
@@ -1830,7 +1899,12 @@
     unist-builder "2.0.3"
     unist-util-visit "2.0.3"
 
-"@mdx-js/react@^1.5.8", "@mdx-js/react@^1.6.21":
+"@mdx-js/react@^1.5.8":
+  version "1.6.22"
+  resolved "https://registry.npm.alibaba-inc.com/@mdx-js/react/download/@mdx-js/react-1.6.22.tgz#ae09b4744fddc74714ee9f9d6f17a66e77c43573"
+  integrity sha1-rgm0dE/dx0cU7p+dbxembnfENXM=
+
+"@mdx-js/react@^1.6.21":
   version "1.6.21"
   resolved "https://registry.npm.taobao.org/@mdx-js/react/download/@mdx-js/react-1.6.21.tgz?cache=0&sync_timestamp=1604762273043&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40mdx-js%2Freact%2Fdownload%2F%40mdx-js%2Freact-1.6.21.tgz#86d962471a5e160c59a6b32054aa55c0c7ca404e"
   integrity sha1-htliRxpeFgxZprMgVKpVwMfKQE4=
@@ -2361,7 +2435,7 @@
 
 "@types/history@*":
   version "4.7.8"
-  resolved "https://registry.npm.taobao.org/@types/history/download/@types/history-4.7.8.tgz?cache=0&sync_timestamp=1605053835793&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fhistory%2Fdownload%2F%40types%2Fhistory-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"
+  resolved "https://registry.npm.alibaba-inc.com/@types/history/download/@types/history-4.7.8.tgz#49348387983075705fe8f4e02fb67f7daaec4934"
   integrity sha1-STSDh5gwdXBf6PTgL7Z/farsSTQ=
 
 "@types/hoist-non-react-statics@*":
@@ -2384,22 +2458,22 @@
 
 "@types/istanbul-lib-report@*":
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/@types/istanbul-lib-report/download/@types/istanbul-lib-report-3.0.0.tgz#c14c24f18ea8190c118ee7562b7ff99a36552686"
+  resolved "https://registry.npm.alibaba-inc.com/@types/istanbul-lib-report/download/@types/istanbul-lib-report-3.0.0.tgz#c14c24f18ea8190c118ee7562b7ff99a36552686"
   integrity sha1-wUwk8Y6oGQwRjudWK3/5mjZVJoY=
   dependencies:
     "@types/istanbul-lib-coverage" "*"
 
 "@types/istanbul-reports@^3.0.0":
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/@types/istanbul-reports/download/@types/istanbul-reports-3.0.0.tgz?cache=0&sync_timestamp=1605053987654&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fistanbul-reports%2Fdownload%2F%40types%2Fistanbul-reports-3.0.0.tgz#508b13aa344fa4976234e75dddcc34925737d821"
+  resolved "https://registry.npm.alibaba-inc.com/@types/istanbul-reports/download/@types/istanbul-reports-3.0.0.tgz#508b13aa344fa4976234e75dddcc34925737d821"
   integrity sha1-UIsTqjRPpJdiNOdd3cw0klc32CE=
   dependencies:
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@^26.0.15":
-  version "26.0.15"
-  resolved "https://registry.npm.taobao.org/@types/jest/download/@types/jest-26.0.15.tgz#12e02c0372ad0548e07b9f4e19132b834cb1effe"
-  integrity sha1-EuAsA3KtBUjge59OGRMrg0yx7/4=
+  version "26.0.19"
+  resolved "https://registry.npm.alibaba-inc.com/@types/jest/download/@types/jest-26.0.19.tgz#e6fa1e3def5842ec85045bd5210e9bb8289de790"
+  integrity sha1-5voePe9YQuyFBFvVIQ6buCid55A=
   dependencies:
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
@@ -2415,9 +2489,9 @@
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
 "@types/lodash@^4.14.162":
-  version "4.14.165"
-  resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.165.tgz?cache=0&sync_timestamp=1604600563068&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash%2Fdownload%2F%40types%2Flodash-4.14.165.tgz#74d55d947452e2de0742bad65270433b63a8c30f"
-  integrity sha1-dNVdlHRS4t4HQrrWUnBDO2Ooww8=
+  version "4.14.166"
+  resolved "https://registry.npm.alibaba-inc.com/@types/lodash/download/@types/lodash-4.14.166.tgz#07e7f2699a149219dbc3c35574f126ec8737688f"
+  integrity sha1-B+fyaZoUkhnbw8NVdPEm7Ic3aI8=
 
 "@types/mdast@^3.0.0":
   version "3.0.3"
@@ -2432,9 +2506,9 @@
   integrity sha1-PcoOPzOyAPx9ETnAzZbBJoyt/Z0=
 
 "@types/node@*":
-  version "14.14.10"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-14.14.10.tgz#5958a82e41863cfc71f2307b3748e3491ba03785"
-  integrity sha1-WVioLkGGPPxx8jB7N0jjSRugN4U=
+  version "14.14.17"
+  resolved "https://registry.npm.alibaba-inc.com/@types/node/download/@types/node-14.14.17.tgz#29fab92f3986c0e379968ad3c2043683d8020dbb"
+  integrity sha1-Kfq5LzmGwON5lorTwgQ2g9gCDbs=
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -2463,7 +2537,7 @@
 
 "@types/prop-types@*":
   version "15.7.3"
-  resolved "https://registry.npm.taobao.org/@types/prop-types/download/@types/prop-types-15.7.3.tgz?cache=0&sync_timestamp=1605055213103&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
+  resolved "https://registry.npm.alibaba-inc.com/@types/prop-types/download/@types/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha1-KrDV2i5YFflLC51LldHl8kOrLKc=
 
 "@types/q@^1.5.1":
@@ -2501,18 +2575,18 @@
     "@types/react" "*"
 
 "@types/react-router-dom@^5.1.6":
-  version "5.1.6"
-  resolved "https://registry.npm.taobao.org/@types/react-router-dom/download/@types/react-router-dom-5.1.6.tgz#07b14e7ab1893a837c8565634960dc398564b1fb"
-  integrity sha1-B7FOerGJOoN8hWVjSWDcOYVksfs=
+  version "5.1.7"
+  resolved "https://registry.npm.alibaba-inc.com/@types/react-router-dom/download/@types/react-router-dom-5.1.7.tgz#a126d9ea76079ffbbdb0d9225073eb5797ab7271"
+  integrity sha1-oSbZ6nYHn/u9sNkiUHPrV5ercnE=
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
     "@types/react-router" "*"
 
 "@types/react-router@*":
-  version "5.1.8"
-  resolved "https://registry.npm.taobao.org/@types/react-router/download/@types/react-router-5.1.8.tgz?cache=0&sync_timestamp=1605057109509&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact-router%2Fdownload%2F%40types%2Freact-router-5.1.8.tgz#4614e5ba7559657438e17766bb95ef6ed6acc3fa"
-  integrity sha1-RhTlunVZZXQ44Xdmu5Xvbtasw/o=
+  version "5.1.9"
+  resolved "https://registry.npm.alibaba-inc.com/@types/react-router/download/@types/react-router-5.1.9.tgz#92a5558f22243d45f90e7699812c342bd98ba41e"
+  integrity sha1-kqVVjyIkPUX5DnaZgSw0K9mLpB4=
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
@@ -2526,7 +2600,7 @@
 
 "@types/react@*":
   version "17.0.0"
-  resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-17.0.0.tgz?cache=0&sync_timestamp=1606158558386&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
+  resolved "https://registry.npm.alibaba-inc.com/@types/react/download/@types/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
   integrity sha1-WvPrf60oBwkvAEahMCt4I+J5Gbg=
   dependencies:
     "@types/prop-types" "*"
@@ -2598,14 +2672,14 @@
     source-map "^0.6.0"
 
 "@types/yargs-parser@*":
-  version "15.0.0"
-  resolved "https://registry.npm.taobao.org/@types/yargs-parser/download/@types/yargs-parser-15.0.0.tgz#cb3f9f741869e20cce330ffbeb9271590483882d"
-  integrity sha1-yz+fdBhp4gzOMw/765JxWQSDiC0=
+  version "20.2.0"
+  resolved "https://registry.npm.alibaba-inc.com/@types/yargs-parser/download/@types/yargs-parser-20.2.0.tgz#dd3e6699ba3237f0348cd085e4698780204842f9"
+  integrity sha1-3T5mmboyN/A0jNCF5GmHgCBIQvk=
 
 "@types/yargs@^15.0.0":
-  version "15.0.10"
-  resolved "https://registry.npm.taobao.org/@types/yargs/download/@types/yargs-15.0.10.tgz?cache=0&sync_timestamp=1605657825304&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fyargs%2Fdownload%2F%40types%2Fyargs-15.0.10.tgz#0fe3c8173a0d5c3e780b389050140c3f5ea6ea74"
-  integrity sha1-D+PIFzoNXD54CziQUBQMP16m6nQ=
+  version "15.0.12"
+  resolved "https://registry.npm.alibaba-inc.com/@types/yargs/download/@types/yargs-15.0.12.tgz#6234ce3e3e3fa32c5db301a170f96a599c960d74"
+  integrity sha1-YjTOPj4/oyxdswGhcPlqWZyWDXQ=
   dependencies:
     "@types/yargs-parser" "*"
 
@@ -2820,13 +2894,6 @@ acorn@^7.1.1:
   resolved "https://registry.npm.taobao.org/acorn/download/acorn-7.4.1.tgz?cache=0&sync_timestamp=1602534280466&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Facorn%2Fdownload%2Facorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha1-/q7SVZc9LndVW4PbwIhRpsY1IPo=
 
-add-dom-event-listener@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npm.taobao.org/add-dom-event-listener/download/add-dom-event-listener-1.1.0.tgz#6a92db3a0dd0abc254e095c0f1dc14acbbaae310"
-  integrity sha1-apLbOg3Qq8JU4JXA8dwUrLuq4xA=
-  dependencies:
-    object-assign "4.x"
-
 address@1.1.2, address@^1.0.1:
   version "1.1.2"
   resolved "https://registry.npm.taobao.org/address/download/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
@@ -2946,7 +3013,7 @@ ansi-regex@^4.1.0:
 
 ansi-regex@^5.0.0:
   version "5.0.0"
-  resolved "https://registry.npm.taobao.org/ansi-regex/download/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
+  resolved "https://registry.npm.alibaba-inc.com/ansi-regex/download/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
   integrity sha1-OIU59VF5vzkznIGvMKZU1p+Hy3U=
 
 ansi-styles@^2.2.1:
@@ -2963,18 +3030,17 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
 
 ansi-styles@^4.0.0, ansi-styles@^4.1.0:
   version "4.3.0"
-  resolved "https://registry.npm.taobao.org/ansi-styles/download/ansi-styles-4.3.0.tgz?cache=0&sync_timestamp=1601839226460&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fansi-styles%2Fdownload%2Fansi-styles-4.3.0.tgz#edd803628ae71c04c85ae7a0906edad34b648937"
+  resolved "https://registry.npm.alibaba-inc.com/ansi-styles/download/ansi-styles-4.3.0.tgz#edd803628ae71c04c85ae7a0906edad34b648937"
   integrity sha1-7dgDYornHATIWuegkG7a00tkiTc=
   dependencies:
     color-convert "^2.0.1"
 
 antd@^4.7.2:
-  version "4.8.6"
-  resolved "https://registry.npm.taobao.org/antd/download/antd-4.8.6.tgz#8606c22815e13af096e577fb018737de72d54d39"
-  integrity sha1-hgbCKBXhOvCW5Xf7AYc33nLVTTk=
+  version "4.9.4"
+  resolved "https://registry.npm.alibaba-inc.com/antd/download/antd-4.9.4.tgz#129092bc4a67c774145cb2450e4046d27a1acbb1"
+  integrity sha1-EpCSvEpnx3QUXLJFDkBG0noay7E=
   dependencies:
     "@ant-design/colors" "^5.0.0"
-    "@ant-design/css-animation" "^1.7.2"
     "@ant-design/icons" "^4.3.0"
     "@ant-design/react-slick" "~0.27.0"
     "@babel/runtime" "^7.11.2"
@@ -2984,26 +3050,25 @@ antd@^4.7.2:
     lodash "^4.17.20"
     moment "^2.25.3"
     omit.js "^2.0.2"
-    rc-animate "~3.1.0"
     rc-cascader "~1.4.0"
     rc-checkbox "~2.3.0"
-    rc-collapse "~2.0.0"
+    rc-collapse "~3.1.0"
     rc-dialog "~8.4.0"
     rc-drawer "~4.1.0"
     rc-dropdown "~3.2.0"
     rc-field-form "~1.17.0"
-    rc-image "~4.0.0"
+    rc-image "~4.2.0"
     rc-input-number "~6.1.0"
     rc-mentions "~1.5.0"
     rc-menu "~8.10.0"
     rc-motion "^2.4.0"
     rc-notification "~4.5.2"
-    rc-pagination "~3.1.0"
+    rc-pagination "~3.1.2"
     rc-picker "~2.4.1"
     rc-progress "~3.1.0"
     rc-rate "~2.9.0"
     rc-resize-observer "^0.2.3"
-    rc-select "~11.4.0"
+    rc-select "~11.5.3"
     rc-slider "~9.6.1"
     rc-steps "~4.1.0"
     rc-switch "~3.2.0"
@@ -3011,8 +3076,8 @@ antd@^4.7.2:
     rc-tabs "~11.7.0"
     rc-textarea "~0.3.0"
     rc-tooltip "~5.0.0"
-    rc-tree "~3.11.0"
-    rc-tree-select "~4.1.1"
+    rc-tree "~4.0.0"
+    rc-tree-select "~4.2.0"
     rc-upload "~3.3.1"
     rc-util "^5.1.0"
     scroll-into-view-if-needed "^2.2.25"
@@ -3086,7 +3151,7 @@ array-flatten@^2.1.0:
 
 array-tree-filter@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.npm.taobao.org/array-tree-filter/download/array-tree-filter-2.1.0.tgz#873ac00fec83749f255ac8dd083814b4f6329190"
+  resolved "https://registry.npm.alibaba-inc.com/array-tree-filter/download/array-tree-filter-2.1.0.tgz#873ac00fec83749f255ac8dd083814b4f6329190"
   integrity sha1-hzrAD+yDdJ8lWsjdCDgUtPYykZA=
 
 array-union@^1.0.1:
@@ -3173,7 +3238,7 @@ async-limiter@~1.0.0:
 
 async-validator@^3.0.3:
   version "3.5.1"
-  resolved "https://registry.npm.taobao.org/async-validator/download/async-validator-3.5.1.tgz?cache=0&sync_timestamp=1605751734916&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fasync-validator%2Fdownload%2Fasync-validator-3.5.1.tgz#cd62b9688b2465f48420e27adb47760ab1b5559f"
+  resolved "https://registry.npm.alibaba-inc.com/async-validator/download/async-validator-3.5.1.tgz#cd62b9688b2465f48420e27adb47760ab1b5559f"
   integrity sha1-zWK5aIskZfSEIOJ620d2CrG1VZ8=
 
 async@^2.6.2:
@@ -3278,7 +3343,7 @@ babel-plugin-dynamic-import-node@2.3.0:
 
 babel-plugin-dynamic-import-node@^2.3.3:
   version "2.3.3"
-  resolved "https://registry.npm.taobao.org/babel-plugin-dynamic-import-node/download/babel-plugin-dynamic-import-node-2.3.3.tgz#84fda19c976ec5c6defef57f9427b3def66e17a3"
+  resolved "https://registry.npm.alibaba-inc.com/babel-plugin-dynamic-import-node/download/babel-plugin-dynamic-import-node-2.3.3.tgz#84fda19c976ec5c6defef57f9427b3def66e17a3"
   integrity sha1-hP2hnJduxcbe/vV/lCez3vZuF6M=
   dependencies:
     object.assign "^4.1.0"
@@ -3354,7 +3419,7 @@ babel-preset-jest@^26.6.2:
 
 babel-runtime@^6.26.0:
   version "6.26.0"
-  resolved "https://registry.npm.taobao.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
+  resolved "https://registry.npm.alibaba-inc.com/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
   dependencies:
     core-js "^2.4.0"
@@ -3417,7 +3482,7 @@ bfj@^6.1.1:
 
 big.js@^5.2.2:
   version "5.2.2"
-  resolved "https://registry.npm.taobao.org/big.js/download/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
+  resolved "https://registry.npm.alibaba-inc.com/big.js/download/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha1-ZfCvOC9Xi83HQr2cKB6cstd2gyg=
 
 binary-extensions@^1.0.0:
@@ -3618,7 +3683,7 @@ browserslist@4.10.0:
     node-releases "^1.1.52"
     pkg-up "^3.1.0"
 
-browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.14.7, browserslist@^4.6.4:
+browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.6.4:
   version "4.14.7"
   resolved "https://registry.npm.taobao.org/browserslist/download/browserslist-4.14.7.tgz#c071c1b3622c1c2e790799a37bb09473a4351cb6"
   integrity sha1-wHHBs2IsHC55B5mje7CUc6Q1HLY=
@@ -3628,6 +3693,17 @@ browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4
     electron-to-chromium "^1.3.591"
     escalade "^3.1.1"
     node-releases "^1.1.66"
+
+browserslist@^4.14.5, browserslist@^4.15.0:
+  version "4.16.0"
+  resolved "https://registry.npm.alibaba-inc.com/browserslist/download/browserslist-4.16.0.tgz#410277627500be3cb28a1bfe037586fbedf9488b"
+  integrity sha1-QQJ3YnUAvjyyihv+A3WG++35SIs=
+  dependencies:
+    caniuse-lite "^1.0.30001165"
+    colorette "^1.2.1"
+    electron-to-chromium "^1.3.621"
+    escalade "^3.1.1"
+    node-releases "^1.1.67"
 
 bser@2.1.1:
   version "2.1.1"
@@ -3783,7 +3859,7 @@ cacheable-request@^6.0.0:
 
 call-bind@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npm.taobao.org/call-bind/download/call-bind-1.0.0.tgz?cache=0&sync_timestamp=1604117087261&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcall-bind%2Fdownload%2Fcall-bind-1.0.0.tgz#24127054bb3f9bdcb4b1fb82418186072f77b8ce"
+  resolved "https://registry.npm.alibaba-inc.com/call-bind/download/call-bind-1.0.0.tgz#24127054bb3f9bdcb4b1fb82418186072f77b8ce"
   integrity sha1-JBJwVLs/m9y0sfuCQYGGBy93uM4=
   dependencies:
     function-bind "^1.1.1"
@@ -3869,10 +3945,15 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001157:
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.30001109:
   version "1.0.30001161"
   resolved "https://registry.npm.taobao.org/caniuse-lite/download/caniuse-lite-1.0.30001161.tgz?cache=0&sync_timestamp=1606202065321&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001161.tgz#64f7ffe79ee780b8c92843ff34feb36cea4651e0"
   integrity sha1-ZPf/557ngLjJKEP/NP6zbOpGUeA=
+
+caniuse-lite@^1.0.30001157, caniuse-lite@^1.0.30001165:
+  version "1.0.30001171"
+  resolved "https://registry.npm.alibaba-inc.com/caniuse-lite/download/caniuse-lite-1.0.30001171.tgz#3291e11e02699ad0a29e69b8d407666fc843eba7"
+  integrity sha1-MpHhHgJpmtCinmm41Admb8hD66c=
 
 capture-exit@^2.0.0:
   version "2.0.0"
@@ -4074,7 +4155,7 @@ class-utils@^0.3.5:
 
 classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
-  resolved "https://registry.npm.taobao.org/classnames/download/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  resolved "https://registry.npm.alibaba-inc.com/classnames/download/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
 
 clean-css@^4.2.3:
@@ -4213,14 +4294,14 @@ color-convert@^1.9.0, color-convert@^1.9.1:
 
 color-convert@^2.0.1:
   version "2.0.1"
-  resolved "https://registry.npm.taobao.org/color-convert/download/color-convert-2.0.1.tgz#72d3a68d598c9bdb3af2ad1e84f21d896abd4de3"
+  resolved "https://registry.npm.alibaba-inc.com/color-convert/download/color-convert-2.0.1.tgz#72d3a68d598c9bdb3af2ad1e84f21d896abd4de3"
   integrity sha1-ctOmjVmMm9s68q0ehPIdiWq9TeM=
   dependencies:
     color-name "~1.1.4"
 
 color-name@1.1.3:
   version "1.1.3"
-  resolved "https://registry.npm.taobao.org/color-name/download/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
+  resolved "https://registry.npm.alibaba-inc.com/color-name/download/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
   integrity sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
 
 color-name@^1.0.0, color-name@~1.1.4:
@@ -4246,7 +4327,7 @@ color@^3.0.0:
 
 colorette@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.npm.taobao.org/colorette/download/colorette-1.2.1.tgz#4d0b921325c14faf92633086a536db6e89564b1b"
+  resolved "https://registry.npm.alibaba-inc.com/colorette/download/colorette-1.2.1.tgz#4d0b921325c14faf92633086a536db6e89564b1b"
   integrity sha1-TQuSEyXBT6+SYzCGpTbbbolWSxs=
 
 combined-stream@^1.0.6, combined-stream@~1.0.6:
@@ -4323,7 +4404,7 @@ compression@^1.7.4:
 
 compute-scroll-into-view@^1.0.16:
   version "1.0.16"
-  resolved "https://registry.npm.taobao.org/compute-scroll-into-view/download/compute-scroll-into-view-1.0.16.tgz#5b7bf4f7127ea2c19b750353d7ce6776a90ee088"
+  resolved "https://registry.npm.alibaba-inc.com/compute-scroll-into-view/download/compute-scroll-into-view-1.0.16.tgz#5b7bf4f7127ea2c19b750353d7ce6776a90ee088"
   integrity sha1-W3v09xJ+osGbdQNT185ndqkO4Ig=
 
 concat-map@0.0.1:
@@ -4436,7 +4517,7 @@ copy-text-to-clipboard@^2.2.0:
 
 copy-to-clipboard@^3.2.0:
   version "3.3.1"
-  resolved "https://registry.npm.taobao.org/copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
+  resolved "https://registry.npm.alibaba-inc.com/copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
   integrity sha1-EVqhqZmP+rYZb5MHatbaO5E2Yq4=
   dependencies:
     toggle-selection "^1.0.6"
@@ -4471,12 +4552,12 @@ copyfiles@^2.4.0:
     untildify "^4.0.0"
     yargs "^16.1.0"
 
-core-js-compat@^3.7.0:
-  version "3.8.0"
-  resolved "https://registry.npm.taobao.org/core-js-compat/download/core-js-compat-3.8.0.tgz#3248c6826f4006793bd637db608bca6e4cd688b1"
-  integrity sha1-MkjGgm9ABnk71jfbYIvKbkzWiLE=
+core-js-compat@^3.8.0:
+  version "3.8.1"
+  resolved "https://registry.npm.alibaba-inc.com/core-js-compat/download/core-js-compat-3.8.1.tgz#8d1ddd341d660ba6194cbe0ce60f4c794c87a36e"
+  integrity sha1-jR3dNB1mC6YZTL4M5g9MeUyHo24=
   dependencies:
-    browserslist "^4.14.7"
+    browserslist "^4.15.0"
     semver "7.0.0"
 
 core-js-pure@^3.0.0:
@@ -4865,7 +4946,7 @@ cssstyle@^2.2.0:
 
 csstype@^3.0.2:
   version "3.0.5"
-  resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.5.tgz?cache=0&sync_timestamp=1605258867356&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-3.0.5.tgz#7fdec6a28a67ae18647c51668a9ff95bb2fa7bb8"
+  resolved "https://registry.npm.alibaba-inc.com/csstype/download/csstype-3.0.5.tgz#7fdec6a28a67ae18647c51668a9ff95bb2fa7bb8"
   integrity sha1-f97GoopnrhhkfFFmip/5W7L6e7g=
 
 currently-unhandled@^0.4.1:
@@ -4881,18 +4962,18 @@ cyclist@^1.0.1:
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
 d3-array@2, d3-array@>=2.5, d3-array@^2.3.0:
-  version "2.8.0"
-  resolved "https://registry.npm.taobao.org/d3-array/download/d3-array-2.8.0.tgz?cache=0&sync_timestamp=1600876943846&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fd3-array%2Fdownload%2Fd3-array-2.8.0.tgz#f76e10ad47f1f4f75f33db5fc322eb9ffde5ef23"
-  integrity sha1-924QrUfx9PdfM9tfwyLrn/3l7yM=
+  version "2.9.1"
+  resolved "https://registry.npm.alibaba-inc.com/d3-array/download/d3-array-2.9.1.tgz#f355cc72b46c8649b3f9212029e2d681cb5b9643"
+  integrity sha1-81XMcrRshkmz+SEgKeLWgctblkM=
 
 d3-axis@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-axis/download/d3-axis-2.0.0.tgz#40aebb65626ffe6d95e9441fbf9194274b328a8b"
+  resolved "https://registry.npm.alibaba-inc.com/d3-axis/download/d3-axis-2.0.0.tgz#40aebb65626ffe6d95e9441fbf9194274b328a8b"
   integrity sha1-QK67ZWJv/m2V6UQfv5GUJ0syios=
 
 d3-brush@2:
   version "2.1.0"
-  resolved "https://registry.npm.taobao.org/d3-brush/download/d3-brush-2.1.0.tgz#adadfbb104e8937af142e9a6e2028326f0471065"
+  resolved "https://registry.npm.alibaba-inc.com/d3-brush/download/d3-brush-2.1.0.tgz#adadfbb104e8937af142e9a6e2028326f0471065"
   integrity sha1-ra37sQTok3rxQumm4gKDJvBHEGU=
   dependencies:
     d3-dispatch "1 - 2"
@@ -4903,38 +4984,38 @@ d3-brush@2:
 
 d3-chord@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-chord/download/d3-chord-2.0.0.tgz#32491b5665391180560f738e5c1ccd1e3c47ebae"
+  resolved "https://registry.npm.alibaba-inc.com/d3-chord/download/d3-chord-2.0.0.tgz#32491b5665391180560f738e5c1ccd1e3c47ebae"
   integrity sha1-MkkbVmU5EYBWD3OOXBzNHjxH664=
   dependencies:
     d3-path "1 - 2"
 
 "d3-color@1 - 2", d3-color@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-color/download/d3-color-2.0.0.tgz#8d625cab42ed9b8f601a1760a389f7ea9189d62e"
+  resolved "https://registry.npm.alibaba-inc.com/d3-color/download/d3-color-2.0.0.tgz#8d625cab42ed9b8f601a1760a389f7ea9189d62e"
   integrity sha1-jWJcq0Ltm49gGhdgo4n36pGJ1i4=
 
 d3-contour@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-contour/download/d3-contour-2.0.0.tgz#80ee834988563e3bea9d99ddde72c0f8c089ea40"
+  resolved "https://registry.npm.alibaba-inc.com/d3-contour/download/d3-contour-2.0.0.tgz#80ee834988563e3bea9d99ddde72c0f8c089ea40"
   integrity sha1-gO6DSYhWPjvqnZnd3nLA+MCJ6kA=
   dependencies:
     d3-array "2"
 
 d3-delaunay@5:
   version "5.3.0"
-  resolved "https://registry.npm.taobao.org/d3-delaunay/download/d3-delaunay-5.3.0.tgz#b47f05c38f854a4e7b3cea80e0bb12e57398772d"
+  resolved "https://registry.npm.alibaba-inc.com/d3-delaunay/download/d3-delaunay-5.3.0.tgz#b47f05c38f854a4e7b3cea80e0bb12e57398772d"
   integrity sha1-tH8Fw4+FSk57POqA4LsS5XOYdy0=
   dependencies:
     delaunator "4"
 
 "d3-dispatch@1 - 2", d3-dispatch@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-dispatch/download/d3-dispatch-2.0.0.tgz#8a18e16f76dd3fcaef42163c97b926aa9b55e7cf"
+  resolved "https://registry.npm.alibaba-inc.com/d3-dispatch/download/d3-dispatch-2.0.0.tgz#8a18e16f76dd3fcaef42163c97b926aa9b55e7cf"
   integrity sha1-ihjhb3bdP8rvQhY8l7kmqptV588=
 
 d3-drag@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-drag/download/d3-drag-2.0.0.tgz#9eaf046ce9ed1c25c88661911c1d5a4d8eb7ea6d"
+  resolved "https://registry.npm.alibaba-inc.com/d3-drag/download/d3-drag-2.0.0.tgz#9eaf046ce9ed1c25c88661911c1d5a4d8eb7ea6d"
   integrity sha1-nq8EbOntHCXIhmGRHB1aTY636m0=
   dependencies:
     d3-dispatch "1 - 2"
@@ -4942,7 +5023,7 @@ d3-drag@2:
 
 "d3-dsv@1 - 2", d3-dsv@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-dsv/download/d3-dsv-2.0.0.tgz#b37b194b6df42da513a120d913ad1be22b5fe7c5"
+  resolved "https://registry.npm.alibaba-inc.com/d3-dsv/download/d3-dsv-2.0.0.tgz#b37b194b6df42da513a120d913ad1be22b5fe7c5"
   integrity sha1-s3sZS230LaUToSDZE60b4itf58U=
   dependencies:
     commander "2"
@@ -4951,19 +5032,19 @@ d3-drag@2:
 
 "d3-ease@1 - 2", d3-ease@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-ease/download/d3-ease-2.0.0.tgz?cache=0&sync_timestamp=1598194085764&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fd3-ease%2Fdownload%2Fd3-ease-2.0.0.tgz#fd1762bfca00dae4bacea504b1d628ff290ac563"
+  resolved "https://registry.npm.alibaba-inc.com/d3-ease/download/d3-ease-2.0.0.tgz#fd1762bfca00dae4bacea504b1d628ff290ac563"
   integrity sha1-/Rdiv8oA2uS6zqUEsdYo/ykKxWM=
 
 d3-fetch@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-fetch/download/d3-fetch-2.0.0.tgz#ecd7ef2128d9847a3b41b548fec80918d645c064"
+  resolved "https://registry.npm.alibaba-inc.com/d3-fetch/download/d3-fetch-2.0.0.tgz#ecd7ef2128d9847a3b41b548fec80918d645c064"
   integrity sha1-7NfvISjZhHo7QbVI/sgJGNZFwGQ=
   dependencies:
     d3-dsv "1 - 2"
 
 d3-force@2:
   version "2.1.1"
-  resolved "https://registry.npm.taobao.org/d3-force/download/d3-force-2.1.1.tgz#f20ccbf1e6c9e80add1926f09b51f686a8bc0937"
+  resolved "https://registry.npm.alibaba-inc.com/d3-force/download/d3-force-2.1.1.tgz#f20ccbf1e6c9e80add1926f09b51f686a8bc0937"
   integrity sha1-8gzL8ebJ6ArdGSbwm1H2hqi8CTc=
   dependencies:
     d3-dispatch "1 - 2"
@@ -4972,51 +5053,51 @@ d3-force@2:
 
 "d3-format@1 - 2", d3-format@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-format/download/d3-format-2.0.0.tgz#a10bcc0f986c372b729ba447382413aabf5b0767"
+  resolved "https://registry.npm.alibaba-inc.com/d3-format/download/d3-format-2.0.0.tgz#a10bcc0f986c372b729ba447382413aabf5b0767"
   integrity sha1-oQvMD5hsNytym6RHOCQTqr9bB2c=
 
 d3-geo@2:
   version "2.0.1"
-  resolved "https://registry.npm.taobao.org/d3-geo/download/d3-geo-2.0.1.tgz#2437fdfed3fe3aba2812bd8f30609cac83a7ee39"
+  resolved "https://registry.npm.alibaba-inc.com/d3-geo/download/d3-geo-2.0.1.tgz#2437fdfed3fe3aba2812bd8f30609cac83a7ee39"
   integrity sha1-JDf9/tP+OrooEr2PMGCcrIOn7jk=
   dependencies:
     d3-array ">=2.5"
 
 d3-hierarchy@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-hierarchy/download/d3-hierarchy-2.0.0.tgz#dab88a58ca3e7a1bc6cab390e89667fcc6d20218"
+  resolved "https://registry.npm.alibaba-inc.com/d3-hierarchy/download/d3-hierarchy-2.0.0.tgz#dab88a58ca3e7a1bc6cab390e89667fcc6d20218"
   integrity sha1-2riKWMo+ehvGyrOQ6JZn/MbSAhg=
 
 "d3-interpolate@1 - 2", "d3-interpolate@1.2.0 - 2", d3-interpolate@2:
   version "2.0.1"
-  resolved "https://registry.npm.taobao.org/d3-interpolate/download/d3-interpolate-2.0.1.tgz#98be499cfb8a3b94d4ff616900501a64abc91163"
+  resolved "https://registry.npm.alibaba-inc.com/d3-interpolate/download/d3-interpolate-2.0.1.tgz#98be499cfb8a3b94d4ff616900501a64abc91163"
   integrity sha1-mL5JnPuKO5TU/2FpAFAaZKvJEWM=
   dependencies:
     d3-color "1 - 2"
 
 "d3-path@1 - 2", d3-path@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-path/download/d3-path-2.0.0.tgz#55d86ac131a0548adae241eebfb56b4582dd09d8"
+  resolved "https://registry.npm.alibaba-inc.com/d3-path/download/d3-path-2.0.0.tgz#55d86ac131a0548adae241eebfb56b4582dd09d8"
   integrity sha1-VdhqwTGgVIra4kHuv7VrRYLdCdg=
 
 d3-polygon@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-polygon/download/d3-polygon-2.0.0.tgz#13608ef042fbec625ba1598327564f03c0396d8e"
+  resolved "https://registry.npm.alibaba-inc.com/d3-polygon/download/d3-polygon-2.0.0.tgz#13608ef042fbec625ba1598327564f03c0396d8e"
   integrity sha1-E2CO8EL77GJboVmDJ1ZPA8A5bY4=
 
 "d3-quadtree@1 - 2", d3-quadtree@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-quadtree/download/d3-quadtree-2.0.0.tgz#edbad045cef88701f6fee3aee8e93fb332d30f9d"
+  resolved "https://registry.npm.alibaba-inc.com/d3-quadtree/download/d3-quadtree-2.0.0.tgz#edbad045cef88701f6fee3aee8e93fb332d30f9d"
   integrity sha1-7brQRc74hwH2/uOu6Ok/szLTD50=
 
 d3-random@2:
   version "2.2.2"
-  resolved "https://registry.npm.taobao.org/d3-random/download/d3-random-2.2.2.tgz#5eebd209ef4e45a2b362b019c1fb21c2c98cbb6e"
+  resolved "https://registry.npm.alibaba-inc.com/d3-random/download/d3-random-2.2.2.tgz#5eebd209ef4e45a2b362b019c1fb21c2c98cbb6e"
   integrity sha1-XuvSCe9ORaKzYrAZwfshwsmMu24=
 
 d3-scale-chromatic@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-scale-chromatic/download/d3-scale-chromatic-2.0.0.tgz#c13f3af86685ff91323dc2f0ebd2dabbd72d8bab"
+  resolved "https://registry.npm.alibaba-inc.com/d3-scale-chromatic/download/d3-scale-chromatic-2.0.0.tgz#c13f3af86685ff91323dc2f0ebd2dabbd72d8bab"
   integrity sha1-wT86+GaF/5EyPcLw69Lau9cti6s=
   dependencies:
     d3-color "1 - 2"
@@ -5024,7 +5105,7 @@ d3-scale-chromatic@2:
 
 d3-scale@3:
   version "3.2.3"
-  resolved "https://registry.npm.taobao.org/d3-scale/download/d3-scale-3.2.3.tgz#be380f57f1f61d4ff2e6cbb65a40593a51649cfd"
+  resolved "https://registry.npm.alibaba-inc.com/d3-scale/download/d3-scale-3.2.3.tgz#be380f57f1f61d4ff2e6cbb65a40593a51649cfd"
   integrity sha1-vjgPV/H2HU/y5su2WkBZOlFknP0=
   dependencies:
     d3-array "^2.3.0"
@@ -5035,36 +5116,36 @@ d3-scale@3:
 
 d3-selection@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-selection/download/d3-selection-2.0.0.tgz#94a11638ea2141b7565f883780dabc7ef6a61066"
+  resolved "https://registry.npm.alibaba-inc.com/d3-selection/download/d3-selection-2.0.0.tgz#94a11638ea2141b7565f883780dabc7ef6a61066"
   integrity sha1-lKEWOOohQbdWX4g3gNq8fvamEGY=
 
 d3-shape@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-shape/download/d3-shape-2.0.0.tgz#2331b62fa784a2a1daac47a7233cfd69301381fd"
+  resolved "https://registry.npm.alibaba-inc.com/d3-shape/download/d3-shape-2.0.0.tgz#2331b62fa784a2a1daac47a7233cfd69301381fd"
   integrity sha1-IzG2L6eEoqHarEenIzz9aTATgf0=
   dependencies:
     d3-path "1 - 2"
 
 "d3-time-format@2 - 3", d3-time-format@3:
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/d3-time-format/download/d3-time-format-3.0.0.tgz#df8056c83659e01f20ac5da5fdeae7c08d5f1bb6"
+  resolved "https://registry.npm.alibaba-inc.com/d3-time-format/download/d3-time-format-3.0.0.tgz#df8056c83659e01f20ac5da5fdeae7c08d5f1bb6"
   integrity sha1-34BWyDZZ4B8grF2l/ernwI1fG7Y=
   dependencies:
     d3-time "1 - 2"
 
 "d3-time@1 - 2", d3-time@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-time/download/d3-time-2.0.0.tgz#ad7c127d17c67bd57a4c61f3eaecb81108b1e0ab"
+  resolved "https://registry.npm.alibaba-inc.com/d3-time/download/d3-time-2.0.0.tgz#ad7c127d17c67bd57a4c61f3eaecb81108b1e0ab"
   integrity sha1-rXwSfRfGe9V6TGHz6uy4EQix4Ks=
 
 "d3-timer@1 - 2", d3-timer@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-timer/download/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
+  resolved "https://registry.npm.alibaba-inc.com/d3-timer/download/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
   integrity sha1-BV7bHRcM/jGrLaiWje7pQLVmI+Y=
 
 d3-transition@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-transition/download/d3-transition-2.0.0.tgz#366ef70c22ef88d1e34105f507516991a291c94c"
+  resolved "https://registry.npm.alibaba-inc.com/d3-transition/download/d3-transition-2.0.0.tgz#366ef70c22ef88d1e34105f507516991a291c94c"
   integrity sha1-Nm73DCLviNHjQQX1B1FpkaKRyUw=
   dependencies:
     d3-color "1 - 2"
@@ -5075,7 +5156,7 @@ d3-transition@2:
 
 d3-zoom@2:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/d3-zoom/download/d3-zoom-2.0.0.tgz#f04d0afd05518becce879d04709c47ecd93fba54"
+  resolved "https://registry.npm.alibaba-inc.com/d3-zoom/download/d3-zoom-2.0.0.tgz#f04d0afd05518becce879d04709c47ecd93fba54"
   integrity sha1-8E0K/QVRi+zOh50EcJxH7Nk/ulQ=
   dependencies:
     d3-dispatch "1 - 2"
@@ -5085,9 +5166,9 @@ d3-zoom@2:
     d3-transition "2"
 
 d3@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.npm.taobao.org/d3/download/d3-6.2.0.tgz#f19b0ecb16ca4ad2171ce8b37c63247e71c6f01d"
-  integrity sha1-8ZsOyxbKStIXHOizfGMkfnHG8B0=
+  version "6.3.1"
+  resolved "https://registry.npm.alibaba-inc.com/d3/download/d3-6.3.1.tgz#c5fe6c7abff432826775a9e04db80b5f2e22eb1c"
+  integrity sha1-xf5ser/0MoJndangTbgLXy4i6xw=
   dependencies:
     d3-array "2"
     d3-axis "2"
@@ -5138,13 +5219,13 @@ data-urls@^2.0.0:
 
 date-fns@^2.15.0:
   version "2.16.1"
-  resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
+  resolved "https://registry.npm.alibaba-inc.com/date-fns/download/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha1-BXdXksPzMx2oEq8lPhqTWFHTg0s=
 
 dayjs@^1.8.30:
-  version "1.9.6"
-  resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.9.6.tgz#6f0c77d76ac1ff63720dd1197e5cb87b67943d70"
-  integrity sha1-bwx312rB/2NyDdEZfly4e2eUPXA=
+  version "1.9.8"
+  resolved "https://registry.npm.alibaba-inc.com/dayjs/download/dayjs-1.9.8.tgz#9a65fbdca037e3d5835f98672da6e796f757cd58"
+  integrity sha1-mmX73KA349WDX5hnLabnlvdXzVg=
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
@@ -5294,7 +5375,7 @@ del@^5.1.0:
 
 delaunator@4:
   version "4.0.1"
-  resolved "https://registry.npm.taobao.org/delaunator/download/delaunator-4.0.1.tgz#3d779687f57919a7a418f8ab947d3bddb6846957"
+  resolved "https://registry.npm.alibaba-inc.com/delaunator/download/delaunator-4.0.1.tgz#3d779687f57919a7a418f8ab947d3bddb6846957"
   integrity sha1-PXeWh/V5GaekGPirlH073baEaVc=
 
 delayed-stream@~1.0.0:
@@ -5365,7 +5446,7 @@ detect-port@^1.3.0:
 
 diff-sequences@^26.6.2:
   version "26.6.2"
-  resolved "https://registry.npm.taobao.org/diff-sequences/download/diff-sequences-26.6.2.tgz?cache=0&sync_timestamp=1604319712782&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdiff-sequences%2Fdownload%2Fdiff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
+  resolved "https://registry.npm.alibaba-inc.com/diff-sequences/download/diff-sequences-26.6.2.tgz#48ba99157de1923412eed41db6b6d4aa9ca7c0b1"
   integrity sha1-SLqZFX3hkjQS7tQdtrbUqpynwLE=
 
 diffie-hellman@^5.0.0:
@@ -5422,7 +5503,7 @@ docusaurus-plugin-sass@^0.1.10:
 
 dom-align@^1.7.0:
   version "1.12.0"
-  resolved "https://registry.npm.taobao.org/dom-align/download/dom-align-1.12.0.tgz#56fb7156df0b91099830364d2d48f88963f5a29c"
+  resolved "https://registry.npm.alibaba-inc.com/dom-align/download/dom-align-1.12.0.tgz#56fb7156df0b91099830364d2d48f88963f5a29c"
   integrity sha1-VvtxVt8LkQmYMDZNLUj4iWP1opw=
 
 dom-converter@^0.2:
@@ -5434,7 +5515,7 @@ dom-converter@^0.2:
 
 dom-helpers@^3.4.0:
   version "3.4.0"
-  resolved "https://registry.npm.taobao.org/dom-helpers/download/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
+  resolved "https://registry.npm.alibaba-inc.com/dom-helpers/download/dom-helpers-3.4.0.tgz#e9b369700f959f62ecde5a6babde4bccd9169af8"
   integrity sha1-6bNpcA+Vn2Ls3lprq95LzNkWmvg=
   dependencies:
     "@babel/runtime" "^7.1.2"
@@ -5566,10 +5647,15 @@ ejs@^2.6.1:
   resolved "https://registry.npm.taobao.org/ejs/download/ejs-2.7.4.tgz#48661287573dcc53e366c7a1ae52c3a120eec9ba"
   integrity sha1-SGYSh1c9zFPjZsehrlLDoSDuybo=
 
-electron-to-chromium@^1.3.378, electron-to-chromium@^1.3.591:
+electron-to-chromium@^1.3.378:
   version "1.3.610"
   resolved "https://registry.npm.taobao.org/electron-to-chromium/download/electron-to-chromium-1.3.610.tgz?cache=0&sync_timestamp=1606501973968&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.610.tgz#1254eb394acd220a836ea1f203f8cded4e487052"
   integrity sha1-ElTrOUrNIgqDbqHyA/jN7U5IcFI=
+
+electron-to-chromium@^1.3.591, electron-to-chromium@^1.3.621:
+  version "1.3.633"
+  resolved "https://registry.npm.alibaba-inc.com/electron-to-chromium/download/electron-to-chromium-1.3.633.tgz#16dd5aec9de03894e8d14a1db4cda8a369b9b7fe"
+  integrity sha1-Ft1a7J3gOJTo0UodtM2oo2m5t/4=
 
 elliptic@^6.5.3:
   version "6.5.3"
@@ -5611,7 +5697,7 @@ emojis-list@^2.0.0:
 
 emojis-list@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/emojis-list/download/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
+  resolved "https://registry.npm.alibaba-inc.com/emojis-list/download/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
   integrity sha1-VXBmIEatKeLpFucariYKvf9Pang=
 
 emoticon@^3.2.0:
@@ -5657,7 +5743,14 @@ entities@^2.0.0:
   resolved "https://registry.npm.taobao.org/entities/download/entities-2.1.0.tgz?cache=0&sync_timestamp=1602898797807&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fentities%2Fdownload%2Fentities-2.1.0.tgz#992d3129cf7df6870b96c57858c249a120f8b8b5"
   integrity sha1-mS0xKc999ocLlsV4WMJJoSD4uLU=
 
-errno@^0.1.3, errno@~0.1.7:
+errno@^0.1.3:
+  version "0.1.8"
+  resolved "https://registry.npm.alibaba-inc.com/errno/download/errno-0.1.8.tgz#8bb3e9c7d463be4976ff888f76b4809ebc2e811f"
+  integrity sha1-i7Ppx9Rjvkl2/4iPdrSAnrwugR8=
+  dependencies:
+    prr "~1.0.1"
+
+errno@~0.1.7:
   version "0.1.7"
   resolved "https://registry.npm.taobao.org/errno/download/errno-0.1.7.tgz#4684d71779ad39af177e3f007996f7c67c852618"
   integrity sha1-RoTXF3mtOa8Xfj8AeZb3xnyFJhg=
@@ -5717,7 +5810,7 @@ es-to-primitive@^1.2.1:
 
 escalade@^3.1.1:
   version "3.1.1"
-  resolved "https://registry.npm.taobao.org/escalade/download/escalade-3.1.1.tgz?cache=0&sync_timestamp=1602567230854&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fescalade%2Fdownload%2Fescalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
+  resolved "https://registry.npm.alibaba-inc.com/escalade/download/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
   integrity sha1-2M/ccACWXFoBdLSoLqpcBVJ0LkA=
 
 escape-goat@^2.0.0:
@@ -5789,7 +5882,7 @@ estree-walker@^1.0.1:
 
 esutils@^2.0.2:
   version "2.0.3"
-  resolved "https://registry.npm.taobao.org/esutils/download/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
+  resolved "https://registry.npm.alibaba-inc.com/esutils/download/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha1-dNLrTeC42hKTcRkQ1Qd1ubcQ72Q=
 
 eta@^1.11.0:
@@ -6170,7 +6263,7 @@ fill-range@^4.0.0:
 
 fill-range@^7.0.1:
   version "7.0.1"
-  resolved "https://registry.npm.taobao.org/fill-range/download/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
+  resolved "https://registry.npm.alibaba-inc.com/fill-range/download/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
   integrity sha1-GRmmp8df44ssfHflGYU12prN2kA=
   dependencies:
     to-regex-range "^5.0.1"
@@ -6381,7 +6474,7 @@ fsevents@^2.1.2:
 
 fsevents@~2.1.2:
   version "2.1.3"
-  resolved "https://registry.npm.taobao.org/fsevents/download/fsevents-2.1.3.tgz?cache=0&sync_timestamp=1604593304255&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffsevents%2Fdownload%2Ffsevents-2.1.3.tgz#fb738703ae8d2f9fe900c33836ddebee8b97f23e"
+  resolved "https://registry.npm.alibaba-inc.com/fsevents/download/fsevents-2.1.3.tgz#fb738703ae8d2f9fe900c33836ddebee8b97f23e"
   integrity sha1-+3OHA66NL5/pAMM4Nt3r7ouX8j4=
 
 fstream@^1.0.0, fstream@^1.0.12:
@@ -6396,7 +6489,7 @@ fstream@^1.0.0, fstream@^1.0.12:
 
 function-bind@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.npm.taobao.org/function-bind/download/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
+  resolved "https://registry.npm.alibaba-inc.com/function-bind/download/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha1-pWiZ0+o8m6uHS7l3O3xe3pL0iV0=
 
 gauge@~2.7.3:
@@ -6422,7 +6515,7 @@ gaze@^1.0.0:
 
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.2"
-  resolved "https://registry.npm.taobao.org/gensync/download/gensync-1.0.0-beta.2.tgz?cache=0&sync_timestamp=1603830155677&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fgensync%2Fdownload%2Fgensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
+  resolved "https://registry.npm.alibaba-inc.com/gensync/download/gensync-1.0.0-beta.2.tgz#32a6ee76c3d7f52d46b2b1ae5d93fea8580a25e0"
   integrity sha1-MqbudsPX9S1GsrGuXZP+qFgKJeA=
 
 get-caller-file@^2.0.1, get-caller-file@^2.0.5:
@@ -6431,9 +6524,9 @@ get-caller-file@^2.0.1, get-caller-file@^2.0.5:
   integrity sha1-T5RBKoLbMvNuOwuXQfipf+sDH34=
 
 get-intrinsic@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.npm.taobao.org/get-intrinsic/download/get-intrinsic-1.0.1.tgz?cache=0&sync_timestamp=1604120586779&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fget-intrinsic%2Fdownload%2Fget-intrinsic-1.0.1.tgz#94a9768fcbdd0595a1c9273aacf4c89d075631be"
-  integrity sha1-lKl2j8vdBZWhySc6rPTInQdWMb4=
+  version "1.0.2"
+  resolved "https://registry.npm.alibaba-inc.com/get-intrinsic/download/get-intrinsic-1.0.2.tgz#6820da226e50b24894e08859469dc68361545d49"
+  integrity sha1-aCDaIm5QskiU4IhZRp3Gg2FUXUk=
   dependencies:
     function-bind "^1.1.1"
     has "^1.0.3"
@@ -6544,7 +6637,7 @@ global-prefix@^3.0.0:
 
 globals@^11.1.0:
   version "11.12.0"
-  resolved "https://registry.npm.taobao.org/globals/download/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
+  resolved "https://registry.npm.alibaba-inc.com/globals/download/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha1-q4eVM4hooLq9hSV1gBjCp+uVxC4=
 
 globby@8.0.2:
@@ -6685,17 +6778,17 @@ has-ansi@^2.0.0:
 
 has-flag@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/has-flag/download/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
+  resolved "https://registry.npm.alibaba-inc.com/has-flag/download/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
   integrity sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
 
 has-flag@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npm.taobao.org/has-flag/download/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
+  resolved "https://registry.npm.alibaba-inc.com/has-flag/download/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha1-lEdx/ZyByBJlxNaUGGDaBrtZR5s=
 
 has-symbols@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/has-symbols/download/has-symbols-1.0.1.tgz#9f5214758a44196c406d9bd76cebf81ec2dd31e8"
+  resolved "https://registry.npm.alibaba-inc.com/has-symbols/download/has-symbols-1.0.1.tgz#9f5214758a44196c406d9bd76cebf81ec2dd31e8"
   integrity sha1-n1IUdYpEGWxAbZvXbOv4HsLdMeg=
 
 has-unicode@^2.0.0:
@@ -6885,7 +6978,7 @@ hmac-drbg@^1.0.0:
 
 hoist-non-react-statics@^2.1.0:
   version "2.5.5"
-  resolved "https://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+  resolved "https://registry.npm.alibaba-inc.com/hoist-non-react-statics/download/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha1-xZA89AnA39kI84jmGdhrnBF0y0c=
 
 hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
@@ -7294,7 +7387,7 @@ inquirer@^7.2.0:
 
 insert-css@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/insert-css/download/insert-css-2.0.0.tgz#eb5d1097b7542f4c79ea3060d3aee07d053880f4"
+  resolved "https://registry.npm.alibaba-inc.com/insert-css/download/insert-css-2.0.0.tgz#eb5d1097b7542f4c79ea3060d3aee07d053880f4"
   integrity sha1-610Ql7dUL0x56jBg067gfQU4gPQ=
 
 internal-ip@^4.3.0:
@@ -7427,7 +7520,7 @@ is-color-stop@^1.0.0:
 
 is-core-module@^2.1.0:
   version "2.2.0"
-  resolved "https://registry.npm.taobao.org/is-core-module/download/is-core-module-2.2.0.tgz?cache=0&sync_timestamp=1606411666495&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fis-core-module%2Fdownload%2Fis-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
+  resolved "https://registry.npm.alibaba-inc.com/is-core-module/download/is-core-module-2.2.0.tgz#97037ef3d52224d85163f5597b2b63d9afed981a"
   integrity sha1-lwN+89UiJNhRY/VZeytj2a/tmBo=
   dependencies:
     has "^1.0.3"
@@ -7587,7 +7680,7 @@ is-number@^3.0.0:
 
 is-number@^7.0.0:
   version "7.0.0"
-  resolved "https://registry.npm.taobao.org/is-number/download/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
+  resolved "https://registry.npm.alibaba-inc.com/is-number/download/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha1-dTU0W4lnNNX4DE0GxQlVUnoU8Ss=
 
 is-obj@^1.0.1:
@@ -7932,7 +8025,7 @@ jest-environment-node@^26.6.2:
 
 jest-get-type@^26.3.0:
   version "26.3.0"
-  resolved "https://registry.npm.taobao.org/jest-get-type/download/jest-get-type-26.3.0.tgz#e97dc3c3f53c2b406ca7afaed4493b1d099199e0"
+  resolved "https://registry.npm.alibaba-inc.com/jest-get-type/download/jest-get-type-26.3.0.tgz#e97dc3c3f53c2b406ca7afaed4493b1d099199e0"
   integrity sha1-6X3Dw/U8K0Bsp6+u1Ek7HQmRmeA=
 
 jest-haste-map@^26.6.2:
@@ -8216,7 +8309,7 @@ js-base64@^2.1.8:
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npm.taobao.org/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
+  resolved "https://registry.npm.alibaba-inc.com/js-tokens/download/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha1-GSA/tZmR35jjoocFDUZHzerzJJk=
 
 js-tokens@^3.0.2:
@@ -8271,12 +8364,12 @@ jsdom@^16.4.0:
 
 jsesc@^2.5.1:
   version "2.5.2"
-  resolved "https://registry.npm.taobao.org/jsesc/download/jsesc-2.5.2.tgz?cache=0&sync_timestamp=1603891198638&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsesc%2Fdownload%2Fjsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
+  resolved "https://registry.npm.alibaba-inc.com/jsesc/download/jsesc-2.5.2.tgz#80564d2e483dacf6e8ef209650a67df3f0c283a4"
   integrity sha1-gFZNLkg9rPbo7yCWUKZ98/DCg6Q=
 
 jsesc@~0.5.0:
   version "0.5.0"
-  resolved "https://registry.npm.taobao.org/jsesc/download/jsesc-0.5.0.tgz?cache=0&sync_timestamp=1603891198638&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fjsesc%2Fdownload%2Fjsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
+  resolved "https://registry.npm.alibaba-inc.com/jsesc/download/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
 
 json-buffer@3.0.0:
@@ -8311,7 +8404,7 @@ json-stringify-safe@~5.0.1:
 
 json2mq@^0.2.0:
   version "0.2.0"
-  resolved "https://registry.npm.taobao.org/json2mq/download/json2mq-0.2.0.tgz#b637bd3ba9eabe122c83e9720483aeb10d2c904a"
+  resolved "https://registry.npm.alibaba-inc.com/json2mq/download/json2mq-0.2.0.tgz#b637bd3ba9eabe122c83e9720483aeb10d2c904a"
   integrity sha1-tje9O6nqvhIsg+lyBIOusQ0skEo=
   dependencies:
     string-convert "^0.2.0"
@@ -8323,14 +8416,14 @@ json3@^3.3.2:
 
 json5@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/json5/download/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
+  resolved "https://registry.npm.alibaba-inc.com/json5/download/json5-1.0.1.tgz#779fb0018604fa854eacbf6252180d83543e3dbe"
   integrity sha1-d5+wAYYE+oVOrL9iUhgNg1Q+Pb4=
   dependencies:
     minimist "^1.2.0"
 
 json5@^2.1.2:
   version "2.1.3"
-  resolved "https://registry.npm.taobao.org/json5/download/json5-2.1.3.tgz#c9b0f7fa9233bfe5807fe66fcf3a5617ed597d43"
+  resolved "https://registry.npm.alibaba-inc.com/json5/download/json5-2.1.3.tgz#c9b0f7fa9233bfe5807fe66fcf3a5617ed597d43"
   integrity sha1-ybD3+pIzv+WAf+ZvzzpWF+1ZfUM=
   dependencies:
     minimist "^1.2.5"
@@ -8525,7 +8618,7 @@ lodash.chunk@^4.2.0:
 
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
-  resolved "https://registry.npm.taobao.org/lodash.clonedeep/download/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  resolved "https://registry.npm.alibaba-inc.com/lodash.clonedeep/download/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash.curry@^4.0.1:
@@ -8855,7 +8948,7 @@ memory-fs@^0.4.1:
 
 memory-fs@^0.5.0:
   version "0.5.0"
-  resolved "https://registry.npm.taobao.org/memory-fs/download/memory-fs-0.5.0.tgz#324c01288b88652966d161db77838720845a8e3c"
+  resolved "https://registry.npm.alibaba-inc.com/memory-fs/download/memory-fs-0.5.0.tgz#324c01288b88652966d161db77838720845a8e3c"
   integrity sha1-MkwBKIuIZSlm0WHbd4OHIIRajjw=
   dependencies:
     errno "^0.1.3"
@@ -9006,7 +9099,7 @@ mini-css-extract-plugin@^0.8.0:
 
 mini-store@^3.0.1:
   version "3.0.6"
-  resolved "https://registry.npm.taobao.org/mini-store/download/mini-store-3.0.6.tgz#44b86be5b2877271224ce0689b3a35a2dffb1ca9"
+  resolved "https://registry.npm.alibaba-inc.com/mini-store/download/mini-store-3.0.6.tgz#44b86be5b2877271224ce0689b3a35a2dffb1ca9"
   integrity sha1-RLhr5bKHcnEiTOBomzo1ot/7HKk=
   dependencies:
     hoist-non-react-statics "^3.3.2"
@@ -9312,7 +9405,7 @@ node-notifier@^8.0.0:
     uuid "^8.3.0"
     which "^2.0.2"
 
-node-releases@^1.1.52, node-releases@^1.1.66:
+node-releases@^1.1.52, node-releases@^1.1.66, node-releases@^1.1.67:
   version "1.1.67"
   resolved "https://registry.npm.taobao.org/node-releases/download/node-releases-1.1.67.tgz?cache=0&sync_timestamp=1605581282886&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode-releases%2Fdownload%2Fnode-releases-1.1.67.tgz#28ebfcccd0baa6aad8e8d4d8fe4cbc49ae239c12"
   integrity sha1-KOv8zNC6pqrY6NTY/ky8Sa4jnBI=
@@ -9471,7 +9564,7 @@ oauth-sign@~0.9.0:
   resolved "https://registry.npm.taobao.org/oauth-sign/download/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha1-R6ewFrqmi1+g7PPe4IqFxnmsZFU=
 
-object-assign@4.x, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npm.taobao.org/object-assign/download/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -9500,7 +9593,7 @@ object-is@^1.0.1:
 
 object-keys@^1.0.12, object-keys@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.npm.taobao.org/object-keys/download/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
+  resolved "https://registry.npm.alibaba-inc.com/object-keys/download/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha1-HEfyct8nfzsdrwYWd9nILiMixg4=
 
 object-visit@^1.0.0:
@@ -9553,7 +9646,7 @@ obuf@^1.0.0, obuf@^1.1.2:
 
 omit.js@^2.0.0, omit.js@^2.0.2:
   version "2.0.2"
-  resolved "https://registry.npm.taobao.org/omit.js/download/omit.js-2.0.2.tgz#dd9b8436fab947a5f3ff214cb2538631e313ec2f"
+  resolved "https://registry.npm.alibaba-inc.com/omit.js/download/omit.js-2.0.2.tgz#dd9b8436fab947a5f3ff214cb2538631e313ec2f"
   integrity sha1-3ZuENvq5R6Xz/yFMslOGMeMT7C8=
 
 on-finished@~2.3.0:
@@ -9900,7 +9993,7 @@ path-key@^3.0.0, path-key@^3.1.0:
 
 path-parse@^1.0.6:
   version "1.0.6"
-  resolved "https://registry.npm.taobao.org/path-parse/download/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
+  resolved "https://registry.npm.alibaba-inc.com/path-parse/download/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha1-1i27VnlAXXLEc37FhgDp3c8G0kw=
 
 path-to-regexp@0.1.7:
@@ -9954,7 +10047,7 @@ pbkdf2@^3.0.3:
 
 performance-now@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.npm.taobao.org/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
+  resolved "https://registry.npm.alibaba-inc.com/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1, picomatch@^2.2.2:
@@ -10741,7 +10834,7 @@ pretty-error@^2.1.1:
 
 pretty-format@^26.0.0, pretty-format@^26.6.2:
   version "26.6.2"
-  resolved "https://registry.npm.taobao.org/pretty-format/download/pretty-format-26.6.2.tgz?cache=0&sync_timestamp=1604319690159&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fpretty-format%2Fdownload%2Fpretty-format-26.6.2.tgz#e35c2705f14cb7fe2fe94fa078345b444120fc93"
+  resolved "https://registry.npm.alibaba-inc.com/pretty-format/download/pretty-format-26.6.2.tgz#e35c2705f14cb7fe2fe94fa078345b444120fc93"
   integrity sha1-41wnBfFMt/4v6U+geDRbREEg/JM=
   dependencies:
     "@jest/types" "^26.6.2"
@@ -10773,7 +10866,7 @@ prismjs@^1.22.0:
 
 process-nextick-args@~2.0.0:
   version "2.0.1"
-  resolved "https://registry.npm.taobao.org/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
+  resolved "https://registry.npm.alibaba-inc.com/process-nextick-args/download/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha1-eCDZsWEgzFXKmud5JoCufbptf+I=
 
 process@^0.11.10:
@@ -10801,7 +10894,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=
@@ -10827,7 +10920,7 @@ proxy-addr@~2.0.5:
 
 prr@~1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/prr/download/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
+  resolved "https://registry.npm.alibaba-inc.com/prr/download/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
 
 pseudomap@^1.0.2:
@@ -10947,13 +11040,6 @@ raf-schd@^4.0.2:
   resolved "https://registry.npm.taobao.org/raf-schd/download/raf-schd-4.0.2.tgz#bd44c708188f2e84c810bf55fcea9231bcaed8a0"
   integrity sha1-vUTHCBiPLoTIEL9V/OqSMbyu2KA=
 
-raf@^3.4.0:
-  version "3.4.1"
-  resolved "https://registry.npm.taobao.org/raf/download/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
-  integrity sha1-B0LpmkplUvRF1z4+4DKK8P8e3jk=
-  dependencies:
-    performance-now "^2.1.0"
-
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5, randombytes@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/randombytes/download/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
@@ -10999,7 +11085,7 @@ raw-loader@^4.0.2:
 
 rc-align@^4.0.0:
   version "4.0.9"
-  resolved "https://registry.npm.taobao.org/rc-align/download/rc-align-4.0.9.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-align%2Fdownload%2Frc-align-4.0.9.tgz#46d8801c4a139ff6a65ad1674e8efceac98f85f2"
+  resolved "https://registry.npm.alibaba-inc.com/rc-align/download/rc-align-4.0.9.tgz#46d8801c4a139ff6a65ad1674e8efceac98f85f2"
   integrity sha1-RtiAHEoTn/amWtFnTo786smPhfI=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11008,20 +11094,10 @@ rc-align@^4.0.0:
     rc-util "^5.3.0"
     resize-observer-polyfill "^1.5.1"
 
-rc-animate@3.x, rc-animate@~3.1.0:
-  version "3.1.1"
-  resolved "https://registry.npm.taobao.org/rc-animate/download/rc-animate-3.1.1.tgz#defdd863f56816c222534e4dc68feddecd081386"
-  integrity sha1-3v3YY/VoFsIiU05Nxo/t3s0IE4Y=
-  dependencies:
-    "@ant-design/css-animation" "^1.7.2"
-    classnames "^2.2.6"
-    raf "^3.4.0"
-    rc-util "^4.15.3"
-
 rc-cascader@~1.4.0:
-  version "1.4.0"
-  resolved "https://registry.npm.taobao.org/rc-cascader/download/rc-cascader-1.4.0.tgz?cache=0&sync_timestamp=1600350991321&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-cascader%2Fdownload%2Frc-cascader-1.4.0.tgz#d731ea8e07433558627941036091a2820e895474"
-  integrity sha1-1zHqjgdDNVhieUEDYJGigg6JVHQ=
+  version "1.4.1"
+  resolved "https://registry.npm.alibaba-inc.com/rc-cascader/download/rc-cascader-1.4.1.tgz#cbbb4c8358953675b45cc8e53d3ee2b925b2ec5d"
+  integrity sha1-y7tMg1iVNnW0XMjlPT7iuSWy7F0=
   dependencies:
     array-tree-filter "^2.1.0"
     rc-trigger "^5.0.4"
@@ -11029,28 +11105,28 @@ rc-cascader@~1.4.0:
     warning "^4.0.1"
 
 rc-checkbox@~2.3.0:
-  version "2.3.1"
-  resolved "https://registry.npm.taobao.org/rc-checkbox/download/rc-checkbox-2.3.1.tgz#2a61bc43017c783bd2e9f1a67553bf8efe7aa4d3"
-  integrity sha1-KmG8QwF8eDvS6fGmdVO/jv56pNM=
+  version "2.3.2"
+  resolved "https://registry.npm.alibaba-inc.com/rc-checkbox/download/rc-checkbox-2.3.2.tgz#f91b3678c7edb2baa8121c9483c664fa6f0aefc1"
+  integrity sha1-+Rs2eMftsrqoEhyUg8Zk+m8K78E=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
 
-rc-collapse@~2.0.0:
-  version "2.0.1"
-  resolved "https://registry.npm.taobao.org/rc-collapse/download/rc-collapse-2.0.1.tgz?cache=0&sync_timestamp=1606217078166&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-collapse%2Fdownload%2Frc-collapse-2.0.1.tgz#99e7655acd9c237b72369a39dcb5c713451e1e92"
-  integrity sha1-medlWs2cI3tyNpo53LXHE0UeHpI=
+rc-collapse@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-collapse/download/rc-collapse-3.1.0.tgz#4ce5e612568c5fbeaf368cc39214471c1461a1a1"
+  integrity sha1-TOXmElaMX76vNozDkhRHHBRhoaE=
   dependencies:
-    "@ant-design/css-animation" "^1.7.2"
+    "@babel/runtime" "^7.10.1"
     classnames "2.x"
-    rc-animate "3.x"
+    rc-motion "^2.3.4"
     rc-util "^5.2.1"
     shallowequal "^1.1.0"
 
 rc-dialog@~8.4.0:
-  version "8.4.3"
-  resolved "https://registry.npm.taobao.org/rc-dialog/download/rc-dialog-8.4.3.tgz?cache=0&sync_timestamp=1603284418798&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-dialog%2Fdownload%2Frc-dialog-8.4.3.tgz#de8650ce7d1fcb6c1f7e065b94a6894b9a5a54a4"
-  integrity sha1-3oZQzn0fy2wffgZblKaJS5paVKQ=
+  version "8.4.6"
+  resolved "https://registry.npm.alibaba-inc.com/rc-dialog/download/rc-dialog-8.4.6.tgz#6a0ff815539b68e705cb9d2fc940a381039d113f"
+  integrity sha1-ag/4FVObaOcFy50vyUCjgQOdET8=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.6"
@@ -11059,7 +11135,7 @@ rc-dialog@~8.4.0:
 
 rc-drawer@~4.1.0:
   version "4.1.0"
-  resolved "https://registry.npm.taobao.org/rc-drawer/download/rc-drawer-4.1.0.tgz#d7bf0bc030300b62d282bc04e053b9acad6b08b4"
+  resolved "https://registry.npm.alibaba-inc.com/rc-drawer/download/rc-drawer-4.1.0.tgz#d7bf0bc030300b62d282bc04e053b9acad6b08b4"
   integrity sha1-178LwDAwC2LSgrwE4FO5rK1rCLQ=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11068,7 +11144,7 @@ rc-drawer@~4.1.0:
 
 rc-dropdown@^3.1.3, rc-dropdown@~3.2.0:
   version "3.2.0"
-  resolved "https://registry.npm.taobao.org/rc-dropdown/download/rc-dropdown-3.2.0.tgz#da6c2ada403842baee3a9e909a0b1a91ba3e1090"
+  resolved "https://registry.npm.alibaba-inc.com/rc-dropdown/download/rc-dropdown-3.2.0.tgz#da6c2ada403842baee3a9e909a0b1a91ba3e1090"
   integrity sha1-2mwq2kA4QrruOp6Qmgsakbo+EJA=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11076,18 +11152,18 @@ rc-dropdown@^3.1.3, rc-dropdown@~3.2.0:
     rc-trigger "^5.0.4"
 
 rc-field-form@~1.17.0:
-  version "1.17.2"
-  resolved "https://registry.npm.taobao.org/rc-field-form/download/rc-field-form-1.17.2.tgz#81b09d320f9b455673867bf3a1f5b2aac0fd0a15"
-  integrity sha1-gbCdMg+bRVZzhnvzofWyqsD9ChU=
+  version "1.17.3"
+  resolved "https://registry.npm.alibaba-inc.com/rc-field-form/download/rc-field-form-1.17.3.tgz#593d31c51071d4f6ba40d73b9f8018848230577c"
+  integrity sha1-WT0xxRBx1Pa6QNc7n4AYhIIwV3w=
   dependencies:
     "@babel/runtime" "^7.8.4"
     async-validator "^3.0.3"
     rc-util "^5.0.0"
 
-rc-image@~4.0.0:
-  version "4.0.1"
-  resolved "https://registry.npm.taobao.org/rc-image/download/rc-image-4.0.1.tgz?cache=0&sync_timestamp=1604479494719&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-image%2Fdownload%2Frc-image-4.0.1.tgz#b54534684a01dcf8cb477f5ac6dda72545a9541f"
-  integrity sha1-tUU0aEoB3PjLR39axt2nJUWpVB8=
+rc-image@~4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-image/download/rc-image-4.2.0.tgz#3b7a977f9ecfbac046296c2908d99cb1f8795c65"
+  integrity sha1-O3qXf57PusBGKWwpCNmcsfh5XGU=
   dependencies:
     "@ant-design/icons" "^4.2.2"
     "@babel/runtime" "^7.11.2"
@@ -11096,9 +11172,9 @@ rc-image@~4.0.0:
     rc-util "^5.0.6"
 
 rc-input-number@~6.1.0:
-  version "6.1.1"
-  resolved "https://registry.npm.taobao.org/rc-input-number/download/rc-input-number-6.1.1.tgz#818c426942d1b4dc4d6d2639d741ca67773a9118"
-  integrity sha1-gYxCaULRtNxNbSY510HKZ3c6kRg=
+  version "6.1.2"
+  resolved "https://registry.npm.alibaba-inc.com/rc-input-number/download/rc-input-number-6.1.2.tgz#6663eda0ae6b75e464e63df375d29308cebb0ed8"
+  integrity sha1-ZmPtoK5rdeRk5j3zddKTCM67Dtg=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
@@ -11106,7 +11182,7 @@ rc-input-number@~6.1.0:
 
 rc-mentions@~1.5.0:
   version "1.5.2"
-  resolved "https://registry.npm.taobao.org/rc-mentions/download/rc-mentions-1.5.2.tgz#94559a369de73e7cc92f343badaf94499fb410a7"
+  resolved "https://registry.npm.alibaba-inc.com/rc-mentions/download/rc-mentions-1.5.2.tgz#94559a369de73e7cc92f343badaf94499fb410a7"
   integrity sha1-lFWaNp3nPnzJLzQ7ra+USZ+0EKc=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11118,7 +11194,7 @@ rc-mentions@~1.5.0:
 
 rc-menu@^8.0.1, rc-menu@^8.6.1, rc-menu@~8.10.0:
   version "8.10.1"
-  resolved "https://registry.npm.taobao.org/rc-menu/download/rc-menu-8.10.1.tgz?cache=0&sync_timestamp=1606290126032&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-menu%2Fdownload%2Frc-menu-8.10.1.tgz#5637d85760ea6bd6ead49f44ae29686c5cc59798"
+  resolved "https://registry.npm.alibaba-inc.com/rc-menu/download/rc-menu-8.10.1.tgz#5637d85760ea6bd6ead49f44ae29686c5cc59798"
   integrity sha1-VjfYV2Dqa9bq1J9ErilobFzFl5g=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11131,9 +11207,9 @@ rc-menu@^8.0.1, rc-menu@^8.6.1, rc-menu@~8.10.0:
     resize-observer-polyfill "^1.5.0"
     shallowequal "^1.1.0"
 
-rc-motion@^2.0.0, rc-motion@^2.0.1, rc-motion@^2.2.0, rc-motion@^2.3.0, rc-motion@^2.4.0:
+rc-motion@^2.0.0, rc-motion@^2.0.1, rc-motion@^2.2.0, rc-motion@^2.3.0, rc-motion@^2.3.4, rc-motion@^2.4.0:
   version "2.4.1"
-  resolved "https://registry.npm.taobao.org/rc-motion/download/rc-motion-2.4.1.tgz?cache=0&sync_timestamp=1605865547858&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-motion%2Fdownload%2Frc-motion-2.4.1.tgz#323f47c8635e6b2bc0cba2dfad25fc415b58e1dc"
+  resolved "https://registry.npm.alibaba-inc.com/rc-motion/download/rc-motion-2.4.1.tgz#323f47c8635e6b2bc0cba2dfad25fc415b58e1dc"
   integrity sha1-Mj9HyGNeayvAy6LfrSX8QVtY4dw=
   dependencies:
     "@babel/runtime" "^7.11.1"
@@ -11142,7 +11218,7 @@ rc-motion@^2.0.0, rc-motion@^2.0.1, rc-motion@^2.2.0, rc-motion@^2.3.0, rc-motio
 
 rc-notification@~4.5.2:
   version "4.5.4"
-  resolved "https://registry.npm.taobao.org/rc-notification/download/rc-notification-4.5.4.tgz?cache=0&sync_timestamp=1604052337921&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-notification%2Fdownload%2Frc-notification-4.5.4.tgz#1292e163003db4b9162c856a4630e5d0f1359356"
+  resolved "https://registry.npm.alibaba-inc.com/rc-notification/download/rc-notification-4.5.4.tgz#1292e163003db4b9162c856a4630e5d0f1359356"
   integrity sha1-EpLhYwA9tLkWLIVqRjDl0PE1k1Y=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11150,17 +11226,17 @@ rc-notification@~4.5.2:
     rc-motion "^2.2.0"
     rc-util "^5.0.1"
 
-rc-pagination@~3.1.0:
-  version "3.1.2"
-  resolved "https://registry.npm.taobao.org/rc-pagination/download/rc-pagination-3.1.2.tgz#ab5eacd9c51f869e350d2245064babe91bc1f046"
-  integrity sha1-q16s2cUfhp41DSJFBkur6RvB8EY=
+rc-pagination@~3.1.2:
+  version "3.1.3"
+  resolved "https://registry.npm.alibaba-inc.com/rc-pagination/download/rc-pagination-3.1.3.tgz#afd779839fefab2cb14248d5e7b74027960bb48b"
+  integrity sha1-r9d5g5/vqyyxQkjV57dAJ5YLtIs=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
 
 rc-picker@~2.4.1:
   version "2.4.3"
-  resolved "https://registry.npm.taobao.org/rc-picker/download/rc-picker-2.4.3.tgz?cache=0&sync_timestamp=1606380409351&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-picker%2Fdownload%2Frc-picker-2.4.3.tgz#ad15ee1d85e4b3e213ec66215ecd39e6a09be995"
+  resolved "https://registry.npm.alibaba-inc.com/rc-picker/download/rc-picker-2.4.3.tgz#ad15ee1d85e4b3e213ec66215ecd39e6a09be995"
   integrity sha1-rRXuHYXks+IT7GYhXs055qCb6ZU=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11173,25 +11249,25 @@ rc-picker@~2.4.1:
     shallowequal "^1.1.0"
 
 rc-progress@~3.1.0:
-  version "3.1.1"
-  resolved "https://registry.npm.taobao.org/rc-progress/download/rc-progress-3.1.1.tgz?cache=0&sync_timestamp=1603283766187&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-progress%2Fdownload%2Frc-progress-3.1.1.tgz#f7ba5eb33cc438862513ab5a71739feaf6b3ef4f"
-  integrity sha1-97peszzEOIYlE6tacXOf6vaz708=
+  version "3.1.2"
+  resolved "https://registry.npm.alibaba-inc.com/rc-progress/download/rc-progress-3.1.2.tgz#38abc5f0b5fbda117bacc7283f5d1ce9fec0d3fa"
+  integrity sha1-OKvF8LX72hF7rMcoP10c6f7A0/o=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.6"
 
 rc-rate@~2.9.0:
   version "2.9.1"
-  resolved "https://registry.npm.taobao.org/rc-rate/download/rc-rate-2.9.1.tgz?cache=0&sync_timestamp=1605573550513&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-rate%2Fdownload%2Frc-rate-2.9.1.tgz#e43cb95c4eb90a2c1e0b16ec6614d8c43530a731"
+  resolved "https://registry.npm.alibaba-inc.com/rc-rate/download/rc-rate-2.9.1.tgz#e43cb95c4eb90a2c1e0b16ec6614d8c43530a731"
   integrity sha1-5Dy5XE65CiweCxbsZhTYxDUwpzE=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
     rc-util "^5.0.1"
 
-rc-resize-observer@^0.2.0, rc-resize-observer@^0.2.1, rc-resize-observer@^0.2.3:
+rc-resize-observer@^0.2.0, rc-resize-observer@^0.2.3:
   version "0.2.6"
-  resolved "https://registry.npm.taobao.org/rc-resize-observer/download/rc-resize-observer-0.2.6.tgz#c1b642f6d1293e34c4e3715f47f69443a167b825"
+  resolved "https://registry.npm.alibaba-inc.com/rc-resize-observer/download/rc-resize-observer-0.2.6.tgz#c1b642f6d1293e34c4e3715f47f69443a167b825"
   integrity sha1-wbZC9tEpPjTE43FfR/aUQ6FnuCU=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11199,23 +11275,20 @@ rc-resize-observer@^0.2.0, rc-resize-observer@^0.2.1, rc-resize-observer@^0.2.3:
     rc-util "^5.0.0"
     resize-observer-polyfill "^1.5.1"
 
-rc-select@^11.1.1:
-  version "11.5.2"
-  resolved "https://registry.npm.taobao.org/rc-select/download/rc-select-11.5.2.tgz?cache=0&sync_timestamp=1606444579313&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-select%2Fdownload%2Frc-select-11.5.2.tgz#554f1c0e82c854642c410677c458f888b20c2306"
-  integrity sha1-VU8cDoLIVGQsQQZ3xFj4iLIMIwY=
+rc-resize-observer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-resize-observer/download/rc-resize-observer-1.0.0.tgz#97fb89856f62fec32ab6e40933935cf58e2e102d"
+  integrity sha1-l/uJhW9i/sMqtuQJM5Nc9Y4uEC0=
   dependencies:
     "@babel/runtime" "^7.10.1"
-    classnames "2.x"
-    rc-motion "^2.0.1"
-    rc-trigger "^5.0.4"
-    rc-util "^5.0.1"
-    rc-virtual-list "^3.2.0"
-    warning "^4.0.3"
+    classnames "^2.2.1"
+    rc-util "^5.0.0"
+    resize-observer-polyfill "^1.5.1"
 
-rc-select@~11.4.0:
-  version "11.4.2"
-  resolved "https://registry.npm.taobao.org/rc-select/download/rc-select-11.4.2.tgz?cache=0&sync_timestamp=1606444579313&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-select%2Fdownload%2Frc-select-11.4.2.tgz#5b431ee7b2cc6e439886ca855774fc116e6fe6fb"
-  integrity sha1-W0Me57LMbkOYhsqFV3T8EW5v5vs=
+rc-select@^11.1.1, rc-select@~11.5.3:
+  version "11.5.3"
+  resolved "https://registry.npm.alibaba-inc.com/rc-select/download/rc-select-11.5.3.tgz#682913f3669596fb794e2b4a5c619974c5ab45d1"
+  integrity sha1-aCkT82aVlvt5TitKXGGZdMWrRdE=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -11226,9 +11299,9 @@ rc-select@~11.4.0:
     warning "^4.0.3"
 
 rc-slider@~9.6.1:
-  version "9.6.4"
-  resolved "https://registry.npm.taobao.org/rc-slider/download/rc-slider-9.6.4.tgz?cache=0&sync_timestamp=1605947813546&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-slider%2Fdownload%2Frc-slider-9.6.4.tgz#19af39ad22927de2f6d524e0a14f3b1cf17ba659"
-  integrity sha1-Ga85rSKSfeL21STgoU87HPF7plk=
+  version "9.6.5"
+  resolved "https://registry.npm.alibaba-inc.com/rc-slider/download/rc-slider-9.6.5.tgz#826cd7ba69d87c48b258baa3422a25b7f8c5620c"
+  integrity sha1-gmzXumnYfEiyWLqjQiolt/jFYgw=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
@@ -11238,7 +11311,7 @@ rc-slider@~9.6.1:
 
 rc-steps@~4.1.0:
   version "4.1.3"
-  resolved "https://registry.npm.taobao.org/rc-steps/download/rc-steps-4.1.3.tgz?cache=0&sync_timestamp=1603286117848&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-steps%2Fdownload%2Frc-steps-4.1.3.tgz#208580e22db619e3830ddb7fa41bc886c65d9803"
+  resolved "https://registry.npm.alibaba-inc.com/rc-steps/download/rc-steps-4.1.3.tgz#208580e22db619e3830ddb7fa41bc886c65d9803"
   integrity sha1-IIWA4i22GeODDdt/pBvIhsZdmAM=
   dependencies:
     "@babel/runtime" "^7.10.2"
@@ -11247,7 +11320,7 @@ rc-steps@~4.1.0:
 
 rc-switch@~3.2.0:
   version "3.2.2"
-  resolved "https://registry.npm.taobao.org/rc-switch/download/rc-switch-3.2.2.tgz?cache=0&sync_timestamp=1603793609375&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-switch%2Fdownload%2Frc-switch-3.2.2.tgz#d001f77f12664d52595b4f6fb425dd9e66fba8e8"
+  resolved "https://registry.npm.alibaba-inc.com/rc-switch/download/rc-switch-3.2.2.tgz#d001f77f12664d52595b4f6fb425dd9e66fba8e8"
   integrity sha1-0AH3fxJmTVJZW09vtCXdnmb7qOg=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11256,7 +11329,7 @@ rc-switch@~3.2.0:
 
 rc-table@~7.11.0:
   version "7.11.3"
-  resolved "https://registry.npm.taobao.org/rc-table/download/rc-table-7.11.3.tgz?cache=0&sync_timestamp=1606289339166&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-table%2Fdownload%2Frc-table-7.11.3.tgz#a352a222664b1b746f872fb35c67a67934d73eab"
+  resolved "https://registry.npm.alibaba-inc.com/rc-table/download/rc-table-7.11.3.tgz#a352a222664b1b746f872fb35c67a67934d73eab"
   integrity sha1-o1KiImZLG3Rvhy+zXGemeTTXPqs=
   dependencies:
     "@babel/runtime" "^7.10.1"
@@ -11266,50 +11339,61 @@ rc-table@~7.11.0:
     shallowequal "^1.1.0"
 
 rc-tabs@~11.7.0:
-  version "11.7.2"
-  resolved "https://registry.npm.taobao.org/rc-tabs/download/rc-tabs-11.7.2.tgz?cache=0&sync_timestamp=1606307587033&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tabs%2Fdownload%2Frc-tabs-11.7.2.tgz#d9443e471859b9dad81dc70abbdaefe40b1db5ab"
-  integrity sha1-2UQ+RxhZudrYHccKu9rv5Asdtas=
+  version "11.7.3"
+  resolved "https://registry.npm.alibaba-inc.com/rc-tabs/download/rc-tabs-11.7.3.tgz#32a30e59c6992d60fb58115ba0bf2652b337ed43"
+  integrity sha1-MqMOWcaZLWD7WBFboL8mUrM37UM=
   dependencies:
     "@babel/runtime" "^7.11.2"
     classnames "2.x"
     rc-dropdown "^3.1.3"
     rc-menu "^8.6.1"
-    rc-resize-observer "^0.2.1"
+    rc-resize-observer "^1.0.0"
     rc-util "^5.5.0"
 
 rc-textarea@^0.3.0, rc-textarea@~0.3.0:
-  version "0.3.1"
-  resolved "https://registry.npm.taobao.org/rc-textarea/download/rc-textarea-0.3.1.tgz#e81e1ef6f0e29729f9f80bb266cf6769dd7ab69a"
-  integrity sha1-6B4e9vDilyn5+AuyZs9nad16tpo=
+  version "0.3.3"
+  resolved "https://registry.npm.alibaba-inc.com/rc-textarea/download/rc-textarea-0.3.3.tgz#685101098508a65b1ba79720cdedb4ca8fe26da9"
+  integrity sha1-aFEBCYUIplsbp5cgze20yo/ibak=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.1"
     omit.js "^2.0.0"
-    rc-resize-observer "^0.2.3"
+    rc-resize-observer "^1.0.0"
 
 rc-tooltip@^5.0.1, rc-tooltip@~5.0.0:
   version "5.0.1"
-  resolved "https://registry.npm.taobao.org/rc-tooltip/download/rc-tooltip-5.0.1.tgz#b82c4259604d2cb62ca610ed7932dd37fc6ef61d"
+  resolved "https://registry.npm.alibaba-inc.com/rc-tooltip/download/rc-tooltip-5.0.1.tgz#b82c4259604d2cb62ca610ed7932dd37fc6ef61d"
   integrity sha1-uCxCWWBNLLYsphDteTLdN/xu9h0=
   dependencies:
     "@babel/runtime" "^7.11.2"
     rc-trigger "^5.0.0"
 
-rc-tree-select@~4.1.1:
-  version "4.1.3"
-  resolved "https://registry.npm.taobao.org/rc-tree-select/download/rc-tree-select-4.1.3.tgz?cache=0&sync_timestamp=1605667491490&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tree-select%2Fdownload%2Frc-tree-select-4.1.3.tgz#1f88b7bf46652f9962ce425f8760a8f891fb5b78"
-  integrity sha1-H4i3v0ZlL5lizkJfh2Co+JH7W3g=
+rc-tree-select@~4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-tree-select/download/rc-tree-select-4.2.0.tgz#ca19163b2ccfe0772fd7b8148266dddd197d0fe1"
+  integrity sha1-yhkWOyzP4Hcv17gUgmbd3Rl9D+E=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
     rc-select "^11.1.1"
-    rc-tree "^3.8.0"
+    rc-tree "^4.0.0"
     rc-util "^5.0.5"
 
-rc-tree@^3.8.0, rc-tree@~3.11.0:
-  version "3.11.0"
-  resolved "https://registry.npm.taobao.org/rc-tree/download/rc-tree-3.11.0.tgz?cache=0&sync_timestamp=1603804102659&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-tree%2Fdownload%2Frc-tree-3.11.0.tgz#87edf01842bd88a05519e30dd7312bee3f7e2618"
-  integrity sha1-h+3wGEK9iKBVGeMN1zEr7j9+Jhg=
+rc-tree@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.npm.alibaba-inc.com/rc-tree/download/rc-tree-4.1.1.tgz#d40f418b31b75e61886e3969481df1444232c98b"
+  integrity sha1-1A9BizG3XmGIbjlpSB3xREIyyYs=
+  dependencies:
+    "@babel/runtime" "^7.10.1"
+    classnames "2.x"
+    rc-motion "^2.0.1"
+    rc-util "^5.0.0"
+    rc-virtual-list "^3.0.1"
+
+rc-tree@~4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-tree/download/rc-tree-4.0.0.tgz#2f972b4a5e23ea17df05ec9f7ec43de350bea3bf"
+  integrity sha1-L5crSl4j6hffBeyffsQ941C+o78=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "2.x"
@@ -11318,9 +11402,9 @@ rc-tree@^3.8.0, rc-tree@~3.11.0:
     rc-virtual-list "^3.0.1"
 
 rc-trigger@^5.0.0, rc-trigger@^5.0.4, rc-trigger@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.npm.taobao.org/rc-trigger/download/rc-trigger-5.1.2.tgz#f0f89bba2318699e704492bddb20506ecd8f8916"
-  integrity sha1-8PibuiMYaZ5wRJK92yBQbs2PiRY=
+  version "5.2.0"
+  resolved "https://registry.npm.alibaba-inc.com/rc-trigger/download/rc-trigger-5.2.0.tgz#a17f1a5cba6b8faff62e658a5c9a21f97af2ef06"
+  integrity sha1-oX8aXLprj6/2LmWKXJoh+Xry7wY=
   dependencies:
     "@babel/runtime" "^7.11.2"
     classnames "^2.2.6"
@@ -11329,40 +11413,29 @@ rc-trigger@^5.0.0, rc-trigger@^5.0.4, rc-trigger@^5.1.2:
     rc-util "^5.5.0"
 
 rc-upload@~3.3.1:
-  version "3.3.1"
-  resolved "https://registry.npm.taobao.org/rc-upload/download/rc-upload-3.3.1.tgz#ad8658b2a796031930b35d2b07ab312b7cd4c9ed"
-  integrity sha1-rYZYsqeWAxkws10rB6sxK3zUye0=
+  version "3.3.4"
+  resolved "https://registry.npm.alibaba-inc.com/rc-upload/download/rc-upload-3.3.4.tgz#b0668d18661595c69c0621cec220fd116cc79952"
+  integrity sha1-sGaNGGYVlcacBiHOwiD9EWzHmVI=
   dependencies:
     "@babel/runtime" "^7.10.1"
     classnames "^2.2.5"
     rc-util "^5.2.0"
 
-rc-util@^4.15.3:
-  version "4.21.1"
-  resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-4.21.1.tgz?cache=0&sync_timestamp=1604409793530&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-util%2Fdownload%2Frc-util-4.21.1.tgz#88602d0c3185020aa1053d9a1e70eac161becb05"
-  integrity sha1-iGAtDDGFAgqhBT2aHnDqwWG+ywU=
-  dependencies:
-    add-dom-event-listener "^1.1.0"
-    prop-types "^15.5.10"
-    react-is "^16.12.0"
-    react-lifecycles-compat "^3.0.4"
-    shallowequal "^1.1.0"
-
 rc-util@^5.0.0, rc-util@^5.0.1, rc-util@^5.0.5, rc-util@^5.0.6, rc-util@^5.0.7, rc-util@^5.1.0, rc-util@^5.2.0, rc-util@^5.2.1, rc-util@^5.3.0, rc-util@^5.4.0, rc-util@^5.5.0:
-  version "5.5.0"
-  resolved "https://registry.npm.taobao.org/rc-util/download/rc-util-5.5.0.tgz?cache=0&sync_timestamp=1604409793530&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-util%2Fdownload%2Frc-util-5.5.0.tgz#76321bcb5c12f01f42bff9b971f170ff19506e5a"
-  integrity sha1-djIby1wS8B9Cv/m5cfFw/xlQblo=
+  version "5.6.2"
+  resolved "https://registry.npm.alibaba-inc.com/rc-util/download/rc-util-5.6.2.tgz#7c3f4516a8a6215a57d8d41b65c1b9925d915d89"
+  integrity sha1-fD9FFqimIVpX2NQbZcG5kl2RXYk=
   dependencies:
     react-is "^16.12.0"
     shallowequal "^1.1.0"
 
 rc-virtual-list@^3.0.1, rc-virtual-list@^3.2.0:
-  version "3.2.2"
-  resolved "https://registry.npm.taobao.org/rc-virtual-list/download/rc-virtual-list-3.2.2.tgz?cache=0&sync_timestamp=1604024463149&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frc-virtual-list%2Fdownload%2Frc-virtual-list-3.2.2.tgz#95f8f0c4238e081f4a998354492632eed6d71924"
-  integrity sha1-lfjwxCOOCB9KmYNUSSYy7tbXGSQ=
+  version "3.2.4"
+  resolved "https://registry.npm.alibaba-inc.com/rc-virtual-list/download/rc-virtual-list-3.2.4.tgz#53e918f89edda0db4d8fcc810757c0daac7928de"
+  integrity sha1-U+kY+J7doNtNj8yBB1fA2qx5KN4=
   dependencies:
     classnames "^2.2.6"
-    rc-resize-observer "^0.2.3"
+    rc-resize-observer "^1.0.0"
     rc-util "^5.0.7"
 
 rc@^1.2.8:
@@ -11474,7 +11547,7 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.13.1, react-is@^16.6.0, react
 
 react-is@^17.0.1:
   version "17.0.1"
-  resolved "https://registry.npm.taobao.org/react-is/download/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
+  resolved "https://registry.npm.alibaba-inc.com/react-is/download/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha1-WzUxvXamRaTJ+25pPtNkGeMwEzk=
 
 react-json-view@^1.19.1:
@@ -11489,7 +11562,7 @@ react-json-view@^1.19.1:
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
-  resolved "https://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  resolved "https://registry.npm.alibaba-inc.com/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
 react-live@^2.2.2, react-live@^2.2.3:
@@ -11592,7 +11665,7 @@ react-toggle@^4.1.1:
 
 react-transition-group@^2.2.1:
   version "2.9.0"
-  resolved "https://registry.npm.taobao.org/react-transition-group/download/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
+  resolved "https://registry.npm.alibaba-inc.com/react-transition-group/download/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
   integrity sha1-35zbAleWIRFRpDbGmo87l7WwfI0=
   dependencies:
     dom-helpers "^3.4.0"
@@ -11730,29 +11803,29 @@ redux@^4.0.4:
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
-  resolved "https://registry.npm.taobao.org/regenerate-unicode-properties/download/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
+  resolved "https://registry.npm.alibaba-inc.com/regenerate-unicode-properties/download/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
   integrity sha1-5d5xEdZV57pgwFfb6f83yH5lzew=
   dependencies:
     regenerate "^1.4.0"
 
 regenerate@^1.4.0:
   version "1.4.2"
-  resolved "https://registry.npm.taobao.org/regenerate/download/regenerate-1.4.2.tgz?cache=0&sync_timestamp=1604218439731&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fregenerate%2Fdownload%2Fregenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
+  resolved "https://registry.npm.alibaba-inc.com/regenerate/download/regenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha1-uTRtiCfo9aMve6KWN9OYtpAUhIo=
 
 regenerator-runtime@^0.11.0:
   version "0.11.1"
-  resolved "https://registry.npm.taobao.org/regenerator-runtime/download/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
+  resolved "https://registry.npm.alibaba-inc.com/regenerator-runtime/download/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha1-vgWtf5v30i4Fb5cmzuUBf78Z4uk=
 
 regenerator-runtime@^0.13.4:
   version "0.13.7"
-  resolved "https://registry.npm.taobao.org/regenerator-runtime/download/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
+  resolved "https://registry.npm.alibaba-inc.com/regenerator-runtime/download/regenerator-runtime-0.13.7.tgz#cac2dacc8a1ea675feaabaeb8ae833898ae46f55"
   integrity sha1-ysLazIoepnX+qrrriugziYrkb1U=
 
 regenerator-transform@^0.14.2:
   version "0.14.5"
-  resolved "https://registry.npm.taobao.org/regenerator-transform/download/regenerator-transform-0.14.5.tgz#c98da154683671c9c4dcb16ece736517e1b7feb4"
+  resolved "https://registry.npm.alibaba-inc.com/regenerator-transform/download/regenerator-transform-0.14.5.tgz#c98da154683671c9c4dcb16ece736517e1b7feb4"
   integrity sha1-yY2hVGg2ccnE3LFuznNlF+G3/rQ=
   dependencies:
     "@babel/runtime" "^7.8.4"
@@ -11801,12 +11874,12 @@ registry-url@^5.0.0:
 
 regjsgen@^0.5.1:
   version "0.5.2"
-  resolved "https://registry.npm.taobao.org/regjsgen/download/regjsgen-0.5.2.tgz#92ff295fb1deecbf6ecdab2543d207e91aa33733"
+  resolved "https://registry.npm.alibaba-inc.com/regjsgen/download/regjsgen-0.5.2.tgz#92ff295fb1deecbf6ecdab2543d207e91aa33733"
   integrity sha1-kv8pX7He7L9uzaslQ9IH6RqjNzM=
 
 regjsparser@^0.6.4:
   version "0.6.4"
-  resolved "https://registry.npm.taobao.org/regjsparser/download/regjsparser-0.6.4.tgz#a769f8684308401a66e9b529d2436ff4d0666272"
+  resolved "https://registry.npm.alibaba-inc.com/regjsparser/download/regjsparser-0.6.4.tgz#a769f8684308401a66e9b529d2436ff4d0666272"
   integrity sha1-p2n4aEMIQBpm6bUp0kNv9NBmYnI=
   dependencies:
     jsesc "~0.5.0"
@@ -11993,7 +12066,7 @@ requires-port@^1.0.0:
 
 resize-observer-polyfill@^1.5.0, resize-observer-polyfill@^1.5.1:
   version "1.5.1"
-  resolved "https://registry.npm.taobao.org/resize-observer-polyfill/download/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  resolved "https://registry.npm.alibaba-inc.com/resize-observer-polyfill/download/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
   integrity sha1-DpAg3T0hAkRY1OvSfiPkAmmBBGQ=
 
 resolve-cwd@^2.0.0:
@@ -12124,9 +12197,9 @@ rollup-plugin-typescript2@^0.27.0:
     tslib "2.0.1"
 
 rollup@^2.3.1:
-  version "2.33.3"
-  resolved "https://registry.npm.taobao.org/rollup/download/rollup-2.33.3.tgz?cache=0&sync_timestamp=1605677163089&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Frollup%2Fdownload%2Frollup-2.33.3.tgz#ae72ce31f992b09a580072951bfea76e9df17342"
-  integrity sha1-rnLOMfmSsJpYAHKVG/6nbp3xc0I=
+  version "2.35.1"
+  resolved "https://registry.npm.alibaba-inc.com/rollup/download/rollup-2.35.1.tgz#e6bc8d10893556a638066f89e8c97f422d03968c"
+  integrity sha1-5ryNEIk1VqY4Bm+J6Ml/Qi0Dlow=
   optionalDependencies:
     fsevents "~2.1.2"
 
@@ -12154,7 +12227,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
 
 rw@1:
   version "1.3.3"
-  resolved "https://registry.npm.taobao.org/rw/download/rw-1.3.3.tgz#3f862dfa91ab766b14885ef4d01124bfda074fb4"
+  resolved "https://registry.npm.alibaba-inc.com/rw/download/rw-1.3.3.tgz#3f862dfa91ab766b14885ef4d01124bfda074fb4"
   integrity sha1-P4Yt+pGrdmsUiF700BEkv9oHT7Q=
 
 rxjs@^6.5.3, rxjs@^6.5.4, rxjs@^6.5.5, rxjs@^6.6.0, rxjs@^6.6.3:
@@ -12271,7 +12344,7 @@ schema-utils@^3.0.0:
 
 scroll-into-view-if-needed@^2.2.25:
   version "2.2.26"
-  resolved "https://registry.npm.taobao.org/scroll-into-view-if-needed/download/scroll-into-view-if-needed-2.2.26.tgz#e4917da0c820135ff65ad6f7e4b7d7af568c4f13"
+  resolved "https://registry.npm.alibaba-inc.com/scroll-into-view-if-needed/download/scroll-into-view-if-needed-2.2.26.tgz#e4917da0c820135ff65ad6f7e4b7d7af568c4f13"
   integrity sha1-5JF9oMggE1/2Wtb35LfXr1aMTxM=
   dependencies:
     compute-scroll-into-view "^1.0.16"
@@ -12323,7 +12396,7 @@ semver-diff@^3.1.1:
 
 semver@7.0.0:
   version "7.0.0"
-  resolved "https://registry.npm.taobao.org/semver/download/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
+  resolved "https://registry.npm.alibaba-inc.com/semver/download/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha1-XzyjV2HkfgWyBsba/yz4FPAxa44=
 
 semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
@@ -12451,14 +12524,14 @@ sha.js@^2.4.0, sha.js@^2.4.8:
 
 shallow-element-equals@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/shallow-element-equals/download/shallow-element-equals-1.0.1.tgz#50739b7d94ad7567a134173d3f4422387ed57ce6"
+  resolved "https://registry.npm.alibaba-inc.com/shallow-element-equals/download/shallow-element-equals-1.0.1.tgz#50739b7d94ad7567a134173d3f4422387ed57ce6"
   integrity sha1-UHObfZStdWehNBc9P0QiOH7VfOY=
   dependencies:
     style-equal "^1.0.0"
 
 shallowequal@^1.0.2, shallowequal@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npm.taobao.org/shallowequal/download/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
+  resolved "https://registry.npm.alibaba-inc.com/shallowequal/download/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha1-GI1SHelbkIdAT9TctosT3wrk5/g=
 
 shebang-command@^1.2.0:
@@ -12850,7 +12923,7 @@ strict-uri-encode@^1.0.0:
 
 string-convert@^0.2.0:
   version "0.2.1"
-  resolved "https://registry.npm.taobao.org/string-convert/download/string-convert-0.2.1.tgz#6982cc3049fbb4cd85f8b24568b9d9bf39eeff97"
+  resolved "https://registry.npm.alibaba-inc.com/string-convert/download/string-convert-0.2.1.tgz#6982cc3049fbb4cd85f8b24568b9d9bf39eeff97"
   integrity sha1-aYLMMEn7tM2F+LJFaLnZvznu/5c=
 
 string-length@^4.0.1:
@@ -12926,7 +12999,7 @@ string_decoder@~0.10.x:
 
 string_decoder@~1.1.1:
   version "1.1.1"
-  resolved "https://registry.npm.taobao.org/string_decoder/download/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
+  resolved "https://registry.npm.alibaba-inc.com/string_decoder/download/string_decoder-1.1.1.tgz#9cf1611ba62685d7030ae9e4ba34149c3af03fc8"
   integrity sha1-nPFhG6YmhdcDCunkujQUnDrwP8g=
   dependencies:
     safe-buffer "~5.1.0"
@@ -13014,7 +13087,7 @@ strip-json-comments@~2.0.1:
 
 style-equal@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npm.taobao.org/style-equal/download/style-equal-1.0.0.tgz#98a1c5922226bfe13c196e73f1940e91b8e66595"
+  resolved "https://registry.npm.alibaba-inc.com/style-equal/download/style-equal-1.0.0.tgz#98a1c5922226bfe13c196e73f1940e91b8e66595"
   integrity sha1-mKHFkiImv+E8GW5z8ZQOkbjmZZU=
 
 style-to-object@0.3.0, style-to-object@^0.3.0:
@@ -13287,7 +13360,7 @@ to-arraybuffer@^1.0.0:
 
 to-fast-properties@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/to-fast-properties/download/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
+  resolved "https://registry.npm.alibaba-inc.com/to-fast-properties/download/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
 
 to-object-path@^0.3.0:
@@ -13312,7 +13385,7 @@ to-regex-range@^2.1.0:
 
 to-regex-range@^5.0.1:
   version "5.0.1"
-  resolved "https://registry.npm.taobao.org/to-regex-range/download/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
+  resolved "https://registry.npm.alibaba-inc.com/to-regex-range/download/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
   integrity sha1-FkjESq58jZiKMmAY7XL1tN0DkuQ=
   dependencies:
     is-number "^7.0.0"
@@ -13329,7 +13402,7 @@ to-regex@^3.0.1, to-regex@^3.0.2:
 
 toggle-selection@^1.0.6:
   version "1.0.6"
-  resolved "https://registry.npm.taobao.org/toggle-selection/download/toggle-selection-1.0.6.tgz#6e45b1263f2017fa0acc7d89d78b15b8bf77da32"
+  resolved "https://registry.npm.alibaba-inc.com/toggle-selection/download/toggle-selection-1.0.6.tgz#6e45b1263f2017fa0acc7d89d78b15b8bf77da32"
   integrity sha1-bkWxJj8gF/oKzH2J14sVuL932jI=
 
 toidentifier@1.0.0:
@@ -13401,9 +13474,9 @@ tryer@^1.0.1:
   integrity sha1-8shUBoALmw90yfdGW4HqrSQSUvg=
 
 ts-loader@^8.0.4:
-  version "8.0.11"
-  resolved "https://registry.npm.taobao.org/ts-loader/download/ts-loader-8.0.11.tgz#35d58a65932caacb120426eea59eca841786c899"
-  integrity sha1-NdWKZZMsqssSBCbupZ7KhBeGyJk=
+  version "8.0.13"
+  resolved "https://registry.npm.alibaba-inc.com/ts-loader/download/ts-loader-8.0.13.tgz#2bebeb833570ca46bb9338322a9a29900e988535"
+  integrity sha1-K+vrgzVwyka7kzgyKpopkA6YhTU=
   dependencies:
     chalk "^2.3.0"
     enhanced-resolve "^4.0.0"
@@ -13509,10 +13582,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^4.0.3:
-  version "4.1.2"
-  resolved "https://registry.npm.taobao.org/typescript/download/typescript-4.1.2.tgz#6369ef22516fe5e10304aae5a5c4862db55380e9"
-  integrity sha1-Y2nvIlFv5eEDBKrlpcSGLbVTgOk=
+typescript@4.1:
+  version "4.1.3"
+  resolved "https://registry.npm.alibaba-inc.com/typescript/download/typescript-4.1.3.tgz#519d582bd94cba0cf8934c7d8e8467e473f53bb7"
+  integrity sha1-UZ1YK9lMugz4k0x9joRn5HP1O7c=
 
 ua-parser-js@^0.7.18:
   version "0.7.22"
@@ -13536,12 +13609,12 @@ unherit@^1.0.4:
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
-  resolved "https://registry.npm.taobao.org/unicode-canonical-property-names-ecmascript/download/unicode-canonical-property-names-ecmascript-1.0.4.tgz#2619800c4c825800efdd8343af7dd9933cbe2818"
+  resolved "https://registry.npm.alibaba-inc.com/unicode-canonical-property-names-ecmascript/download/unicode-canonical-property-names-ecmascript-1.0.4.tgz#2619800c4c825800efdd8343af7dd9933cbe2818"
   integrity sha1-JhmADEyCWADv3YNDr33Zkzy+KBg=
 
 unicode-match-property-ecmascript@^1.0.4:
   version "1.0.4"
-  resolved "https://registry.npm.taobao.org/unicode-match-property-ecmascript/download/unicode-match-property-ecmascript-1.0.4.tgz#8ed2a32569961bce9227d09cd3ffbb8fed5f020c"
+  resolved "https://registry.npm.alibaba-inc.com/unicode-match-property-ecmascript/download/unicode-match-property-ecmascript-1.0.4.tgz#8ed2a32569961bce9227d09cd3ffbb8fed5f020c"
   integrity sha1-jtKjJWmWG86SJ9Cc0/+7j+1fAgw=
   dependencies:
     unicode-canonical-property-names-ecmascript "^1.0.4"
@@ -13549,12 +13622,12 @@ unicode-match-property-ecmascript@^1.0.4:
 
 unicode-match-property-value-ecmascript@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.npm.taobao.org/unicode-match-property-value-ecmascript/download/unicode-match-property-value-ecmascript-1.2.0.tgz#0d91f600eeeb3096aa962b1d6fc88876e64ea531"
+  resolved "https://registry.npm.alibaba-inc.com/unicode-match-property-value-ecmascript/download/unicode-match-property-value-ecmascript-1.2.0.tgz#0d91f600eeeb3096aa962b1d6fc88876e64ea531"
   integrity sha1-DZH2AO7rMJaqlisdb8iIduZOpTE=
 
 unicode-property-aliases-ecmascript@^1.0.4:
   version "1.1.0"
-  resolved "https://registry.npm.taobao.org/unicode-property-aliases-ecmascript/download/unicode-property-aliases-ecmascript-1.1.0.tgz#dd57a99f6207bedff4628abefb94c50db941c8f4"
+  resolved "https://registry.npm.alibaba-inc.com/unicode-property-aliases-ecmascript/download/unicode-property-aliases-ecmascript-1.1.0.tgz#dd57a99f6207bedff4628abefb94c50db941c8f4"
   integrity sha1-3Vepn2IHvt/0Yoq++5TFDblByPQ=
 
 unified@9.2.0:
@@ -13966,7 +14039,7 @@ walker@^1.0.7, walker@~1.0.5:
 
 warning@^4.0.1, warning@^4.0.3:
   version "4.0.3"
-  resolved "https://registry.npm.taobao.org/warning/download/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  resolved "https://registry.npm.alibaba-inc.com/warning/download/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
   integrity sha1-Fungd+uKhtavfWSqHgX9hbRnjKM=
   dependencies:
     loose-envify "^1.0.0"

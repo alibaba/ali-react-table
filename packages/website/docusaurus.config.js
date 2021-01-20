@@ -13,6 +13,7 @@ module.exports = {
 
   themeConfig: {
     navbar: {
+      hideOnScroll: true,
       title: 'ali-react-table',
       logo: {
         alt: 'ali-react-table Logo',
@@ -104,7 +105,6 @@ module.exports = {
         routeBasePath: 'examples',
         editUrl: 'https://github.com/alibaba/ali-react-table/edit/master/packages/website/',
         sidebarPath: require.resolve('./example-sidebars.js'),
-        docLayoutComponent: '@theme/ExamplesDocPage',
       },
     ],
   ],

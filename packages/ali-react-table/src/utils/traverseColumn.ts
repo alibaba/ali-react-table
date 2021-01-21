@@ -13,6 +13,7 @@ function normalizeAsArray(input: NormalizeAsArrayInput<ArtColumn>): ArtColumn[] 
   }
 }
 
+/** @deprecated 该 API 已经过时，请使用 makeRecursiveMapper */
 export default function traverseColumn(
   fn: (
     column: ArtColumn,

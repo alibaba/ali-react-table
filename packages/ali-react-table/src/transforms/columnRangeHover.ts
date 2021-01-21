@@ -1,17 +1,14 @@
 import { useState } from 'react'
-import { CellProps, TableTransform } from '../interfaces'
+import { CellProps, HoverRange, TableTransform } from '../interfaces'
 import { isLeafNode, mergeCellProps, traverseColumn } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 const EMPTY_RANGE = {
   start: -1,
   end: -1,
 } as const
 
-export type HoverRange = {
-  start: number
-  end: number
-}
-
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export interface ColumnRangeHoverOptions {
   hoverColor?: string
   headerHoverColor?: string
@@ -19,12 +16,15 @@ export interface ColumnRangeHoverOptions {
   onChangeHoverRange(nextColIndexRange: HoverRange): void
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeColumnRangeHoverTransform({
   hoverColor = 'var(--hover-bgcolor)',
   headerHoverColor = 'var(--header-hover-bgcolor)',
   hoverRange,
   onChangeHoverRange,
 }: ColumnRangeHoverOptions): TableTransform {
+  warnTransformsDeprecated('makeColumnRangeHoverTransform')
+
   return traverseColumn((col, { range: colRange }) => {
     const match = colRange.end > hoverRange.start && hoverRange.end > colRange.start
 
@@ -78,6 +78,7 @@ export function makeColumnRangeHoverTransform({
   })
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function useColumnHoverRangeTransform({
   hoverColor,
   headerHoverColor,

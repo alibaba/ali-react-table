@@ -44,7 +44,7 @@ export interface RowGroupingFeatureOptions {
 }
 
 export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
-  return <P extends TablePipeline>(pipeline: P) => {
+  return (pipeline: TablePipeline) => {
     const stateKey = 'rowGrouping'
     const indents = pipeline.ctx.indents
     const textOffset = indents.iconIndent + indents.iconWidth + indents.iconGap

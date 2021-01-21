@@ -1,6 +1,7 @@
 import React from 'react'
+import { noop } from 'rxjs'
 import { BaseTableProps } from '../../base-table'
-import { makeTreeModeTransform } from '../../transforms'
+import { features, TablePipeline } from '../../pipeline'
 import { isLeafNode as standardIsLeafNode } from '../../utils'
 import { ArtColumn } from '../../interfaces'
 import {
@@ -46,19 +47,29 @@ export default function buildCrossTreeTable(
   const leftTree = options.leftTree ?? []
   const topTree = options.topTree ?? []
 
-  return makeTreeModeTransform({
-    primaryKey: ROW_KEY,
-    openKeys,
-    onChangeOpenKeys,
-    indentSize,
-    isLeafNode(row: CrossTreeTableRenderRow, nodeMeta) {
-      // 调用上层 isLeafNodeOpt 时，会从 row.node 中读取该表格行对应的 leftTreeNode
-      return isLeafNodeOpt(row.node, nodeMeta)
-    },
-  })({
-    columns: getColumns(),
-    dataSource: getDataSource(),
+  const pipeline = new TablePipeline({
+    state: {},
+    setState: noop,
+    ctx: { primaryKey: ROW_KEY },
   })
+
+  pipeline.input({ dataSource: getDataSource(), columns: getColumns() })
+  pipeline.use(
+    features.treeMode({
+      openKeys,
+      onChangeOpenKeys,
+      indentSize,
+      isLeafNode(row: CrossTreeTableRenderRow, nodeMeta) {
+        // 调用上层 isLeafNodeOpt 时，会从 row.node 中读取该表格行对应的 leftTreeNode
+        return isLeafNodeOpt(row.node, nodeMeta)
+      },
+    }),
+  )
+
+  return {
+    dataSource: pipeline.getDataSource(),
+    columns: pipeline.getColumns(),
+  }
 
   /** 获取表格的列配置 */
   function getColumns(): ArtColumn[] {

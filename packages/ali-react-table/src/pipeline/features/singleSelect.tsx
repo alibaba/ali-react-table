@@ -34,7 +34,7 @@ export interface SingleSelectFeatureOptions {
 }
 
 export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
-  return function singleSelectStep<T extends TablePipeline>(pipeline: T) {
+  return function singleSelectStep(pipeline: TablePipeline) {
     const Radio = pipeline.ctx.components.Radio
     if (Radio == null) {
       throw new Error('使用 singleSelect 之前需要通过 pipeline context 设置 components.Radio')

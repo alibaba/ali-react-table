@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder, TableTransform } from '../interfaces'
 import { internals } from '../internals'
 import { collectNodes, isLeafNode, layeredSort, mergeCellProps, smartCompare } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 function SortIcon({
   size = 32,
@@ -118,6 +119,7 @@ export interface SortOptions {
   stopClickEventPropagation?: boolean
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeSortTransform({
   sorts: inputSorts,
   onChangeSorts: inputOnChangeSorts,
@@ -128,6 +130,8 @@ export function makeSortTransform({
   highlightColumnWhenActive,
   stopClickEventPropagation,
 }: SortOptions): TableTransform {
+  warnTransformsDeprecated('makeSortTransform')
+
   const filteredInputSorts = inputSorts.filter((s) => s.order !== 'none')
 
   // 单字段排序的情况下 sorts 中只有第一个排序字段才会生效
@@ -277,6 +281,7 @@ export function makeSortTransform({
   }
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function useSortTransform({
   defaultSorts = [],
   ...others

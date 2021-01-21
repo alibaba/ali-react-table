@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { TableTransform } from '../interfaces'
 import { internals } from '../internals'
 import { isLeafNode, traverseColumn } from '../utils'
+import { warnTransformsDeprecated } from './warnTransformsDeprecated'
 
 function clamp(min: number, x: number, max: number) {
   return Math.max(min, Math.min(max, x))
@@ -22,6 +23,7 @@ const ResizeHandle = styled.span`
   z-index: 1;
 `
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export interface ColumnResizeOptions {
   /** 每一列的宽度 */
   sizes: number[]
@@ -41,6 +43,7 @@ export interface ColumnResizeOptions {
   expanderVisibility?: 'visible' | 'hidden'
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function makeColumnResizeTransform({
   sizes,
   onChangeSizes,
@@ -50,6 +53,8 @@ export function makeColumnResizeTransform({
   expanderVisibility = 'visible',
   disableUserSelectWhenResizing,
 }: ColumnResizeOptions): TableTransform {
+  warnTransformsDeprecated('makeColumnResizeTransform')
+
   const startResize = (colIndex: number, e: React.MouseEvent<HTMLSpanElement>) => {
     const startX = e.clientX
     const startSize = sizes[colIndex]
@@ -141,6 +146,7 @@ export function makeColumnResizeTransform({
   }
 }
 
+/** @deprecated transform 用法已经过时，请使用 pipeline 来对表格进行拓展 */
 export function useColumnResizeTransform({
   defaultSizes,
   ...others

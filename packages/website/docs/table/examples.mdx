@@ -99,14 +99,12 @@ function 左侧锁列() {
 function 表头吸顶() {
   const { dataSource, isLoading } = assets.ncov19.useProvinceDataSource()
 
-  const WEBSITE_NAV_HEIGHT = 60
-
   return (
     <div>
       <div
         style={{
           position: 'sticky',
-          top: WEBSITE_NAV_HEIGHT,
+          top: 0,
           height: 48,
           border: '1px solid #ccc',
           zIndex: 30,
@@ -120,7 +118,7 @@ function 表头吸顶() {
       </div>
       <BaseTable
         isStickyHead // isStickyHead 的默认值为 true；设置为 false 可以关闭表头吸顶
-        stickyTop={WEBSITE_NAV_HEIGHT + 48}
+        stickyTop={48}
         isLoading={isLoading}
         dataSource={dataSource.slice(0, 6)}
         columns={assets.ncov19.testProvColumns}
@@ -136,13 +134,11 @@ function 表头吸顶() {
 
 ```jsx live
 function 表头分组() {
-  const WEBSITE_NAV_HEIGHT = 60
   const { useProvinceDataSource, cols } = assets.ncov19
   const { dataSource, isLoading } = useProvinceDataSource()
 
   return (
     <BaseTable
-      stickyTop={WEBSITE_NAV_HEIGHT}
       isLoading={isLoading}
       dataSource={dataSource.slice(0, 6)}
       columns={[

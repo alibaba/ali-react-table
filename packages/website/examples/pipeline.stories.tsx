@@ -256,9 +256,9 @@ export function 表头分组与列高亮() {
 export function 多选与提示信息() {
   const columns = [
     { code: 'title', name: '标题', width: 200, features: { tips: '我是指标的详细信息~~' } },
-    { code: 'dept', name: '部门名称', width: 180, features: { autoRowSpan: true } },
-    { code: 'dest', name: '团建目的地', width: 160, features: { autoRowSpan: true } },
-    { code: 'guide', name: '当地导游', width: 160, features: { autoRowSpan: true } },
+    { code: 'dept', name: '部门名称', width: 180 },
+    { code: 'dest', name: '团建目的地', width: 160 },
+    { code: 'guide', name: '当地导游', width: 160 },
     operationCol,
   ]
 

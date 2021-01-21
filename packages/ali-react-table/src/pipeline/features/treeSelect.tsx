@@ -57,7 +57,7 @@ export interface TreeSelectFeatureOptions {
 const STATE_KEY = 'treeSelect'
 
 export function treeSelect(opts: TreeSelectFeatureOptions) {
-  return function treeSelectStep<P extends TablePipeline>(pipeline: P) {
+  return function treeSelectStep(pipeline: TablePipeline) {
     const Checkbox = pipeline.ctx.components.Checkbox
     if (Checkbox == null) {
       throw new Error('使用 treeSelect 之前需要通过 pipeline context 设置 components.Checkbox')

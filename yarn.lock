@@ -7060,10 +7060,10 @@ immer@1.10.0:
   resolved "https://registry.npm.taobao.org/immer/download/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
   integrity sha1-utZ2BbqcgQJ12R4cKkfUWC6YKG0=
 
-immer@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npm.taobao.org/immer/download/immer-8.0.0.tgz#08763549ba9dd7d5e2eb4bec504a8315bd9440c2"
-  integrity sha1-CHY1Sbqd19Xi60vsUEqDFb2UQMI=
+immer@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.npm.taobao.org/immer/download/immer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
+  integrity sha1-nHPbaD4rOXXEJPsFcq9YiYd65lY=
 
 import-cwd@^2.0.0:
   version "2.1.0"

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2019",
+    "declaration": true,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "useDefineForClassFields": true,
+    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "paths": {
+      "ali-react-table": ["../ali-react-table/src/ali-react-table.ts"],
+      "ali-react-table/pivot": ["../ali-react-table/src/ali-react-table-pivot.ts"]
+    }
+  },
+  "include": ["./src"]
+}

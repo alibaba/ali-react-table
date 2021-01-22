@@ -73,7 +73,7 @@ export interface BaseTableProps {
   /** 表格是否具有横向的粘性滚动条 */
   hasStickyScroll?: boolean
   /** 横向粘性滚动条高度 */
-  stickyScrollHeight: 'auto' | number
+  stickyScrollHeight?: 'auto' | number
   /** 使用来自外层 div 的边框代替单元格的外边框 */
   useOuterBorder?: boolean
 

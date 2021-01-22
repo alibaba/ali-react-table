@@ -7,6 +7,14 @@ title: 更新日志
 日志中的 **加粗部分** 表示破坏性更新 (break changes)，请多留意 ヾ(=･ω･=)o
 :::
 
+### v2.2 2020-12-11
+
+- fix: 将 react 标记为 peerDependencies
+
+### v2.1 2020-11-02
+
+- feat: 添加 [treeSelect 功能](/docs/pipeline/features/tree-select)
+
 ### v2.0 2020-10-15
 
 - feat：新的表格功能拓展机制 pipeline 与默认的拓展功能
@@ -34,7 +42,7 @@ title: 更新日志
 
 ### v1.0 2020-08-25
 
-[迁移指南](https://github.com/alibaba/ali-react-table/blob/master/docs/from-0.14-to-1.0.md)
+[迁移指南](/blog/2020/08/13/from-0.14-to-1.0)
 
 - 移除 ali-react-table/biz
 - **Break Change 重构表格 DOM 结构，简化 CSS variable**

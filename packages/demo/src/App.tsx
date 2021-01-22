@@ -451,11 +451,11 @@ export function App() {
               { code: 'curedCount', name: '治愈', width: 100, render: amount, align: 'right' },
               { code: 'deadCount', name: '死亡', width: 100, render: amount, align: 'right' },
             ],
-            useBigData ? 100 : 10,
+            useBigData ? 40 : 10,
           ),
           { code: 'updateTime', name: '更新时间', width: 150, lock: rightLock },
         ]}
-        dataSource={hasData ? (useBigData ? repeat(dataSource, 100) : dataSource) : []}
+        dataSource={hasData ? (useBigData ? repeat(dataSource, 5) : dataSource) : []}
         footerDataSource={hasFooter ? footerDataSource : []}
       />
     </AppDiv>

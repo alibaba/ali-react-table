@@ -1,8 +1,14 @@
-import { collectNodes, isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
-import { VirtualEnum } from './interfaces'
-import { BaseTableProps, BaseTableState } from './table'
-import { AUTO_VIRTUAL_THRESHOLD } from './utils'
+import { collectNodes, isLeafNode } from '../utils'
+import {
+  HorizontalRenderRange,
+  RenderInfo,
+  ResolvedUseVirtual,
+  VirtualEnum,
+  VisibleColumnDescriptor,
+} from './interfaces'
+import { BaseTableProps } from './table'
+import { AUTO_VIRTUAL_THRESHOLD, OVERSCAN_SIZE, sum } from './utils'
 
 function resolveVirtualEnabled(virtualEnum: VirtualEnum, defaultValue: boolean) {
   if (virtualEnum == null || virtualEnum === 'auto') {
@@ -88,10 +94,7 @@ function getLeftNestedLockCount(columns: ArtColumn[]) {
   }
 }
 
-export default function getDerivedStateFromProps(
-  props: Readonly<BaseTableProps>,
-  state: BaseTableState,
-): Pick<BaseTableState, 'flat' | 'nested' | 'useVirtual' | 'stickyLeftMap' | 'stickyRightMap'> {
+export function calculateFlatAndNestedColumnsAndResolveUseVirtual(props: Readonly<BaseTableProps>) {
   const { useVirtual: useVirtualProp, columns: columnsProp, dataSource: dataSourceProp, defaultColumnWidth } = props
 
   const columns = processColumns(columnsProp, defaultColumnWidth)
@@ -106,8 +109,6 @@ export default function getDerivedStateFromProps(
       flat: { left: [], right: [], full: fullFlat, center: fullFlat },
       nested: { left: [], right: [], full: columns, center: columns },
       useVirtual: { horizontal: false, vertical: false, header: false },
-      stickyLeftMap: new Map(),
-      stickyRightMap: new Map(),
     }
   }
 
@@ -139,24 +140,6 @@ export default function getDerivedStateFromProps(
     center: collectNodes(centerNested, 'leaf-only'),
   }
 
-  const fullFlatCount = flat.full.length
-  const leftFlatCount = flat.left.length
-  const rightFlatCount = flat.right.length
-
-  const stickyLeftMap = new Map<number, number>()
-  let stickyLeft = 0
-  for (let i = 0; i < leftFlatCount; i++) {
-    stickyLeftMap.set(i, stickyLeft)
-    stickyLeft += flat.full[i].width
-  }
-
-  const stickyRightMap = new Map<number, number>()
-  let stickyRight = 0
-  for (let i = 0; i < rightFlatCount; i++) {
-    stickyRightMap.set(fullFlatCount - 1 - i, stickyRight)
-    stickyRight += flat.full[fullFlatCount - 1 - i].width
-  }
-
   return {
     flat,
     nested: {
@@ -166,7 +149,78 @@ export default function getDerivedStateFromProps(
       center: centerNested,
     },
     useVirtual,
-    stickyLeftMap,
-    stickyRightMap,
   }
+}
+
+export function getHorizontalRenderRange({
+  offsetX,
+  maxRenderWidth,
+  flat,
+  useVirtual,
+}: {
+  offsetX: number
+  maxRenderWidth: number
+  flat: RenderInfo['flat']
+  useVirtual: ResolvedUseVirtual
+}): HorizontalRenderRange {
+  if (!useVirtual.horizontal) {
+    return { leftIndex: 0, leftBlank: 0, rightIndex: flat.full.length, rightBlank: 0 }
+  }
+
+  let leftIndex = 0
+  let centerCount = 0
+  let leftBlank = 0
+  let centerRenderWidth = 0
+
+  const overscannedOffsetX = Math.max(0, offsetX - OVERSCAN_SIZE)
+  while (leftIndex < flat.center.length) {
+    const col = flat.center[leftIndex]
+    if (col.width + leftBlank < overscannedOffsetX) {
+      leftIndex += 1
+      leftBlank += col.width
+    } else {
+      break
+    }
+  }
+
+  // 考虑 over scan 之后，中间部分的列至少需要渲染的宽度
+  const minCenterRenderWidth = maxRenderWidth + (overscannedOffsetX - leftBlank) + 2 * OVERSCAN_SIZE
+
+  while (leftIndex + centerCount < flat.center.length) {
+    const col = flat.center[leftIndex + centerCount]
+    if (col.width + centerRenderWidth < minCenterRenderWidth) {
+      centerRenderWidth += col.width
+      centerCount += 1
+    } else {
+      break
+    }
+  }
+
+  const rightBlankCount = flat.center.length - leftIndex - centerCount
+  const rightBlank = sum(flat.center.slice(flat.center.length - rightBlankCount).map((col) => col.width))
+  return {
+    leftIndex: leftIndex,
+    leftBlank,
+    rightIndex: leftIndex + centerCount,
+    rightBlank,
+  }
+}
+
+export function getVisibleColumnDescriptors(
+  flat: RenderInfo['flat'],
+  horizontalRenderRange: HorizontalRenderRange,
+): VisibleColumnDescriptor[] {
+  const { leftBlank, leftIndex, rightBlank, rightIndex } = horizontalRenderRange
+  const unfiltered: VisibleColumnDescriptor[] = [
+    ...flat.left.map((col, i) => ({ type: 'normal', col, colIndex: i } as const)),
+    leftBlank > 0 && { type: 'blank', blankSide: 'left', width: leftBlank },
+    ...flat.center
+      .slice(leftIndex, rightIndex)
+      .map((col, i) => ({ type: 'normal', col, colIndex: flat.left.length + leftIndex + i } as const)),
+    rightBlank > 0 && { type: 'blank', blankSide: 'right', width: rightBlank },
+    ...flat.right.map(
+      (col, i) => ({ type: 'normal', col, colIndex: flat.full.length - flat.right.length + i } as const),
+    ),
+  ]
+  return unfiltered.filter((d: VisibleColumnDescriptor) => Boolean(d))
 }

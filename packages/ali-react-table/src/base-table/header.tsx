@@ -1,10 +1,9 @@
 import cx from 'classnames'
 import React, { CSSProperties } from 'react'
-import { getTreeDepth, isLeafNode } from '../utils'
 import { ArtColumn } from '../interfaces'
-import { HorizontalRenderRange } from './interfaces'
+import { getTreeDepth, isLeafNode } from '../utils'
+import { HorizontalRenderRange, RenderInfo } from './interfaces'
 import { Classes } from './styles'
-import { BaseTableState } from './table'
 
 function range(n: number) {
   const array: number[] = []
@@ -12,15 +11,6 @@ function range(n: number) {
     array.push(i)
   }
   return array
-}
-
-export interface TableHeaderProps {
-  nested: BaseTableState['nested']
-  flat: BaseTableState['flat']
-  useVirtual: BaseTableState['useVirtual']
-  hoz: HorizontalRenderRange
-  stickyLeftMap: Map<number, number>
-  stickyRightMap: Map<number, number>
 }
 
 type ColWithRenderInfo =
@@ -146,8 +136,8 @@ function attachColIndex(inputNested: ArtColumn[], colIndexOffset: number) {
 }
 
 /** 计算用于渲染表头的数据结构 */
-function calculateRenderInfo(
-  { flat, nested, hoz, useVirtual }: TableHeaderProps,
+function calculateHeaderRenderInfo(
+  { flat, nested, horizontalRenderRange: hoz, useVirtual }: RenderInfo,
   rowCount: number,
 ): { flat: ColWithRenderInfo[]; leveled: ColWithRenderInfo[][] } {
   if (useVirtual.header) {
@@ -180,16 +170,16 @@ function calculateRenderInfo(
   return calculateLeveledAndFlat(attachColIndex(nested.full, 0), rowCount)
 }
 
-export default function TableHeader(props: TableHeaderProps) {
-  const { nested, flat, stickyLeftMap, stickyRightMap } = props
+export default function TableHeader({ info }: { info: RenderInfo }) {
+  const { nested, flat, stickyLeftMap, stickyRightMap } = info
   const rowCount = getTreeDepth(nested.full) + 1
-  const renderInfo = calculateRenderInfo(props, rowCount)
+  const headerRenderInfo = calculateHeaderRenderInfo(info, rowCount)
 
   const fullFlatCount = flat.full.length
   const leftFlatCount = flat.left.length
   const rightFlatCount = flat.right.length
 
-  const thead = renderInfo.leveled.map((wrappedCols, level) => {
+  const thead = headerRenderInfo.leveled.map((wrappedCols, level) => {
     const headerCells = wrappedCols.map((wrapped) => {
       if (wrapped.type === 'normal') {
         const { colIndex, colSpan, isLeaf, col } = wrapped
@@ -251,7 +241,7 @@ export default function TableHeader(props: TableHeaderProps) {
   return (
     <table>
       <colgroup>
-        {renderInfo.flat.map((wrapped) => {
+        {headerRenderInfo.flat.map((wrapped) => {
           if (wrapped.type === 'blank') {
             if (wrapped.width > 0) {
               return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />

@@ -1,4 +1,3 @@
-import { TableDoms } from '../interfaces'
 import { Classes } from '../styles'
 
 // 表格 DOM 结构
@@ -48,19 +47,6 @@ export class TableDOMHelper {
 
   readonly stickyScroll: HTMLDivElement
   readonly stickyScrollItem: HTMLDivElement
-
-  getDoms(): TableDoms {
-    return {
-      artTableWrapper: this.artTableWrapper,
-      artTable: this.artTable,
-      tableHeader: this.tableHeader,
-      tableBody: this.tableBody,
-      tableFooter: this.tableFooter,
-
-      stickyScroll: this.stickyScroll,
-      stickyScrollItem: this.stickyScrollItem,
-    }
-  }
 
   constructor(artTableWrapper: HTMLDivElement) {
     this.artTableWrapper = artTableWrapper

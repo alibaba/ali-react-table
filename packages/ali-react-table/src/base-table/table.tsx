@@ -3,17 +3,20 @@ import React, { CSSProperties, ReactNode } from 'react'
 import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subscription, timer } from 'rxjs'
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
-import { internals } from '../internals'
-import EmptyTable from './empty'
-import getDerivedStateFromProps from './getDerivedStateFromProps'
+import { EmptyHtmlTable } from './empty'
 import TableHeader from './header'
 import { getFullRenderRange, makeRowHeightManager } from './helpers/rowHeightManager'
-import SpanManager from './helpers/SpanManager'
 import { TableDOMHelper } from './helpers/TableDOMUtils'
 import { getVisiblePartObservable } from './helpers/visible-part'
-import { FullRenderRange, HorizontalRenderRange, HozWrappedCol, VerticalRenderRange, VirtualEnum } from './interfaces'
+import { HtmlTable } from './html-table'
+import { RenderInfo, ResolvedUseVirtual, VerticalRenderRange, VirtualEnum } from './interfaces'
 import Loading, { LoadingContentWrapperProps } from './loading'
 import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING, StyledArtTableWrapper } from './styles'
+import {
+  calculateFlatAndNestedColumnsAndResolveUseVirtual,
+  getHorizontalRenderRange,
+  getVisibleColumnDescriptors,
+} from './calculations'
 import {
   getScrollbarSize,
   OVERSCAN_SIZE,
@@ -102,11 +105,6 @@ export interface BaseTableProps {
 }
 
 export interface BaseTableState {
-  flat: { full: ArtColumn[]; left: ArtColumn[]; center: ArtColumn[]; right: ArtColumn[] }
-  nested: { full: ArtColumn[]; left: ArtColumn[]; center: ArtColumn[]; right: ArtColumn[] }
-  stickyLeftMap: Map<number, number>
-  stickyRightMap: Map<number, number>
-
   /** 是否要展示自定义滚动条(stickyScroll) */
   hasScroll: boolean
 
@@ -114,13 +112,6 @@ export interface BaseTableState {
    * 当表格较宽时，所有的列都能被完整的渲染，此时不需要渲染 lock sections
    * 只有当「整个表格的宽度」小于「每一列渲染宽度之和」时，lock sections 才需要被渲染 */
   needRenderLock: boolean
-
-  /** 是否需要启用虚拟滚动 */
-  useVirtual: {
-    horizontal: boolean
-    vertical: boolean
-    header: boolean
-  }
 
   /** 纵向虚拟滚动偏移量 */
   offsetY: number
@@ -154,30 +145,33 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     dataSource: [] as any[],
   }
 
-  static getDerivedStateFromProps = getDerivedStateFromProps
-
   private rowHeightManager = makeRowHeightManager(this.props.dataSource.length, this.props.estimatedRowHeight)
 
   private artTableWrapperRef = React.createRef<HTMLDivElement>()
   private domHelper: TableDOMHelper
   private rootSubscription = new Subscription()
 
+  // 最近一次渲染的计算结果缓存
+  private lastInfo: RenderInfo
+
   private data$: BehaviorSubject<{
     props: BaseTableProps
     state: BaseTableState
+    info: RenderInfo
     prevProps: BaseTableProps | null
     prevState: BaseTableState | null
   }>
 
+  /** @deprecated BaseTable.getDoms() 已经过时，请勿调用 */
   getDoms() {
-    return this.domHelper.getDoms()
+    console.warn('[ali-react-table] BaseTable.getDoms() 已经过时')
+    return this.domHelper
   }
 
   constructor(props: Readonly<BaseTableProps>) {
     super(props)
 
     this.state = {
-      ...getDerivedStateFromProps(props, null),
       hasScroll: true,
       needRenderLock: true,
       offsetY: 0,
@@ -220,9 +214,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     stickyScrollItem.style.width = `${innerTableWidth}px`
   }
 
-  private renderTableHeader({ horizontal: hoz }: FullRenderRange) {
+  private renderTableHeader(info: RenderInfo) {
     const { stickyTop, hasHeader } = this.props
-    const { flat, nested, useVirtual, stickyLeftMap, stickyRightMap } = this.state
 
     return (
       <div
@@ -232,20 +225,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           display: hasHeader ? undefined : 'none',
         }}
       >
-        <TableHeader
-          nested={nested}
-          flat={flat}
-          hoz={hoz}
-          useVirtual={useVirtual}
-          stickyLeftMap={stickyLeftMap}
-          stickyRightMap={stickyRightMap}
-        />
+        <TableHeader info={info} />
       </div>
     )
   }
 
   private updateOffsetX(nextOffsetX: number) {
-    if (this.state.useVirtual.horizontal) {
+    if (this.lastInfo.useVirtual.horizontal) {
       if (Math.abs(nextOffsetX - this.state.offsetX) >= OVERSCAN_SIZE / 2) {
         this.setState({ offsetX: nextOffsetX })
       }
@@ -261,7 +247,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     this.updateOffsetX(x)
 
     const { tableBody } = this.domHelper
-    const { flat } = this.state
+    const { flat } = this.lastInfo
 
     const leftLockShadow = this.domHelper.getLeftLockShadow()
     if (leftLockShadow) {
@@ -285,9 +271,9 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private getVerticalRenderRange(): VerticalRenderRange {
+  private getVerticalRenderRange(useVirtual: ResolvedUseVirtual): VerticalRenderRange {
     const { dataSource } = this.props
-    const { useVirtual, offsetY, maxRenderHeight } = this.state
+    const { offsetY, maxRenderHeight } = this.state
     const rowCount = dataSource.length
     if (useVirtual.vertical) {
       return this.rowHeightManager.getRenderRange(offsetY, maxRenderHeight, rowCount)
@@ -296,97 +282,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private getHorizontalRenderRange(): HorizontalRenderRange {
-    const { offsetX, maxRenderWidth, useVirtual, flat } = this.state
-
-    if (!useVirtual.horizontal) {
-      return { leftIndex: 0, leftBlank: 0, rightIndex: flat.full.length, rightBlank: 0 }
-    }
-
-    let leftIndex = 0
-    let centerCount = 0
-    let leftBlank = 0
-    let centerRenderWidth = 0
-
-    const overscannedOffsetX = Math.max(0, offsetX - OVERSCAN_SIZE)
-    while (leftIndex < flat.center.length) {
-      const col = flat.center[leftIndex]
-      if (col.width + leftBlank < overscannedOffsetX) {
-        leftIndex += 1
-        leftBlank += col.width
-      } else {
-        break
-      }
-    }
-
-    // 考虑 over scan 之后，中间部分的列至少需要渲染的宽度
-    const minCenterRenderWidth = maxRenderWidth + (overscannedOffsetX - leftBlank) + 2 * OVERSCAN_SIZE
-
-    while (leftIndex + centerCount < flat.center.length) {
-      const col = flat.center[leftIndex + centerCount]
-      if (col.width + centerRenderWidth < minCenterRenderWidth) {
-        centerRenderWidth += col.width
-        centerCount += 1
-      } else {
-        break
-      }
-    }
-
-    const rightBlankCount = flat.center.length - leftIndex - centerCount
-    const rightBlank = sum(flat.center.slice(flat.center.length - rightBlankCount).map((col) => col.width))
-    return {
-      leftIndex: leftIndex,
-      leftBlank,
-      rightIndex: leftIndex + centerCount,
-      rightBlank,
-    }
-  }
-
-  private getRenderRange(): FullRenderRange {
-    return {
-      vertical: this.getVerticalRenderRange(),
-      horizontal: this.getHorizontalRenderRange(),
-    }
-  }
-
-  private getFlatHozWrappedCols(hoz: HorizontalRenderRange): HozWrappedCol[] {
-    const { flat } = this.state
-
-    const wrappedCols: HozWrappedCol[] = [
-      ...flat.left.map((col, i) => ({ type: 'normal', col, colIndex: i } as const)),
-      hoz.leftBlank > 0 && { type: 'blank', blankSide: 'left', width: hoz.leftBlank },
-      ...flat.center
-        .slice(hoz.leftIndex, hoz.rightIndex)
-        .map((col, i) => ({ type: 'normal', col, colIndex: flat.left.length + hoz.leftIndex + i } as const)),
-      hoz.rightBlank > 0 && { type: 'blank', blankSide: 'right', width: hoz.rightBlank },
-      ...flat.right.map(
-        (col, i) => ({ type: 'normal', col, colIndex: flat.full.length - flat.right.length + i } as const),
-      ),
-    ]
-
-    return wrappedCols.filter(Boolean)
-  }
-
-  private renderTableBody(renderRange: FullRenderRange) {
-    const { vertical: ver, horizontal: hoz } = renderRange
+  private renderTableBody(info: RenderInfo) {
     const { dataSource, getRowProps, primaryKey, isLoading, emptyCellHeight, footerDataSource } = this.props
     const tableBodyClassName = cx(Classes.tableBody, Classes.horizontalScrollContainer, {
       'no-scrollbar': footerDataSource.length > 0,
     })
-    const wrappedCols = this.getFlatHozWrappedCols(hoz)
 
-    const colgroup = (
-      <colgroup>
-        {wrappedCols.map((wrapped) => {
-          if (wrapped.type === 'blank') {
-            return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />
-          }
-          return <col key={wrapped.colIndex} style={{ width: wrapped.col.width }} />
-        })}
-      </colgroup>
-    )
-
-    if (ver.bottomIndex - ver.topIndex === 0) {
+    if (dataSource.length === 0) {
       const { components, emptyContent } = this.props
       let EmptyContent = components.EmptyContent
       if (EmptyContent == null && emptyContent != null) {
@@ -396,9 +298,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
       return (
         <div className={tableBodyClassName}>
-          <EmptyTable
-            colgroup={colgroup}
-            colSpan={wrappedCols.length}
+          <EmptyHtmlTable
+            descriptors={info.visible}
             isLoading={isLoading}
             EmptyContent={EmptyContent}
             emptyCellHeight={emptyCellHeight}
@@ -407,274 +308,141 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       )
     }
 
-    const { flat, stickyLeftMap, stickyRightMap } = this.state
-    const fullFlatCount = flat.full.length
-    const leftFlatCount = flat.left.length
-    const rightFlatCount = flat.right.length
-
-    const spanManager = new SpanManager()
-    const rows = dataSource.slice(ver.topIndex, ver.bottomIndex).map(renderRow)
+    const { topIndex, bottomBlank, topBlank, bottomIndex } = info.verticalRenderRange
 
     return (
       <div className={tableBodyClassName}>
-        <div key="top-blank" className={cx(Classes.virtualBlank, 'top')} style={{ height: ver.topBlank }} />
-        <table>
-          {colgroup}
-          <tbody>{rows}</tbody>
-        </table>
-        <div key="bottom-blank" className={cx(Classes.virtualBlank, 'bottom')} style={{ height: ver.bottomBlank }} />
+        {topBlank > 0 && (
+          <div key="top-blank" className={cx(Classes.virtualBlank, 'top')} style={{ height: topBlank }} />
+        )}
+        <HtmlTable
+          tbodyHtmlTag="tbody"
+          getRowProps={getRowProps}
+          primaryKey={primaryKey}
+          data={dataSource.slice(topIndex, bottomIndex)}
+          horizontalRenderInfo={info}
+          verticalRenderInfo={{
+            first: 0,
+            offset: topIndex,
+            limit: bottomIndex,
+            last: dataSource.length - 1,
+          }}
+        />
+        {bottomBlank > 0 && (
+          <div key="bottom-blank" className={cx(Classes.virtualBlank, 'bottom')} style={{ height: bottomBlank }} />
+        )}
       </div>
     )
-
-    function renderRow(record: any, i: number) {
-      const rowIndex = ver.topIndex + i
-      spanManager.stripUpwards(rowIndex)
-
-      const rowProps = getRowProps(record, rowIndex)
-      const rowClass = cx(
-        Classes.tableRow,
-        {
-          first: rowIndex === 0,
-          last: rowIndex === dataSource.length - 1,
-          even: rowIndex % 2 === 0,
-          odd: rowIndex % 2 === 1,
-        },
-        rowProps?.className,
-      )
-      return (
-        <tr
-          {...rowProps}
-          className={rowClass}
-          key={internals.safeGetRowKey(primaryKey, record, rowIndex)}
-          data-rowindex={rowIndex}
-        >
-          {wrappedCols.map((wrapped) => {
-            if (wrapped.type === 'blank') {
-              return <td key={wrapped.blankSide} />
-            }
-            return renderBodyCell(record, rowIndex, wrapped.col, wrapped.colIndex)
-          })}
-        </tr>
-      )
-    }
-
-    function renderBodyCell(record: any, rowIndex: number, column: ArtColumn, colIndex: number) {
-      if (spanManager.testSkip(rowIndex, colIndex)) {
-        return null
-      }
-
-      const value = internals.safeGetValue(column, record, rowIndex)
-      const cellProps = column.getCellProps?.(value, record, rowIndex) ?? {}
-
-      let cellContent: ReactNode = value
-      if (column.render) {
-        cellContent = column.render(value, record, rowIndex)
-      }
-
-      let colSpan = 1
-      let rowSpan = 1
-      if (column.getSpanRect) {
-        const spanRect = column.getSpanRect(value, record, rowIndex)
-        colSpan = spanRect == null ? 1 : spanRect.right - colIndex
-        rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
-      } else {
-        if (cellProps.colSpan != null) {
-          colSpan = cellProps.colSpan
-        }
-        if (cellProps.rowSpan != null) {
-          rowSpan = cellProps.rowSpan
-        }
-      }
-
-      // rowSpan/colSpan 不能过大，避免 rowSpan/colSpan 影响因虚拟滚动而未渲染的单元格
-      rowSpan = Math.min(rowSpan, ver.bottomIndex - rowIndex)
-      colSpan = Math.min(colSpan, leftFlatCount + hoz.rightIndex - colIndex)
-
-      const hasSpan = colSpan > 1 || rowSpan > 1
-      if (hasSpan) {
-        spanManager.add(rowIndex, colIndex, colSpan, rowSpan)
-      }
-
-      const positionStyle: CSSProperties = {}
-
-      if (colIndex < leftFlatCount) {
-        positionStyle.position = 'sticky'
-        positionStyle.left = stickyLeftMap.get(colIndex)
-      } else if (colIndex >= fullFlatCount - rightFlatCount) {
-        positionStyle.position = 'sticky'
-        positionStyle.right = stickyRightMap.get(colIndex)
-      }
-
-      return React.createElement(
-        'td',
-        {
-          key: colIndex,
-          ...cellProps,
-          className: cx(Classes.tableCell, cellProps.className, {
-            first: colIndex === 0,
-            last: colIndex + colSpan === fullFlatCount,
-            'lock-left': colIndex < leftFlatCount,
-            'lock-right': colIndex >= fullFlatCount - rightFlatCount,
-          }),
-          ...(hasSpan ? { colSpan, rowSpan } : null),
-          style: {
-            textAlign: column.align,
-            ...cellProps.style,
-            ...positionStyle,
-          },
-        },
-        cellContent,
-      )
-    }
   }
 
-  private renderTableFooter(renderRange: FullRenderRange) {
-    const { horizontal: hoz } = renderRange
+  private renderTableFooter(info: RenderInfo) {
     const { footerDataSource = [], getRowProps, primaryKey, stickyBottom } = this.props
-    const wrappedCols = this.getFlatHozWrappedCols(hoz)
-
-    const colgroup = (
-      <colgroup>
-        {wrappedCols.map((wrapped) => {
-          if (wrapped.type === 'blank') {
-            return <col key={wrapped.blankSide} style={{ width: wrapped.width }} />
-          }
-          return <col key={wrapped.colIndex} style={{ width: wrapped.col.width }} />
-        })}
-      </colgroup>
-    )
-
-    const { flat, stickyLeftMap, stickyRightMap } = this.state
-    const fullFlatCount = flat.full.length
-    const leftFlatCount = flat.left.length
-    const rightFlatCount = flat.right.length
-
-    const spanManager = new SpanManager()
-    const rows = footerDataSource.map(renderFooterRow)
 
     return (
       <div
         className={cx(Classes.tableFooter, Classes.horizontalScrollContainer)}
-        style={{
-          bottom: stickyBottom === 0 ? undefined : stickyBottom,
-        }}
+        style={{ bottom: stickyBottom === 0 ? undefined : stickyBottom }}
       >
-        <table>
-          {colgroup}
-          <tfoot>{rows}</tfoot>
-        </table>
+        <HtmlTable
+          tbodyHtmlTag="tfoot"
+          data={footerDataSource}
+          horizontalRenderInfo={info}
+          getRowProps={getRowProps}
+          primaryKey={primaryKey}
+          verticalRenderInfo={{
+            offset: 0,
+            first: 0,
+            last: footerDataSource.length - 1,
+            limit: Infinity,
+          }}
+        />
       </div>
     )
-
-    // TODO 需要优化 renderFooterRow 的实现
-    function renderFooterRow(record: any, i: number) {
-      const rowIndex = 0 + i
-      spanManager.stripUpwards(rowIndex)
-
-      const rowProps = getRowProps(record, rowIndex)
-      const rowClass = cx(
-        Classes.tableRow,
-        {
-          first: rowIndex === 0,
-          last: rowIndex === footerDataSource.length - 1,
-          even: rowIndex % 2 === 0,
-          odd: rowIndex % 2 === 1,
-        },
-        rowProps?.className,
-      )
-      return (
-        <tr
-          {...rowProps}
-          className={rowClass}
-          key={internals.safeGetRowKey(primaryKey, record, rowIndex)}
-          data-rowindex={rowIndex}
-        >
-          {wrappedCols.map((wrapped) => {
-            if (wrapped.type === 'blank') {
-              return <td key={wrapped.blankSide} />
-            }
-            return renderFooterCell(record, rowIndex, wrapped.col, wrapped.colIndex)
-          })}
-        </tr>
-      )
-    }
-
-    // TODO 需要优化 renderFooterCell 的实现
-    function renderFooterCell(record: any, rowIndex: number, column: ArtColumn, colIndex: number) {
-      if (spanManager.testSkip(rowIndex, colIndex)) {
-        return null
-      }
-
-      const value = internals.safeGetValue(column, record, rowIndex)
-      const cellProps = column.getCellProps?.(value, record, rowIndex) ?? {}
-
-      let cellContent: ReactNode = value
-      if (column.render) {
-        cellContent = column.render(value, record, rowIndex)
-      }
-
-      let colSpan = 1
-      let rowSpan = 1
-      if (column.getSpanRect) {
-        const spanRect = column.getSpanRect(value, record, rowIndex)
-        colSpan = spanRect == null ? 1 : spanRect.right - colIndex
-        rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
-      } else {
-        if (cellProps.colSpan != null) {
-          colSpan = cellProps.colSpan
-        }
-        if (cellProps.rowSpan != null) {
-          rowSpan = cellProps.rowSpan
-        }
-      }
-
-      // rowSpan/colSpan 不能过大，避免 rowSpan/colSpan 影响因虚拟滚动而未渲染的单元格
-      colSpan = Math.min(colSpan, leftFlatCount + hoz.rightIndex - colIndex)
-
-      const hasSpan = colSpan > 1 || rowSpan > 1
-      if (hasSpan) {
-        spanManager.add(rowIndex, colIndex, colSpan, rowSpan)
-      }
-
-      const positionStyle: CSSProperties = {}
-
-      if (colIndex < leftFlatCount) {
-        positionStyle.position = 'sticky'
-        positionStyle.left = stickyLeftMap.get(colIndex)
-      } else if (colIndex >= fullFlatCount - rightFlatCount) {
-        positionStyle.position = 'sticky'
-        positionStyle.right = stickyRightMap.get(colIndex)
-      }
-
-      return React.createElement(
-        'td',
-        {
-          key: colIndex,
-          ...cellProps,
-          className: cx(Classes.tableCell, cellProps.className, {
-            first: colIndex === 0,
-            last: colIndex + colSpan === fullFlatCount,
-            'lock-left': colIndex < leftFlatCount,
-            'lock-right': colIndex >= fullFlatCount - rightFlatCount,
-          }),
-          ...(hasSpan ? { colSpan, rowSpan } : null),
-          style: {
-            textAlign: column.align,
-            ...cellProps.style,
-            ...positionStyle,
-          },
-        },
-        cellContent,
-      )
-    }
   }
 
-  private isLock() {
-    const { nested } = this.state
-    return nested.left.length > 0 || nested.right.length > 0
+  private renderLockShadows(info: RenderInfo) {
+    return (
+      <>
+        <div
+          className={Classes.lockShadowMask}
+          style={{ left: 0, width: info.leftLockTotalWidth + LOCK_SHADOW_PADDING }}
+        >
+          <div className={cx(Classes.lockShadow, Classes.leftLockShadow)} />
+        </div>
+        <div
+          className={Classes.lockShadowMask}
+          style={{ right: 0, width: info.rightLockTotalWidth + LOCK_SHADOW_PADDING }}
+        >
+          <div className={cx(Classes.lockShadow, Classes.rightLockShadow)} />
+        </div>
+      </>
+    )
+  }
+
+  private renderStickyScroll(info: RenderInfo) {
+    const { hasStickyScroll, stickyBottom } = this.props
+    const { hasScroll } = this.state
+    return (
+      <div
+        className={cx(Classes.stickyScroll, Classes.horizontalScrollContainer)}
+        style={{
+          display: hasStickyScroll && hasScroll ? 'block' : 'none',
+          bottom: stickyBottom,
+        }}
+      >
+        <div className={Classes.stickyScrollItem} />
+      </div>
+    )
+  }
+
+  /** 计算本次 render 所需要的数据 */
+  private calculateRenderInfo(): RenderInfo {
+    const { offsetX, maxRenderWidth } = this.state
+    const { flat, nested, useVirtual } = calculateFlatAndNestedColumnsAndResolveUseVirtual(this.props)
+
+    const horizontalRenderRange = getHorizontalRenderRange({ maxRenderWidth, offsetX, useVirtual, flat })
+    const verticalRenderRange = this.getVerticalRenderRange(useVirtual)
+
+    const fullFlatCount = flat.full.length
+    const leftFlatCount = flat.left.length
+    const rightFlatCount = flat.right.length
+
+    const stickyLeftMap = new Map<number, number>()
+    let stickyLeft = 0
+    for (let i = 0; i < leftFlatCount; i++) {
+      stickyLeftMap.set(i, stickyLeft)
+      stickyLeft += flat.full[i].width
+    }
+
+    const stickyRightMap = new Map<number, number>()
+    let stickyRight = 0
+    for (let i = 0; i < rightFlatCount; i++) {
+      stickyRightMap.set(fullFlatCount - 1 - i, stickyRight)
+      stickyRight += flat.full[fullFlatCount - 1 - i].width
+    }
+
+    const leftLockTotalWidth = sum(flat.left.map((col) => col.width))
+    const rightLockTotalWidth = sum(flat.right.map((col) => col.width))
+
+    return {
+      horizontalRenderRange,
+      verticalRenderRange,
+      visible: getVisibleColumnDescriptors(flat, horizontalRenderRange),
+      flat,
+      nested,
+      useVirtual,
+      stickyLeftMap,
+      stickyRightMap,
+      leftLockTotalWidth,
+      rightLockTotalWidth,
+      hasLockColumn: nested.left.length > 0 || nested.right.length > 0,
+    }
   }
 
   render() {
+    const info = this.calculateRenderInfo()
+    this.lastInfo = info
+
     const {
       dataSource,
       className,
@@ -685,82 +453,55 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       isStickyHeader,
       isStickyFooter,
       isLoading,
-      stickyBottom,
-      hasStickyScroll,
       footerDataSource,
       components,
     } = this.props
 
-    const { flat, hasScroll } = this.state
+    const artTableWrapperClassName = cx(
+      Classes.artTableWrapper,
+      {
+        'use-outer-border': useOuterBorder,
+        empty: dataSource.length === 0,
+        lock: info.hasLockColumn,
+        'has-header': hasHeader,
+        'sticky-header': isStickyHeader ?? isStickyHead,
+        'has-footer': footerDataSource.length > 0,
+        'sticky-footer': isStickyFooter,
+      },
+      className,
+    )
 
-    const styleWrapper = (node: ReactNode) => {
-      const artTableWrapperClassName = cx(
-        Classes.artTableWrapper,
-        {
-          'use-outer-border': useOuterBorder,
-          empty: dataSource.length === 0,
-          lock: this.isLock(),
-          'has-header': hasHeader,
-          'sticky-header': isStickyHeader ?? isStickyHead,
-          'has-footer': footerDataSource.length > 0,
-          'sticky-footer': isStickyFooter,
-        },
-        className,
-      )
-
-      const artTableWrapperProps = {
-        className: artTableWrapperClassName,
-        style,
-        [STYLED_REF_PROP]: this.artTableWrapperRef,
-      }
-      return <StyledArtTableWrapper {...artTableWrapperProps}>{node}</StyledArtTableWrapper>
+    const artTableWrapperProps = {
+      className: artTableWrapperClassName,
+      style,
+      [STYLED_REF_PROP]: this.artTableWrapperRef,
     }
 
-    const renderRange = this.getRenderRange()
-
-    return styleWrapper(
-      <Loading
-        visible={isLoading}
-        LoadingIcon={components.LoadingIcon}
-        LoadingContentWrapper={components.LoadingContentWrapper}
-      >
-        <div className={Classes.artTable}>
-          {this.renderTableHeader(renderRange)}
-          {this.renderTableBody(renderRange)}
-          {this.renderTableFooter(renderRange)}
-
-          <div
-            className={Classes.lockShadowMask}
-            style={{ left: 0, width: sum(flat.left.map((col) => col.width)) + LOCK_SHADOW_PADDING }}
-          >
-            <div className={cx(Classes.lockShadow, Classes.leftLockShadow)} />
-          </div>
-          <div
-            className={Classes.lockShadowMask}
-            style={{ right: 0, width: sum(flat.right.map((col) => col.width)) + LOCK_SHADOW_PADDING }}
-          >
-            <div className={cx(Classes.lockShadow, Classes.rightLockShadow)} />
-          </div>
-        </div>
-
-        <div
-          className={cx(Classes.stickyScroll, Classes.horizontalScrollContainer)}
-          style={{
-            display: hasStickyScroll && hasScroll ? 'block' : 'none',
-            bottom: stickyBottom,
-          }}
+    return (
+      <StyledArtTableWrapper {...artTableWrapperProps}>
+        <Loading
+          visible={isLoading}
+          LoadingIcon={components.LoadingIcon}
+          LoadingContentWrapper={components.LoadingContentWrapper}
         >
-          <div className={Classes.stickyScrollItem} />
-        </div>
-      </Loading>,
+          <div className={Classes.artTable}>
+            {this.renderTableHeader(info)}
+            {this.renderTableBody(info)}
+            {this.renderTableFooter(info)}
+            {this.renderLockShadows(info)}
+          </div>
+          {this.renderStickyScroll(info)}
+        </Loading>
+      </StyledArtTableWrapper>
     )
   }
 
   componentDidMount() {
-    this.updateDoms()
+    this.updateDOMHelper()
     this.data$ = new BehaviorSubject({
       props: this.props,
       state: this.state,
+      info: this.lastInfo,
       prevProps: null,
       prevState: null,
     })
@@ -769,10 +510,11 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   componentDidUpdate(prevProps: Readonly<BaseTableProps>, prevState: Readonly<BaseTableState>) {
-    this.updateDoms()
+    this.updateDOMHelper()
     this.data$.next({
       props: this.props,
       state: this.state,
+      info: this.lastInfo,
       prevProps,
       prevState,
     })
@@ -877,7 +619,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       visiblePart$
         .pipe(
           op.filter(() => {
-            const { horizontal, vertical } = this.state.useVirtual
+            const { horizontal, vertical } = this.lastInfo.useVirtual
             return horizontal || vertical
           }),
           op.map(({ clipRect, offsetY }) => ({
@@ -905,12 +647,11 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   /** 更新 DOM 节点的引用，方便其他方法直接操作 DOM */
-  private updateDoms() {
+  private updateDOMHelper() {
     this.domHelper = new TableDOMHelper(this.artTableWrapperRef.current)
   }
 
   private updateRowHeightManager(prevProps?: Readonly<BaseTableProps>) {
-    const { tableBody: artTableBody } = this.domHelper
     const virtualTop = this.domHelper.getVirtualTop()
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
@@ -933,7 +674,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     // 出现这种情况时，我们判断「下一次渲染能够渲染更多行」是否满足，满足的话就直接调用 forceUpdate
     if (maxTrRowIndex !== -1) {
       if (maxTrBottom < this.state.offsetY + this.state.maxRenderHeight) {
-        const vertical = this.getVerticalRenderRange()
+        const vertical = this.getVerticalRenderRange(this.lastInfo.useVirtual)
         if (vertical.bottomIndex - 1 > maxTrRowIndex) {
           this.forceUpdate()
         }
@@ -943,9 +684,10 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   /** 计算表格所有列的渲染宽度之和，判断表格是否需要渲染锁列 */
   private adjustNeedRenderLock() {
-    const { needRenderLock, flat } = this.state
+    const { needRenderLock } = this.state
+    const { flat, hasLockColumn } = this.lastInfo
 
-    if (this.isLock()) {
+    if (hasLockColumn) {
       const sumOfColWidth = sum(flat.full.map((col) => col.width))
       const nextNeedRenderLock = sumOfColWidth > this.domHelper.artTable.clientWidth
       if (needRenderLock !== nextNeedRenderLock) {

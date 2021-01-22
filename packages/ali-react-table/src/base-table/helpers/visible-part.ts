@@ -53,7 +53,9 @@ function fromResizeEvent(element: HTMLElement | typeof window): Observable<unkno
 /** 基于 ResizeObserver 和 scroll event 封装的 RxJS observable；
  * 用于监听一个元素的在页面中的「可见范围」的不断变化 */
 export function getVisiblePartObservable(target: HTMLElement, flowRoot: HTMLElement | typeof window) {
-  return merge<any>(fromEvent(flowRoot, 'scroll'), fromResizeEvent(flowRoot), fromResizeEvent(target)).pipe(
-    op.map(() => getVisiblePart(target, flowRoot)),
-  )
+  return merge<any>(
+    fromEvent(flowRoot, 'scroll', { passive: true }),
+    fromResizeEvent(flowRoot),
+    fromResizeEvent(target),
+  ).pipe(op.map(() => getVisiblePart(target, flowRoot)))
 }

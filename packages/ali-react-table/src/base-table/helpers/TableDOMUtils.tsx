@@ -22,7 +22,10 @@ import { Classes } from '../styles'
 //         │   │   │   └── tbody 注意这里会出现自定义内容，可能存在嵌套表格
 //         │   │   └── div.art-virtual-blank.bottom
 //         │   │
-//         │   ├── div.art-table-footer todo wip
+//         │   ├── div.art-table-footer
+//         │   │  └── table
+//         │   │      ├── colgroup
+//         │   │      └── tfoot  注意这里会出现自定义内容，可能存在嵌套表格
 //         │   │
 //         │   ├── div.art-lock-shadow-mask
 //         │   │   └── div.art-left-lock-shadow
@@ -41,6 +44,7 @@ export class TableDOMHelper {
   readonly artTable: HTMLDivElement
   readonly tableHeader: HTMLDivElement
   readonly tableBody: HTMLDivElement
+  readonly tableFooter: HTMLDivElement
 
   readonly stickyScroll: HTMLDivElement
   readonly stickyScrollItem: HTMLDivElement
@@ -51,6 +55,7 @@ export class TableDOMHelper {
       artTable: this.artTable,
       tableHeader: this.tableHeader,
       tableBody: this.tableBody,
+      tableFooter: this.tableFooter,
 
       stickyScroll: this.stickyScroll,
       stickyScrollItem: this.stickyScrollItem,
@@ -62,6 +67,7 @@ export class TableDOMHelper {
     this.artTable = artTableWrapper.querySelector<HTMLDivElement>(`.${Classes.artTable}`)
     this.tableHeader = this.artTable.querySelector(`:scope > .${Classes.tableHeader}`)
     this.tableBody = this.artTable.querySelector(`:scope > .${Classes.tableBody}`)
+    this.tableFooter = this.artTable.querySelector(`:scope > .${Classes.tableFooter}`)
 
     const stickyScrollSelector = `.${Classes.artTable} + .${Classes.stickyScroll}`
     this.stickyScroll = artTableWrapper.querySelector<HTMLDivElement>(stickyScrollSelector)

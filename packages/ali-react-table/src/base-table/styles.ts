@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const LOCK_SHADOW_PADDING = 20
 
@@ -11,6 +11,7 @@ export const Classes = {
   artTable: `${prefix}table`,
   tableHeader: `${prefix}table-header`,
   tableBody: `${prefix}table-body`,
+  tableFooter: `${prefix}table-footer`,
 
   /** 表格行 */
   tableRow: `${prefix}table-row`,
@@ -24,6 +25,7 @@ export const Classes = {
 
   stickyScroll: `${prefix}sticky-scroll`,
   stickyScrollItem: `${prefix}sticky-scroll-item`,
+  horizontalScrollContainer: `${prefix}horizontal-scroll-container`,
 
   lockShadowMask: `${prefix}lock-shadow-mask`,
   lockShadow: `${prefix}lock-shadow`,
@@ -40,7 +42,8 @@ export const Classes = {
 
 const Z = {
   lock: 5,
-  header: 10,
+  header: 15,
+  footer: 10,
   lockShadow: 20,
   scrollItem: 30,
   loadingIndicator: 40,
@@ -94,6 +97,33 @@ export type BaseTableCSSVariables = Partial<{
   '--header-cell-border-vertical': string
 }>
 
+const outerBorderStyleMixin = css`
+  border-top: var(--cell-border-horizontal);
+  border-right: var(--cell-border-vertical);
+  border-bottom: var(--cell-border-horizontal);
+  border-left: var(--cell-border-vertical);
+
+  td.first,
+  th.first {
+    border-left: none;
+  }
+  td.last,
+  th.last {
+    border-right: none;
+  }
+
+  thead tr.first th,
+  tbody tr.first td {
+    border-top: none;
+  }
+  &.has-footer tfoot tr.last td {
+    border-bottom: none;
+  }
+  &:not(.has-footer) tbody tr.last td {
+    border-bottom: none;
+  }
+`
+
 export const StyledArtTableWrapper = styled.div`
   --row-height: 48px;
   --color: #333;
@@ -132,26 +162,7 @@ export const StyledArtTableWrapper = styled.div`
 
   // 表格外边框由 art-table-wrapper 提供，而不是由单元格提供
   &.use-outer-border {
-    border-top: var(--cell-border-horizontal);
-    border-right: var(--cell-border-vertical);
-    border-bottom: var(--cell-border-horizontal);
-    border-left: var(--cell-border-vertical);
-
-    td.first,
-    th.first {
-      border-left: none;
-    }
-    td.last,
-    th.last {
-      border-right: none;
-    }
-    tr.first th,
-    tr.first td {
-      border-top: none;
-    }
-    tr.last td {
-      border-bottom: none;
-    }
+    ${outerBorderStyleMixin};
   }
 
   .no-scrollbar {
@@ -166,16 +177,22 @@ export const StyledArtTableWrapper = styled.div`
     background: var(--header-bgcolor);
   }
 
-  .${Classes.tableBody} {
+  .${Classes.tableBody}, .${Classes.tableFooter} {
     overflow-x: auto;
     overflow-y: hidden;
     background: var(--bgcolor);
   }
 
-  &.sticky .${Classes.tableHeader} {
+  &.sticky-header .${Classes.tableHeader} {
     position: sticky;
     top: 0;
     z-index: ${Z.header};
+  }
+
+  &.sticky-footer .${Classes.tableFooter} {
+    position: sticky;
+    bottom: 0;
+    z-index: ${Z.footer};
   }
 
   table {
@@ -230,8 +247,11 @@ export const StyledArtTableWrapper = styled.div`
   tr.first td {
     border-top: var(--cell-border-horizontal);
   }
-  &.has-header tr.first td {
+  &.has-header tbody tr.first td {
     border-top: none;
+  }
+  &.has-footer tbody tr.last td {
+    border-bottom: none;
   }
 
   .lock-left,

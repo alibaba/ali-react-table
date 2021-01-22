@@ -27,6 +27,7 @@ export interface TableDoms {
   artTable: HTMLDivElement
   tableHeader: HTMLDivElement
   tableBody: HTMLDivElement
+  tableFooter: HTMLDivElement
 
   stickyScroll: HTMLDivElement
   stickyScrollItem: HTMLDivElement

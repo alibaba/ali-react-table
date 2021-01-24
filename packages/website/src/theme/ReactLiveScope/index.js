@@ -1,3 +1,4 @@
+import useThemeContext from '@theme/hooks/useThemeContext'
 import React from 'react'
 import cx from 'clsx'
 import * as art from 'ali-react-table'
@@ -30,6 +31,7 @@ const ReactLiveScope = {
   BaseTable: WebsiteBaseTable,
   CrossTable: (props) => <CrossTable BaseTableComponent={WebsiteBaseTable} {...props} />,
   CrossTreeTable: (props) => <CrossTreeTable BaseTableComponent={WebsiteBaseTable} {...props} />,
+  useThemeContext,
 }
 
 export default ReactLiveScope

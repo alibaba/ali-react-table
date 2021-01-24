@@ -32,6 +32,5 @@ slug: /
 ## 相关链接
 
 - [表格组件介绍](/blog/2020/04/15/ali-react-table-introduction)
-- 表格使用过程中遇到问题可以联系钉钉号 feichao93
 - NPM: https://www.npmjs.com/package/ali-react-table
 - GitHub: https://github.com/alibaba/ali-react-table

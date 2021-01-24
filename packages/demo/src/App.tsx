@@ -326,6 +326,8 @@ export function App() {
     BaseTableComponent = DarkBaseTable
   } else if (theme == 'antd') {
     BaseTableComponent = AntdBaseTable as any
+  } else if (theme == 'antd-dark') {
+    BaseTableComponent = AntdBaseTable as any
   } else if (theme === 'hippo') {
     BaseTableComponent = HippoBaseTable as any
   }
@@ -415,6 +417,7 @@ export function App() {
                 <Radio.Button value="default">默认</Radio.Button>
                 <Radio.Button value="default-dark">暗色</Radio.Button>
                 <Radio.Button value="antd">antd</Radio.Button>
+                <Radio.Button value="antd-dark">antd 暗色</Radio.Button>
                 <Radio.Button value="hippo">盒马</Radio.Button>
               </Radio.Group>
               <div>表格主题</div>
@@ -424,7 +427,7 @@ export function App() {
       </div>
 
       <BaseTableComponent
-        className="bordered compact"
+        className={cx('bordered', 'compact', { dark: theme.includes('dark') })}
         isStickyHeader={isStickyHeader}
         isStickyFooter={isStickyFooter}
         isLoading={isLoading}

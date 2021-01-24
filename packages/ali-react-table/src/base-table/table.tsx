@@ -3,6 +3,7 @@ import React, { CSSProperties, ReactNode } from 'react'
 import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subscription, timer } from 'rxjs'
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
+import { calculateRenderInfo } from './calculations'
 import { EmptyHtmlTable } from './empty'
 import TableHeader from './header'
 import { getFullRenderRange, makeRowHeightManager } from './helpers/rowHeightManager'
@@ -12,11 +13,6 @@ import { HtmlTable } from './html-table'
 import { RenderInfo, ResolvedUseVirtual, VerticalRenderRange, VirtualEnum } from './interfaces'
 import Loading, { LoadingContentWrapperProps } from './loading'
 import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING, StyledArtTableWrapper } from './styles'
-import {
-  calculateFlatAndNestedColumnsAndResolveUseVirtual,
-  getHorizontalRenderRange,
-  getVisibleColumnDescriptors,
-} from './calculations'
 import {
   getScrollbarSize,
   OVERSCAN_SIZE,
@@ -104,7 +100,7 @@ export interface BaseTableProps {
   getRowProps?(record: any, rowIndex: number): React.HTMLAttributes<HTMLTableRowElement>
 }
 
-export interface BaseTableState {
+interface BaseTableState {
   /** 是否要展示自定义滚动条(stickyScroll) */
   hasScroll: boolean
 
@@ -154,13 +150,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   // 最近一次渲染的计算结果缓存
   private lastInfo: RenderInfo
 
-  private data$: BehaviorSubject<{
-    props: BaseTableProps
-    state: BaseTableState
-    info: RenderInfo
-    prevProps: BaseTableProps | null
-    prevState: BaseTableState | null
-  }>
+  private props$: BehaviorSubject<BaseTableProps>
 
   /** @deprecated BaseTable.getDoms() 已经过时，请勿调用 */
   getDoms() {
@@ -271,7 +261,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
-  private getVerticalRenderRange(useVirtual: ResolvedUseVirtual): VerticalRenderRange {
+  getVerticalRenderRange(useVirtual: ResolvedUseVirtual): VerticalRenderRange {
     const { dataSource } = this.props
     const { offsetY, maxRenderHeight } = this.state
     const rowCount = dataSource.length
@@ -395,52 +385,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     )
   }
 
-  /** 计算本次 render 所需要的数据 */
-  private calculateRenderInfo(): RenderInfo {
-    const { offsetX, maxRenderWidth } = this.state
-    const { flat, nested, useVirtual } = calculateFlatAndNestedColumnsAndResolveUseVirtual(this.props)
-
-    const horizontalRenderRange = getHorizontalRenderRange({ maxRenderWidth, offsetX, useVirtual, flat })
-    const verticalRenderRange = this.getVerticalRenderRange(useVirtual)
-
-    const fullFlatCount = flat.full.length
-    const leftFlatCount = flat.left.length
-    const rightFlatCount = flat.right.length
-
-    const stickyLeftMap = new Map<number, number>()
-    let stickyLeft = 0
-    for (let i = 0; i < leftFlatCount; i++) {
-      stickyLeftMap.set(i, stickyLeft)
-      stickyLeft += flat.full[i].width
-    }
-
-    const stickyRightMap = new Map<number, number>()
-    let stickyRight = 0
-    for (let i = 0; i < rightFlatCount; i++) {
-      stickyRightMap.set(fullFlatCount - 1 - i, stickyRight)
-      stickyRight += flat.full[fullFlatCount - 1 - i].width
-    }
-
-    const leftLockTotalWidth = sum(flat.left.map((col) => col.width))
-    const rightLockTotalWidth = sum(flat.right.map((col) => col.width))
-
-    return {
-      horizontalRenderRange,
-      verticalRenderRange,
-      visible: getVisibleColumnDescriptors(flat, horizontalRenderRange),
-      flat,
-      nested,
-      useVirtual,
-      stickyLeftMap,
-      stickyRightMap,
-      leftLockTotalWidth,
-      rightLockTotalWidth,
-      hasLockColumn: nested.left.length > 0 || nested.right.length > 0,
-    }
-  }
-
   render() {
-    const info = this.calculateRenderInfo()
+    const info = calculateRenderInfo(this)
     this.lastInfo = info
 
     const {
@@ -498,26 +444,14 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
   componentDidMount() {
     this.updateDOMHelper()
-    this.data$ = new BehaviorSubject({
-      props: this.props,
-      state: this.state,
-      info: this.lastInfo,
-      prevProps: null,
-      prevState: null,
-    })
+    this.props$ = new BehaviorSubject(this.props)
     this.initSubscriptions()
     this.didMountOrUpdate()
   }
 
   componentDidUpdate(prevProps: Readonly<BaseTableProps>, prevState: Readonly<BaseTableState>) {
     this.updateDOMHelper()
-    this.data$.next({
-      props: this.props,
-      state: this.state,
-      info: this.lastInfo,
-      prevProps,
-      prevState,
-    })
+    this.props$.next(this.props)
     this.didMountOrUpdate(prevProps, prevState)
   }
 
@@ -525,7 +459,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     this.syncHorizontalScrollFromTableBody()
     this.updateStickyScroll()
     this.adjustNeedRenderLock()
-    this.updateRowHeightManager(prevProps)
+    this.updateRowHeightManager()
     this.updateScrollLeftWhenLayoutChanged(prevProps, prevState)
   }
 
@@ -566,8 +500,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     )
 
     // 表格所处的 flowRoot / BFC
-    const resolvedFlowRoot$ = this.data$.pipe(
-      op.map((data) => data.props.flowRoot),
+    const resolvedFlowRoot$ = this.props$.pipe(
+      op.map((props) => props.flowRoot),
       op.switchMap((flowRoot) => {
         const wrapper = this.artTableWrapperRef.current
         if (flowRoot === 'auto') {
@@ -602,7 +536,10 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           op.map((p) => p.clipRect),
           op.distinctUntilChanged(shallowEqual),
         ),
-        this.data$.pipe(op.filter((data) => !data.prevProps?.isLoading && data.props.isLoading)),
+        this.props$.pipe(
+          op.pairwise(),
+          op.filter(([prevProps, props]) => !prevProps?.isLoading && props.isLoading),
+        ),
       ]).subscribe(([clipRect]) => {
         const loadingIndicator = this.domHelper.getLoadingIndicator()
         if (!loadingIndicator) {
@@ -651,7 +588,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     this.domHelper = new TableDOMHelper(this.artTableWrapperRef.current)
   }
 
-  private updateRowHeightManager(prevProps?: Readonly<BaseTableProps>) {
+  private updateRowHeightManager() {
     const virtualTop = this.domHelper.getVirtualTop()
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 

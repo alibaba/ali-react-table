@@ -21,6 +21,10 @@ const StyledBaseTable = (styled(BaseTable)`
   --font-size: 14px;
   --border-color: #f0f0f0;
 
+  &.compact {
+    --cell-padding: 8px 16px;
+  }
+
   td {
     transition: background 0.3s;
   }
@@ -91,11 +95,6 @@ export const AntdBaseTable = React.forwardRef<BaseTable, BaseTableProps>(functio
     <StyledBaseTable
       ref={ref}
       {...props}
-      className={cx(props.className, {
-        // 根据表头的深度设置 className，可以用于调整表头单元格的高度
-        'header-depth-0': headerDepth === 0,
-        'header-depth-1': headerDepth === 1,
-      })}
       components={{
         EmptyContent: AntEmptyContent,
         LoadingContentWrapper: AntLoadingContentWrapper,

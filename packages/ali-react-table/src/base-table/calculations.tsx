@@ -7,7 +7,7 @@ import {
   VirtualEnum,
   VisibleColumnDescriptor,
 } from './interfaces'
-import { BaseTableProps } from './table'
+import { BaseTable } from './table'
 import { AUTO_VIRTUAL_THRESHOLD, OVERSCAN_SIZE, sum } from './utils'
 
 function resolveVirtualEnabled(virtualEnum: VirtualEnum, defaultValue: boolean) {
@@ -94,65 +94,7 @@ function getLeftNestedLockCount(columns: ArtColumn[]) {
   }
 }
 
-export function calculateFlatAndNestedColumnsAndResolveUseVirtual(props: Readonly<BaseTableProps>) {
-  const { useVirtual: useVirtualProp, columns: columnsProp, dataSource: dataSourceProp, defaultColumnWidth } = props
-
-  const columns = processColumns(columnsProp, defaultColumnWidth)
-
-  const leftNestedLockCount = getLeftNestedLockCount(columns)
-
-  const fullFlat = collectNodes(columns, 'leaf-only')
-
-  if (leftNestedLockCount === columns.length) {
-    // 处理所有的列均为 lock
-    return {
-      flat: { left: [], right: [], full: fullFlat, center: fullFlat },
-      nested: { left: [], right: [], full: columns, center: columns },
-      useVirtual: { horizontal: false, vertical: false, header: false },
-    }
-  }
-
-  const leftNested = columns.slice(0, leftNestedLockCount)
-  const rightNestedLockCount = getLeftNestedLockCount(columns.slice().reverse())
-  const centerNested = columns.slice(leftNestedLockCount, columns.length - rightNestedLockCount)
-  const rightNested = columns.slice(columns.length - rightNestedLockCount)
-
-  const shouldEnableHozVirtual = fullFlat.length >= AUTO_VIRTUAL_THRESHOLD && fullFlat.every((col) => col.width != null)
-  const shouldEnableVerVirtual = dataSourceProp.length >= AUTO_VIRTUAL_THRESHOLD
-
-  const useVirtual =
-    typeof useVirtualProp !== 'object'
-      ? {
-          horizontal: resolveVirtualEnabled(useVirtualProp, shouldEnableHozVirtual),
-          vertical: resolveVirtualEnabled(useVirtualProp, shouldEnableVerVirtual),
-          header: resolveVirtualEnabled(useVirtualProp, false),
-        }
-      : {
-          horizontal: resolveVirtualEnabled(useVirtualProp.horizontal, shouldEnableHozVirtual),
-          vertical: resolveVirtualEnabled(useVirtualProp.vertical, shouldEnableVerVirtual),
-          header: resolveVirtualEnabled(useVirtualProp.header, shouldEnableVerVirtual),
-        }
-
-  const flat = {
-    left: collectNodes(leftNested, 'leaf-only'),
-    full: fullFlat,
-    right: collectNodes(rightNested, 'leaf-only'),
-    center: collectNodes(centerNested, 'leaf-only'),
-  }
-
-  return {
-    flat,
-    nested: {
-      left: leftNested,
-      full: columns,
-      right: rightNested,
-      center: centerNested,
-    },
-    useVirtual,
-  }
-}
-
-export function getHorizontalRenderRange({
+function getHorizontalRenderRange({
   offsetX,
   maxRenderWidth,
   flat,
@@ -206,12 +148,72 @@ export function getHorizontalRenderRange({
   }
 }
 
-export function getVisibleColumnDescriptors(
-  flat: RenderInfo['flat'],
-  horizontalRenderRange: HorizontalRenderRange,
-): VisibleColumnDescriptor[] {
+// 一顿计算，将表格本次渲染所需要的数据都给算出来（代码写得有点乱，有较大优化空间）
+// todo 可以考虑下将 header 部分的计算逻辑也放到这个文件中，目前应该有一些重复的计算逻辑
+export function calculateRenderInfo(table: BaseTable): RenderInfo {
+  const { offsetX, maxRenderWidth } = table.state
+
+  const {
+    useVirtual: useVirtualProp,
+    columns: columnsProp,
+    dataSource: dataSourceProp,
+    defaultColumnWidth,
+  } = table.props
+
+  const columns = processColumns(columnsProp, defaultColumnWidth)
+  const leftNestedLockCount = getLeftNestedLockCount(columns)
+  const fullFlat = collectNodes(columns, 'leaf-only')
+
+  let flat: RenderInfo['flat']
+  let nested: RenderInfo['nested']
+  let useVirtual: RenderInfo['useVirtual']
+
+  if (leftNestedLockCount === columns.length) {
+    flat = { left: [], right: [], full: fullFlat, center: fullFlat }
+    nested = { left: [], right: [], full: columns, center: columns }
+    useVirtual = { horizontal: false, vertical: false, header: false }
+  } else {
+    const leftNested = columns.slice(0, leftNestedLockCount)
+    const rightNestedLockCount = getLeftNestedLockCount(columns.slice().reverse())
+    const centerNested = columns.slice(leftNestedLockCount, columns.length - rightNestedLockCount)
+    const rightNested = columns.slice(columns.length - rightNestedLockCount)
+
+    const shouldEnableHozVirtual =
+      fullFlat.length >= AUTO_VIRTUAL_THRESHOLD && fullFlat.every((col) => col.width != null)
+    const shouldEnableVerVirtual = dataSourceProp.length >= AUTO_VIRTUAL_THRESHOLD
+
+    useVirtual = {
+      horizontal: resolveVirtualEnabled(
+        typeof useVirtualProp === 'object' ? useVirtualProp.horizontal : useVirtualProp,
+        shouldEnableHozVirtual,
+      ),
+      vertical: resolveVirtualEnabled(
+        typeof useVirtualProp === 'object' ? useVirtualProp.vertical : useVirtualProp,
+        shouldEnableVerVirtual,
+      ),
+      header: resolveVirtualEnabled(typeof useVirtualProp === 'object' ? useVirtualProp.header : useVirtualProp, false),
+    }
+
+    flat = {
+      left: collectNodes(leftNested, 'leaf-only'),
+      full: fullFlat,
+      right: collectNodes(rightNested, 'leaf-only'),
+      center: collectNodes(centerNested, 'leaf-only'),
+    }
+
+    nested = {
+      left: leftNested,
+      full: columns,
+      right: rightNested,
+      center: centerNested,
+    }
+  }
+
+  const horizontalRenderRange = getHorizontalRenderRange({ maxRenderWidth, offsetX, useVirtual, flat })
+  const verticalRenderRange = table.getVerticalRenderRange(useVirtual)
+
   const { leftBlank, leftIndex, rightBlank, rightIndex } = horizontalRenderRange
-  const unfiltered: VisibleColumnDescriptor[] = [
+  const unfilteredVisibleColumnDescriptors: VisibleColumnDescriptor[] = [
     ...flat.left.map((col, i) => ({ type: 'normal', col, colIndex: i } as const)),
     leftBlank > 0 && { type: 'blank', blankSide: 'left', width: leftBlank },
     ...flat.center
@@ -222,5 +224,40 @@ export function getVisibleColumnDescriptors(
       (col, i) => ({ type: 'normal', col, colIndex: flat.full.length - flat.right.length + i } as const),
     ),
   ]
-  return unfiltered.filter((d: VisibleColumnDescriptor) => Boolean(d))
+  const visibleColumnDescriptors = unfilteredVisibleColumnDescriptors.filter(Boolean)
+
+  const fullFlatCount = flat.full.length
+  const leftFlatCount = flat.left.length
+  const rightFlatCount = flat.right.length
+
+  const stickyLeftMap = new Map<number, number>()
+  let stickyLeft = 0
+  for (let i = 0; i < leftFlatCount; i++) {
+    stickyLeftMap.set(i, stickyLeft)
+    stickyLeft += flat.full[i].width
+  }
+
+  const stickyRightMap = new Map<number, number>()
+  let stickyRight = 0
+  for (let i = 0; i < rightFlatCount; i++) {
+    stickyRightMap.set(fullFlatCount - 1 - i, stickyRight)
+    stickyRight += flat.full[fullFlatCount - 1 - i].width
+  }
+
+  const leftLockTotalWidth = sum(flat.left.map((col) => col.width))
+  const rightLockTotalWidth = sum(flat.right.map((col) => col.width))
+
+  return {
+    horizontalRenderRange,
+    verticalRenderRange,
+    visible: visibleColumnDescriptors,
+    flat,
+    nested,
+    useVirtual,
+    stickyLeftMap,
+    stickyRightMap,
+    leftLockTotalWidth,
+    rightLockTotalWidth,
+    hasLockColumn: nested.left.length > 0 || nested.right.length > 0,
+  }
 }

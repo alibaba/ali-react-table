@@ -346,6 +346,11 @@ export function App() {
             组件提供了丰富的选项用于调整表格的结构，部分结构可以通过 <code>props.xxx</code>{' '}
             快速调整；而其他结构需要通过覆盖表格的样式进行调整。
           </p>
+          {showControlGrid && (
+            <p>
+              <b>该页面仍在不断优化中，敬请期待后续更新。</b>
+            </p>
+          )}
         </Typography>
 
         {showControlGrid && (

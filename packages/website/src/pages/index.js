@@ -15,7 +15,7 @@ const features = [
   {
     title: '实用表格特性',
     imageUrl: 'img/feature-rich-builtins.svg',
-    description: <>表头吸顶；左侧/右侧锁列；粘性滚动条；优化的加载图标位置</>,
+    description: <>表头吸顶；左侧/右侧锁列；粘性滚动条；表格页脚；优化的加载图标位置</>,
   },
   {
     title: '可定制性',

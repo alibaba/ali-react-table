@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>ali-react-table Blog</title>
+        <link>https://ali-react-table.js.org/blog</link>
+        <description>ali-react-table Blog</description>
+        <lastBuildDate>Tue, 20 Oct 2020 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <item>
+            <title><![CDATA[(wip) ali-react-table v2.0]]></title>
+            <link>https://ali-react-table.js.org/blog/2020/10/20/v2.0-introduction</link>
+            <guid>(wip) ali-react-table v2.0</guid>
+            <pubDate>Tue, 20 Oct 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[v2.0 来了！]]></description>
+        </item>
+        <item>
+            <title><![CDATA[从 0.14 升级到 1.0]]></title>
+            <link>https://ali-react-table.js.org/blog/2020/08/13/from-0.14-to-1.0</link>
+            <guid>从 0.14 升级到 1.0</guid>
+            <pubDate>Thu, 13 Aug 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[1.0 采用了 sticky position 来实现左右锁列功能，表格 border-collapse 属性从 collapse 切换到了 seperate，整体 DOM 结构变化较大，此外对原有的 css variables 进行了简化。 升级时注意原有的自定义样式 和依赖 DOM 结构的代码，这些代码注意回归验证。]]></description>
+        </item>
+        <item>
+            <title><![CDATA[从 0.13 升级到 0.14]]></title>
+            <link>https://ali-react-table.js.org/blog/2020/08/10/from-0.13-to-0.14</link>
+            <guid>从 0.13 升级到 0.14</guid>
+            <pubDate>Mon, 10 Aug 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[简化导入入口]]></description>
+        </item>
+        <item>
+            <title><![CDATA[ali-react-table：高性能 React 表格组件]]></title>
+            <link>https://ali-react-table.js.org/blog/2020/04/15/ali-react-table-introduction</link>
+            <guid>ali-react-table：高性能 React 表格组件</guid>
+            <pubDate>Wed, 15 Apr 2020 00:00:00 GMT</pubDate>
+            <description><![CDATA[简介]]></description>
+        </item>
+    </channel>
+</rss>

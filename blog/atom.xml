@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://ali-react-table.js.org/blog</id>
+    <title>ali-react-table Blog</title>
+    <updated>2020-10-20T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://ali-react-table.js.org/blog"/>
+    <subtitle>ali-react-table Blog</subtitle>
+    <icon>https://ali-react-table.js.org/img/favicon.ico</icon>
+    <entry>
+        <title type="html"><![CDATA[(wip) ali-react-table v2.0]]></title>
+        <id>(wip) ali-react-table v2.0</id>
+        <link href="https://ali-react-table.js.org/blog/2020/10/20/v2.0-introduction"/>
+        <updated>2020-10-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[v2.0 来了！]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[从 0.14 升级到 1.0]]></title>
+        <id>从 0.14 升级到 1.0</id>
+        <link href="https://ali-react-table.js.org/blog/2020/08/13/from-0.14-to-1.0"/>
+        <updated>2020-08-13T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[1.0 采用了 sticky position 来实现左右锁列功能，表格 border-collapse 属性从 collapse 切换到了 seperate，整体 DOM 结构变化较大，此外对原有的 css variables 进行了简化。 升级时注意原有的自定义样式 和依赖 DOM 结构的代码，这些代码注意回归验证。]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[从 0.13 升级到 0.14]]></title>
+        <id>从 0.13 升级到 0.14</id>
+        <link href="https://ali-react-table.js.org/blog/2020/08/10/from-0.13-to-0.14"/>
+        <updated>2020-08-10T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[简化导入入口]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ali-react-table：高性能 React 表格组件]]></title>
+        <id>ali-react-table：高性能 React 表格组件</id>
+        <link href="https://ali-react-table.js.org/blog/2020/04/15/ali-react-table-introduction"/>
+        <updated>2020-04-15T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[简介]]></summary>
+    </entry>
+</feed>

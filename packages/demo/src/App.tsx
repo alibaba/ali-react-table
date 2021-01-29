@@ -257,7 +257,10 @@ const beautifulScrollbarStyleMixin = css`
   }
 `
 
-const AppDiv = styled.div`
+const AppDivAppDiv = styled.div.withConfig({
+  // @ts-ignore
+  componentId: 'app-div',
+})`
   display: flow-root;
 
   &.has-custom-scrollbar {
@@ -333,7 +336,7 @@ export function App() {
   }
 
   return (
-    <AppDiv className={cx({ 'has-custom-scrollbar': hasCustomScrollbar })}>
+    <AppDivAppDiv className={cx({ 'has-custom-scrollbar': hasCustomScrollbar })}>
       <div style={{ background: '#f2f2f2', padding: 16 }}>
         <Typography>
           <h4>
@@ -466,6 +469,6 @@ export function App() {
         dataSource={hasData ? (useBigData ? repeat(dataSource, 5) : dataSource) : []}
         footerDataSource={hasFooter ? footerDataSource : []}
       />
-    </AppDiv>
+    </AppDivAppDiv>
   )
 }

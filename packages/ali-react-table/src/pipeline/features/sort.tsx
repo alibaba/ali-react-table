@@ -199,7 +199,7 @@ export function sort(opts: SortFeatureOptions = {}) {
           const compareFn = typeof sortable === 'function' ? sortable : smartCompare
           const xValue = internals.safeGetValue(column, x, -1)
           const yValue = internals.safeGetValue(column, y, -1)
-          const cmp = compareFn(xValue, yValue)
+          const cmp = compareFn(xValue, yValue, x, y)
           if (cmp !== 0) {
             return cmp * (order === 'asc' ? 1 : -1)
           }

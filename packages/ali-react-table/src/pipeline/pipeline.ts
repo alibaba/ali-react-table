@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BaseTableProps, PrimaryKey } from '../base-table'
 import { ArtColumn, TableTransform, Transform } from '../interfaces'
 import { mergeCellProps } from '../utils'
@@ -20,7 +20,7 @@ export interface TablePipelineIndentsConfig {
 
 export interface TablePipelineCtx {
   primaryKey?: PrimaryKey
-  components: { [name: string]: React.ComponentType<any> }
+  components: { [name: string]: any }
   indents: TablePipelineIndentsConfig
 
   [key: string]: any

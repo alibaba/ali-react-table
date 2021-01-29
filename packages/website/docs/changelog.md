@@ -5,7 +5,28 @@ title: 更新日志
 
 :::note
 日志中的 **加粗部分** 表示破坏性更新 (break changes)，请多留意 ヾ(=･ω･=)o
+
+放在「其他」部分中的内容表示改动较小，可以跳过不看 (￣３￣)a
 :::
+
+### unreleased
+
+- feat: 新增表格页脚（总结栏），可以通过 `props.footerDataSource` 设置页脚内容
+  - feat: 新增 `props.isStickyFooter` 设置表格页脚是否置底
+- feat: 支持自定义滚动条样式
+  - 新增一些 CSS 类名用来方便上层对滚动条样式进行设置
+  - 新增 `props.stickyScrollHeight` 来指定自定义滚动条的高度，以配合自定义滚动条样式
+- 其他：
+  - 表格排序功能优化
+  - 新增 `props.hasStickyScroll` 控制粘性滚动条是否出现
+
+### v2.2 2020-12-11
+
+- fix: 将 react 标记为 peerDependencies
+
+### v2.1 2020-11-02
+
+- feat: 添加 [treeSelect 功能](/docs/pipeline/features/tree-select)
 
 ### v2.0 2020-10-15
 
@@ -34,7 +55,7 @@ title: 更新日志
 
 ### v1.0 2020-08-25
 
-[迁移指南](https://github.com/alibaba/ali-react-table/blob/master/docs/from-0.14-to-1.0.md)
+[迁移指南](/blog/2020/08/13/from-0.14-to-1.0)
 
 - 移除 ali-react-table/biz
 - **Break Change 重构表格 DOM 结构，简化 CSS variable**

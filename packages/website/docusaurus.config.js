@@ -87,7 +87,6 @@ module.exports = {
           customCss: [
             require.resolve('./src/css/custom.scss'),
             require.resolve('./src/css/fusion.css'),
-            require.resolve('./src/css/style-reset.scss'),
           ],
         },
       },

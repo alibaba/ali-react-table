@@ -1,28 +1,49 @@
-import { BaseTable, BaseTableProps, Classes, getTreeDepth, LoadingContentWrapperProps } from 'ali-react-table'
+import { BaseTable, BaseTableProps, Classes, LoadingContentWrapperProps } from 'ali-react-table'
 import { Spin } from 'antd'
-import cx from 'classnames'
 import React from 'react'
 import styled from 'styled-components'
 
 const StyledBaseTable = (styled(BaseTable)`
-  --highlight-bgcolor: #fafafa;
-  --header-highlight-bgcolor: #f5f5f5;
-
-  --lock-shadow: rgba(0, 0, 0, 0.2) 0 0 10px 0px;
+  --line-height: 1.5715;
+  --font-size: 14px;
   --row-height: 32px;
   --header-row-height: 36px;
   --cell-padding: 16px;
+
+  --lock-shadow: rgba(0, 0, 0, 0.2) 0 0 10px 0px;
+  --border-color: #f0f0f0;
   --color: rgba(0, 0, 0, 0.85);
+  --bgcolor: white;
+  --hover-bgcolor: #fafafa;
+  --highlight-bgcolor: #fafafa;
   --header-color: rgba(0, 0, 0, 0.85);
   --header-bgcolor: #fafafa;
-  --hover-bgcolor: #fafafa;
   --header-hover-bgcolor: #f5f5f5;
-  --line-height: 1.5715;
-  --font-size: 14px;
-  --border-color: #f0f0f0;
+  --header-highlight-bgcolor: #f5f5f5;
+
+  &.dark {
+    --lock-shadow: black 0 0px 6px 2px;
+    --border-color: #303030;
+    --color: rgba(255, 255, 255, 0.65);
+    --bgcolor: #141414;
+    --hover-bgcolor: #262626;
+    --highlight-bgcolor: #262626;
+    --header-color: rgba(255, 255, 255, 0.85);
+    --header-bgcolor: #1d1d1d;
+    --hover-hover-bgcolor: #222;
+    --header-highlight-bgcolor: #222;
+  }
+
+  &.compact {
+    --cell-padding: 12px 8px;
+  }
 
   td {
     transition: background 0.3s;
+  }
+
+  th {
+    font-weight: 500;
   }
 
   .${Classes.lockShadowMask} {
@@ -38,10 +59,6 @@ const StyledBaseTable = (styled(BaseTable)`
     thead > tr.first th {
       border-top: none;
     }
-  }
-
-  th {
-    font-weight: 500;
   }
 ` as unknown) as typeof BaseTable
 
@@ -65,43 +82,36 @@ const AntEmptyContent = React.memo(() => (
   </>
 ))
 
-class AntLoadingContentWrapper extends React.Component<LoadingContentWrapperProps> {
-  render() {
-    const { children, visible } = this.props
-
-    return (
-      <div className="ant-loading-content-wrapper" style={{ opacity: visible ? 0.6 : undefined }}>
-        {children}
-      </div>
-    )
-  }
+function AntLoadingContentWrapper({ children, visible }: LoadingContentWrapperProps) {
+  return (
+    <div className="ant-loading-content-wrapper" style={{ opacity: visible ? 0.6 : undefined }}>
+      {children}
+    </div>
+  )
 }
 
 function BlockSpin() {
   return <Spin style={{ display: 'block' }} />
 }
 
-/** Ant Design 基础表格组件
+/** Ant Design 风格的基础表格组件.
  *
- * AntdBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式。  */
-export const AntdBaseTable = React.forwardRef<BaseTable, BaseTableProps>(function (props: BaseTableProps, ref) {
-  const headerDepth = getTreeDepth(props.columns)
-
-  return (
-    <StyledBaseTable
-      ref={ref}
-      {...props}
-      className={cx(props.className, {
-        // 根据表头的深度设置 className，可以用于调整表头单元格的高度
-        'header-depth-0': headerDepth === 0,
-        'header-depth-1': headerDepth === 1,
-      })}
-      components={{
-        EmptyContent: AntEmptyContent,
-        LoadingContentWrapper: AntLoadingContentWrapper,
-        LoadingIcon: BlockSpin,
-        ...props.components,
-      }}
-    />
-  )
-})
+ * AntdBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式
+ * * `className="bordered"` 带边框样式
+ * * `className="compact"` 紧凑样式
+ * * `className="dark"` 暗色主题
+ *
+ * 其他样式暂未提供，可以根据需求自行添加~
+ * */
+export const AntdBaseTable = React.forwardRef<BaseTable, BaseTableProps>((props, ref) => (
+  <StyledBaseTable
+    ref={ref}
+    {...props}
+    components={{
+      EmptyContent: AntEmptyContent,
+      LoadingContentWrapper: AntLoadingContentWrapper,
+      LoadingIcon: BlockSpin,
+      ...props.components,
+    }}
+  />
+))

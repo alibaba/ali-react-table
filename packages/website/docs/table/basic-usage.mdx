@@ -3,7 +3,7 @@ id: basic-usage
 title: 基本用法
 ---
 
-`<BaseTable />` 是 ali-react-table 中最主要的表格组件，其提供了基本的表格渲染能力。BaseTable 自带了一些非常实用的特性（表头吸顶、加载动画、锁列、单元格合并等），并支持虚拟滚动，支持大数据量渲染。
+`<BaseTable />` 是 ali-react-table 中最主要的表格组件，其提供了基本的表格渲染能力。BaseTable 自带了一些非常实用的特性（表头吸顶、加载动画、锁列、单元格合并、页脚等），并自带虚拟滚动以支持大数据量的渲染。
 
 BaseTable 只提供基本的表格渲染能力，不需要依赖特定组件库，故其打包体积很小，但这也意味着一些常见的表格功能（排序、过滤、行选择、树状模式等）需要[在上层进行拓展](../pipeline).
 
@@ -41,4 +41,6 @@ function 基本用法() {
 
 ## 更多用法
 
-上述的例子展示了 BaseTable 的基本用法，更多的用法（锁列、表头吸顶、列分组、单元格合并等）可参考 [表格示例](examples)。`BaseTable` 的详细 API 详见 [BaseTable API](api)
+上述的例子展示了 BaseTable 的基本用法，更多用法可参考 [表格示例](examples)，也推荐在 [这个页面](/structure) 中了解表格的各部分的结构。
+
+`BaseTable` 的详细 API 详见 [BaseTable API](api)

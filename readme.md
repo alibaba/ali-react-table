@@ -54,4 +54,3 @@ v2.0 发布，详见 [官方文档](https://ali-react-table.js.org/docs/changelo
 - NPM: https://www.npmjs.com/package/ali-react-table
 - GitHub: https://github.com/alibaba/ali-react-table
 - 表格组件介绍: https://zhuanlan.zhihu.com/p/130755755
-- 表格使用过程中遇到问题可以联系钉钉号 feichao93

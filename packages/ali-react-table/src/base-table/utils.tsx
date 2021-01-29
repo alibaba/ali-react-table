@@ -88,18 +88,12 @@ export function syncScrollLeft(elements: HTMLElement[], callback: (scrollLeft: n
   return subscription
 }
 
-export function query<T extends Element = HTMLDivElement>(elem: HTMLDivElement, className: string) {
-  return elem?.querySelector('.' + className) as T
-}
-
-export function queryAll<T extends Element = HTMLDivElement>(elem: HTMLDivElement, className: string) {
-  return elem?.querySelectorAll('.' + className) as NodeListOf<T>
-}
-
 /**
  * Performs equality by iterating through keys on an object and returning false
  * when any key has values which are not strictly equal between the arguments.
  * Returns true when the values of all keys are strictly equal.
+ *
+ * 这个函数是从 facebook 某个官方库中复制过来的
  */
 export function shallowEqual(objA: any, objB: any): boolean {
   const hasOwnProperty = Object.prototype.hasOwnProperty

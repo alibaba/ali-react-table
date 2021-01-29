@@ -1,5 +1,7 @@
 import cx from 'classnames'
 import React from 'react'
+import { Colgroup } from './colgroup'
+import { VisibleColumnDescriptor } from './interfaces'
 import { Classes } from './styles'
 
 const DefaultEmptyContent = React.memo(() => (
@@ -14,16 +16,14 @@ const DefaultEmptyContent = React.memo(() => (
 ))
 
 export interface EmptyTableProps {
-  colgroup: React.ReactNode
-  colSpan: number
+  descriptors: VisibleColumnDescriptor[]
   isLoading: boolean
   emptyCellHeight?: number
   EmptyContent?: React.ComponentType
 }
 
-export default function EmptyTable({
-  colgroup,
-  colSpan,
+export function EmptyHtmlTable({
+  descriptors,
   isLoading,
   emptyCellHeight,
   EmptyContent = DefaultEmptyContent,
@@ -32,12 +32,12 @@ export default function EmptyTable({
 
   return (
     <table>
-      {colgroup}
+      <Colgroup descriptors={descriptors} />
       <tbody>
         <tr className={cx(Classes.tableRow, 'first', 'last', 'no-hover')} data-rowindex={0}>
           <td
             className={cx(Classes.tableCell, 'first', 'last')}
-            colSpan={colSpan}
+            colSpan={descriptors.length}
             style={{ height: emptyCellHeight ?? 200 }}
           >
             {show && (

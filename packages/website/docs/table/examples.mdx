@@ -258,7 +258,6 @@ function 自定义表格行props() {
 function 限定表格容器大小() {
   const { dataSource1, operationCol } = assets.biz
 
-  const nameCol = { lock: true, code: 'name', width: 200, name: '公司名称' }
   const repeats = [
     { code: 'amount', width: 160, align: 'right', name: '金额' },
     { code: 'dept', width: 160, name: '金融机构' },
@@ -287,10 +286,59 @@ function 限定表格容器大小() {
             return String(rowIndex + 1)
           },
         },
-        nameCol,
+        { code: 'name', width: 200, name: '公司名称' },
         ...repeat(repeats, 5),
         operationCol,
       ]}
+    />
+  )
+}
+```
+
+### 表格页脚
+
+为表格设置 `footerDataSource={[...]}` 来添加页脚（总结栏）。
+
+表格页脚默认吸附在表格底部，可通过 `isStickyFooter={false}` 关闭吸底。
+
+目前表格页脚还不兼容部分表格拓展，所以尽量只在展示类表格中使用表格页脚。
+
+```jsx live
+function 表格页脚() {
+  const dataSource = [
+    { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
+    { prov: '广东省', confirmed: 1294, cured: 409, dead: 2, t: '2020-02-15 19:52:02' },
+    { prov: '河南省', confirmed: 1212, cured: 390, dead: 13, t: '2020-02-15 19:52:02' },
+    { prov: '浙江省', confirmed: 1162, cured: 428, dead: 0, t: '2020-02-15 19:52:02' },
+    { prov: '湖南省', confirmed: 1001, cured: 417, dead: 2, t: '2020-02-15 19:52:02' },
+  ]
+  const footerDataSource = [
+    { prov: '全国1', confirmed: 60000, cured: 5000, dead: 2000, t: '2020-02-15' },
+    { prov: '全国2', confirmed: '-', cured: 6000, dead: '-', t: '2020-02-16' },
+  ]
+
+  const columns = [
+    { code: 'prov', name: '省份', width: 150 },
+    { code: 'confirmed', name: '确诊', width: 100, align: 'right' },
+    { code: 'cured', name: '治愈', width: 100, align: 'right' },
+    { code: 'dead', name: '死亡', width: 100, align: 'right' },
+    { code: 't', name: '最后更新时间', width: 180 },
+  ]
+
+  return (
+    <BaseTable
+      css={`
+        height: 380px;
+        overflow: auto;
+        tfoot {
+          --bgcolor: var(--hover-bgcolor);
+        }
+      `}
+      dataSource={dataSource.concat(
+        [1, 2].flatMap((copy) => dataSource.map((row) => ({ ...row, prov: `${row.prov}_copy${copy}` }))),
+      )}
+      columns={columns}
+      footerDataSource={footerDataSource}
     />
   )
 }

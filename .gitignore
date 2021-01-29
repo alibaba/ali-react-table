@@ -1,0 +1,15 @@
+node_modules/
+.out
+build/
+dist/
+lib/
+.*-cache/
+.idea/
+*.log
+*.iml
+.DS_Store
+/coverage/
+test/coverage/
+.rpt2_cache/
+
+.justconf

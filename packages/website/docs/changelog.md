@@ -9,7 +9,7 @@ title: 更新日志
 放在「其他」部分中的内容表示改动较小，可以跳过不看 (￣３￣)a
 :::
 
-### unreleased
+### v2.3 2021-01-29
 
 - feat: 新增表格页脚（总结栏），可以通过 `props.footerDataSource` 设置页脚内容
   - feat: 新增 `props.isStickyFooter` 设置表格页脚是否置底

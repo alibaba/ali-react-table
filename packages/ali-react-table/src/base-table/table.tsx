@@ -537,8 +537,9 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           op.distinctUntilChanged(shallowEqual),
         ),
         this.props$.pipe(
+          op.startWith(null),
           op.pairwise(),
-          op.filter(([prevProps, props]) => !prevProps?.isLoading && props.isLoading),
+          op.filter(([prevProps, props]) => prevProps == null || (!prevProps.isLoading && props.isLoading)),
         ),
       ]).subscribe(([clipRect]) => {
         const loadingIndicator = this.domHelper.getLoadingIndicator()

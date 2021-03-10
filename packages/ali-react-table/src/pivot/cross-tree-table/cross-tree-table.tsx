@@ -18,7 +18,7 @@ export interface CrossTreeTableProps extends Omit<BaseTableProps, 'dataSource' |
   indentSize?: number
   isLeafNode?(node: any, nodeMeta: { depth: number; expanded: boolean; rowKey: string }): boolean
 
-  getValue(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
+  getValue?(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
   render?(
     value: any,
     leftNode: LeftCrossTreeNode,

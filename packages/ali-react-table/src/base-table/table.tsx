@@ -593,27 +593,34 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     const virtualTop = this.domHelper.getVirtualTop()
     const virtualTopHeight = virtualTop?.clientHeight ?? 0
 
-    let maxTrRowIndex = -1
-    let maxTrBottom = -1
+    let zeroHeightRowCount = 0
+    let maxRowIndex = -1
+    let maxRowBottom = -1
 
     for (const tr of this.domHelper.getTableRows()) {
       const rowIndex = Number(tr.dataset.rowindex)
       if (isNaN(rowIndex)) {
         continue
       }
-      maxTrRowIndex = Math.max(maxTrRowIndex, rowIndex)
+
+      maxRowIndex = Math.max(maxRowIndex, rowIndex)
       const offset = tr.offsetTop + virtualTopHeight
       const size = tr.offsetHeight
-      maxTrBottom = Math.max(maxTrBottom, offset + size)
+      if (size === 0) {
+        zeroHeightRowCount += 1
+      }
+
+      maxRowBottom = Math.max(maxRowBottom, offset + size)
       this.rowHeightManager.updateRow(rowIndex, offset, size)
     }
 
     // 当 estimatedRowHeight 过大时，可能出现「渲染行数过少，无法覆盖可视范围」的情况
     // 出现这种情况时，我们判断「下一次渲染能够渲染更多行」是否满足，满足的话就直接调用 forceUpdate
-    if (maxTrRowIndex !== -1) {
-      if (maxTrBottom < this.state.offsetY + this.state.maxRenderHeight) {
+    // zeroHeightRowCount === 0 用于确保当前没有 display=none 的情况
+    if (maxRowIndex !== -1 && zeroHeightRowCount === 0) {
+      if (maxRowBottom < this.state.offsetY + this.state.maxRenderHeight) {
         const vertical = this.getVerticalRenderRange(this.lastInfo.useVirtual)
-        if (vertical.bottomIndex - 1 > maxTrRowIndex) {
+        if (vertical.bottomIndex - 1 > maxRowIndex) {
           this.forceUpdate()
         }
       }

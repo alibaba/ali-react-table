@@ -13,7 +13,7 @@ module.exports = {
     {
       type: 'category',
       label: '其他示例',
-      items: ['others/drill-tree-table', 'others/simple-pivot-table'],
+      items: ['others/drill-tree-table', 'others/simple-pivot-table', 'others/cross-table-customization'],
     },
   ],
 }

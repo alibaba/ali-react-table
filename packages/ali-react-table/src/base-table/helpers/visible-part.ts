@@ -13,6 +13,7 @@ function getRect(ele: HTMLElement | typeof window): SimpleDOMRect {
   if (ele === window) {
     return { left: 0, top: 0, bottom: window.innerHeight, right: window.innerWidth }
   } else {
+    // fixme 移除 getBoundingClientRect 的调用，兼容 transform 存在的情况
     return (ele as HTMLElement).getBoundingClientRect()
   }
 }

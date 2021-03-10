@@ -11,7 +11,7 @@ title: 透视工具
 
 ## 数据结构——下钻树
 
-下钻树用来表示数据按照一定的维度序列被不断分组后形成的树结构。ali-react-table 提供了 `buildDrillTree` 方法来从数据中构建下钻树。
+**下钻树**用来表示*数据按照一定的维度序列被不断分组后形成的树结构*。ali-react-table 提供了 `buildDrillTree` 方法来从数据中构建下钻树。
 
 ### 下钻树构建示例
 
@@ -71,7 +71,7 @@ interface DrillNode {
 - `key` 用于唯一标记该节点
 - `value` 字段表示该节点的值
 - `path` 表示下钻树中到当前节点路径上的值的序列
-- `children` 记录了当前节点的根节点
+- `children` 记录了当前节点的子节点数组
 - `hasChild` 用于标记当前是否有子节点
 
 ### buildDrillTree
@@ -98,19 +98,19 @@ interface DrillNode {
 
 交叉表左侧/上方的数据结构与下钻树非常类似：
 
-- 节点的主要字段均为 key/value/children
-- 简单情况下，下钻树可以直接作为 CrossTable 的 leftTree/topTree
+- 节点的主要字段均为 `key` / `value` / `children`
+- 简单情况下，下钻树可以直接作为 CrossTable 的 `leftTree` / `topTree`
 
 但两者描述的结构是不同的：
 
-- LeftCrossTreeNode/TopCrossTreeNode 描述了表格结构，是**展现层面**的结构；
-- DrillNode 描述数据被不断分组后的结果，是**数据层面**的结构。
+- `LeftCrossTreeNode` / `TopCrossTreeNode` 描述了表格结构，是**展现层面**的结构；
+- `DrillNode` 描述数据被不断分组后的结果，是**数据层面**的结构。
 
 很多时候，下钻树与交叉表的 leftTree/topTree 并不是对应的，ali-react-table 提供了一些其他方法来在两者之间进行转换。
 
 ## 数据结构——数据立方
 
-下钻树具有一个下钻维度序列；而透视表具有两个下钻维度序列：左侧维度序列（也称行维度），以及上方维度序列（也成列维度）。在实践中，我们可以使用「左侧的值序列」+「上方的值序列」来唯一确定透视表中的每一个单元格。对这两个值序列进行编码（分别记为 leftKey 和 topKey），我们可以用两个字符串来表示一个单元格。
+下钻树具有一个下钻维度序列；而透视表（不要过分纠结这里透视表的含义，这里的透视表指的只是简单的多维度行列交叉表）具有两个下钻维度序列：左侧维度序列（也称行维度），以及上方维度序列（也成列维度）。在实践中，我们可以使用「左侧的值序列」+「上方的值序列」来唯一确定透视表中的每一个单元格。对这两个值序列进行编码（分别记为 leftKey 和 topKey），我们可以用两个字符串来表示一个单元格。
 
 RecordMatrix 是透视表的数据源容器，存放了一个透视表所有单元格的数据。RecordMatrix 的数据结构是一个二维的 Map，类型为 `type RecordMatrix = Map<string, Map<string, any>>`。根据 leftKey 和 topKey，从 matrix 中可以快速找到对应单元格的数据，对应的使用方式为 `matrix.get(leftKey).get(topKey)`.
 
@@ -297,9 +297,10 @@ function SimplePivotTable() {
   const [topCodes, onChangeTopCodes] = useState(['season'])
   const [leftCodes, onChangeLeftCodes] = useState(['subs', 'shop'])
   const [showSubtotal, onChangeShowSubtotal] = useState(true)
+
   function generateSubtotalNode(drillNode) {
     return {
-      position: 'start',
+      position: 'start', // 这里改成 end 可以将总计/小计节点 放到末尾
       value: drillNode.path.length === 0 ? '总计' : '小计',
     }
   }
@@ -315,6 +316,8 @@ function SimplePivotTable() {
   })
   // import { createAggregateFunction } from 'dvt-aggregation'
   const aggregate = createAggregateFunction(indicators)
+  // aggregate 是一个简单的聚合函数，你可以在这里使用 console.log(aggregate) 来查看该函数的定义
+
   const matrix = buildRecordMatrix({ data, leftCodes, topCodes, aggregate })
   return (
     <div>
@@ -332,9 +335,7 @@ function SimplePivotTable() {
       <CrossTable
         defaultColumnWidth={100}
         leftTree={leftTreeRoot.children}
-        leftTotalNode={leftTreeRoot} // 当 leftTree 为空时，leftTotalNode 用于渲染总计行
-        topTree={topTreeRoot.children}
-        topTotalNode={topTreeRoot} // 当 topTree 为空时，topTotalNode 用于渲染总计列
+        topTree={topTreeRoot.children || [topTreeRoot]}
         getValue={(leftNode, topNode) => {
           // 注意这里我们使用 node.data.dataKey 来获取单元格在 matrix 中的 record
           const record = matrix.get(leftNode.data.dataKey).get(topNode.data.dataKey)
@@ -344,6 +345,12 @@ function SimplePivotTable() {
           const indicator = leftNode.data.indicator || topNode.data.indicator
           return record[indicator.code]
         }}
+        // ======================================
+        // 当 leftTree 为空时，leftTotalNode 用于渲染总计行，且可以避免生成额外的表格列
+        // 当 topTree 为空时，topTotalNode 用于渲染总计列
+        // leftTotalNode / topTotalNode 仅用于表格结构优化，一般情况下可以不传
+        leftTotalNode={leftTreeRoot}
+        topTotalNode={topTreeRoot}
       />
     </div>
   )

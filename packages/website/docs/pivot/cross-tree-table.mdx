@@ -91,12 +91,12 @@ function BasicCrossTreeTableUsage() {
     { key: `${keyPrefix}-week-3`, value: '第四周', data: { y: 3 } },
   ]
   const topTree = [
-    { key: '2020-01', value: '2020-01', children: makeTopChildren('2020-01') },
-    { key: '2020-02', value: '2020-02', children: makeTopChildren('2020-02') },
-    { key: '2020-03', value: '2020-03', children: makeTopChildren('2020-03') },
-    { key: '2020-04', value: '2020-04', children: makeTopChildren('2020-04') },
-    { key: '2020-05', value: '2020-05', children: makeTopChildren('2020-05') },
-    { key: '2020-06', value: '2020-06', children: makeTopChildren('2020-06') },
+    { key: '2021-01', value: '2021-01', children: makeTopChildren('2021-01') },
+    { key: '2021-02', value: '2021-02', children: makeTopChildren('2021-02') },
+    { key: '2021-03', value: '2021-03', children: makeTopChildren('2021-03') },
+    { key: '2021-04', value: '2021-04', children: makeTopChildren('2021-04') },
+    { key: '2021-05', value: '2021-05', children: makeTopChildren('2021-05') },
+    { key: '2021-06', value: '2021-06', children: makeTopChildren('2021-06') },
   ]
   const getValue = (leftNode, topNode) => {
     if (leftNode.data.parent) {
@@ -113,7 +113,7 @@ function BasicCrossTreeTableUsage() {
   }
   return (
     <div>
-      <p style={{ fontSize: 16, marginTop: 0 }}>2020年 学习计划</p>
+      <p style={{ fontSize: 16, marginTop: 0 }}>2021年 学习计划</p>
       <CrossTreeTable
         // 非受控用法：
         defaultOpenKeys={[leftTree[0].key]}
@@ -193,4 +193,45 @@ export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hid
 }
 ```
 
-不要被长长的 TypeScript 类型代码吓到，CrossTreeTable 的 props 其实和 BaseTable 差别不大（好吧，还是有点大的）。
+不要被长长的 TypeScript 类型代码吓到，CrossTreeTable 的 props 其实和 BaseTable 差别不大。
+
+## 交叉树状表格定制
+
+CrossTreeTable 的底层仍是 `<BaseTable />`。
+
+对 CrossTreeTable 进行定制时，可以先通过 `buildCrossTreeTable` 根据 CrossTreeTable 的输入生成 dataSource / columns，进行一些自定义的处理，然后再将处理好的数据传给 BaseTable，并注意为 BaseTable 设置 `primaryKey={ROW_KEY}`。
+
+可以使用 [pipeline](/docs/pipeline/) 进行表格功能拓展（具体可以参考这个[示例](/examples/others/cross-table-customization)），但因为 CrossTreeTable 本身很复杂，只有一部分比较简单的 pipeline feature 可以和 CrossTreeTable 一起工作.
+
+```jsx
+import { BaseTable } from 'ali-react-table'
+import { buildCrossTreeTable, ROW_KEY } from 'ali-react-table/pivot'
+
+function MyComplexTable() {
+  // 将「传给 CrossTreeTable 的参数」传给 buildCrossTreeTable
+  const { dataSource, columns } = buildCrossTreeTable({
+    leftTree,
+    topTree,
+    getValue,
+    render,
+
+    // 调用 buildCrossTreeTable 必须传入一份受控的 openKeys 状态
+    openKeys: ['a', 'b', 'c'],
+    onChangeOpenKeys(nextOpenKeys) {},
+
+    // 这里也支持 CrossTreeTable 的其他 props
+  })
+
+  // 在这里可以对 dataSource 和 columns 进行一定的处理后，再将数据传递给 BaseTable
+
+  return (
+    <BaseTable
+      className="my-complex-table"
+      primaryKey={ROW_KEY}
+      defaultColumnWidth={100}
+      dataSource={dataSource}
+      columns={columns}
+    />
+  )
+}
+```

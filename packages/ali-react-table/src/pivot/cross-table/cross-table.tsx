@@ -15,7 +15,8 @@ export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'co
   topTotalNode?: TopCrossTreeNode
   leftMetaColumns?: CrossTableLeftMetaColumn[]
 
-  getValue(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
+  getValue?(leftNode: LeftCrossTreeNode, topNode: TopCrossTreeNode, leftDepth: number, topDepth: number): any
+
   render?(
     value: any,
     leftNode: LeftCrossTreeNode,
@@ -32,7 +33,7 @@ export interface CrossTableProps extends Omit<BaseTableProps, 'dataSource' | 'co
   ): CellProps
 }
 
-export default (function CrossTable({
+function CrossTable({
   BaseTableComponent = BaseTable,
   leftTree,
   leftTotalNode,
@@ -59,4 +60,6 @@ export default (function CrossTable({
   return (
     <BaseTableComponent ref={baseTableRef} {...others} primaryKey={ROW_KEY} dataSource={dataSource} columns={columns} />
   )
-})
+}
+
+export default CrossTable

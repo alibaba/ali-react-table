@@ -3,6 +3,8 @@ id: cross-table
 title: 交叉表
 ---
 
+import { CrossTableCustomization } from '../../examples/others/cross-table-customization.stories'
+
 交叉表是一个比较底层的 React 组件，仅提供相应表格结构的渲染能力。注意交叉表...
 
 - **_没有_** 透视能力
@@ -20,8 +22,8 @@ title: 交叉表
 
 - 通过 `leftTree` 描述表格左侧的树状结构；
 - 通过 `topTree` 描述表格上方的树状结构；
-- 通过 `getValue` 来定义每个单元格的内容；
-- 交叉表组件会根据 leftTree/topTree 来渲染表格结构，并调用 `getValue` 获取单元格的内容
+- 通过 `getValue` / `render` 来定义每个单元格的内容；
+- 交叉表组件会根据 leftTree/topTree 来渲染表格结构，并调用 `getValue` / `render` 渲染单元格的内容
 
 ```js
 <CrossTable
@@ -30,7 +32,7 @@ title: 交叉表
   leftTree={leftTree}
   topTree={topTree}
   getValue={(leftNode, topNode) => {
-    // 自定义的取数逻辑，针对每个单元格都会调用一次
+    // 可选的自定义的取数逻辑，针对每个单元格都会调用一次
     // leftNode 表示当前单元格对应的左侧树节点，topNode 是对应的上方树节点
   }}
   render={(value, leftNode, topNode) => {
@@ -80,12 +82,12 @@ function BasicUsage() {
     { key: `${keyPrefix}-week-3`, value: '第四周', width: 80 },
   ]
   const topTree = [
-    { key: '2020-01', value: '2020-01', children: makeTopChildren('2020-01') },
-    { key: '2020-02', value: '2020-02', children: makeTopChildren('2020-02') },
-    { key: '2020-03', value: '2020-03', children: makeTopChildren('2020-03') },
-    { key: '2020-04', value: '2020-04', children: makeTopChildren('2020-04') },
-    { key: '2020-05', value: '2020-05', children: makeTopChildren('2020-05') },
-    { key: '2020-06', value: '2020-06', children: makeTopChildren('2020-06') },
+    { key: '2021-01', value: '2021-01', children: makeTopChildren('2021-01') },
+    { key: '2021-02', value: '2021-02', children: makeTopChildren('2021-02') },
+    { key: '2021-03', value: '2021-03', children: makeTopChildren('2021-03') },
+    { key: '2021-04', value: '2021-04', children: makeTopChildren('2021-04') },
+    { key: '2021-05', value: '2021-05', children: makeTopChildren('2021-05') },
+    { key: '2021-06', value: '2021-06', children: makeTopChildren('2021-06') },
   ]
 
   const getValue = (leftNode, topNode) => {
@@ -114,7 +116,7 @@ function BasicUsage() {
 
   return (
     <div>
-      <p style={{ fontSize: 16, marginTop: 0 }}>2020年 养猪计划</p>
+      <p style={{ fontSize: 16, marginTop: 0 }}>2021年 养猪计划</p>
       <CrossTable
         defaultColumnWidth={100}
         leftTree={leftTree}
@@ -185,8 +187,9 @@ interface TopCrossTreeNode extends CrossTreeNode, Omit<ArtColumnStaticPart, 'nam
 - `title` 列标题，如果该字段非空，在渲染时会覆盖 value 字段
 - `width` 列的宽度
 - `align` 单元格中的文本或内容的 对其方向
-- `hidden` 是否锁列；**不推荐**为交叉表的数据列设置隐藏
+- `hidden` 是否隐藏；**不推荐**为交叉表的数据列设置隐藏
 - `lock` 是否锁列；**不推荐**为交叉表的数据列设置锁列
+- `headerCellProps` 表头单元格的 props
 - `features` 功能开关
 
 ## 其他 props
@@ -249,3 +252,140 @@ export interface CrossTableLeftMetaColumn extends Omit<ArtColumnStaticPart, 'hid
 交叉表的左树/上树的结构被设计为 `{ key, value, children }` 的简单结构，方便上层调用者能够从不同的数据源中生成 leftTree/topTree。
 
 在复杂场景下，需要上层根据业务需求手动生成 leftTree/topTree/getValue。ali-react-table 也提供了一定的透视能力，可在交叉表的基础上实现前端聚合的透视表，可供使用和参考。
+
+例如，对 leftTree 进行如下处理，可以关闭左侧自动单元格合并功能：
+
+```jsx
+// 注意这个时候每个节点的 key 都要不同
+const leftTree = [
+  { key: 'forenoon-9', value: '上午', children: [{ key: '9', value: '9:00-10:00' }] },
+  { key: 'forenoon-10', value: '上午', children: [{ key: '10', value: '10:00-11:00' }] },
+  { key: 'forenoon-11', value: '上午', children: [{ key: '11', value: '11:00-12:00' }] },
+  // other nodes...
+]
+```
+
+```jsx live
+function BasicUsage() {
+  const leftTree = [
+    { key: 'forenoon-9', value: '上午', children: [{ key: '9', value: '9:00-10:00' }] },
+    { key: 'forenoon-10', value: '上午', children: [{ key: '10', value: '10:00-11:00' }] },
+    { key: 'forenoon-11', value: '上午', children: [{ key: '11', value: '11:00-12:00' }] },
+    { key: 'lunch', value: '午餐' },
+    {
+      key: 'afternoon',
+      value: '下午',
+      children: [
+        { key: '14', value: '14:00-15:00' },
+        { key: '15', value: '15:00-16:00' },
+        { key: '16', value: '16:00-17:00' },
+      ],
+    },
+    { key: 'dinner', value: '晚餐' },
+    { key: 'evening-20', value: '晚上', children: [{ key: '20', value: '20:00-21:00' }] },
+    { key: 'evening-21', value: '晚上', children: [{ key: '21', value: '21:00-22:00' }] },
+  ]
+
+  const makeTopChildren = (keyPrefix) => [
+    { key: `${keyPrefix}-week-0`, value: '第一周', width: 80 },
+    { key: `${keyPrefix}-week-1`, value: '第二周', width: 80 },
+    { key: `${keyPrefix}-week-2`, value: '第三周', width: 80 },
+    { key: `${keyPrefix}-week-3`, value: '第四周', width: 80 },
+  ]
+  const topTree = [
+    { key: '2021-01', value: '2021-01', children: makeTopChildren('2021-01') },
+    { key: '2021-02', value: '2021-02', children: makeTopChildren('2021-02') },
+    { key: '2021-03', value: '2021-03', children: makeTopChildren('2021-03') },
+    { key: '2021-04', value: '2021-04', children: makeTopChildren('2021-04') },
+    { key: '2021-05', value: '2021-05', children: makeTopChildren('2021-05') },
+    { key: '2021-06', value: '2021-06', children: makeTopChildren('2021-06') },
+  ]
+
+  const getValue = (leftNode, topNode) => {
+    if (leftNode.key === 'lunch') {
+      if (topNode.key.endsWith('week-0')) {
+        return '肯德基'
+      } else if (topNode.key.endsWith('week-1')) {
+        return '麦当劳'
+      } else if (topNode.key.endsWith('week-2')) {
+        return '汉堡王'
+      } else {
+        return '烧烤'
+      }
+    } else if (leftNode.key === 'dinner') {
+      if (topNode.key.endsWith('week-0')) {
+        return '盒马'
+      } else if (topNode.key.endsWith('week-1')) {
+        return '海底捞'
+      } else if (topNode.key.endsWith('week-2')) {
+        return '麦当劳'
+      } else {
+        return '体重+1'
+      }
+    }
+  }
+
+  return (
+    <div>
+      <p style={{ fontSize: 16, marginTop: 0 }}>2021年 养猪计划</p>
+      <CrossTable
+        defaultColumnWidth={100}
+        leftTree={leftTree}
+        topTree={topTree}
+        // 自定义的取数逻辑
+        getValue={getValue}
+      />
+    </div>
+  )
+}
+```
+
+## 交叉表定制
+
+交叉表的底层仍是 `<BaseTable />`。
+
+对交叉表进行定制时，可以先通过 `buildCrossTable` 根据交叉表的输入生成 dataSource / columns，进行一些自定义的处理，然后再将处理好的数据传给 BaseTable，并注意为 BaseTable 设置 `primaryKey={ROW_KEY}`。
+
+可以使用 [pipeline](/docs/pipeline/) 进行表格功能拓展（具体可以参考这个[示例](/examples/others/cross-table-customization)），但因为交叉表本身很复杂，只有一部分比较简单的 pipeline feature 可以和交叉表一起工作，例如 [列范围高亮](/docs/pipeline/features/column-range-hover).
+
+```jsx
+import { BaseTable } from 'ali-react-table'
+import { buildCrossTable, ROW_KEY } from 'ali-react-table/pivot'
+
+function MyComplexTable() {
+  // 将「传给 CrossTable 的参数」传给 buildCrossTable
+  const { dataSource, columns } = buildCrossTable({
+    leftTree,
+    topTree,
+    getValue,
+    // 这里也支持其他的 CrossTable 的 props：
+    // leftTotalNode, topTotalNode, leftMetaColumns, render, getCellProps
+  })
+
+  // 在这里可以对 dataSource 和 columns 进行一定的处理后，再将数据传递给 BaseTable
+
+  return (
+    <BaseTable
+      className="my-complex-table"
+      primaryKey={ROW_KEY}
+      defaultColumnWidth={100}
+      dataSource={dataSource}
+      columns={columns}
+    />
+  )
+}
+```
+
+### `columnOffset` 与 `rowOffset`
+
+:::danger
+`columnOffset` 与 `rowOffset` 仍是一个实验性的 API，可能在将来会发生变更.
+:::
+
+交叉表的**左侧部分**自带了单元格合并功能，而单元格合并功能依赖于 rowIndex/colIndex，所以在处理 dataSource/columns 的过程中需要注意**左侧部分**的整体位置发生了变化（例如在表格左侧多了一列用于展示每一行的序号）.
+
+如果**左侧部分**整体位置将发生变化，在调用 `buildCrossTable(...)` 时就需要设置相应的 `options.rowOffset` / `options.columnOffset` 来声明最终交叉表部分的行列偏移量。
+
+在下面的[这个示例](/examples/others/cross-table-customization)中，我们在交叉表的左侧新增了两列（多选一列、序号一列），在调用时的代码为 `buildCrossTable({ columnOffset:2 })`。
+
+<CrossTableCustomization />

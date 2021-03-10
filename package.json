@@ -35,6 +35,6 @@
   "devDependencies": {
     "copyfiles": "^2.4.0",
     "prettier": "^2.1.2",
-    "typescript": "4.1"
+    "typescript": "~4.2"
   }
 }

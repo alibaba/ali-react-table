@@ -23,7 +23,7 @@ export type BuildCrossTreeTableOptions = Omit<
   BuildCrossTableOptions,
   'leftMetaColumns' | 'leftTotalNode' | 'topTotalNode'
 > & {
-  primaryColumn: CrossTableLeftMetaColumn
+  primaryColumn?: CrossTableLeftMetaColumn
   openKeys: string[]
   onChangeOpenKeys(nextOpenKeys: string[]): void
   indentSize?: number
@@ -34,7 +34,7 @@ export default function buildCrossTreeTable(
   options: BuildCrossTreeTableOptions,
 ): Pick<BaseTableProps, 'columns' | 'dataSource'> {
   const {
-    primaryColumn,
+    primaryColumn = { name: '' },
     openKeys,
     onChangeOpenKeys,
     indentSize,
@@ -122,7 +122,10 @@ export default function buildCrossTreeTable(
       const columnGetValue = (row: CrossTreeTableRenderRow) => {
         const leftDepth = row.nodes.length - 1
         const leftNode = row.node
-        return options.getValue(leftNode, topNode, leftDepth, topDepth)
+        if (options.getValue) {
+          return options.getValue(leftNode, topNode, leftDepth, topDepth)
+        }
+        return null
       }
       const { key, value, children, ...others } = topNode
       return {

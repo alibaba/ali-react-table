@@ -2,6 +2,7 @@ import React from 'react'
 import { BaseTableProps } from '../../base-table'
 import { ArtColumn, SpanRect } from '../../interfaces'
 import { getTreeDepth, isLeafNode } from '../../utils'
+import { always } from '../../utils/others'
 import { ROW_KEY } from './constants'
 import { CrossTableProps } from './cross-table'
 import { CrossTableLeftMetaColumn, LeftCrossTreeNode, TopCrossTreeNode } from './interfaces'
@@ -27,22 +28,30 @@ export interface BuildCrossTableOptions {
   topTree: TopCrossTreeNode[]
   leftTotalNode?: LeftCrossTreeNode
   topTotalNode?: TopCrossTreeNode
-  leftMetaColumns: CrossTableLeftMetaColumn[]
-  getValue: CrossTableProps['getValue']
+  leftMetaColumns?: CrossTableLeftMetaColumn[]
+  getValue?: CrossTableProps['getValue']
   render?: CrossTableProps['render']
   getCellProps?: CrossTableProps['getCellProps']
 }
 
 export default function buildCrossTable(
-  options: BuildCrossTableOptions,
+  options: BuildCrossTableOptions & {
+    columnOffset?: number
+    rowOffset?: number
+  },
 ): Pick<BaseTableProps, 'columns' | 'dataSource'> {
   const { leftTotalNode, topTotalNode } = options
+
+  const columnOffset = options.columnOffset ?? 0
+  const rowOffset = options.rowOffset ?? 0
+  const hasOffset = columnOffset !== 0 || rowOffset !== 0
 
   // 有的时候 leftTree/topTree 是通过 node.children 传入的
   // 此时 leftTree/topTree 等于 null 和等于空数组是等价的
   // 故在这里兼容 leftTree/topTree 为空的情况
   const leftTree = options.leftTree ?? []
   const topTree = options.topTree ?? []
+  const getValue = options.getValue ?? always(null)
   const leftMetaColumns = options.leftMetaColumns ?? []
 
   const leftHeaderWidth = Math.max(leftMetaColumns.length, getTreeDepth(leftTree) + 1)
@@ -87,7 +96,18 @@ export default function buildCrossTable(
         metaCol: CrossTableLeftMetaColumn,
         colIndex: number,
       ): ArtColumn['getSpanRect'] {
-        return (_value: any, row: CrossTableRenderRow) => row.rects[colIndex]
+        return (_value: any, row: CrossTableRenderRow) => {
+          const rect = row.rects[colIndex]
+          if (hasOffset) {
+            return {
+              left: rect.left + columnOffset,
+              right: rect.right + columnOffset,
+              top: rect.top + rowOffset,
+              bottom: rect.bottom + rowOffset,
+            }
+          }
+          return rect
+        }
       }
 
       function leftHeaderGetValueFactory(metaCol: CrossTableLeftMetaColumn, colIndex: number) {
@@ -151,7 +171,7 @@ export default function buildCrossTable(
       const columnGetValue = (row: CrossTableRenderRow) => {
         const leftDepth = row.nodes.length - 1
         const leftNode = row.nodes[leftDepth]
-        return options.getValue(leftNode, topNode, leftDepth, topDepth)
+        return getValue(leftNode, topNode, leftDepth, topDepth)
       }
       const { key, value, children, ...others } = topNode
       return {

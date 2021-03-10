@@ -26,12 +26,6 @@
     "dist",
     "pivot"
   ],
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": true,
-    "semi": false,
-    "trailingComma": "all"
-  },
   "dependencies": {
     "@types/classnames": "^2.2.9",
     "classnames": "^2.2.6",

@@ -22,7 +22,9 @@ export function sum(arr: number[]) {
 
 // 使用 defer 避免过早引用 window，导致在 SSR 场景下报错
 export const throttledWindowResize$ = defer(() =>
-  fromEvent(window, 'resize').pipe(throttleTime(150, asyncScheduler, { leading: true, trailing: true })),
+  fromEvent(window, 'resize', { passive: true }).pipe(
+    throttleTime(150, asyncScheduler, { leading: true, trailing: true }),
+  ),
 )
 
 /** 获取默认的滚动条大小 */
@@ -93,7 +95,7 @@ export function syncScrollLeft(elements: HTMLElement[], callback: (scrollLeft: n
  * when any key has values which are not strictly equal between the arguments.
  * Returns true when the values of all keys are strictly equal.
  */
-export function shallowEqual(objA: any, objB: any): boolean {
+export function shallowEqual<T>(objA: T, objB: T): boolean {
   const hasOwnProperty = Object.prototype.hasOwnProperty
 
   if (Object.is(objA, objB)) {
@@ -113,7 +115,7 @@ export function shallowEqual(objA: any, objB: any): boolean {
 
   // Test for A's keys different from B.
   for (let i = 0; i < keysA.length; i++) {
-    if (!hasOwnProperty.call(objB, keysA[i]) || !Object.is(objA[keysA[i]], objB[keysA[i]])) {
+    if (!hasOwnProperty.call(objB, keysA[i]) || !Object.is((objA as any)[keysA[i]], (objB as any)[keysA[i]])) {
       return false
     }
   }

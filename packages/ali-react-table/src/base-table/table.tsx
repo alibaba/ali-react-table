@@ -1,14 +1,14 @@
 import cx from 'classnames'
 import React, { CSSProperties, ReactNode } from 'react'
-import { animationFrameScheduler, BehaviorSubject, combineLatest, noop, of, Subscription, timer } from 'rxjs'
+import { BehaviorSubject, combineLatest, noop, Subscription } from 'rxjs'
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
 import { calculateRenderInfo } from './calculations'
 import { EmptyHtmlTable } from './empty'
 import TableHeader from './header'
+import { getRichVisibleRectsStream } from './helpers/getRichVisibleRectsStream'
 import { getFullRenderRange, makeRowHeightManager } from './helpers/rowHeightManager'
 import { TableDOMHelper } from './helpers/TableDOMUtils'
-import { getVisiblePartObservable } from './helpers/visible-part'
 import { HtmlTable } from './html-table'
 import { RenderInfo, ResolvedUseVirtual, VerticalRenderRange, VirtualEnum } from './interfaces'
 import Loading, { LoadingContentWrapperProps } from './loading'
@@ -93,9 +93,14 @@ export interface BaseTableProps {
   /** 列的默认宽度 */
   defaultColumnWidth?: number
 
-  /** 表格所处于的块格式化上下文(BFC)
-   * https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context */
-  flowRoot?: 'auto' | 'self' | (() => HTMLElement | typeof window) | HTMLElement | typeof window
+  /**
+   * @deprecated
+   * flowRoot 在表格 v2.4 后不再需要提供，请移除该属性
+   * */
+  flowRoot?: never
+
+  /** 虚拟滚动调试标签，用于表格内部调试使用 */
+  virtualDebugLabel?: string
 
   getRowProps?(record: any, rowIndex: number): React.HTMLAttributes<HTMLTableRowElement>
 }
@@ -137,7 +142,6 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     isLoading: false,
     components: {},
     getRowProps: noop,
-    flowRoot: 'auto',
     dataSource: [] as any[],
   }
 
@@ -499,40 +503,16 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       }),
     )
 
-    // 表格所处的 flowRoot / BFC
-    const resolvedFlowRoot$ = this.props$.pipe(
-      op.map((props) => props.flowRoot),
-      op.switchMap((flowRoot) => {
-        const wrapper = this.artTableWrapperRef.current
-        if (flowRoot === 'auto') {
-          const computedStyle = getComputedStyle(wrapper)
-          return of(computedStyle.overflowY !== 'visible' ? wrapper : window)
-        } else if (flowRoot === 'self') {
-          return of(wrapper)
-        } else {
-          if (typeof flowRoot === 'function') {
-            // 在一些情况下 flowRoot 需要在父组件 didMount 时才会准备好
-            // 故这里使用 animationFrameScheduler 等下一个动画帧
-            return timer(0, animationFrameScheduler).pipe(op.map(flowRoot))
-          } else {
-            return of(flowRoot)
-          }
-        }
-      }),
-      op.distinctUntilChanged(),
-    )
-
-    // 表格在 flowRoot 中的可见部分
-    const visiblePart$ = resolvedFlowRoot$.pipe(
-      op.switchMap((resolvedFlowRoot) => {
-        return getVisiblePartObservable(this.domHelper.artTable, resolvedFlowRoot)
-      }),
-    )
+    const richVisibleRects$ = getRichVisibleRectsStream(
+      this.domHelper.artTable,
+      this.props$.pipe(op.skip(1), op.mapTo('structure-may-change')),
+      this.props.virtualDebugLabel,
+    ).pipe(op.shareReplay())
 
     // 每当可见部分发生变化的时候，调整 loading icon 的未知（如果 loading icon 存在的话）
     this.rootSubscription.add(
       combineLatest([
-        visiblePart$.pipe(
+        richVisibleRects$.pipe(
           op.map((p) => p.clipRect),
           op.distinctUntilChanged(shallowEqual),
         ),
@@ -547,6 +527,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           return
         }
         const height = clipRect.bottom - clipRect.top
+        // fixme 这里的定位在有些特殊情况下可能会出错 see #132
         loadingIndicator.style.top = `${height / 2}px`
         loadingIndicator.style.marginTop = `${height / 2}px`
       }),
@@ -554,7 +535,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
 
     // 每当可见部分发生变化的时候，如果开启了虚拟滚动，则重新触发 render
     this.rootSubscription.add(
-      visiblePart$
+      richVisibleRects$
         .pipe(
           op.filter(() => {
             const { horizontal, vertical } = this.lastInfo.useVirtual

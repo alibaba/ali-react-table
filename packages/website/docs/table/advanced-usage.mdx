@@ -30,7 +30,11 @@ title: 进阶用法
 
 不开启虚拟滚动时，单元格合并可以通过 `column.getCellProps(...)` 返回 `colSpan / rowSpan` 进行实现。
 
-### 滚动容器
+### 滚动容器(v2.4 之前)
+
+:::note
+这里描述的是 v2.4 之前版本的行为，v2.4 之后已经没有 `flowRoot` 这个属性了，滚动容器不需要再显示地进行设置。
+:::
 
 一般来说表格有如下两种滚动模式：
 
@@ -46,6 +50,37 @@ title: 进阶用法
 除了以上两种滚动模式之外，如果你想让表格在指定的容器内进行滚动，可以配置 `props.flowRoot`，该 prop 可指定表格发生滚动的 [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)。
 
 表格的上层元素**不能**设置 `style.transform`。上层元素中出现缩放或平移时，表格内部可能无法获取正确的 DOM 尺寸。
+
+### 滚动容器(v2.4+)
+
+表格组件会自动向上寻找第一个滚动容器，并在该容器内发生虚拟滚动。
+
+你可以为表格设置 `styles.overflow=auto` 和 `styles.height = 300px`（也可以设置 width、maxWidth 或 maxHeight），也可以在表格的上层某个元素上设置这些样式。如果没有设置这样样式，表格将在 window 上发生虚拟滚动。
+
+```jsx
+// 滚动发生在表格内部
+<BaseTable style={{ overflow: 'auto', maxHeight: 400 }} />
+
+// 滚动发生在指定的 div.scroll-container
+<div style={{ transform: 'scale(0.8)' }}>
+  <div className="scroll-container" style={{ overflow: 'auto', width: 500, height: 300 }}>
+    <BaseTable />
+  </div>
+</div>
+
+// 滚动发生在 window 上
+<html>
+  <body>
+    <h1 />
+    <p />
+    <p />
+    <BaseTable />
+    <footer />
+  </body>
+</html>
+```
+
+表格的上层元素**支持**设置 `style.transform`，可以出现简单的缩放、平移和旋转。
 
 ### 预估行高
 

@@ -187,6 +187,10 @@ export function DemoApp() {
     transform: `rotate(${useRotate ? '20deg' : '0'}) scale(${useScale ? 0.85 : 1})`,
   }
 
+  if (typeof document === 'undefined') {
+    return null
+  }
+
   return (
     <AppDivAppDiv ref={appDivRef} className={cx({ 'has-custom-scrollbar': hasCustomScrollbar })}>
       <div style={{ background: '#f2f2f2', padding: 16 }}>

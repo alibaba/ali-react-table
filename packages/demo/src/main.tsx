@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { StyleSheetManager } from 'styled-components'
-import { App } from './App'
+import { DemoApp } from './DemoApp'
 import 'antd/dist/antd.css'
 
 const hot = (module as any).hot
@@ -12,7 +12,7 @@ if (hot) {
 
 ReactDOM.render(
   <StyleSheetManager disableVendorPrefixes>
-    <App />
+    <DemoApp />
   </StyleSheetManager>,
   document.getElementById('container'),
 )

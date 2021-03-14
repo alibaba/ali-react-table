@@ -11,9 +11,9 @@
     "terser": "4.8.0"
   },
   "scripts": {
-    "website:start": "yarn workspace website start",
-    "website:build": "yarn workspace website build",
-    "demo:start": "yarn workspace demo start",
+    "start:website": "yarn workspace website start",
+    "start:demo": "yarn workspace demo start",
+    "build:website": "yarn workspace website build",
     "collect-files": "rimraf website-deploy && copyfiles --up=3 \"packages/website/build/**/*\" website-deploy/",
     "prepare-website-deploy": "yarn website:build && yarn collect-files"
   },

@@ -23,13 +23,21 @@ import {
   throttledWindowResize$,
 } from './utils'
 
-let propsDotEmptyContentDeprecatedWarned = false
-function warnPropsDotEmptyContentIsDeprecated() {
-  if (!propsDotEmptyContentDeprecatedWarned) {
-    propsDotEmptyContentDeprecatedWarned = true
+let emptyContentDeprecatedWarned = false
+function warnEmptyContentIsDeprecated() {
+  if (!emptyContentDeprecatedWarned) {
+    emptyContentDeprecatedWarned = true
     console.warn(
       '[ali-react-table] BaseTable props.emptyContent 已经过时，请使用 props.components.EmptyContent 来自定义数据为空时的表格表现',
     )
+  }
+}
+
+let flowRootDeprecatedWarned = false
+function warnFlowRootIsDeprecated() {
+  if (!flowRootDeprecatedWarned) {
+    flowRootDeprecatedWarned = true
+    console.warn('[ali-react-table] BaseTable v2.4 版本之后已经不再需要指定 flowRoot')
   }
 }
 
@@ -286,7 +294,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       const { components, emptyContent } = this.props
       let EmptyContent = components.EmptyContent
       if (EmptyContent == null && emptyContent != null) {
-        warnPropsDotEmptyContentIsDeprecated()
+        warnEmptyContentIsDeprecated()
         EmptyContent = ((() => emptyContent) as unknown) as React.ComponentType
       }
 
@@ -405,7 +413,12 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       isLoading,
       footerDataSource,
       components,
+      flowRoot,
     } = this.props
+
+    if (flowRoot != null) {
+      warnFlowRootIsDeprecated()
+    }
 
     const artTableWrapperClassName = cx(
       Classes.artTableWrapper,

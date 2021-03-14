@@ -47,7 +47,9 @@ v2.0 发布，详见 [官方文档](https://ali-react-table.js.org/docs/changelo
 
 ## 兼容性说明
 
-表格只兼容 react 16。此外表格用到了大量较新的浏览器 API，只兼容较新版本的 PC 端浏览器或手机浏览器，详见[该 issue](https://github.com/alibaba/ali-react-table/issues/18)
+表格只兼容 `react ^16.8.0 || ^17.0.0`。
+
+此外表格用到了大量较新的浏览器 API，只兼容较新版本的 PC 端浏览器或手机浏览器，详见[该 issue](https://github.com/alibaba/ali-react-table/issues/18)
 
 ## 相关链接
 

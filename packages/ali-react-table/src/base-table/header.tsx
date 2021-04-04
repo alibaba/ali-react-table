@@ -192,7 +192,7 @@ export default function TableHeader({ info }: { info: RenderInfo }) {
           positionStyle.left = stickyLeftMap.get(colIndex)
         } else if (colIndex >= fullFlatCount - rightFlatCount) {
           positionStyle.position = 'sticky'
-          positionStyle.right = stickyRightMap.get(colIndex)
+          positionStyle.right = stickyRightMap.get(colIndex + colSpan - 1)
         }
 
         return (

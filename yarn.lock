@@ -10669,7 +10669,7 @@ printj@~1.1.0, printj@~1.1.2:
   resolved "https://registry.npm.taobao.org/printj/download/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
   integrity sha1-2Q3rKXWoufYA+zoclOP0xTx4oiI=
 
-prism-react-renderer@^1.0.1, prism-react-renderer@^1.1.1:
+prism-react-renderer@^1.0.1, prism-react-renderer@^1.1.1, prism-react-renderer@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/prism-react-renderer/download/prism-react-renderer-1.2.0.tgz#5ad4f90c3e447069426c8a53a0eafde60909cdf4"
   integrity sha1-WtT5DD5EcGlCbIpToOr95gkJzfQ=

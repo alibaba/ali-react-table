@@ -22,13 +22,13 @@ const PlaygroundHeaderDiv = styled.div`
   }
 
   &.editor-header {
-    background: var(--ifm-color-emphasis-200);
+    background: var(--ifm-color-emphasis-300);
     color: var(--ifm-color-content);
   }
 `
 
 const PlaygroundPreviewDiv = styled.div`
-  border: 1px solid var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
   font-size: 12px;
   padding: 1rem;
   position: relative;
@@ -37,6 +37,9 @@ const PlaygroundPreviewDiv = styled.div`
 const StyledLiveEditor = styled(LiveEditor)`
   font-size: 12px;
   font-family: var(--ifm-font-family-monospace) !important;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-top: none;
+  margin-bottom: var(--ifm-leading);
 `
 
 export default function Playground({ children, theme, transformCode, noInline, fromStory, ...props }) {

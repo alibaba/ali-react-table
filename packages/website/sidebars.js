@@ -27,6 +27,7 @@ module.exports = {
             'pipeline/features/column-range-hover',
             'pipeline/features/auto-row-span',
             'pipeline/features/tips',
+            'pipeline/features/column-resize',
             'pipeline/features/filter',
           ],
         },

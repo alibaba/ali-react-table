@@ -66,7 +66,7 @@ export interface ColumnResizeFeatureOptions {
 
 ### 注意点
 
-- 为叶子节点的设置列宽才会生效，非叶节点的列宽由其子节点宽度累加得到
+- 为叶子节点设置列宽才会生效，非叶节点的列宽由其子节点宽度累加得到
   - 拖动叶子节点时，「拖动的距离」等于「宽度变化量」
   - 拖动非叶节点时，「拖动的距离」会分给「子节点」，越宽的子节点 会分到更多的距离
 - 使用 columnResize 时， columnResize 总是会算出一个列宽数组 `sizes`，并将其作为作为每一个叶子节点的实际宽度
@@ -77,4 +77,4 @@ export interface ColumnResizeFeatureOptions {
   - **总之，在拖动之前，对于 columnResize 来说，所有的列的宽度都是已知的**
 - 拖动时，一列的宽度只能在 `options.minSize` 至 `options.maxSize` 之间
 
-默认情况下，把手是透明的，你可以通知 `options.handleBackground` 来为把手设置背景色。
+默认情况下，把手是透明的，你可以通过 `options.handleBackground` 来为把手设置背景色。

@@ -9,7 +9,7 @@ export interface ArtColumnStaticPart {
   name: string
 
   /** 在数据中的字段 code */
-  code?: string
+  code?: string | symbol
 
   /** 列标题的展示名称；在页面中进行展示时，该字段将覆盖 name 字段 */
   title?: ReactNode

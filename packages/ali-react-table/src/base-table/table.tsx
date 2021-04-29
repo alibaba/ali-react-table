@@ -41,7 +41,7 @@ function warnFlowRootIsDeprecated() {
   }
 }
 
-export type PrimaryKey = string | symbol | ((record: any) => string)
+export type PrimaryKey = string | ((record: any) => string)
 
 export interface BaseTableProps {
   /** 主键 */

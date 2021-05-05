@@ -12,10 +12,6 @@ module.exports = {
   projectName: 'ali-react-table',
 
   themeConfig: {
-    prism: {
-      theme: require('prism-react-renderer/themes/vsLight'),
-      darkTheme: require('prism-react-renderer/themes/vsDark'),
-    },
     navbar: {
       hideOnScroll: true,
       title: 'ali-react-table',

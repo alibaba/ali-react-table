@@ -28,13 +28,13 @@
     "d3": "^6.2.0",
     "dvt-aggregation": "^0.2.8",
     "examples": "^0.1.0",
-    "immer": "^8.0.0",
+    "immer": "^9.0.2",
     "lodash": "^4.17.20",
     "mobx": "^6.0.1",
     "mobx-react": "^7.0.0",
     "moment": "^2.29.1",
-    "prism-react-renderer": "^1.2.0",
     "numeral": "^2.0.6",
+    "prism-react-renderer": "^1.2.0",
     "react": "^16.14.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.14.0",
@@ -57,13 +57,14 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-alpha.72",
-    "@docusaurus/preset-classic": "2.0.0-alpha.72",
-    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.72",
+    "@docusaurus/core": "2.0.0-alpha.75",
+    "@docusaurus/preset-classic": "2.0.0-alpha.75",
+    "@docusaurus/theme-live-codeblock": "2.0.0-alpha.75",
     "@mdx-js/react": "^1.5.8",
+    "sass": "^1.32.12",
     "docusaurus-plugin-sass": "^0.1.10",
     "raw-loader": "^4.0.2",
-    "ts-loader": "^8.0.4",
+    "ts-loader": "^9.1.1",
     "tsconfig-paths-webpack-plugin": "^3.3.0"
   }
 }

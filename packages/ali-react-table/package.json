@@ -43,7 +43,7 @@
     "@babel/preset-typescript": "^7.12.1",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.15",
-    "@types/styled-components": "5.1.7",
+    "@types/styled-components": "^5.1.9",
     "jest": "^26.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.13.1",

@@ -7,9 +7,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "resolutions": {
-    "terser": "4.8.0"
-  },
   "scripts": {
     "start:website": "yarn workspace website start",
     "start:demo": "yarn workspace demo start",
@@ -24,7 +21,7 @@
   "homepage": "https://github.com/alibaba/ali-react-table",
   "author": {
     "name": "Shi Feichao",
-    "email": "842351815@qq.com"
+    "email": "feichao.sfc@alibaba-inc.com"
   },
   "prettier": {
     "printWidth": 120,

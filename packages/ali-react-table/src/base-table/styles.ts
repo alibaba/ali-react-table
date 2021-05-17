@@ -159,6 +159,7 @@ export const StyledArtTableWrapper = styled.div`
   font-size: var(--font-size);
   line-height: var(--line-height);
   position: relative;
+  overflow-anchor: none;
 
   // 表格外边框由 art-table-wrapper 提供，而不是由单元格提供
   &.use-outer-border {

@@ -94,6 +94,7 @@ const ArtTableWrapper = styled.div`
   --header-cell-border-horizontal: var(--header-cell-border);
   --header-cell-border-vertical: var(--header-cell-border);
 
+  overflow-anchor: none;
   background: var(--bgcolor);
   box-sizing: border-box;
   * {

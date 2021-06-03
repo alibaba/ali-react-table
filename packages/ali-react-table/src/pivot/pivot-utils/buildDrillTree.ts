@@ -1,4 +1,4 @@
-import { groupBy } from '../../utils'
+import { groupBy2 } from '../../utils'
 import { always } from '../../utils/others'
 import { DrillNode } from './interfaces'
 import simpleEncode from './simpleEncode'
@@ -78,8 +78,8 @@ export default function buildDrillTree(
     const depth = path.length
     const array: DrillNode[] = []
     const code = codes[depth]
-    const groups = groupBy(slice, (row) => row[code])
-    for (const groupKey of Object.keys(groups)) {
+    const groups = groupBy2(slice, (row) => row[code])
+    for (const groupKey of groups.keys()) {
       path.push(groupKey)
 
       const node: DrillNode = {
@@ -89,7 +89,7 @@ export default function buildDrillTree(
       }
       array.push(node)
 
-      const group = groups[groupKey]
+      const group = groups.get(groupKey)
       if (group.length > 0 && depth < codes.length - 1) {
         if (isExpand(node.key)) {
           node.children = dfs(group, path)

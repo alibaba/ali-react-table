@@ -10,7 +10,7 @@ title: 通用工具函数
 ### `applyTransforms`
 
 :::note deprecated
-表格功能拓展(transforms) 已经过时，所以一般情况下你不再使用该 API 了。
+表格功能拓展(transforms) 已经过时，API 也不应被使用了。
 :::
 
 API: `function applyTransforms<T>(input: T, ...transforms: Transform<T>[]): T`
@@ -155,6 +155,12 @@ API: `function getTreeDepth(nodes: AbstractTreeNode[]): number`
 API: `function groupBy<T, K extends string>(list: T[], iteratee: (t: T) => K): { [key in K]: T[] }`
 
 对 list 中的元素进行分组，iteratee 的返回值相同的元素将被分到同一个分组。
+
+### `groupBy2`
+
+API: `function groupBy2<T, K extends string | number>(list: T[], iteratee: (t: T) => K): Map<K, T>`
+
+与 groupBy 作用相同，但会使用 Map 作为返回结果，并尽量保持数据的原始顺序。
 
 ### `isLeafNode`
 

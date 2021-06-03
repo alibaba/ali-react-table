@@ -1,4 +1,4 @@
-import { groupBy, isLeafNode } from '../../utils'
+import { groupBy2, isLeafNode } from '../../utils'
 import { always, fromEntries } from '../../utils/others'
 import buildDrillTree from './buildDrillTree'
 import { DrillNode, RecordMatrix } from './interfaces'
@@ -81,11 +81,11 @@ export function buildRecordMatrix({
     } else {
       children = []
       const code = leftCodes[depth]
-      const groups = groupBy(slice, (dwdRow) => dwdRow[code])
+      const groups = groupBy2(slice, (dwdRow) => dwdRow[code])
 
       ctx.peculiarity.add(code)
       for (const child of drillNode.children) {
-        const group = groups[child.value]
+        const group = groups.get(child.value)
         if (group) {
           children.push(buildByLeft(ctx, group, child, depth + 1))
         }
@@ -114,10 +114,10 @@ export function buildRecordMatrix({
     } else {
       children = []
       const code = topCodes[depth]
-      const groups = groupBy(slice, (dwdRow) => dwdRow[code])
+      const groups = groupBy2(slice, (dwdRow) => dwdRow[code])
       ctx.peculiarity.add(code)
       for (const child of drillNode.children) {
-        const group = groups[child.value]
+        const group = groups.get(child.value)
         if (group) {
           children.push(buildByTop(ctx, group, child, depth + 1))
         }

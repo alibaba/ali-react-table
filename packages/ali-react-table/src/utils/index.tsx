@@ -1,6 +1,7 @@
 export { default as collectNodes } from './collectNodes'
 export { default as getTreeDepth } from './getTreeDepth'
 export { default as groupBy } from './groupBy'
+export { default as groupBy2 } from './groupBy2'
 export { default as isLeafNode } from './isLeafNode'
 export { default as applyTransforms } from './applyTransforms'
 export { default as buildTree } from './buildTree'

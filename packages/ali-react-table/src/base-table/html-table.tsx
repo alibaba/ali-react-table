@@ -8,7 +8,7 @@ import { RenderInfo } from './interfaces'
 import { Classes } from './styles'
 import { BaseTableProps } from './table'
 
-export interface HtmlTableProps extends Required<Pick<BaseTableProps, 'getRowProps' | 'primaryKey'>> {
+export interface HtmlTableProps extends Required<Pick<BaseTableProps, 'getRowProps' | 'primaryKey' | 'components'>> {
   tbodyHtmlTag: 'tbody' | 'tfoot'
   data: any[]
 
@@ -32,6 +32,7 @@ export function HtmlTable({
   data,
   verticalRenderInfo: verInfo,
   horizontalRenderInfo: hozInfo,
+  components: { Row, Cell, TableBody },
 }: HtmlTableProps) {
   const { flat, horizontalRenderRange: hoz } = hozInfo
 
@@ -40,18 +41,25 @@ export function HtmlTable({
   const leftFlatCount = flat.left.length
   const rightFlatCount = flat.right.length
 
+  const tbody =
+    TableBody != null && tbodyHtmlTag === 'tbody' ? (
+      <TableBody tbodyProps={{ children: data.map(renderRow) }} />
+    ) : (
+      React.createElement(tbodyHtmlTag, null, data.map(renderRow))
+    )
+
   return (
     <table>
       <Colgroup descriptors={hozInfo.visible} />
-      {React.createElement(tbodyHtmlTag, null, data.map(renderRow))}
+      {tbody}
     </table>
   )
 
-  function renderRow(record: any, i: number) {
+  function renderRow(row: any, i: number) {
     const rowIndex = verInfo.offset + i
     spanManager.stripUpwards(rowIndex)
 
-    const rowProps = getRowProps(record, rowIndex)
+    const rowProps = getRowProps(row, rowIndex)
     const rowClass = cx(
       Classes.tableRow,
       {
@@ -63,40 +71,43 @@ export function HtmlTable({
       rowProps?.className,
     )
 
-    return (
-      <tr
-        {...rowProps}
-        className={rowClass}
-        key={internals.safeGetRowKey(primaryKey, record, rowIndex)}
-        data-rowindex={rowIndex}
-      >
-        {hozInfo.visible.map((descriptor) => {
-          if (descriptor.type === 'blank') {
-            return <td key={descriptor.blankSide} />
-          }
-          return renderBodyCell(record, rowIndex, descriptor.col, descriptor.colIndex)
-        })}
-      </tr>
-    )
+    const trProps = {
+      ...rowProps,
+      className: rowClass,
+      'data-rowindex': rowIndex,
+      children: hozInfo.visible.map((descriptor) => {
+        if (descriptor.type === 'blank') {
+          return <td key={descriptor.blankSide} />
+        }
+        return renderBodyCell(row, rowIndex, descriptor.col, descriptor.colIndex)
+      }),
+    }
+
+    const key = internals.safeGetRowKey(primaryKey, row, rowIndex)
+    if (Row != null && tbodyHtmlTag === 'tbody') {
+      return React.createElement(Row, { key, row, rowIndex, trProps })
+    } else {
+      return <tr key={key} {...trProps} />
+    }
   }
 
-  function renderBodyCell(record: any, rowIndex: number, column: ArtColumn, colIndex: number) {
+  function renderBodyCell(row: any, rowIndex: number, column: ArtColumn, colIndex: number) {
     if (spanManager.testSkip(rowIndex, colIndex)) {
       return null
     }
 
-    const value = internals.safeGetValue(column, record, rowIndex)
-    const cellProps = column.getCellProps?.(value, record, rowIndex) ?? {}
+    const value = internals.safeGetValue(column, row, rowIndex)
+    const cellProps = column.getCellProps?.(value, row, rowIndex) ?? {}
 
     let cellContent: ReactNode = value
     if (column.render) {
-      cellContent = column.render(value, record, rowIndex)
+      cellContent = column.render(value, row, rowIndex)
     }
 
     let colSpan = 1
     let rowSpan = 1
     if (column.getSpanRect) {
-      const spanRect = column.getSpanRect(value, record, rowIndex)
+      const spanRect = column.getSpanRect(value, row, rowIndex)
       colSpan = spanRect == null ? 1 : spanRect.right - colIndex
       rowSpan = spanRect == null ? 1 : spanRect.bottom - rowIndex
     } else {
@@ -127,25 +138,28 @@ export function HtmlTable({
       positionStyle.right = hozInfo.stickyRightMap.get(colIndex)
     }
 
-    return React.createElement(
-      'td',
-      {
-        key: colIndex,
-        ...cellProps,
-        className: cx(Classes.tableCell, cellProps.className, {
-          first: colIndex === 0,
-          last: colIndex + colSpan === fullFlatCount,
-          'lock-left': colIndex < leftFlatCount,
-          'lock-right': colIndex >= fullFlatCount - rightFlatCount,
-        }),
-        ...(hasSpan ? { colSpan, rowSpan } : null),
-        style: {
-          textAlign: column.align,
-          ...cellProps.style,
-          ...positionStyle,
-        },
+    let key = colIndex
+    const tdProps = {
+      ...cellProps,
+      className: cx(Classes.tableCell, cellProps.className, {
+        first: colIndex === 0,
+        last: colIndex + colSpan === fullFlatCount,
+        'lock-left': colIndex < leftFlatCount,
+        'lock-right': colIndex >= fullFlatCount - rightFlatCount,
+      }),
+      ...(hasSpan ? { colSpan, rowSpan } : null),
+      style: {
+        textAlign: column.align,
+        ...cellProps.style,
+        ...positionStyle,
       },
-      cellContent,
-    )
+      children: cellContent,
+    }
+
+    if (Cell != null && tbodyHtmlTag === 'tbody') {
+      return <Cell key={key} tdProps={tdProps} row={row} rowIndex={rowIndex} column={column} colIndex={colIndex} />
+    } else {
+      return <td key={key} {...tdProps} />
+    }
   }
 }

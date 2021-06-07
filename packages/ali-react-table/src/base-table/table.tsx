@@ -41,7 +41,7 @@ function warnFlowRootIsDeprecated() {
   }
 }
 
-export type PrimaryKey = string | ((record: any) => string)
+export type PrimaryKey = string | ((row: any) => string)
 
 export interface BaseTableProps {
   /** 主键 */
@@ -96,6 +96,14 @@ export interface BaseTableProps {
     LoadingIcon?: React.ComponentType
     /** 数据为空时，表格的展示内容。*/
     EmptyContent?: React.ComponentType
+    /** 覆盖内部渲染 tbody>tr 元素的组件，一般用于在 tr 上设置 context */
+    Row?: React.ComponentType<{ row: any; rowIndex: number; trProps: unknown }>
+    /** 覆盖内部渲染 tbody>td 元素的组件，一般用于在 td 上设置 context */
+    Cell?: React.ComponentType<{ row: any; rowIndex: number; colIndex: number; tdProps: unknown; column: ArtColumn }>
+    /** 覆盖内部渲染 tbody 元素的组件 */
+    TableBody?: React.ComponentType<{ tbodyProps: unknown }>
+
+    // todo TableHeader/HeaderRow/HeaderCell TableFooter/FooterRow/FooterCell
   }
 
   /** 列的默认宽度 */
@@ -110,7 +118,7 @@ export interface BaseTableProps {
   /** 虚拟滚动调试标签，用于表格内部调试使用 */
   virtualDebugLabel?: string
 
-  getRowProps?(record: any, rowIndex: number): React.HTMLAttributes<HTMLTableRowElement>
+  getRowProps?(row: any, rowIndex: number): React.HTMLAttributes<HTMLTableRowElement>
 }
 
 interface BaseTableState {
@@ -285,7 +293,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   private renderTableBody(info: RenderInfo) {
-    const { dataSource, getRowProps, primaryKey, isLoading, emptyCellHeight, footerDataSource } = this.props
+    const { dataSource, getRowProps, primaryKey, isLoading, emptyCellHeight, footerDataSource, components } = this.props
     const tableBodyClassName = cx(Classes.tableBody, Classes.horizontalScrollContainer, {
       'no-scrollbar': footerDataSource.length > 0,
     })
@@ -318,6 +326,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           <div key="top-blank" className={cx(Classes.virtualBlank, 'top')} style={{ height: topBlank }} />
         )}
         <HtmlTable
+          components={components}
           tbodyHtmlTag="tbody"
           getRowProps={getRowProps}
           primaryKey={primaryKey}
@@ -338,7 +347,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   private renderTableFooter(info: RenderInfo) {
-    const { footerDataSource = [], getRowProps, primaryKey, stickyBottom } = this.props
+    const { footerDataSource = [], getRowProps, primaryKey, stickyBottom, components } = this.props
 
     return (
       <div
@@ -346,6 +355,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         style={{ bottom: stickyBottom === 0 ? undefined : stickyBottom }}
       >
         <HtmlTable
+          components={components}
           tbodyHtmlTag="tfoot"
           data={footerDataSource}
           horizontalRenderInfo={info}

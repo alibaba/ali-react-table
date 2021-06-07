@@ -138,7 +138,6 @@ export function HtmlTable({
       positionStyle.right = hozInfo.stickyRightMap.get(colIndex)
     }
 
-    let key = colIndex
     const tdProps = {
       ...cellProps,
       className: cx(Classes.tableCell, cellProps.className, {
@@ -157,9 +156,9 @@ export function HtmlTable({
     }
 
     if (Cell != null && tbodyHtmlTag === 'tbody') {
-      return <Cell key={key} tdProps={tdProps} row={row} rowIndex={rowIndex} column={column} colIndex={colIndex} />
+      return <Cell key={colIndex} tdProps={tdProps} row={row} rowIndex={rowIndex} column={column} colIndex={colIndex} />
     } else {
-      return <td key={key} {...tdProps} />
+      return <td key={colIndex} {...tdProps} />
     }
   }
 }

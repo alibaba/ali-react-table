@@ -102,8 +102,6 @@ export interface BaseTableProps {
     Cell?: React.ComponentType<{ row: any; rowIndex: number; colIndex: number; tdProps: unknown; column: ArtColumn }>
     /** 覆盖内部渲染 tbody 元素的组件 */
     TableBody?: React.ComponentType<{ tbodyProps: unknown }>
-
-    // todo TableHeader/HeaderRow/HeaderCell TableFooter/FooterRow/FooterCell
   }
 
   /** 列的默认宽度 */

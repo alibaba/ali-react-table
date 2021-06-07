@@ -48,15 +48,18 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 
 | 字段                               | 类型                  |                                                          |
 | ---------------------------------- | --------------------- | -------------------------------------------------------- |
-| ~~`props.emptyContent`~~           | `React.ReactNode`     | 请使用 `components.EmptyContent` 代替                    |
+| ~~`props.emptyContent`~~           | ~~`React.ReactNode`~~ | ~~请使用 `components.EmptyContent` 代替~~                |
 | `components.LoadingIcon`           | `React.ComponentType` | 自定义加载图标                                           |
 | `components.EmptyContent`          | `React.ComponentType` | 自定义数据为空时表格的展示内容                           |
 | `components.LoadingContentWrapper` | `React.ComponentType` | 自定义表格内容的 wrapper div，可用于实现自定义的加载效果 |
+| `components.TableBody`             | `React.ComponentType` | 自定义 tbody 元素的渲染                                  |
+| `components.Row`                   | `React.ComponentType` | 自定义 tr 元素的渲染                                     |
+| `components.Cell`                  | `React.ComponentType` | 自定义 td 元素的渲染                                     |
 
-`components.LoadingContentWrapper` 的默认值如下：
+`components.*` 的默认值如下，覆盖时可供参考：
 
 ```tsx
-function DefaultLoadingContentWrapper({ children, visible }: LoadingContentWrapperProps) {
+function LoadingContentWrapper({ children, visible }: LoadingContentWrapperProps) {
   // visible 表示表格是否处于加载状态中
   // children 是表格的实际内容
   return (
@@ -64,6 +67,27 @@ function DefaultLoadingContentWrapper({ children, visible }: LoadingContentWrapp
       {children}
     </div>
   )
+}
+
+function TableBody({ tbodyProps }) {
+  // tbodyProps <tbody> 元素的 props
+  return <tbody {...tbodyProps} />
+}
+
+function Row({ row, rowIndex, trProps }) {
+  // row 该行数据
+  // rowIndex 数据在 dataSource 中的下标
+  // trProps <tr> 元素的 props
+  return <tr {...trProps} />
+}
+
+function Cell({ row, rowIndex, column, colIndex, tdProps }) {
+  // row 单元格的行数据
+  // rowIndex 单元格的行下标
+  // column 单元格的列配置
+  // colIndex 单元格的列下标
+  // tdProps <td> 元素的 props
+  return <td {...tdProps} />
 }
 ```
 

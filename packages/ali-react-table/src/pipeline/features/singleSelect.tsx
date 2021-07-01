@@ -4,6 +4,15 @@ import { internals } from '../../internals'
 import { always } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
+function getFirstDefinedValue<T>(...values: T[]): T {
+  for (let i = 0; i < values.length; i++) {
+    const v = values[i]
+    if (v !== undefined) {
+      return v
+    }
+  }
+}
+
 export interface SingleSelectFeatureOptions {
   /** 是否高亮被选中的行 */
   highlightRowWhenSelected?: boolean
@@ -45,7 +54,7 @@ export function singleSelect(opts: SingleSelectFeatureOptions = {}) {
     const isDisabled = opts.isDisabled ?? always(false)
 
     const primaryKey = pipeline.ensurePrimaryKey('singleSelect')
-    const value = opts.value ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultValue
+    const value = getFirstDefinedValue(opts.value, pipeline.getStateAtKey(stateKey), opts.defaultValue)
     const onChange = (rowKey: string) => {
       opts.onChange?.(rowKey)
       pipeline.setStateAtKey(stateKey, rowKey)

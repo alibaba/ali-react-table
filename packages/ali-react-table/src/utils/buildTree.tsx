@@ -61,7 +61,6 @@ export default function buildTree<ID extends string, PID extends string, T exten
 
   return unwrapRecursively(topLevelWrappers)
 
-  // todo 可能存在无线递归的情况
   function unwrapRecursively(wrapperArray: Wrapper[]) {
     const result: WithChildren<T>[] = []
     for (const wrapper of wrapperArray) {

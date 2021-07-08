@@ -51,7 +51,7 @@ export interface TreeSelectFeatureOptions {
   isDisabled?(row: any): boolean
 
   /** 是否让该节点对应的子树 与其父节点脱离联动 */
-  idDetached?(row: any): boolean
+  isDetached?(row: any): boolean
 }
 
 const STATE_KEY = 'treeSelect'
@@ -68,7 +68,7 @@ export function treeSelect(opts: TreeSelectFeatureOptions) {
     }
     const clickArea = opts.clickArea ?? 'checkbox'
     const isDisabled = opts.isDisabled ?? always(false)
-    const isDetached = opts.idDetached ?? always(false)
+    const isDetached = opts.isDetached ?? always(false)
 
     const value = opts.value ?? pipeline.getStateAtKey(STATE_KEY) ?? opts.defaultValue ?? []
     const tree = opts.rootKey != null ? [{ [primaryKey]: opts.rootKey, children: opts.tree }] : opts.tree

@@ -167,6 +167,10 @@ export const StyledArtTableWrapper = styled.div`
   }
 
   .no-scrollbar {
+    // firefox 中移除滚动条
+    scrollbar-width: none;
+
+    // 其他浏览器中移除滚动条
     ::-webkit-scrollbar {
       display: none;
     }

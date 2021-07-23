@@ -301,7 +301,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       let EmptyContent = components.EmptyContent
       if (EmptyContent == null && emptyContent != null) {
         warnEmptyContentIsDeprecated()
-        EmptyContent = ((() => emptyContent) as unknown) as React.ComponentType
+        EmptyContent = (() => emptyContent) as unknown as React.ComponentType
       }
 
       return (

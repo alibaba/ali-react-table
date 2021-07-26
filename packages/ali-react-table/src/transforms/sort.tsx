@@ -113,8 +113,6 @@ export interface SortOptions {
   /** 排序激活时 是否高亮这一列的单元格 */
   highlightColumnWhenActive?: boolean
 
-  // todo 排序点击触发位置 clickArea
-
   /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
   stopClickEventPropagation?: boolean
 }

@@ -350,9 +350,6 @@ export function 树形可选择表格() {
         highlightRowWhenSelected: true,
         clickArea: 'cell',
         checkedStrategy: 'parent',
-        idDetached(row) {
-          return row.id === '2'
-        },
         isDisabled(row: any): boolean {
           return row.id === '2'
         },

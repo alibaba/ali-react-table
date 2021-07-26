@@ -53,11 +53,14 @@ options 结构如下：
 
 ```typescript
 export interface SortFeatureOptions {
-  /** 排序字段列表 */
-  sorts: SortItem[]
+  /** (非受控用法) 默认的排序字段列表 */
+  defaultSorts?: SortItem[]
+
+  /** (受控用法) 排序字段列表 */
+  sorts?: SortItem[]
 
   /** 更新排序字段列表的回调函数 */
-  onChangeSorts(nextSorts: SortItem[]): void
+  onChangeSorts?(nextSorts: SortItem[]): void
 
   /** 排序切换顺序 */
   orders?: SortOrder[]
@@ -74,10 +77,11 @@ export interface SortFeatureOptions {
   /** 排序激活时 是否高亮这一列的单元格 */
   highlightColumnWhenActive?: boolean
 
-  // todo 排序点击触发位置 clickArea
-
   /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
   stopClickEventPropagation?: boolean
+
+  /** 点击事件的响应区域，默认为 content */
+  clickArea?: 'content' | 'icon'
 }
 
 export type SortOrder = 'desc' | 'asc' | 'none'

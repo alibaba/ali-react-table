@@ -10,9 +10,10 @@ interface SortIconProps {
   className?: string
   size?: number
   order?: SortOrder
+  onClick?(e: React.MouseEvent): void
 }
 
-function SortIcon({ size = 32, style, className, order }: SortIconProps) {
+function SortIcon({ size = 32, style, className, order, onClick }: SortIconProps) {
   return (
     <svg
       style={style}
@@ -23,6 +24,7 @@ function SortIcon({ size = 32, style, className, order }: SortIconProps) {
       height={size}
       viewBox="0 0 32 32"
       aria-hidden="true"
+      onClick={onClick}
     >
       <path fill={order === 'asc' ? '#23A3FF' : '#bfbfbf'} transform="translate(0, 4)" d="M8 8L16 0 24 8z" />
       <path fill={order === 'desc' ? '#23A3FF' : '#bfbfbf'} transform="translate(0, -4)" d="M24 24L16 32 8 24z " />
@@ -30,14 +32,38 @@ function SortIcon({ size = 32, style, className, order }: SortIconProps) {
   )
 }
 
-function DefaultSortHeaderCell({ children, column, onToggle, sortOrder, sortIndex, sortOptions }: SortHeaderCellProps) {
+function DefaultSortHeaderCell({
+  children,
+  column,
+  onToggle,
+  sortOrder,
+  sortIndex,
+  sortOptions,
+  clickArea,
+}: SortHeaderCellProps) {
   // 通过 justify-content 来与 col.align 保持对齐方向一致
   const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
 
   return (
-    <TableHeaderCell onClick={onToggle} style={{ justifyContent }}>
+    <TableHeaderCell
+      onClick={clickArea === 'content' ? onToggle : undefined}
+      style={{
+        justifyContent,
+        cursor: clickArea === 'content' ? 'pointer' : undefined,
+      }}
+    >
       {children}
-      <SortIcon style={{ userSelect: 'none', marginLeft: 2, flexShrink: 0 }} size={16} order={sortOrder} />
+      <SortIcon
+        onClick={clickArea === 'icon' ? onToggle : undefined}
+        style={{
+          userSelect: 'none',
+          marginLeft: 2,
+          flexShrink: 0,
+          cursor: clickArea === 'icon' ? 'pointer' : undefined,
+        }}
+        size={16}
+        order={sortOrder}
+      />
       {sortOptions.mode === 'multiple' && sortIndex != -1 && (
         <div
           style={{
@@ -63,7 +89,6 @@ function hasAnySortableColumns(cols: ArtColumn[]): boolean {
 }
 
 const TableHeaderCell = styled.div`
-  cursor: pointer;
   display: flex;
   align-items: center;
 `
@@ -86,6 +111,9 @@ export interface SortHeaderCellProps {
 
   /** 切换排序的回调 */
   onToggle(e: React.MouseEvent): void
+
+  /** 点击事件的响应区域 */
+  clickArea: 'content' | 'icon'
 }
 
 export interface SortFeatureOptions {
@@ -115,6 +143,9 @@ export interface SortFeatureOptions {
 
   /** 是否对触发 onChangeOpenKeys 的 click 事件调用 event.stopPropagation() */
   stopClickEventPropagation?: boolean
+
+  /** 点击事件的响应区域，默认为 content */
+  clickArea?: 'content' | 'icon'
 }
 
 const stateKey = 'sort'
@@ -128,6 +159,7 @@ export function sort(opts: SortFeatureOptions = {}) {
       keepDataSource,
       highlightColumnWhenActive,
       stopClickEventPropagation,
+      clickArea = 'content',
     } = opts
 
     const inputSorts = opts.sorts ?? pipeline.getStateAtKey(stateKey) ?? opts.defaultSorts ?? []
@@ -156,6 +188,7 @@ export function sort(opts: SortFeatureOptions = {}) {
       keepDataSource,
       highlightColumnWhenActive,
       stopClickEventPropagation,
+      clickArea,
     }
 
     const sortMap = new Map(sorts.map((sort, index) => [sort.code, { index, ...sort }]))
@@ -259,6 +292,7 @@ export function sort(opts: SortFeatureOptions = {}) {
 
           result.title = (
             <SortHeaderCell
+              clickArea={clickArea}
               onToggle={(e) => {
                 if (stopClickEventPropagation) {
                   e.stopPropagation()

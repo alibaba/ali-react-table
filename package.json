@@ -19,10 +19,7 @@
     "url": "git+https://github.com/alibaba/ali-react-table.git"
   },
   "homepage": "https://github.com/alibaba/ali-react-table",
-  "author": {
-    "name": "Shi Feichao",
-    "email": "feichao.sfc@alibaba-inc.com"
-  },
+  "author": "https://github.com/shinima",
   "prettier": {
     "printWidth": 120,
     "singleQuote": true,
@@ -32,6 +29,6 @@
   "devDependencies": {
     "copyfiles": "^2.4.0",
     "prettier": "^2.1.2",
-    "typescript": "~4.2"
+    "typescript": "~4.3"
   }
 }

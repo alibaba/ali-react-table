@@ -5,11 +5,13 @@ module.exports = {
     {
       type: 'category',
       label: 'BaseTable',
+      collapsed: false,
       items: ['table/basic-usage', 'table/examples', 'table/advanced-usage', 'table/theming', 'table/api'],
     },
     {
       type: 'category',
       label: '表格功能拓展',
+      collapsed: false,
       items: [
         'pipeline/pipeline-intro',
         {

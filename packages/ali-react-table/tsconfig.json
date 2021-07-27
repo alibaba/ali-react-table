@@ -4,7 +4,7 @@
     "strict": true,
     "target": "ES2015",
     "declaration": true,
-    "forceConsistentCasingInFileNames": true,
+    "sourceMap": false,
     "strictNullChecks": false,
     "skipLibCheck": true,
     "jsx": "react",

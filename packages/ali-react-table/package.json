@@ -1,12 +1,12 @@
 {
   "name": "ali-react-table",
-  "version": "2.6.1",
+  "version": "3.0.0-alpha.0",
   "description": "高性能 React 表格组件",
   "sideEffects": [
     "*.css",
     "*.scss"
   ],
-  "module": "dist/ali-react-table.esm.js",
+  "module": "dist/ali-react-table.js",
   "main": "dist/ali-react-table.js",
   "types": "dist/ali-react-table.d.ts",
   "license": "MIT",
@@ -20,10 +20,9 @@
     "email": "842351815@qq.com"
   },
   "scripts": {
-    "watch": "rollup --config rollup.config.js --watch",
-    "build": "rimraf dist/ && rollup --config rollup.config.js",
-    "preversion": "npm run build",
-    "prepublishOnly": "npm run build"
+    "build": "rimraf dist/ && tsc",
+    "preversion": "yarn build",
+    "prepublishOnly": "yarn build"
   },
   "files": [
     "dist",
@@ -43,16 +42,12 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",
-    "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.15",
     "jest": "^26.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.13.1",
     "react-is": "^16.13.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.3.1",
-    "rollup-plugin-typescript2": "^0.30.0",
-    "typescript": "~4.2",
-    "xlsx": "^0.16.0"
+    "typescript": "~4.3"
   }
 }

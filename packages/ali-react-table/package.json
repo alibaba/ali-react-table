@@ -20,13 +20,16 @@
     "email": "842351815@qq.com"
   },
   "scripts": {
-    "build": "rimraf dist/ && tsc",
+    "build:ts": "rimraf dist/ && tsc",
+    "build:styles": "rimraf styles/ && sass --no-source-map src/styles/index.scss styles/index.css && copyfiles --up=2 src/styles/* styles/",
+    "build": "yarn build:ts && yarn build:styles",
     "preversion": "yarn build",
     "prepublishOnly": "yarn build"
   },
   "files": [
     "dist",
-    "pivot"
+    "pivot",
+    "styles"
   ],
   "dependencies": {
     "@popperjs/core": "^2.9.2",
@@ -39,6 +42,7 @@
     "react": "^16.8.0 || ^17.0.1"
   },
   "devDependencies": {
+    "sass": "^1.36.0",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-typescript": "^7.12.1",

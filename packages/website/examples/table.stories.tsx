@@ -99,7 +99,7 @@ export function 表头吸顶() {
         <div>表格操作栏，这里适合放置一些功能按钮</div>
       </div>
       <WebsiteBaseTable
-        isStickyHead
+        isStickyHeader
         stickyTop={48}
         isLoading={isLoading}
         dataSource={dataSource}
@@ -151,7 +151,7 @@ export function 表格吸底() {
   return (
     <div>
       <WebsiteBaseTable
-        isStickyHead
+        isStickyHeader
         stickyBottom={48}
         isLoading={isLoading}
         dataSource={dataSource}

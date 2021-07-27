@@ -26,7 +26,6 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 | `className`          | `number`                                                  | 自定义类名                                                                         |
 | `style`              | `React.CSSProperties`                                     | 自定义内联样式                                                                     |
 | `hasHeader`          | `boolean`                                                 | 表格是否具有头部                                                                   |
-| ~~`isStickyHead`~~   | `boolean`                                                 | 请使用 `isStickyHeader` 代替                                                       |
 | `isStickyHeader`     | `boolean`                                                 | 表格头部是否吸顶，默认为 true                                                      |
 | `stickyTop`          | `number`                                                  | 表头吸顶后，距离顶部的距离，默认为 0                                               |
 | `useOuterBorder`     | `boolean`                                                 | 是否使用来自外层 div 的边框代替单元格的外边框，默认为 false                        |
@@ -38,17 +37,13 @@ dataSource 和 columns 是必传 props，其他 props 均可选。
 | `stickyScrollHeight` | `'auto' / number`                                         | 指定自定义横向滚动条的高度，在定制滚动条样式时有用，默认为 `'auto'`                |
 | `stickyBottom`       | `number`                                                  | 表格底部距离页面下边缘的距离                                                       |
 | `useVirtual`         | `'auto'` <br/> 或 `boolean` <br/> 或一个对象              | 是否开启虚拟滚动，用法详见[进阶用法-虚拟滚动](/docs/table/advanced-usage#虚拟滚动) |
-| `flowRoot` \*        | ~~`'auto' / 'self' / HTMLElement / (() => HTMLElement)`~~ | ~~表格所处于的块格式化上下文(BFC)~~ <br/> v2.4 该属性已被移除                      |
 | `estimatedRowHeight` | `number`                                                  | 虚拟滚动开启情况下，表格中每一行的预估高度                                         |
 | `components`         | `object`                                                  | 自定义表格内部使用的子组件，详见下方                                               |
-
-- flowRoot \* (v2.4 该属性已被移除) ~~[块格式化上下文](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context) 用于在开启虚拟滚动的情况下计算表格的可见范围。~~
 
 ### 自定义表格内的子组件
 
 | 字段                               | 类型                  |                                                          |
 | ---------------------------------- | --------------------- | -------------------------------------------------------- |
-| ~~`props.emptyContent`~~           | ~~`React.ReactNode`~~ | ~~请使用 `components.EmptyContent` 代替~~                |
 | `components.LoadingIcon`           | `React.ComponentType` | 自定义加载图标                                           |
 | `components.EmptyContent`          | `React.ComponentType` | 自定义数据为空时表格的展示内容                           |
 | `components.LoadingContentWrapper` | `React.ComponentType` | 自定义表格内容的 wrapper div，可用于实现自定义的加载效果 |

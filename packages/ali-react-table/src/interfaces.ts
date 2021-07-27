@@ -71,12 +71,6 @@ export type SortItem = { code: string; order: SortOrder }
 
 export type Transform<T> = (input: T) => T
 
-/** @deprecated transform */
-export type TableTransform = Transform<{
-  columns: ArtColumn[]
-  dataSource: any[]
-}>
-
 export interface HoverRange {
   start: number
   end: number

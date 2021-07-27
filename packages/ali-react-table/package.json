@@ -30,11 +30,11 @@
     "pivot"
   ],
   "dependencies": {
-    "@popperjs/core": "^2.9.1",
-    "@types/classnames": "^2.2.9",
-    "classnames": "^2.2.6",
+    "@popperjs/core": "^2.9.2",
+    "@types/classnames": "^2.3.1",
+    "classnames": "^2.3.1",
     "resize-observer-polyfill": "^1.5.1",
-    "rxjs": "^6.5.4"
+    "rxjs": "^7.2.0"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.1"

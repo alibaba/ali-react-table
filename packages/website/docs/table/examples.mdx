@@ -93,7 +93,7 @@ function 左侧锁列() {
 
 ### 表头吸顶
 
-默认情况下表格已经开启了表头吸顶功能。设置 `isStickyHead=false` 可以关闭吸顶。
+默认情况下表格已经开启了表头吸顶功能。设置 `isStickyHeader=false` 可以关闭吸顶。
 
 ```jsx live
 function 表头吸顶() {
@@ -117,7 +117,7 @@ function 表头吸顶() {
         <div>表格操作栏，这里适合放置一些功能按钮</div>
       </div>
       <BaseTable
-        isStickyHead // isStickyHead 的默认值为 true；设置为 false 可以关闭表头吸顶
+        isStickyHeader
         stickyTop={48}
         isLoading={isLoading}
         dataSource={dataSource.slice(0, 6)}

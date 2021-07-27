@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BaseTableProps, PrimaryKey } from '../base-table'
-import { ArtColumn, TableTransform, Transform } from '../interfaces'
+import { ArtColumn, Transform } from '../interfaces'
 import { mergeCellProps } from '../utils'
 
 type RowPropsGetter = BaseTableProps['getRowProps']
@@ -152,16 +152,6 @@ export class TablePipeline {
       rowPropsGetters: this._rowPropsGetters.slice(),
     }
     return this
-  }
-
-  /** @deprecated
-   *  应用一个 ali-react-table Table transform */
-  useTransform(transform: TableTransform) {
-    const next = transform({
-      dataSource: this.getDataSource(),
-      columns: this.getColumns(),
-    })
-    return this.dataSource(next.dataSource).columns(next.columns)
   }
 
   /** 使用 pipeline 功能拓展 */

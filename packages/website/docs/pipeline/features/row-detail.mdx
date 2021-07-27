@@ -121,7 +121,7 @@ function 表格嵌套() {
 
 ### 表格套娃
 
-递归的表格嵌套。注意此时要设置 `isStickyHead={false}`，避免多个表头吸附在同一个位置。
+递归的表格嵌套。注意此时要设置 `isStickyHeader={false}`，避免多个表头吸附在同一个位置。
 
 ```jsx live
 function NestedTableExample({ depth = 0 }) {
@@ -154,6 +154,6 @@ function NestedTableExample({ depth = 0 }) {
     .primaryKey('id')
     .use(features.rowDetail({ renderDetail }))
 
-  return <BaseTable isStickyHead={false} {...pipeline.getProps()} />
+  return <BaseTable isStickyHeader={false} {...pipeline.getProps()} />
 }
 ```

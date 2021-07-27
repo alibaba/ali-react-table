@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React, { CSSProperties, ReactNode } from 'react'
+import React, { CSSProperties } from 'react'
 import { BehaviorSubject, combineLatest, noop, Subscription } from 'rxjs'
 import * as op from 'rxjs/operators'
 import { ArtColumn } from '../interfaces'
@@ -14,24 +14,6 @@ import { RenderInfo, ResolvedUseVirtual, VerticalRenderRange, VirtualEnum } from
 import Loading, { LoadingContentWrapperProps } from './loading'
 import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING } from './styles'
 import { getScrollbarSize, OVERSCAN_SIZE, shallowEqual, sum, syncScrollLeft, throttledWindowResize$ } from './utils'
-
-let emptyContentDeprecatedWarned = false
-function warnEmptyContentIsDeprecated() {
-  if (!emptyContentDeprecatedWarned) {
-    emptyContentDeprecatedWarned = true
-    console.warn(
-      '[ali-react-table] BaseTable props.emptyContent 已经过时，请使用 props.components.EmptyContent 来自定义数据为空时的表格表现',
-    )
-  }
-}
-
-let flowRootDeprecatedWarned = false
-function warnFlowRootIsDeprecated() {
-  if (!flowRootDeprecatedWarned) {
-    flowRootDeprecatedWarned = true
-    console.warn('[ali-react-table] BaseTable v2.4 版本之后已经不再需要指定 flowRoot')
-  }
-}
 
 export type PrimaryKey = string | ((row: any) => string)
 
@@ -50,8 +32,6 @@ export interface BaseTableProps {
   /** 虚拟滚动开启情况下，表格中每一行的预估高度 */
   estimatedRowHeight?: number
 
-  /** @deprecated 表格头部是否置顶，默认为 true。请使用 isStickyHeader 代替 */
-  isStickyHead?: boolean
   /** 表格头部是否置顶，默认为 true */
   isStickyHeader?: boolean
   /** 表格置顶后，距离顶部的距离 */
@@ -77,8 +57,6 @@ export interface BaseTableProps {
   isLoading?: boolean
   /** 数据为空时，单元格的高度 */
   emptyCellHeight?: number
-  /** @deprecated 数据为空时，表格的展示内容。请使用 components.EmptyContent 代替 */
-  emptyContent?: ReactNode
 
   /** 覆盖表格内部用到的组件 */
   components?: {
@@ -98,12 +76,6 @@ export interface BaseTableProps {
 
   /** 列的默认宽度 */
   defaultColumnWidth?: number
-
-  /**
-   * @deprecated
-   * flowRoot 在表格 v2.4 后不再需要提供，请移除该属性
-   * */
-  flowRoot?: never
 
   /** 虚拟滚动调试标签，用于表格内部调试使用 */
   virtualDebugLabel?: string
@@ -289,19 +261,13 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     })
 
     if (dataSource.length === 0) {
-      const { components, emptyContent } = this.props
-      let EmptyContent = components.EmptyContent
-      if (EmptyContent == null && emptyContent != null) {
-        warnEmptyContentIsDeprecated()
-        EmptyContent = (() => emptyContent) as unknown as React.ComponentType
-      }
-
+      const { components } = this.props
       return (
         <div className={tableBodyClassName}>
           <EmptyHtmlTable
             descriptors={info.visible}
             isLoading={isLoading}
-            EmptyContent={EmptyContent}
+            EmptyContent={components.EmptyContent}
             emptyCellHeight={emptyCellHeight}
           />
         </div>
@@ -407,18 +373,12 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       style,
       hasHeader,
       useOuterBorder,
-      isStickyHead,
       isStickyHeader,
       isStickyFooter,
       isLoading,
       footerDataSource,
       components,
-      flowRoot,
     } = this.props
-
-    if (flowRoot != null) {
-      warnFlowRootIsDeprecated()
-    }
 
     const artTableWrapperClassName = cx(
       Classes.artTableWrapper,
@@ -427,7 +387,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
         empty: dataSource.length === 0,
         lock: info.hasLockColumn,
         'has-header': hasHeader,
-        'sticky-header': isStickyHeader ?? isStickyHead,
+        'sticky-header': isStickyHeader,
         'has-footer': footerDataSource.length > 0,
         'sticky-footer': isStickyFooter,
       },

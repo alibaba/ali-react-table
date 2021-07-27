@@ -30,28 +30,7 @@ title: 进阶用法
 
 不开启虚拟滚动时，单元格合并可以通过 `column.getCellProps(...)` 返回 `colSpan / rowSpan` 进行实现。
 
-### 滚动容器(v2.4 之前)
-
-:::note
-这里描述的是 v2.4 之前版本的行为，v2.4 之后已经没有 `flowRoot` 这个属性了，滚动容器不需要再显示地进行设置。
-:::
-
-一般来说表格有如下两种滚动模式：
-
-- 不限制表格容器的尺寸，表格随着整个页面发生滚动
-  - 此时的写法： `<BaseTable ... />` （不设置 style.overflow，也不限制表格高度或宽度）
-- 限制表格容器的尺寸，表格容器内发生滚动
-  - 此时注意设置表格的高度或最大高度（宽度同理），并设置 `style.overflow = 'auto'`
-  - 注意 height/width/maxWidth/maxHeight 是设置在表格上的，而不是设置在父节点上：
-    - 正确的写法：`<BaseTable style={{ overflow: 'auto', maxHeight: 400 }} ... />`
-    - **错误的写法**：~~`<div style={{ overflow: 'auto', maxHeight: 400 }}> <BaseTable ... /> </div>`~~
-  - 从另一个角度讲，如果为表格设置了 `style.overflow = 'auto'`，则必须为表格设置高度或最大高度
-
-除了以上两种滚动模式之外，如果你想让表格在指定的容器内进行滚动，可以配置 `props.flowRoot`，该 prop 可指定表格发生滚动的 [BFC](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context)。
-
-表格的上层元素**不能**设置 `style.transform`。上层元素中出现缩放或平移时，表格内部可能无法获取正确的 DOM 尺寸。
-
-### 滚动容器(v2.4+)
+### 滚动容器
 
 表格组件会自动向上寻找第一个滚动容器，并在该容器内发生虚拟滚动。
 

@@ -1,0 +1,65 @@
+@mixin beautifulScrollbar {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border: 1px solid #eaeaea;
+
+    &:hover {
+      background: #6e6e6e;
+    }
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #eaeaea;
+  }
+}
+
+.dark-base-table {
+  --bgcolor: #333;
+  --header-bgcolor: #45494f;
+  --hover-bgcolor: #46484a;
+  --header-hover-bgcolor: #606164;
+  --highlight-bgcolor: #191a1b;
+  --header-highlight-bgcolor: #191a1b;
+  --color: #dadde1;
+  --header-color: #dadde1;
+  --lock-shadow: rgb(37 37 37 / 0.5) 0 0 6px 2px;
+  --border-color: #3c4045;
+}
+
+.app-div {
+  display: flow-root;
+
+  &.has-custom-scrollbar {
+    .art-table-wrapper {
+      @include beautifulScrollbar;
+    }
+
+    .art-horizontal-scroll-container {
+      @include beautifulScrollbar;
+    }
+  }
+
+  tfoot {
+    --bgcolor: var(--hover-bgcolor);
+  }
+
+  .control-grid {
+    display: grid;
+    grid: auto-flow / repeat(auto-fill, minmax(250px, auto));
+    gap: 16px;
+
+    .item {
+      padding: 4px;
+      outline: 1px dashed #ccc;
+      display: flex;
+      gap: 4px;
+      flex-flow: column;
+      align-items: start;
+    }
+  }
+}

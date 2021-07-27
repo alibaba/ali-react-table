@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { StyleSheetManager } from 'styled-components'
 import { DemoApp } from './DemoApp'
 
 import 'antd/dist/antd.css'
@@ -12,9 +11,4 @@ if (hot) {
   hot.accept()
 }
 
-ReactDOM.render(
-  <StyleSheetManager disableVendorPrefixes>
-    <DemoApp />
-  </StyleSheetManager>,
-  document.getElementById('container'),
-)
+ReactDOM.render(<DemoApp />, document.getElementById('container'))

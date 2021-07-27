@@ -3,21 +3,8 @@ import { Button, Radio, Switch, Typography } from 'antd'
 import cx from 'classnames'
 import numeral from 'numeral'
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import styled, { css } from 'styled-components'
 import { AntdBaseTable, HippoBaseTable } from 'website/src/assets'
-
-const DarkBaseTable: any = styled(BaseTable)`
-  --bgcolor: #333;
-  --header-bgcolor: #45494f;
-  --hover-bgcolor: #46484a;
-  --header-hover-bgcolor: #606164;
-  --highlight-bgcolor: #191a1b;
-  --header-highlight-bgcolor: #191a1b;
-  --color: #dadde1;
-  --header-color: #dadde1;
-  --lock-shadow: rgb(37 37 37 / 0.5) 0 0 6px 2px;
-  --border-color: #3c4045;
-`
+import './DemoApp.scss'
 
 function amount(v: any) {
   if (v === '-' || v == null) {
@@ -62,59 +49,6 @@ const dataSource = [
   { provinceName: '广东省', cityName: '佛山', confirmedCount: 84, curedCount: 22, deadCount: 0, updateTime: '2020-02-15' },
   { provinceName: '广东省', cityName: '珠海', confirmedCount: 95, curedCount: 34, deadCount: 0, updateTime: '2020-02-15' },
 ]
-
-const beautifulScrollbarStyleMixin = css`
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border: 1px solid #eaeaea;
-
-    &:hover {
-      background: #6e6e6e;
-    }
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #eaeaea;
-  }
-`
-
-const AppDivAppDiv = styled.div.withConfig({
-  // @ts-ignore
-  componentId: 'app-div',
-})`
-  display: flow-root;
-
-  &.has-custom-scrollbar {
-    .art-table-wrapper,
-    .art-horizontal-scroll-container {
-      ${beautifulScrollbarStyleMixin}
-    }
-  }
-
-  tfoot {
-    --bgcolor: var(--hover-bgcolor);
-  }
-
-  .control-grid {
-    display: grid;
-    grid: auto-flow / repeat(auto-fill, minmax(250px, auto));
-    gap: 16px;
-
-    .item {
-      padding: 4px;
-      outline: 1px dashed #ccc;
-      display: flex;
-      gap: 4px;
-      flex-flow: column;
-      align-items: start;
-    }
-  }
-`
 
 export function DemoApp() {
   const footerDataSource = [
@@ -170,7 +104,7 @@ export function DemoApp() {
 
   let BaseTableComponent = BaseTable
   if (theme === 'default-dark') {
-    BaseTableComponent = DarkBaseTable
+    BaseTableComponent = BaseTable
   } else if (theme == 'antd') {
     BaseTableComponent = AntdBaseTable as any
   } else if (theme == 'antd-dark') {
@@ -192,7 +126,7 @@ export function DemoApp() {
   }
 
   return (
-    <AppDivAppDiv ref={appDivRef} className={cx({ 'has-custom-scrollbar': hasCustomScrollbar })}>
+    <div ref={appDivRef} className={cx('app-div', { 'has-custom-scrollbar': hasCustomScrollbar })}>
       <div style={{ background: '#f2f2f2', padding: 16 }}>
         <Typography>
           <h4>
@@ -253,7 +187,6 @@ export function DemoApp() {
             <div className="item">
               <Switch checked={hasCustomScrollbar} onChange={setHasCustomScrollbar} />
               <div>使用自定义样式的滚动条</div>
-              <div>（通过 styled-components 覆盖样式进行实现）</div>
             </div>
             <div className="item">
               <Switch checked={leftLock} onChange={setLeftLock} />
@@ -327,6 +260,6 @@ export function DemoApp() {
         dataSource={hasData ? (useBigData ? repeat(dataSource, 5) : dataSource) : []}
         footerDataSource={hasFooter ? footerDataSource : []}
       />
-    </AppDivAppDiv>
+    </div>
   )
 }

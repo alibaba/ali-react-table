@@ -9,9 +9,9 @@ module.exports = {
     },
     {
       type: 'category',
-      label: '表格功能拓展(pipeline)',
+      label: '表格功能拓展',
       items: [
-        'pipeline/pipeline',
+        'pipeline/pipeline-intro',
         {
           type: 'category',
           label: '具体功能',
@@ -33,11 +33,6 @@ module.exports = {
         },
         'pipeline/extends',
       ],
-    },
-    {
-      type: 'category',
-      label: '表格功能拓展(transforms)',
-      items: ['transforms/transforms'],
     },
     {
       type: 'category',

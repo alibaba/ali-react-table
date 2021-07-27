@@ -24,7 +24,7 @@ module.exports = {
         },
         { to: 'examples', label: '示例', position: 'left' },
         { to: 'blog', label: '博客', position: 'left' },
-        { href: 'https://ali-react-table.js.org/v1/', label: '1.x 文档', position: 'left' },
+        { href: 'https://shinima.github.io/ali-react-table-v1-doc/', label: '1.x 文档', position: 'left' },
         {
           href: 'https://github.com/alibaba/ali-react-table',
           label: 'GitHub',

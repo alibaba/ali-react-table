@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React, { ReactNode } from 'react'
-import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
+import { icons } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, mergeCellProps } from '../../utils'
@@ -132,7 +132,11 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         const content = internals.safeRender(firstCol, row, rowIndex)
 
         if (!hasDetail(row, rowIndex)) {
-          return <InlineFlexCell style={{ marginLeft: textOffset }}>{content}</InlineFlexCell>
+          return (
+            <div className="artx__align-center" style={{ marginLeft: textOffset }}>
+              {content}
+            </div>
+          )
         }
 
         const rowKey = row[primaryKey]
@@ -146,8 +150,8 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
-          <ExpansionCell
-            className={cx('expansion-cell', expandCls)}
+          <div
+            className={cx('artx__expansion-cell', expandCls)}
             style={{ cursor: clickArea === 'content' ? 'pointer' : undefined }}
             onClick={clickArea === 'content' ? onClick : undefined}
           >
@@ -161,7 +165,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
               onClick={clickArea === 'icon' ? onClick : undefined}
             />
             {content}
-          </ExpansionCell>
+          </div>
         )
       }
 

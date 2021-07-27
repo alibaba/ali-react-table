@@ -4,7 +4,7 @@ import { StyleSheetManager } from 'styled-components'
 import { DemoApp } from './DemoApp'
 
 import 'antd/dist/antd.css'
-import 'ali-react-table/src/styles.scss'
+import 'ali-react-table/src/styles/index.scss'
 
 const hot = (module as any).hot
 

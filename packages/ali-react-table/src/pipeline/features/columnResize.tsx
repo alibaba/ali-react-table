@@ -1,7 +1,6 @@
 import React from 'react'
 import { fromEvent } from 'rxjs'
 import * as op from 'rxjs/operators'
-import styled from 'styled-components'
 import { internals } from '../../internals'
 import { collectNodes, makeRecursiveMapper, mergeCellProps } from '../../utils'
 import { TablePipeline } from '../pipeline'
@@ -9,27 +8,6 @@ import { TablePipeline } from '../pipeline'
 function clamp(min: number, x: number, max: number) {
   return Math.max(min, Math.min(max, x))
 }
-
-const ResizeHandle = styled.span`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: -5px;
-  width: 10px;
-  cursor: col-resize;
-  z-index: 1;
-  transition: background-color 200ms;
-
-  background: ${(props: any) => {
-    return props['var-handleBackground']
-  }};
-
-  &:hover {
-    background: ${(props: any) => {
-      return props['var-handleHoverBackground']
-    }};
-  }
-`
 
 export interface ColumnResizeFeatureOptions {
   /** 非受控用法：默认的列宽数组 */
@@ -118,9 +96,7 @@ export function columnResize(opts: ColumnResizeFeatureOptions = {}) {
         prevUserSelect = docElemStyle.userSelect
         docElemStyle.userSelect = 'none'
       }
-      if (opts.handleActiveBackground) {
-        target.style.background = opts.handleActiveBackground
-      }
+      target.classList.add('active')
 
       nextSizes$.subscribe({
         next: onChangeSizes,
@@ -128,9 +104,7 @@ export function columnResize(opts: ColumnResizeFeatureOptions = {}) {
           if (disableUserSelectWhenResizing) {
             docElemStyle.userSelect = prevUserSelect
           }
-          if (opts.handleActiveBackground) {
-            target.style.background = ''
-          }
+          target.classList.remove('active')
         },
       })
     }
@@ -145,10 +119,15 @@ export function columnResize(opts: ColumnResizeFeatureOptions = {}) {
           title: (
             <>
               {prevTitle}
-              <ResizeHandle
-                className="resize-handle"
-                var-handleBackground={opts.handleBackground}
-                var-handleHoverBackground={opts.handleHoverBackground}
+              <span
+                className="artx-column-resize__resize-handle"
+                style={
+                  {
+                    '--handleBackground': opts.handleBackground,
+                    '--handleHoverBackground': opts.handleHoverBackground,
+                    '--handleActiveBackground': opts.handleActiveBackground,
+                  } as any
+                }
                 onMouseDown={(e: React.MouseEvent<HTMLSpanElement>) => startResize(startIndex, endIndex, e)}
               />
             </>

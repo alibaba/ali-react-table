@@ -1,5 +1,4 @@
 import React, { CSSProperties, ReactNode } from 'react'
-import styled from 'styled-components'
 import { ArtColumn, SortItem, SortOrder } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, isLeafNode, layeredSort, mergeCellProps, smartCompare } from '../../utils'
@@ -45,7 +44,8 @@ function DefaultSortHeaderCell({
   const justifyContent = column.align === 'right' ? 'flex-end' : column.align === 'center' ? 'center' : 'flex-start'
 
   return (
-    <TableHeaderCell
+    <div
+      className="artx-sort__header-cell"
       onClick={clickArea === 'content' ? onToggle : undefined}
       style={{
         justifyContent,
@@ -54,31 +54,18 @@ function DefaultSortHeaderCell({
     >
       {children}
       <SortIcon
+        className="artx-sort__sort-icon"
         onClick={clickArea === 'icon' ? onToggle : undefined}
         style={{
-          userSelect: 'none',
-          marginLeft: 2,
-          flexShrink: 0,
           cursor: clickArea === 'icon' ? 'pointer' : undefined,
         }}
         size={16}
         order={sortOrder}
       />
       {sortOptions.mode === 'multiple' && sortIndex != -1 && (
-        <div
-          style={{
-            userSelect: 'none',
-            marginLeft: 2,
-            color: '#666',
-            flex: '0 0 auto',
-            fontSize: 10,
-            fontFamily: 'monospace',
-          }}
-        >
-          {sortIndex + 1}
-        </div>
+        <div className="artx-sort__sort-order">{sortIndex + 1}</div>
       )}
-    </TableHeaderCell>
+    </div>
   )
 }
 
@@ -87,11 +74,6 @@ function hasAnySortableColumns(cols: ArtColumn[]): boolean {
     (col) => Boolean(col.features?.sortable) || (!isLeafNode(col) && hasAnySortableColumns(col.children)),
   )
 }
-
-const TableHeaderCell = styled.div`
-  display: flex;
-  align-items: center;
-`
 
 export interface SortHeaderCellProps {
   /** 调用 makeSortTransform(...) 时的参数 */

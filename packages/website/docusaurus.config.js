@@ -83,7 +83,7 @@ module.exports = {
           customCss: [
             require.resolve('./src/css/custom.scss'),
             require.resolve('./src/css/fusion.css'),
-            require.resolve('ali-react-table/src/styles.scss'),
+            require.resolve('ali-react-table/src/styles/index.scss'),
           ],
         },
       },

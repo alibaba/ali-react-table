@@ -1,4 +1,3 @@
-import type XLSX_NS from 'xlsx'
 import SpanManager from '../base-table/helpers/SpanManager'
 import { ArtColumn, SpanRect } from '../interfaces'
 import { internals } from '../internals'
@@ -57,7 +56,7 @@ function sanitizeCellDatum(value: any): XlsxCellDatum {
 
 /** 根据 BaseTable 的 dataSource 和 column，将表格数据导出为 Excel 文件 */
 export default function exportTableAsExcel(
-  xlsxPackage: typeof XLSX_NS,
+  xlsxPackage: any,
   dataSource: any[],
   columns: ArtColumn[],
   filename: string,

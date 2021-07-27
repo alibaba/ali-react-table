@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React from 'react'
-import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
+import { icons } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { collectNodes, isLeafNode, mergeCellProps } from '../../utils'
@@ -98,22 +98,22 @@ export function rowGrouping(opts: RowGroupingFeatureOptions = {}) {
         if (!meta.isGroupHeader || !meta.expandable) {
           const marginLeft = textOffset + (meta.isGroupHeader ? 0 : indents.indentSize)
           return (
-            <InlineFlexCell style={{ marginLeft }}>
+            <div className="artx__align-center" style={{ marginLeft }}>
               {meta.isGroupHeader ? row.groupTitle ?? content : content}
-            </InlineFlexCell>
+            </div>
           )
         }
 
         const expanded = openKeySet.has(row[primaryKey])
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
-          <ExpansionCell className={cx('expansion-cell', expandCls)}>
+          <div className={cx('artx__expansion-cell', expandCls)}>
             <icons.CaretRight
               className={cx('expansion-icon', expandCls)}
               style={{ marginLeft: indents.iconIndent, marginRight: indents.iconGap }}
             />
             {row.groupTitle ?? content}
-          </ExpansionCell>
+          </div>
         )
       }
 

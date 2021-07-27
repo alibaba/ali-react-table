@@ -1,28 +1,10 @@
 import React from 'react'
 import { noop } from 'rxjs'
-import styled from 'styled-components'
 import { icons } from '../../common-views'
 import { isLeafNode } from '../../utils'
 import { CrossTableIndicator, CrossTreeNode } from '../cross-table'
 import { DrillNode } from './interfaces'
 import simpleEncode from './simpleEncode'
-
-const ExpandSpan = styled.span`
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 8px 2px 0;
-  cursor: pointer;
-
-  .icon {
-    fill: #999;
-    margin-right: 4px;
-
-    &.expanded {
-      transform-origin: center center;
-      transform: rotate(90deg);
-    }
-  }
-`
 
 type ConvertOptions<T extends CrossTreeNode = CrossTreeNode> = {
   /** 需要在子节点处附加的 指标节点 */
@@ -39,9 +21,7 @@ type ConvertOptions<T extends CrossTreeNode = CrossTreeNode> = {
    *  表明所要生成的小计节点的摆放位置、文本、附加的数据
    *
    * 该参数留空 表示所有节点均不需要生成小计节点 */
-  generateSubtotalNode?(
-    drillNode: DrillNode,
-  ): null | {
+  generateSubtotalNode?(drillNode: DrillNode): null | {
     position: 'start' | 'end'
     value: string
   }
@@ -94,12 +74,12 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
 
   function drillNodeToTreeNode(node: DrillNode, nodeData: any): T {
     if (indicators != null) {
-      return ({
+      return {
         key: node.key,
         value: node.value,
         data: nodeData,
         children: getIndicators(node, nodeData),
-      } as unknown) as T
+      } as unknown as T
     } else {
       return {
         key: node.key,
@@ -132,7 +112,8 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
           // 展开的父节点
           // @ts-ignore
           crossTreeNode.title = (
-            <ExpandSpan
+            <span
+              className="artx-pivot__expand-node"
               onClick={() => {
                 onChangeExpandKeys(
                   expandKeys.filter((k) => k !== node.key),
@@ -143,21 +124,22 @@ export function convertDrillTreeToCrossTree<T extends CrossTreeNode = CrossTreeN
             >
               <icons.CaretRight className="icon expanded" />
               {node.value}
-            </ExpandSpan>
+            </span>
           )
           crossTreeNode.children = dfs(node.children, depth + 1)
         } else {
           // 收拢的父节点
           needProcessChildren = false
           crossTreeNode.title = (
-            <ExpandSpan
+            <span
+              className="artx-pivot__expand-node"
               onClick={() => {
                 onChangeExpandKeys(expandKeys.concat([node.key]), node, 'expand')
               }}
             >
               <icons.CaretRight className="icon collapsed" />
               {node.value}
-            </ExpandSpan>
+            </span>
           )
           if (indicators != null) {
             crossTreeNode.children = getIndicators(node, nodeData)

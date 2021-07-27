@@ -1,6 +1,6 @@
 import cx from 'classnames'
 import React from 'react'
-import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
+import { icons } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
 import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../../utils'
@@ -125,9 +125,9 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
 
         if (isLeaf) {
           return (
-            <InlineFlexCell className="expansion-cell leaf">
+            <div className="artx__align-center leaf">
               <span style={{ marginLeft: indent + iconWidth + iconGap }}>{content}</span>
-            </InlineFlexCell>
+            </div>
           )
         }
 
@@ -140,8 +140,8 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
 
         const expandCls = expanded ? 'expanded' : 'collapsed'
         return (
-          <ExpansionCell
-            className={cx('expansion-cell', expandCls)}
+          <div
+            className={cx('artx__expansion-cell', expandCls)}
             style={{
               cursor: clickArea === 'content' ? 'pointer' : undefined,
             }}
@@ -157,7 +157,7 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
               onClick={clickArea === 'icon' ? onClick : undefined}
             />
             {content}
-          </ExpansionCell>
+          </div>
         )
       }
 

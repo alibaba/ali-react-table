@@ -1,23 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
 import { icons } from '../../common-views'
 import { internals } from '../../internals'
 import { makeRecursiveMapper } from '../../utils'
 import { TablePipeline } from '../pipeline'
-
-const HeaderCellWithTips = styled.div`
-  display: flex;
-  align-items: center;
-
-  .tip-icon-wrapper {
-    margin-left: 2px;
-  }
-
-  .tip-icon {
-    display: flex;
-    fill: currentColor;
-  }
-`
 
 export function tips() {
   return function tipsSteap(pipeline: TablePipeline) {
@@ -39,7 +24,7 @@ export function tips() {
         return {
           ...col,
           title: (
-            <HeaderCellWithTips style={{ justifyContent }}>
+            <div style={{ justifyContent }} className="artx-tips__header-cell">
               {internals.safeRenderHeader(col)}
               {Balloon ? (
                 // fusion/hippo
@@ -61,7 +46,7 @@ export function tips() {
                   </div>
                 </Tooltip>
               )}
-            </HeaderCellWithTips>
+            </div>
           ),
         }
       }),

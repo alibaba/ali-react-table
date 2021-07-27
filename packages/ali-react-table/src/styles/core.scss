@@ -38,7 +38,7 @@ $lockShadowPadding: 20px;
   --row-height: 48px;
   --color: #333;
   --bgcolor: white;
-  --hover-bgcolor: var(--hover-color, #f5f5f5);
+  --hover-bgcolor: #f5f5f5;
   --highlight-bgcolor: #eee;
 
   --header-row-height: 32px;
@@ -83,19 +83,6 @@ $lockShadowPadding: 20px;
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-
-  .art-table-header {
-    overflow-x: auto;
-    overflow-y: hidden;
-    background: var(--header-bgcolor);
-  }
-
-  .art-table-body,
-  .art-table-footer {
-    overflow-x: auto;
-    overflow-y: hidden;
-    background: var(--bgcolor);
   }
 
   &.sticky-header .art-table-header {
@@ -173,99 +160,104 @@ $lockShadowPadding: 20px;
   .lock-right {
     z-index: $Z_lock;
   }
+}
 
-  //#region 锁列阴影
-  .art-lock-shadow-mask {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    z-index: $Z_lockShadow;
-    pointer-events: none;
-    overflow: hidden;
+.art-table-header {
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--header-bgcolor);
+}
 
-    .art-lock-shadow {
-      height: 100%;
-    }
+.art-table-body,
+.art-table-footer {
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: var(--bgcolor);
+}
 
-    .art-left-lock-shadow {
-      margin-right: $lockShadowPadding;
-      box-shadow: none;
+.art-lock-shadow-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: $Z_lockShadow;
+  pointer-events: none;
+  overflow: hidden;
+}
 
-      &.show-shadow {
-        box-shadow: var(--lock-shadow);
-        border-right: var(--cell-border-vertical);
-      }
-    }
+.art-lock-shadow {
+  height: 100%;
+}
 
-    .art-right-lock-shadow {
-      margin-left: $lockShadowPadding;
-      box-shadow: none;
+.art-left-lock-shadow {
+  margin-right: $lockShadowPadding;
+  box-shadow: none;
 
-      &.show-shadow {
-        box-shadow: var(--lock-shadow);
-        border-left: var(--cell-border-vertical);
-      }
-    }
+  &.show-shadow {
+    box-shadow: var(--lock-shadow);
+    border-right: var(--cell-border-vertical);
   }
-  //#endregion
+}
 
-  //#region 空表格展现
-  .art-empty-wrapper {
-    pointer-events: none;
-    color: #99a3b3;
-    font-size: 12px;
-    text-align: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+.art-right-lock-shadow {
+  margin-left: $lockShadowPadding;
+  box-shadow: none;
 
-    .empty-image {
-      width: 50px;
-      height: 50px;
-    }
-
-    .empty-tips {
-      margin-top: 16px;
-      line-height: 1.5;
-    }
+  &.show-shadow {
+    box-shadow: var(--lock-shadow);
+    border-left: var(--cell-border-vertical);
   }
-  //#endregion
+}
 
-  //#region 粘性滚动条
-  .art-sticky-scroll {
-    overflow: auto;
-    position: sticky;
-    bottom: 0;
-    z-index: $Z_scrollItem;
-    margin-top: -17px;
+.art-empty-wrapper {
+  pointer-events: none;
+  color: #99a3b3;
+  font-size: 12px;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  .empty-image {
+    width: 50px;
+    height: 50px;
   }
 
-  .art-sticky-scroll-item {
-    // 必须有高度才能出现滚动条
-    height: 1px;
-    visibility: hidden;
+  .empty-tips {
+    margin-top: 16px;
+    line-height: 1.5;
   }
-  //#endregion
+}
 
-  //#region 加载样式
-  .art-loading-wrapper {
-    position: relative;
+.art-sticky-scroll {
+  overflow: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: $Z_scrollItem;
+  margin-top: -17px;
+}
 
-    .art-loading-indicator-wrapper {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      pointer-events: none;
-    }
+.art-sticky-scroll-item {
+  // 必须有高度才能出现滚动条
+  height: 1px;
+  visibility: hidden;
+}
 
-    .art-loading-indicator {
-      position: sticky;
-      z-index: $Z_loadingIndicator;
-      transform: translateY(-50%);
-    }
-  }
-  //#endregion
+.art-loading-wrapper {
+  position: relative;
+}
+
+.art-loading-indicator-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.art-loading-indicator {
+  position: sticky;
+  z-index: $Z_loadingIndicator;
+  transform: translateY(-50%);
 }

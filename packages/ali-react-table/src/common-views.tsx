@@ -1,27 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-
-export const InlineFlexCell = styled.div`
-  display: inline-flex;
-  align-items: center;
-`
-
-export const ExpansionCell = styled(InlineFlexCell)`
-  &.leaf {
-    cursor: default;
-  }
-
-  .expansion-icon {
-    fill: #999;
-    flex: 0 0 16px;
-    transition: transform 200ms;
-
-    &.expanded {
-      transform-origin: center center;
-      transform: rotate(90deg);
-    }
-  }
-`
 
 interface IconProps extends React.SVGProps<SVGElement> {
   height?: number

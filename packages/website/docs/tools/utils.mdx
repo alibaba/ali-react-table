@@ -7,27 +7,6 @@ title: 通用工具函数
 
 <hr />
 
-### `applyTransforms`
-
-:::note deprecated
-表格功能拓展(transforms) 已经过时，API 也不应被使用了。
-:::
-
-API: `function applyTransforms<T>(input: T, ...transforms: Transform<T>[]): T`
-
-以 input 作为输入，按序使用 transform。transform 是一个简单的纯函数，transform 的参数类型与返回值类型相同
-
-`applyTransforms(input, f1, f2, f3)` 等价于 `f3(f2(f1(input)))`.
-
-```typescript
-// 相关源码参考
-type Transform<T> = (input: T) => T
-
-function applyTransforms<T>(input: T, ...transforms: Transform<T>[]) {
-  return transforms.reduce((v, fn) => fn(v), input)
-}
-```
-
 ### `buildTree`
 
 API: `function buildTree<T>(idProp: string, parentIdProp: string, items: T[]): WithChildren<T>[]`
@@ -213,25 +192,6 @@ API: `(x: any, y: any) => number`
 - null 值在比较时总是小于另一个值；
 - 对于数组来说，将逐个比较数组中的元素，第一个不相等的比较结果将作为整个数组的比较结果
   - 数组的比较可参考 python 中的元祖比较：https://stackoverflow.com/questions/5292303/how-does-tuple-comparison-work-in-python
-
-### `traverseColumn`
-
-:::note deprecated
-该 API 已经过时，请使用 `makeRecursiveMapper`
-:::
-
-API: `(fn: (column, ctx) => NormalizeAsArrayInput<ArtColumn>) => TableTransform`
-
-`traverseColumn` 方法可用来简化「创建针对列的 transform」。提供一个针对单个 column 配置的转换函数，该方法可以生成对应的 TableTransform。fn 的表现如下：
-
-- fn 被调用时的参数：
-  - column 参数：表格的列配置
-  - ctx：与 column 对应的上下文对象：
-    - ctx.range：列的下标，包含 ctx.range.start, ctx.range.end 两个下标
-    - ctx.dataSource：表格的数据源
-- fn 的返回结果：
-  - 返回 `null` 时，对应的列将被移除；
-  - 返回 `ArtColumn` 或一个数组时，返回的结果会替换对应的列。
 
 ### `makeRecursiveMapper`
 

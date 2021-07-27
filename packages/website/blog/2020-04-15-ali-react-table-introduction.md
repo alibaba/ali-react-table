@@ -61,6 +61,8 @@ function BasicUsage() {
 
 ## 表格功能拓展
 
+注意：transform 已经换成了功能更加完善的 table pipeline，详见使用文档。
+
 BaseTable 是一个相对底层的 React 组件，仅提供了基本的表格渲染功能。为了方便对表格进行功能拓展，我们为 BaseTable 设计了一个简单的拓展方案，然后我们基于该方案实现了一些常见的表格功能，包括排序、树状模式、列高亮等。
 
 我们知道 `BaseTable` 基于 dataSource 和 columns 来渲染表格，按照一定的规则对 dataSource/columns 进行包装和转换，可以改变 dataSource/columns 的值或渲染输出，实现特定的功能。

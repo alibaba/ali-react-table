@@ -15,10 +15,6 @@ module.exports = {
     navbar: {
       hideOnScroll: true,
       title: 'ali-react-table',
-      logo: {
-        alt: 'ali-react-table Logo',
-        src: 'img/logo.svg',
-      },
       items: [
         {
           to: 'docs',
@@ -87,6 +83,7 @@ module.exports = {
           customCss: [
             require.resolve('./src/css/custom.scss'),
             require.resolve('./src/css/fusion.css'),
+            require.resolve('ali-react-table/src/styles.scss'),
           ],
         },
       },

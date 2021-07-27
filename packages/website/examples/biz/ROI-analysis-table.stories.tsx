@@ -1,5 +1,5 @@
 import * as hippo from '@alifd/next'
-import { applyTransforms, ArtColumn, proto, traverseColumn } from 'ali-react-table'
+import { ArtColumn, makeRecursiveMapper, proto, useTablePipeline } from 'ali-react-table'
 import { amount, lfl, ratio } from 'assets/format'
 import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
 import React, { useMemo } from 'react'
@@ -215,28 +215,29 @@ export function 投入产出分析表格() {
     },
   ])
 
-  const renderData = applyTransforms(
-    { dataSource: dataSource, columns },
-    traverseColumn((col) => {
-      if (!col.features?.pbp) {
-        return col
-      }
-      return {
-        ...col,
-        getCellProps() {
-          return { style: { padding: 0 } }
-        },
-        render(v: number, row: any) {
-          return pbpRatioRender(v, col, row)
-        },
-      }
-    }),
-  )
+  const pipeline = useTablePipeline({ components: hippo })
+    .input({ dataSource: dataSource, columns })
+    .mapColumns(
+      makeRecursiveMapper((col) => {
+        if (!col.features?.pbp) {
+          return col
+        }
+        return {
+          ...col,
+          getCellProps() {
+            return { style: { padding: 0 } }
+          },
+          render(v: number, row: any) {
+            return pbpRatioRender(v, col, row)
+          },
+        }
+      }),
+    )
 
   return (
     <div>
       <HintDiv>交互提示：点击分日情况单元格 查看详细数据</HintDiv>
-      <WebsiteBaseTable columns={renderData.columns} dataSource={renderData.dataSource} />
+      <WebsiteBaseTable {...pipeline.getProps()} />
     </div>
   )
 }

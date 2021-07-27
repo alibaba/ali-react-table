@@ -2,7 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { StyleSheetManager } from 'styled-components'
 import { DemoApp } from './DemoApp'
+
 import 'antd/dist/antd.css'
+import 'ali-react-table/src/styles.scss'
 
 const hot = (module as any).hot
 

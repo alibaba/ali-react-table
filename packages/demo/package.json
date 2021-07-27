@@ -12,7 +12,10 @@
     "antd": "^4.10.3",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "styled-components": "^5.2.1"
+    "sass": "^1.36.0",
+    "sass-loader": "^12.1.0",
+    "styled-components": "^5.3.0",
+    "@types/styled-components": "^5.1.11"
   },
   "devDependencies": {
     "css-loader": "^5.0.1",

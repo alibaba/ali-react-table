@@ -2,7 +2,10 @@
   "name": "ali-react-table",
   "version": "2.6.1",
   "description": "高性能 React 表格组件",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css",
+    "*.scss"
+  ],
   "module": "dist/ali-react-table.esm.js",
   "main": "dist/ali-react-table.js",
   "types": "dist/ali-react-table.d.ts",
@@ -31,8 +34,7 @@
     "@types/classnames": "^2.2.9",
     "classnames": "^2.2.6",
     "resize-observer-polyfill": "^1.5.1",
-    "rxjs": "^6.5.4",
-    "styled-components": "^3.4.10 || ^5.0.1"
+    "rxjs": "^6.5.4"
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.1"
@@ -43,7 +45,6 @@
     "@babel/preset-typescript": "^7.12.1",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@types/jest": "^26.0.15",
-    "@types/styled-components": "^5.1.9",
     "jest": "^26.6.0",
     "react": "^16.14.0",
     "react-dom": "^16.13.1",

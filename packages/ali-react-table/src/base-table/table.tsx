@@ -12,16 +12,8 @@ import { TableDOMHelper } from './helpers/TableDOMUtils'
 import { HtmlTable } from './html-table'
 import { RenderInfo, ResolvedUseVirtual, VerticalRenderRange, VirtualEnum } from './interfaces'
 import Loading, { LoadingContentWrapperProps } from './loading'
-import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING, StyledArtTableWrapper } from './styles'
-import {
-  getScrollbarSize,
-  OVERSCAN_SIZE,
-  shallowEqual,
-  STYLED_REF_PROP,
-  sum,
-  syncScrollLeft,
-  throttledWindowResize$,
-} from './utils'
+import { BaseTableCSSVariables, Classes, LOCK_SHADOW_PADDING } from './styles'
+import { getScrollbarSize, OVERSCAN_SIZE, shallowEqual, sum, syncScrollLeft, throttledWindowResize$ } from './utils'
 
 let emptyContentDeprecatedWarned = false
 function warnEmptyContentIsDeprecated() {
@@ -442,14 +434,8 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
       className,
     )
 
-    const artTableWrapperProps = {
-      className: artTableWrapperClassName,
-      style,
-      [STYLED_REF_PROP]: this.artTableWrapperRef,
-    }
-
     return (
-      <StyledArtTableWrapper {...artTableWrapperProps}>
+      <div className={artTableWrapperClassName} style={style} ref={this.artTableWrapperRef}>
         <Loading
           visible={isLoading}
           LoadingIcon={components.LoadingIcon}
@@ -463,7 +449,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
           </div>
           {this.renderStickyScroll(info)}
         </Loading>
-      </StyledArtTableWrapper>
+      </div>
     )
   }
 

@@ -6,6 +6,7 @@ title: 表格主题切换
 import { BaseTable } from 'ali-react-table'
 import { AntdBaseTable } from 'assets/AntdBaseTable'
 import { HippoBaseTable } from 'assets/HippoBaseTable'
+import { FusionBaseTable } from 'assets/FusionBaseTable'
 
 export const dataSource = [
   { prov: '湖北省', confirmed: 54406, cured: 4793, dead: 1457, t: '2020-02-15 19:52:02' },
@@ -40,3 +41,9 @@ export const columns = [
 ### Hippo Design
 
 <HippoBaseTable dataSource={dataSource} columns={columns} />
+
+### Fusion Design
+
+支持通过 css variables 来使用 Fusion Design 的其他主题 `import 'YOUR_THEME_PKG/variables.css'`
+
+<FusionBaseTable dataSource={dataSource} columns={columns} />

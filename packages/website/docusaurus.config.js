@@ -7,8 +7,10 @@ module.exports = {
   url: 'https://ali-react-table.js.org',
   baseUrl: '/',
   onBrokenLinks: 'warn',
+  favicon: 'img/favicon.ico',
   organizationName: 'alibaba',
   projectName: 'ali-react-table',
+  trailingSlash: false,
 
   themeConfig: {
     navbar: {

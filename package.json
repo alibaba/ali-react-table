@@ -10,9 +10,7 @@
   "scripts": {
     "start:website": "yarn workspace website start",
     "start:demo": "yarn workspace demo start",
-    "build:website": "yarn workspace website build",
-    "collect-files": "rimraf website-deploy && copyfiles --up=3 \"packages/website/build/**/*\" website-deploy/",
-    "prepare-website-deploy": "yarn build:website && yarn collect-files"
+    "deploy:website": "GIT_USER=shinima yarn workspace website deploy"
   },
   "repository": {
     "type": "git",

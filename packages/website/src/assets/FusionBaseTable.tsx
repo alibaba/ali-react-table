@@ -71,7 +71,7 @@ const StyledBaseTable = styled(BaseTable)`
 ` as unknown as typeof BaseTable
 
 /**
- * Ant Design 风格的基础表格组件.
+ * Alibaba Fusion Design 风格的基础表格组件.
  *
  * FusionBaseTable 在 ali-react-table 提供的 BaseTable 基础上定制了默认的表格样式
  *

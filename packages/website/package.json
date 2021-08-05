@@ -57,12 +57,12 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.3",
-    "@docusaurus/preset-classic": "2.0.0-beta.3",
-    "@docusaurus/theme-live-codeblock": "2.0.0-beta.3",
+    "@docusaurus/core": "2.0.0-beta.4",
+    "@docusaurus/preset-classic": "2.0.0-beta.4",
+    "@docusaurus/theme-live-codeblock": "2.0.0-beta.4",
     "@mdx-js/react": "^1.5.8",
     "sass": "^1.32.12",
-    "docusaurus-plugin-sass": "^0.1.10",
+    "docusaurus-plugin-sass": "^0.2.1",
     "raw-loader": "^4.0.2",
     "ts-loader": "^9.1.1",
     "tsconfig-paths-webpack-plugin": "^3.3.0"

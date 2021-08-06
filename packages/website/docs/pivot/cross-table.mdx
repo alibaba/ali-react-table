@@ -197,7 +197,7 @@ interface TopCrossTreeNode extends CrossTreeNode, Omit<ArtColumnStaticPart, 'nam
 交叉表的底层依赖了 `BaseTable`，故两者的 props 大部分是相同的。两者的不同点具体如下：
 
 - 交叉表没有 dataSource 和 columns
-  - 表格结构由 leftTree 和 rightTree 提供，而单元格内容由 getValue 提供
+  - 表格结构由 leftTree 和 topTree 提供，而单元格内容由 getValue 提供
   - 单元格渲染内容可使用 render 进行自定义；单元格的 props（即表格内的 td 元素）可使用 getCellProps 进行自定义
 - 交叉表没有 primaryKey
   - 交叉表左侧树中每个节点都有一个唯一的 key 值，故不再需要上层指定 primaryKey

@@ -28,7 +28,7 @@
     "d3": "^6.2.0",
     "dvt-aggregation": "^0.2.8",
     "examples": "^0.1.0",
-    "immer": "^9.0.2",
+    "immer": "^9.0.6",
     "lodash": "^4.17.20",
     "mobx": "^6.0.1",
     "mobx-react": "^7.0.0",

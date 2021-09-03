@@ -6607,10 +6607,10 @@ immer@8.0.1:
   resolved "https://registry.nlark.com/immer/download/immer-8.0.1.tgz?cache=0&sync_timestamp=1623232631798&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fimmer%2Fdownload%2Fimmer-8.0.1.tgz#9c73db683e2b3975c424fb0572af5889877ae656"
   integrity sha1-nHPbaD4rOXXEJPsFcq9YiYd65lY=
 
-immer@^9.0.2:
-  version "9.0.3"
-  resolved "https://registry.nlark.com/immer/download/immer-9.0.3.tgz?cache=0&sync_timestamp=1623232631798&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fimmer%2Fdownload%2Fimmer-9.0.3.tgz#146e2ba8b84d4b1b15378143c2345559915097f4"
-  integrity sha1-FG4rqLhNSxsVN4FDwjRVWZFQl/Q=
+immer@^9.0.6:
+  version "9.0.6"
+  resolved "https://registry.nlark.com/immer/download/immer-9.0.6.tgz#7a96bf2674d06c8143e327cbf73539388ddf1a73"
+  integrity sha1-epa/JnTQbIFD4yfL9zU5OI3fGnM=
 
 import-fresh@^3.2.1, import-fresh@^3.2.2, import-fresh@^3.3.0:
   version "3.3.0"

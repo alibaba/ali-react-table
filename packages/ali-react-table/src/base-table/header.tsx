@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useEffect, useCallback } from 'react'
 import { ArtColumn } from '../interfaces'
 import { getTreeDepth, isLeafNode } from '../utils'
 import { HorizontalRenderRange, RenderInfo } from './interfaces'
@@ -15,14 +15,14 @@ function range(n: number) {
 
 type ColWithRenderInfo =
   | {
-      type: 'normal'
-      colIndex: number
-      col: ArtColumn
-      colSpan: number
-      isLeaf: boolean
-      width: number
-    }
-  | { type: 'blank'; blankSide: 'left' | 'right'; width: number }
+    type: 'normal'
+    colIndex: number
+    col: ArtColumn
+    colSpan: number
+    isLeaf: boolean
+    width: number
+  }
+  | { type: 'blank'; colSpan?: number; blankSide: 'left' | 'right'; width: number }
 
 type IndexedCol = {
   colIndex: number
@@ -171,9 +171,69 @@ function calculateHeaderRenderInfo(
 }
 
 export default function TableHeader({ info }: { info: RenderInfo }) {
-  const { nested, flat, stickyLeftMap, stickyRightMap } = info
+  const { nested, flat, stickyLeftMap, stickyRightMap, upperLeftCell } = info
   const rowCount = getTreeDepth(nested.full) + 1
   const headerRenderInfo = calculateHeaderRenderInfo(info, rowCount)
+  const canvasId = `${upperLeftCell?.id}InnerCanvas`
+
+  const clearLeftTopCell = useCallback(() => {
+    const cellElement = document.getElementById(upperLeftCell?.id);
+    if (!cellElement) return;
+    const oldCanvas = document.getElementById(canvasId)
+    if (!oldCanvas) return;
+    cellElement.removeChild(oldCanvas)
+  }, [])
+
+  /** 左上角单元格绘制斜线 */
+  const drawLeftTopCell = useCallback(() => {
+    if (!upperLeftCell?.id) return;
+    // 获取左上角单元格
+    const cellElement = document.getElementById(upperLeftCell.id);
+    if (!cellElement) return;
+    // TODO 左上角的单元格影响canvas位置
+    cellElement.style.margin = '0px';
+    cellElement.style.padding = '0px';
+    // 创建canvas
+    const canvas = document.createElement('canvas');
+    if (!canvas) return;
+    canvas.setAttribute('id', canvasId);
+    const xpos = cellElement.offsetWidth;
+    const ypos = cellElement.offsetHeight;
+    // canvas宽高
+    canvas.width = xpos;
+    canvas.height = ypos;
+    if (!canvas.getContext) return;
+    // 绘制线 start
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, xpos, ypos);
+    ctx.fill();
+    ctx.lineWidth = upperLeftCell?.lineWidth || 0.5;
+    ctx.strokeStyle = upperLeftCell?.lineColor || 'black';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(xpos, ypos);
+    ctx.stroke();
+    ctx.closePath();
+    // 绘制线 end
+    ctx.font = `${upperLeftCell?.fontSize || 12}px ${upperLeftCell?.fontFamily || "Microsoft Yahei"}`;
+    // 绘制左下角文字
+    ctx.fillText(`${upperLeftCell.lowerLeftText || "请赋值"}`, xpos * 0.1, ypos * 0.8)
+    // 绘制右下角文字
+    ctx.fillText(`${upperLeftCell.topRightText || "请赋值"}`, xpos * 0.5, ypos * 0.3)
+    cellElement.appendChild(canvas)
+  }, [])
+
+  useEffect(() => {
+    clearLeftTopCell()
+    drawLeftTopCell()
+  }, [])
+
+  const leftLength = nested.left.length
+  if (upperLeftCell && headerRenderInfo.leveled && headerRenderInfo.leveled[0]) {
+    headerRenderInfo.leveled[0][0].colSpan = leftLength
+    headerRenderInfo.leveled[0].splice(1, leftLength - 1)
+  }
 
   const fullFlatCount = flat.full.length
   const leftFlatCount = flat.left.length
@@ -197,6 +257,7 @@ export default function TableHeader({ info }: { info: RenderInfo }) {
 
         return (
           <th
+            id={upperLeftCell?.id || null}
             key={colIndex}
             {...headerCellProps}
             className={cx(Classes.tableHeaderCell, headerCellProps.className, {
@@ -257,3 +318,4 @@ export default function TableHeader({ info }: { info: RenderInfo }) {
     </table>
   )
 }
+

@@ -2174,6 +2174,14 @@
   resolved "https://registry.npm.taobao.org/@trysound/sax/download/@trysound/sax-0.1.1.tgz#3348564048e7a2d7398c935d466c0414ebb6a669"
   integrity sha1-M0hWQEjnotc5jJNdRmwEFOu2pmk=
 
+"@ts-type/package-dts@^1.0.58":
+  version "1.0.58"
+  resolved "https://registry.npmmirror.com/@ts-type/package-dts/download/@ts-type/package-dts-1.0.58.tgz#75f6fdf5f1e8f262a5081b90346439b4c4bc8d01"
+  integrity sha512-Ry5RPZDAnSz/gyLtjd2a2yNC07CZ/PCOsuDzYj3phOolIgEH68HXRw6SbsDlavnVUEenDYj5GUM10gQ5iVEbVQ==
+  dependencies:
+    "@types/semver" "^7.3.9"
+    ts-type "^2.1.4"
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.14"
   resolved "https://registry.nlark.com/@types/babel__core/download/@types/babel__core-7.1.14.tgz#faaeefc4185ec71c389f4501ee5ec84b170cc402"
@@ -2721,6 +2729,11 @@
   resolved "https://registry.nlark.com/@types/scheduler/download/@types/scheduler-0.16.1.tgz?cache=0&sync_timestamp=1621242704081&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fscheduler%2Fdownload%2F%40types%2Fscheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha1-GIRSBehv8AOFF6q3oYpiprn3EnU=
 
+"@types/semver@^7.3.9":
+  version "7.3.9"
+  resolved "https://registry.npmmirror.com/@types/semver/download/@types/semver-7.3.9.tgz#152c6c20a7688c30b967ec1841d31ace569863fc"
+  integrity sha1-FSxsIKdojDC5Z+wYQdMazlaYY/w=
+
 "@types/stack-utils@^2.0.0":
   version "2.0.0"
   resolved "https://registry.nlark.com/@types/stack-utils/download/@types/stack-utils-2.0.0.tgz#7036640b4e21cc2f259ae826ce843d277dad8cff"
@@ -2899,6 +2912,16 @@
   version "4.2.2"
   resolved "https://registry.npm.taobao.org/@xtuc/long/download/@xtuc/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha1-0pHGpOl5ibXGHZrPOWrk/hM6cY0=
+
+"@yarn-tool/resolve-package@^1.0.36":
+  version "1.0.42"
+  resolved "https://registry.npmmirror.com/@yarn-tool/resolve-package/download/@yarn-tool/resolve-package-1.0.42.tgz#4a72c1a77b7035dc86250744d2cdbc16292bc4f8"
+  integrity sha512-1BAsoiD6jGAaPc7mRH0UxIVXgRSTv7fnhwfKkaFUYpqsU4ZR7KIigZTMcb2bujtlzKQbNneMPQGjiqe3F8cmlw==
+  dependencies:
+    "@ts-type/package-dts" "^1.0.58"
+    pkg-dir "< 6 >= 5"
+    tslib "^2.3.1"
+    upath2 "^3.1.12"
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.5"
@@ -5853,9 +5876,9 @@ fn.name@1.x.x:
   integrity sha1-JsrYAXlnrqhzG8QpYdBKPVmIrMw=
 
 follow-redirects@^1.0.0, follow-redirects@^1.10.0:
-  version "1.14.1"
-  resolved "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.1.tgz#d9114ded0a1cfdd334e164e6662ad02bfd91ff43"
-  integrity sha1-2RFN7Qoc/dM04WTmZirQK/2R/0M=
+  version "1.14.7"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.7.tgz#2004c02eb9436eee9a21446a6477debf17e81685"
+  integrity sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -8844,6 +8867,13 @@ path-is-inside@1.0.2, path-is-inside@^1.0.2:
   resolved "https://registry.npm.taobao.org/path-is-inside/download/path-is-inside-1.0.2.tgz#365417dede44430d1c11af61027facf074bdfc53"
   integrity sha1-NlQX3t5EQw0cEa9hAn+s8HS9/FM=
 
+path-is-network-drive@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.npmmirror.com/path-is-network-drive/download/path-is-network-drive-1.0.13.tgz#c9aa0183eb72c328aa83f43def93ddcb9d7ec4d4"
+  integrity sha512-Hg74mRN6mmXV+gTm3INjFK40ncAmC/Lo4qoQaSZ+GT3hZzlKdWQSqAjqyPeW0SvObP2W073WyYEBWY9d3wOm3A==
+  dependencies:
+    tslib "^2.3.1"
+
 path-key@^2.0.0, path-key@^2.0.1:
   version "2.0.1"
   resolved "https://registry.nlark.com/path-key/download/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
@@ -8858,6 +8888,13 @@ path-parse@^1.0.6:
   version "1.0.7"
   resolved "https://registry.nlark.com/path-parse/download/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha1-+8EUtgykKzDZ2vWFjkvWi77bZzU=
+
+path-strip-sep@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.npmmirror.com/path-strip-sep/download/path-strip-sep-1.0.10.tgz#2be4e789406b298af8709ff79af716134b733b98"
+  integrity sha512-JpCy+8LAJQQTO1bQsb/84s1g+/Stm3h39aOpPRBQ/paMUGVPPZChLTOTKHoaCkc/6sKuF7yVsnq5Pe1S6xQGcA==
+  dependencies:
+    tslib "^2.3.1"
 
 path-to-regexp@0.1.7:
   version "0.1.7"
@@ -8914,6 +8951,13 @@ pirates@^4.0.1:
   integrity sha1-ZDqSyviUVm+RsrmG0sZpUKji+4c=
   dependencies:
     node-modules-regexp "^1.0.0"
+
+"pkg-dir@< 6 >= 5":
+  version "5.0.0"
+  resolved "https://registry.npmmirror.com/pkg-dir/download/pkg-dir-5.0.0.tgz#a02d6aebe6ba133a928f74aec20bafdfe6b8e760"
+  integrity sha1-oC1q6+a6EzqSj3Suwguv3+a452A=
+  dependencies:
+    find-up "^5.0.0"
 
 pkg-dir@^3.0.0:
   version "3.0.0"
@@ -10473,16 +10517,17 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rollup-plugin-typescript2@^0.30.0:
-  version "0.30.0"
-  resolved "https://registry.npm.taobao.org/rollup-plugin-typescript2/download/rollup-plugin-typescript2-0.30.0.tgz#1cc99ac2309bf4b9d0a3ebdbc2002aecd56083d3"
-  integrity sha1-HMmawjCb9LnQo+vbwgAq7NVgg9M=
+rollup-plugin-typescript2@^0.31.0:
+  version "0.31.1"
+  resolved "https://registry.npmmirror.com/rollup-plugin-typescript2/download/rollup-plugin-typescript2-0.31.1.tgz#3b3a0e29b29b2ed8244b1a78fd8e2cac93ab79a4"
+  integrity sha512-sklqXuQwQX+stKi4kDfEkneVESPi3YM/2S899vfRdF9Yi40vcC50Oq4A4cSZJNXsAQE/UsBZl5fAOsBLziKmjw==
   dependencies:
     "@rollup/pluginutils" "^4.1.0"
+    "@yarn-tool/resolve-package" "^1.0.36"
     find-cache-dir "^3.3.1"
     fs-extra "8.1.0"
     resolve "1.20.0"
-    tslib "2.1.0"
+    tslib "2.2.0"
 
 rollup@^2.3.1:
   version "2.52.6"
@@ -11585,6 +11630,14 @@ ts-loader@^9.1.1:
     micromatch "^4.0.0"
     semver "^7.3.4"
 
+ts-type@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.npmmirror.com/ts-type/download/ts-type-2.1.4.tgz#d268d52ac054ef3076bf1c3b2fde0d4d5496e6a3"
+  integrity sha512-wnajiiIMhn/RHJ1oPld95siKmMJrOgaT6+rMmC8vO1LORgDFEzKP2nBmEFM5b4XVe7Q0J5KcU9oRJFzju7UzrA==
+  dependencies:
+    tslib "^2.3.1"
+    typedarray-dts "^1.0.0"
+
 tsconfig-paths-webpack-plugin@^3.3.0:
   version "3.5.1"
   resolved "https://registry.npm.taobao.org/tsconfig-paths-webpack-plugin/download/tsconfig-paths-webpack-plugin-3.5.1.tgz#e4dbf492a20dca9caab60086ddacb703afc2b726"
@@ -11604,10 +11657,10 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.nlark.com/tslib/download/tslib-2.1.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
-  integrity sha1-2mCGDxwuyqVwOrfTm8Bba/mIuXo=
+tslib@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmmirror.com/tslib/download/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
+  integrity sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==
 
 tslib@^1.9.0:
   version "1.14.1"
@@ -11618,6 +11671,11 @@ tslib@^2.0.3, tslib@^2.1.0, tslib@^2.2.0:
   version "2.3.0"
   resolved "https://registry.nlark.com/tslib/download/tslib-2.3.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
   integrity sha1-gDuM2rPhK6WBpMpByIObuw2ssJ4=
+
+tslib@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npmmirror.com/tslib/download/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
+  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
 type-check@~0.3.2:
   version "0.3.2"
@@ -11658,6 +11716,11 @@ type-is@~1.6.17, type-is@~1.6.18:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.24"
+
+typedarray-dts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmmirror.com/typedarray-dts/download/typedarray-dts-1.0.0.tgz#9dec9811386dbfba964c295c2606cf9a6b982d06"
+  integrity sha1-neyYEThtv7qWTClcJgbPmmuYLQY=
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
@@ -11859,6 +11922,15 @@ untildify@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npm.taobao.org/untildify/download/untildify-4.0.0.tgz#2bc947b953652487e4600949fb091e3ae8cd919b"
   integrity sha1-K8lHuVNlJIfkYAlJ+wkeOujNkZs=
+
+upath2@^3.1.12:
+  version "3.1.12"
+  resolved "https://registry.npmmirror.com/upath2/download/upath2-3.1.12.tgz#441b3dfbadde21731017bd1b7beb169498efd0a9"
+  integrity sha512-yC3eZeCyCXFWjy7Nu4pgjLhXNYjuzuUmJiRgSSw6TJp8Emc+E4951HGPJf+bldFC5SL7oBLeNbtm1fGzXn2gxw==
+  dependencies:
+    path-is-network-drive "^1.0.13"
+    path-strip-sep "^1.0.10"
+    tslib "^2.3.1"
 
 upath@^1.1.1:
   version "1.2.0"

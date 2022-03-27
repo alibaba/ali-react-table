@@ -14,9 +14,9 @@ interface Node {
 }
 
 const ROOT_ID = '0'
-const NODE = 10000
-const CHILDREN = 3
-const TEXT = 40
+const NODE = 10000 // 一级节点数量
+const CHILDREN = 3 // 后代节点数量
+const TEXT = 100   // 随机文本长度
 
 const random = (count: number) => Math.ceil(Math.random() * count)
 

@@ -1,5 +1,5 @@
 import * as fusion from '@alifd/next'
-import { Button } from '@alifd/next'
+import { Button, Divider, Radio } from '@alifd/next'
 import { ArtColumn, collectNodes, features, isLeafNode, useTablePipeline } from 'ali-react-table'
 import {
   columns1,
@@ -26,10 +26,11 @@ export default { title: 'pipeline 功能拓展' }
 
 export function 树形表格() {
   const [openKeys, onChangeOpenKeys] = useState(['4', '4-2'])
+  const [treeColumnCode, setTreeColumnCode] = useState('title')
   const pipeline = useTablePipeline({ components: fusion as any })
     .input({ dataSource: dataSource4, columns: columns4 })
     .primaryKey('id')
-    .use(features.treeMode({ openKeys, onChangeOpenKeys }))
+    .use(features.treeMode({ openKeys, onChangeOpenKeys, treeColumnCode }))
 
   const allParentKeys = collectNodes(dataSource4, 'pre')
     .filter((row) => !isLeafNode(row))
@@ -41,6 +42,14 @@ export function 树形表格() {
         <Button onClick={() => onChangeOpenKeys(allParentKeys)}>展开全部</Button>
         <Button onClick={() => onChangeOpenKeys([])}>收拢全部</Button>
       </Button.Group>
+      <Divider direction="ver" />
+      树节点所在列：
+      <Radio.Group
+        shape="button"
+        defaultValue={treeColumnCode}
+        onChange={(v: any) => setTreeColumnCode(v)}
+        dataSource={columns4.slice(0, 4).map(({ code, name }: any) => ({ label: name, value: code }))}
+      />
       <p>
         openKeys: {openKeys.join(', ')} {openKeys.length === 0 && '[空]'}
       </p>

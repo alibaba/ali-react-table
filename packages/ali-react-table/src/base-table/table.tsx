@@ -192,6 +192,127 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     }
   }
 
+  /**
+   * 定位滚动条
+   * @desc 优先级按参数顺序降序
+   * @param top 目标值
+   * @param element 目标元素
+   * @param rowKey 行主键
+   * @param rowIndex 行索引
+   * @param offset 纵向滚动偏移量，用于抵消固定表头
+   */
+  scrollTo ({ top, element, rowKey, rowIndex, offset }
+              : { element: HTMLElement, top: number, rowKey: string, rowIndex: number, offset: number }
+  ) {
+    if (top) return this.scrollToValue(top)
+    if (element) return this.scrollToElement(element, offset)
+    if (rowKey) return this.scrollToRowKey(rowKey, offset)
+    if (rowIndex) return this.scrollToRowIndex(rowIndex, offset)
+  }
+
+  /**
+   * 定位到指定位置
+   * @desc 动态行高时如需精准定位，可以传入目标元素进行二次修正
+   * @param top 纵向滚动条位置
+   * @param selector 目标元素选择器
+   * @param offset 纵向滚动偏移量，用于抵消固定表头
+   */
+  private scrollToValue (top: number, selector?: string, offset?: number) {
+    let view = this.artTableWrapperRef.current
+    if (view.clientHeight === view.scrollHeight) {
+      view = document.documentElement as HTMLDivElement
+    }
+    if (!selector) {
+      return view.scrollTop = top
+    }
+    const element = view.querySelector(selector)
+    // 目标元素真实存在时直接精准定位
+    if (element) {
+      return this.scrollToElement(element, offset)
+    }
+    view.scrollTop = top
+    // 延迟修正
+    setTimeout(() => {
+      this.scrollToElement(view.querySelector(selector), offset)
+    }, 16)
+  }
+
+  /**
+   * 定位到指定元素
+   * @desc 虚拟表格不应该直接使用该方法
+   * @param element
+   * @param offset 纵向滚动偏移量，用于抵消固定表头
+   */
+  private scrollToElement (element: Element, offset?: number) {
+    if (!element) return
+    let view = this.artTableWrapperRef.current
+    if (view.clientHeight === view.scrollHeight) {
+      view = document.documentElement as HTMLDivElement
+    }
+    view.scrollTop = this.getScrollOffsetTop(element, view) + (offset || 0);
+  }
+
+  /**
+   * 定位到指定行
+   * @desc 树形表格有节点展开时不应该使用此方法
+   * @param rowIndex 行号（从1开始）
+   * @param offset 纵向滚动偏移量，用于抵消固定表头
+   */
+  private scrollToRowIndex (rowIndex: number, offset?: number) {
+    const { cache } = this.rowHeightManager
+    const end = Math.min(rowIndex + 1, cache.length)
+    let scrollTop = 0
+    for (let i = 0; i < end; i++) {
+      scrollTop += cache[i]
+    }
+    this.scrollToValue(scrollTop, `[data-rowindex="${rowIndex}"]`, offset)
+  }
+
+  /**
+   * 根据primaryKey定位到指定行
+   * @desc 支持在树型表格中定位到未展开的节点，调用时应提前更新该节点的所有父节点key至openKeys中，并延迟调用该方法）
+   * @param rowKey 行主键
+   * @param offset 纵向滚动偏移量，用于抵消固定表头
+   */
+  private scrollToRowKey (rowKey: string, offset?: number) {
+    const { dataSource } = this.props
+    const { cache } = this.rowHeightManager
+    const length = dataSource.length
+    const { primaryKey } = this.props
+    let scrollTop = 0
+    for (let i = 1; i < length; i++) {
+      scrollTop += cache[i]
+      if (dataSource[i][primaryKey as string] === rowKey) break
+    }
+    this.scrollToValue(scrollTop, `#art-table-row-${rowKey}`, offset)
+  }
+
+  /**
+   * 获取元素在滚动区域中的位置
+   * @desc 节选自：https://github.com/Stanko/animated-scroll-to
+   * @param element 目标元素
+   * @param view 滚动区域元素
+   * @private
+   */
+  private getScrollOffsetTop (element: Element, view: Element): number {
+    return this.getElementOffset(element).top - this.getElementOffset(view).top;
+  }
+
+  private getScrollOffsetLeft (element: Element, view: Element): number {
+    return this.getElementOffset(element).left - this.getElementOffset(view).left;
+  }
+
+  private getElementOffset (element: any) {
+    let top = 0;
+    let left = 0;
+    do {
+      top += element.offsetTop || 0;
+      left += element.offsetLeft || 0;
+      element = element.offsetParent;
+    } while (element);
+    return { top, left };
+  }
+
   /** 自定义滚动条宽度为table宽度，使滚动条滑块宽度相同 */
   private updateStickyScroll() {
     const { stickyScroll, artTable, stickyScrollItem } = this.domHelper

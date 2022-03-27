@@ -4,6 +4,7 @@ module.exports = {
     'table',
     'pipeline',
     'big-data',
+    'scroll-to',
     'theme',
     {
       type: 'category',

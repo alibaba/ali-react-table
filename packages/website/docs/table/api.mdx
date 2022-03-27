@@ -116,6 +116,27 @@ function Cell({ row, rowIndex, column, colIndex, tdProps }) {
 | `headerCellProps` | `React.ThHTMLAttributes`                                   | 表头单元格的 props                                             |
 | `features`        | `{ [key: string]: any }`                                   | 功能开关标记，用于对表格功能进行拓展                           |
 
+## 滚动到指定位置
+
+定位到行，支持普通、虚拟表格（固定、动态行高均可）：
+```js
+tableRef.current.scrollTo({
+  top: 'number',
+  element: 'HTMLElement',
+  rowKey: 'string',
+  rowIndex: 'number',
+  offset: 'number'
+})
+````
+
+| 字段              | 类型                                                       |                                                                                    |
+| ----------------- | ---------------------------------------------------------- |------------------------------------------------------------------------------------|
+| `top`             | `number`                                                   | 通过具体数值定位                                                                           |
+| `element`         | `HTMLElement`                                              | 通过目标元素定位                                                                           |
+| `rowKey`          | `string`                                                   | 通过行数据的主键值定位，可用于树形虚拟表格中任意节点的定位。如需定位未展开的节点，可先根据此rowKey递归展开父节点，[详见示例](/examples/scroll-to)|
+| `rowIndex`        | `number`                                                   | 通过行索引定位                                                                            |
+| `offset`          | `number`                                                   | 纵向滚动偏移量，可用于抵消固定表头                                                                  |
+
 ## CSS 变量列表
 
 `<BaseTable />` 中大部分样式都是通过 CSS variables 来定义的，你可以通过下面的方式对表格进行风格化：

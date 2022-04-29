@@ -57,7 +57,7 @@ export function columnRangeHover(opts: ColumnRangeHoverFeatureOptions = {}) {
               onMouseLeave() {
                 onChangeHoverRange(EMPTY_RANGE)
               },
-              style: { '--header-bgcolor': match ? headerHoverColor : undefined } as any,
+              style: { '--header-bgcolor': match ? headerHoverColor : col.headerCellProps?.style?.['--header-bgcolor'] } as any,
             }),
           }
         }
@@ -73,7 +73,7 @@ export function columnRangeHover(opts: ColumnRangeHoverFeatureOptions = {}) {
             onMouseLeave() {
               onChangeHoverRange(EMPTY_RANGE)
             },
-            style: { '--header-bgcolor': match ? headerHoverColor : undefined } as any,
+            style: { '--header-bgcolor': match ? headerHoverColor : col.headerCellProps?.style?.['--header-bgcolor'] } as any,
           }),
 
           getCellProps(value: any, record: any, rowIndex: number): CellProps {
@@ -86,7 +86,7 @@ export function columnRangeHover(opts: ColumnRangeHoverFeatureOptions = {}) {
               onMouseLeave() {
                 onChangeHoverRange(EMPTY_RANGE)
               },
-              style: { '--bgcolor': match ? hoverColor : undefined } as any,
+              style: { '--bgcolor': match ? hoverColor : prevCellProps?.style?.['--bgcolor'] } as any,
             })
           },
         }

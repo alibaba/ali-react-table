@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react'
 import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
-import { collectNodes, mergeCellProps } from '../../utils'
+import { collectNodes, mergeCellProps, upDataFirstCol } from '../../utils'
 import { always, flatMap } from '../../utils/others'
 import { TablePipeline } from '../pipeline'
 
@@ -100,7 +100,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         onChangeOpenKeys([...openKeys, rowKey], rowKey, 'expand')
       }
     }
-
+    
     // 还原primaryKey
     const resetRow = (row:any)=>{
       let key = row[originKeySymbol];
@@ -132,79 +132,79 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
         return columns
       }
       const columnFlatCount = collectNodes(columns, 'leaf-only').length
-      const [firstCol, ...others] = columns
 
-      const render = (value: any, row: any, rowIndex: number) => {
-        if (row[rowDetailMetaKey]) {
+      return upDataFirstCol(columns, (firstCol) => {
+
+        const render = (value: any, row: any, rowIndex: number) => {
+          if (row[rowDetailMetaKey]) {
             return renderDetail(resetRow(row), rowIndex)
-        }
-
-        const content = internals.safeRender(firstCol, row, rowIndex)
-
-        if (!hasDetail(row, rowIndex)) {
-          return <InlineFlexCell style={{ marginLeft: textOffset }}>{content}</InlineFlexCell>
-        }
-
-        const rowKey = row[primaryKey]
-        const expanded = openKeySet.has(rowKey)
-        const onClick = (e: React.MouseEvent) => {
-          if (opts.stopClickEventPropagation) {
-            e.stopPropagation()
           }
-          toggle(rowKey)
-        }
-
-        const expandCls = expanded ? 'expanded' : 'collapsed'
-        return (
-          <ExpansionCell
-            className={cx('expansion-cell', expandCls)}
-            style={{ cursor: clickArea === 'content' ? 'pointer' : undefined }}
-            onClick={clickArea === 'content' ? onClick : undefined}
-          >
-            <icons.CaretRight
-              style={{
-                cursor: clickArea === 'icon' ? 'pointer' : undefined,
-                marginLeft: indents.iconIndent,
-                marginRight: indents.iconGap,
-              }}
-              className={cx('expansion-icon', expandCls)}
-              onClick={clickArea === 'icon' ? onClick : undefined}
-            />
-            {content}
-          </ExpansionCell>
-        )
-      }
-
-      const getCellProps = (value: any, row: any, rowIndex: number) => {
-        if (row[rowDetailMetaKey]) {
-          return {
-            style: {
-              '--cell-padding': '0',
-              overflow: 'hidden',
-              ...opts.detailCellStyle,
-            } as any,
+  
+          const content = internals.safeRender(firstCol, row, rowIndex)
+  
+          if (!hasDetail(row, rowIndex)) {
+            return <InlineFlexCell style={{ marginLeft: textOffset }}>{content}</InlineFlexCell>
           }
-        }
-
-        const prevProps = firstCol.getCellProps?.(value, row, rowIndex)
-
-        if (!hasDetail(row, rowIndex)) {
-          return prevProps
-        }
-
-        return mergeCellProps(prevProps, {
-          onClick(e) {
+  
+          const rowKey = row[primaryKey]
+          const expanded = openKeySet.has(rowKey)
+          const onClick = (e: React.MouseEvent) => {
             if (opts.stopClickEventPropagation) {
               e.stopPropagation()
             }
-            toggle(row[primaryKey])
-          },
-          style: { cursor: 'pointer' },
-        })
-      }
+            toggle(rowKey)
+          }
+  
+          const expandCls = expanded ? 'expanded' : 'collapsed'
+          return (
+            <ExpansionCell
+              className={cx('expansion-cell', expandCls)}
+              style={{ cursor: clickArea === 'content' ? 'pointer' : undefined }}
+              onClick={clickArea === 'content' ? onClick : undefined}
+            >
+              <icons.CaretRight
+                style={{
+                  cursor: clickArea === 'icon' ? 'pointer' : undefined,
+                  marginLeft: indents.iconIndent,
+                  marginRight: indents.iconGap,
+                }}
+                className={cx('expansion-icon', expandCls)}
+                onClick={clickArea === 'icon' ? onClick : undefined}
+              />
+              {content}
+            </ExpansionCell>
+          )
+        }
+        
+        const getCellProps = (value: any, row: any, rowIndex: number) => {
+          if (row[rowDetailMetaKey]) {
+            return {
+              style: {
+                '--cell-padding': '0',
+                overflow: 'hidden',
+                ...opts.detailCellStyle,
+              } as any,
+            }
+          }
+  
+          const prevProps = firstCol.getCellProps?.(value, row, rowIndex)
+  
+          if (!hasDetail(row, rowIndex)) {
+            return prevProps
+          }
+  
+          return mergeCellProps(prevProps, {
+            onClick(e) {
+              if (opts.stopClickEventPropagation) {
+                e.stopPropagation()
+              }
+              toggle(row[primaryKey])
+            },
+            style: { cursor: 'pointer' },
+          })
+        }
 
-      return [
-        {
+        return {
           ...firstCol,
           title: (
             <div style={{ display: 'inline-block', marginLeft: textOffset }}>
@@ -212,7 +212,6 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             </div>
           ),
           render,
-          // getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
           getCellProps: (value: any, row: any, rowIndex: number)=>{
             if (row[rowDetailMetaKey] || clickArea === 'cell') {
               return getCellProps(value, row, rowIndex);
@@ -225,10 +224,9 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
               // detail 总是成一行
               return { top: rowIndex, bottom: rowIndex + 1, left: 0, right: columnFlatCount }
             }
-          },
-        },
-        ...others,
-      ]
+          }
+        } as ArtColumn
+      })
     }
   }
 }

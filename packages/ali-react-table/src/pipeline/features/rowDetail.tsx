@@ -202,7 +202,14 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
             </div>
           ),
           render,
-          getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
+          // getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
+          getCellProps: (value: any, row: any, rowIndex: number)=>{
+            if (row[rowDetailMetaKey] || clickArea === 'cell') {
+              return getCellProps(value, row, rowIndex);
+            }else{
+              return firstCol.getCellProps?.(value, row, rowIndex);
+            }
+          },
           getSpanRect(value: any, row: any, rowIndex: number) {
             if (row[rowDetailMetaKey]) {
               // detail 总是成一行

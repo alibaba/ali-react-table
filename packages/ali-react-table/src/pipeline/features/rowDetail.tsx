@@ -43,6 +43,7 @@ export interface RowDetailFeatureOptions {
 }
 
 const rowDetailSymbol = Symbol('row-detail')
+const originKeySymbol = Symbol('origin-key')
 
 const fallbackRenderDetail = () => (
   <div style={{ margin: '8px 24px' }}>
@@ -100,11 +101,20 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
       }
     }
 
+    // 还原primaryKey
+    const resetRow = (row:any)=>{
+      let key = row[originKeySymbol];
+      if(key){
+        return {...row, [primaryKey]: row[originKeySymbol]}
+      }
+      return row
+    }
+
     return pipeline
       .dataSource(
         flatMap(pipeline.getDataSource(), (row, rowIndex) => {
           if (openKeySet.has(row[primaryKey])) {
-            return [row, { [rowDetailMetaKey]: true, ...row, [primaryKey]: getDetailKey(row, rowIndex) }]
+            return [row, { [rowDetailMetaKey]: true, [originKeySymbol]: row[primaryKey], ...row, [primaryKey]: getDetailKey(row, rowIndex) }]
           } else {
             return [row]
           }
@@ -126,7 +136,7 @@ export function rowDetail(opts: RowDetailFeatureOptions = {}) {
 
       const render = (value: any, row: any, rowIndex: number) => {
         if (row[rowDetailMetaKey]) {
-          return renderDetail(row, rowIndex)
+            return renderDetail(resetRow(row), rowIndex)
         }
 
         const content = internals.safeRender(firstCol, row, rowIndex)

@@ -43,7 +43,7 @@ export function columnHover(opts: ColumnHoverFeatureOptions = {}) {
             const prevCellProps = prevGetCellProps?.(value, record, rowIndex)
 
             return mergeCellProps(prevCellProps, {
-              style: { '--bgcolor': colIndexMatched ? hoverColor : undefined } as any,
+              style: { '--bgcolor': colIndexMatched ? hoverColor : prevCellProps?.style?.['--bgcolor'] } as any,
               onMouseEnter() {
                 onChangeHoverColIndex(range.start)
               },

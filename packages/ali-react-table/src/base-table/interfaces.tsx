@@ -38,11 +38,27 @@ export interface RenderInfo {
   stickyLeftMap: Map<number, number>
   stickyRightMap: Map<number, number>
   useVirtual: ResolvedUseVirtual
-
   /** props.columns 是否包含有效的锁列 */
   hasLockColumn: boolean
   /** 左侧锁定列的总宽度 */
   leftLockTotalWidth: number
   /** 右侧锁定列的总宽度 */
   rightLockTotalWidth: number
+  /** 左上角单元格 */
+  upperLeftCell: {
+    /** 唯一id */
+    id: string,
+    /** 斜线宽度 */
+    lineWidth?: number,
+    /** 斜线颜色 */
+    lineColor?: string,
+    /** 字体大小 */
+    fontSize?: number,
+    /** 字体 */
+    fontFamily?: string,
+    /** 单元格左下角文字 */
+    lowerLeftText?: string,
+    /** 单元格右上角文字 */
+    topRightText?: string,
+  }
 }

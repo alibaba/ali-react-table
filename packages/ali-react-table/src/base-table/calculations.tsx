@@ -158,6 +158,7 @@ export function calculateRenderInfo(table: BaseTable): RenderInfo {
     columns: columnsProp,
     dataSource: dataSourceProp,
     defaultColumnWidth,
+    upperLeftCell,
   } = table.props
 
   const columns = processColumns(columnsProp, defaultColumnWidth)
@@ -259,5 +260,6 @@ export function calculateRenderInfo(table: BaseTable): RenderInfo {
     leftLockTotalWidth,
     rightLockTotalWidth,
     hasLockColumn: nested.left.length > 0 || nested.right.length > 0,
+    upperLeftCell,
   }
 }

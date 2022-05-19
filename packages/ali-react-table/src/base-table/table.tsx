@@ -58,6 +58,24 @@ export interface BaseTableProps {
   /** 虚拟滚动开启情况下，表格中每一行的预估高度 */
   estimatedRowHeight?: number
 
+  /** 左上角单元格 */
+  upperLeftCell?: {
+    /** 唯一id */
+    id: string,
+    /** 斜线宽度 */
+    lineWidth?: number,
+    /** 斜线颜色 */
+    lineColor?: string,
+    /** 字体大小 */
+    fontSize?: number,
+    /** 字体 */
+    fontFamily?: string,
+    /** 单元格左下角文字 */
+    lowerLeftText?: string,
+    /** 单元格右上角文字 */
+    topRightText?: string,
+  }
+
   /** @deprecated 表格头部是否置顶，默认为 true。请使用 isStickyHeader 代替 */
   isStickyHead?: boolean
   /** 表格头部是否置顶，默认为 true */

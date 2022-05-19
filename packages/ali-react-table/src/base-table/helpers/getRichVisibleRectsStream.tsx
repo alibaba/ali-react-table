@@ -11,7 +11,7 @@ import * as op from 'rxjs/operators'
 import { shallowEqual } from '../utils'
 
 function isWindow(arg: object): arg is Window {
-  return arg.toString() === '[object Window]'
+  return arg.toString() === '[object Window]' || arg.toString() === '[object global]'
 }
 
 function isBody(arg: Node): arg is HTMLBodyElement {

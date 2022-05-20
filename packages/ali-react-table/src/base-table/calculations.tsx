@@ -130,7 +130,7 @@ function getHorizontalRenderRange({
 
   while (leftIndex + centerCount < flat.center.length) {
     const col = flat.center[leftIndex + centerCount]
-    if (col.width + centerRenderWidth < minCenterRenderWidth) {
+    if (centerRenderWidth < minCenterRenderWidth) {
       centerRenderWidth += col.width
       centerCount += 1
     } else {

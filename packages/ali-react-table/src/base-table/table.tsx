@@ -204,7 +204,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   scrollTo ({ top, element, rowKey, rowIndex, offset }
               : { element: HTMLElement, top: number, rowKey: string, rowIndex: number, offset: number }
   ) {
-    if (top) return this.scrollToValue(top)
+    if (top > -1) return this.scrollToValue(top)
     if (element) return this.scrollToElement(element, offset)
     if (rowKey) return this.scrollToRowKey(rowKey, offset)
     if (rowIndex) return this.scrollToRowIndex(rowIndex, offset)

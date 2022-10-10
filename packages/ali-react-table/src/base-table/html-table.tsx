@@ -71,10 +71,12 @@ export function HtmlTable({
       rowProps?.className,
     )
 
+    const key = internals.safeGetRowKey(primaryKey, row, rowIndex)
     const trProps = {
       ...rowProps,
       className: rowClass,
       'data-rowindex': rowIndex,
+      id: `art-table-row-${key}`, // 添加id，可用于滚动精准定位或与其他地方
       children: hozInfo.visible.map((descriptor) => {
         if (descriptor.type === 'blank') {
           return <td key={descriptor.blankSide} />
@@ -83,7 +85,6 @@ export function HtmlTable({
       }),
     }
 
-    const key = internals.safeGetRowKey(primaryKey, row, rowIndex)
     if (Row != null && tbodyHtmlTag === 'tbody') {
       return React.createElement(Row, { key, row, rowIndex, trProps })
     } else {

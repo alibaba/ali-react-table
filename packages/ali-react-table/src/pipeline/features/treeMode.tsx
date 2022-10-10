@@ -38,6 +38,9 @@ export interface TreeModeFeatureOptions {
 
   /** 指定表格每一行元信息的记录字段 */
   treeMetaKey?: string | symbol
+
+  /** 指定树节点所在列的code，匹配不到时默认第一列 */
+  treeColumnCode?: string
 }
 
 export function treeMode(opts: TreeModeFeatureOptions = {}) {
@@ -79,6 +82,7 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
     const iconIndent = opts.iconIndent ?? ctx.indents.iconIndent
     const iconGap = opts.iconGap ?? ctx.indents.iconGap
     const indentSize = opts.indentSize ?? ctx.indents.indentSize
+    const treeColumnCode = opts.treeColumnCode
 
     return pipeline.mapDataSource(processDataSource).mapColumns(processColumns)
 
@@ -110,7 +114,10 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
       if (columns.length === 0) {
         return columns
       }
-      const [firstCol, ...others] = columns
+
+      columns = columns.slice()
+      const treeColIndex: number = !treeColumnCode ? 0 : Math.max(columns.findIndex(col => col.code === treeColumnCode), 0)
+      const firstCol: ArtColumn = columns[treeColIndex]
 
       const render = (value: any, record: any, recordIndex: number) => {
         const content = internals.safeRender(firstCol, record, recordIndex)
@@ -184,17 +191,16 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
         })
       }
 
-      return [
-        {
-          ...firstCol,
-          title: (
-            <span style={{ marginLeft: iconIndent + iconWidth + iconGap }}>{internals.safeRenderHeader(firstCol)}</span>
-          ),
-          render,
-          getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
-        },
-        ...others,
-      ]
+      columns[treeColIndex] = {
+        ...firstCol,
+        title: (
+          <span style={{ marginLeft: iconIndent + iconWidth + iconGap }}>{internals.safeRenderHeader(firstCol)}</span>
+        ),
+        render,
+        getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
+      }
+
+      return columns
     }
   }
 }

@@ -65,6 +65,9 @@ export interface TreeModeFeatureOptions {
 
   /** 指定表格每一行元信息的记录字段 */
   treeMetaKey?: string | symbol
+
+  /** 指定树节点所在列的code，匹配不到时默认第一列 */
+  treeColumnCode?: string
 }
 ```
 

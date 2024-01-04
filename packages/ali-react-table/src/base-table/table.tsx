@@ -468,6 +468,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
   }
 
   componentDidMount() {
+    this.rootSubscription = new Subscription()
     this.updateDOMHelper()
     this.props$ = new BehaviorSubject(this.props)
     this.initSubscriptions()

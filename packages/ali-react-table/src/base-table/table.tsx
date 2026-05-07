@@ -599,7 +599,7 @@ export class BaseTable extends React.Component<BaseTableProps, BaseTableState> {
     let maxRowIndex = -1
     let maxRowBottom = -1
 
-    for (const tr of this.domHelper.getTableRows()) {
+    for (const tr of Array.from(this.domHelper.getTableRows())) {
       const rowIndex = Number(tr.dataset.rowindex)
       if (isNaN(rowIndex)) {
         continue

@@ -3,7 +3,7 @@ import React from 'react'
 import { ExpansionCell, icons, InlineFlexCell } from '../../common-views'
 import { ArtColumn } from '../../interfaces'
 import { internals } from '../../internals'
-import { isLeafNode as standardIsLeafNode, mergeCellProps } from '../../utils'
+import { isLeafNode as standardIsLeafNode, mergeCellProps, upDataIndexCol } from '../../utils'
 import { TablePipeline } from '../pipeline'
 
 export const treeMetaSymbol = Symbol('treeMetaSymbol')
@@ -38,6 +38,14 @@ export interface TreeModeFeatureOptions {
 
   /** 指定表格每一行元信息的记录字段 */
   treeMetaKey?: string | symbol
+
+  /** 自定义Icon */
+  selfIcon?: {
+    expanded: React.ReactElement
+    collapsed: React.ReactElement
+  }
+  /** 树图标插入的列的索引 */
+  insetIndex?: number
 }
 
 export function treeMode(opts: TreeModeFeatureOptions = {}) {
@@ -110,91 +118,108 @@ export function treeMode(opts: TreeModeFeatureOptions = {}) {
       if (columns.length === 0) {
         return columns
       }
-      const [firstCol, ...others] = columns
+      // const [firstCol, ...others] = columns
+      return upDataIndexCol(
+        columns,
+        (firstCol) => {
+          const render = (value: any, record: any, recordIndex: number) => {
+            const content = internals.safeRender(firstCol, record, recordIndex)
+            if (record[treeMetaKey] == null) {
+              // 没有 treeMeta 信息的话，就返回原先的渲染结果
+              return content
+            }
 
-      const render = (value: any, record: any, recordIndex: number) => {
-        const content = internals.safeRender(firstCol, record, recordIndex)
-        if (record[treeMetaKey] == null) {
-          // 没有 treeMeta 信息的话，就返回原先的渲染结果
-          return content
-        }
+            const { rowKey, depth, isLeaf, expanded } = record[treeMetaKey]
 
-        const { rowKey, depth, isLeaf, expanded } = record[treeMetaKey]
+            const indent = iconIndent + depth * indentSize
 
-        const indent = iconIndent + depth * indentSize
+            if (isLeaf) {
+              return (
+                <InlineFlexCell className="expansion-cell leaf">
+                  <span style={{ marginLeft: indent + iconWidth + iconGap }}>{content}</span>
+                </InlineFlexCell>
+              )
+            }
 
-        if (isLeaf) {
-          return (
-            <InlineFlexCell className="expansion-cell leaf">
-              <span style={{ marginLeft: indent + iconWidth + iconGap }}>{content}</span>
-            </InlineFlexCell>
-          )
-        }
+            const onClick = (e: React.MouseEvent) => {
+              if (stopClickEventPropagation) {
+                e.stopPropagation()
+              }
+              toggle(rowKey)
+            }
 
-        const onClick = (e: React.MouseEvent) => {
-          if (stopClickEventPropagation) {
-            e.stopPropagation()
-          }
-          toggle(rowKey)
-        }
+            const expandCls = expanded ? 'expanded' : 'collapsed'
 
-        const expandCls = expanded ? 'expanded' : 'collapsed'
-        return (
-          <ExpansionCell
-            className={cx('expansion-cell', expandCls)}
-            style={{
-              cursor: clickArea === 'content' ? 'pointer' : undefined,
-            }}
-            onClick={clickArea === 'content' ? onClick : undefined}
-          >
-            <icons.CaretRight
-              className={cx('expansion-icon', expandCls)}
-              style={{
+            const DefIcon = (props: any) => <icons.CaretRight className={cx('expansion-icon', expandCls)} {...props} />
+
+            const iconProps = {
+              style: {
                 cursor: clickArea === 'icon' ? 'pointer' : undefined,
                 marginLeft: indent,
                 marginRight: iconGap,
-              }}
-              onClick={clickArea === 'icon' ? onClick : undefined}
-            />
-            {content}
-          </ExpansionCell>
-        )
-      }
-
-      const getCellProps = (value: any, record: any, rowIndex: number) => {
-        const prevProps = internals.safeGetCellProps(firstCol, record, rowIndex)
-        if (record[treeMetaKey] == null) {
-          // 没有 treeMeta 信息的话，就返回原先的 cellProps
-          return prevProps
-        }
-
-        const { isLeaf, rowKey } = record[treeMetaKey]
-        if (isLeaf) {
-          return prevProps
-        }
-
-        return mergeCellProps(prevProps, {
-          onClick(e) {
-            if (stopClickEventPropagation) {
-              e.stopPropagation()
+              },
+              onClick: clickArea === 'icon' ? onClick : undefined,
             }
-            toggle(rowKey)
-          },
-          style: { cursor: 'pointer' },
-        })
-      }
 
-      return [
-        {
-          ...firstCol,
-          title: (
-            <span style={{ marginLeft: iconIndent + iconWidth + iconGap }}>{internals.safeRenderHeader(firstCol)}</span>
-          ),
-          render,
-          getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
+            const ShowIcon = (() => {
+              const { selfIcon } = opts
+              const { expanded: ExpandedIcon, collapsed: CollapsedIcon } = selfIcon || {}
+              if (expanded) {
+                return ExpandedIcon ? (props: any) => <span {...props}>{CollapsedIcon}</span> : DefIcon
+              } else {
+                return CollapsedIcon ? (props: any) => <span {...props}>{ExpandedIcon}</span> : DefIcon
+              }
+            })()
+
+            return (
+              <ExpansionCell
+                className={cx('expansion-cell', expandCls)}
+                style={{
+                  cursor: clickArea === 'content' ? 'pointer' : undefined,
+                }}
+                onClick={clickArea === 'content' ? onClick : undefined}
+              >
+                <ShowIcon {...iconProps}></ShowIcon>
+                {content}
+              </ExpansionCell>
+            )
+          }
+
+          const getCellProps = (value: any, record: any, rowIndex: number) => {
+            const prevProps = internals.safeGetCellProps(firstCol, record, rowIndex)
+            if (record[treeMetaKey] == null) {
+              // 没有 treeMeta 信息的话，就返回原先的 cellProps
+              return prevProps
+            }
+
+            const { isLeaf, rowKey } = record[treeMetaKey]
+            if (isLeaf) {
+              return prevProps
+            }
+
+            return mergeCellProps(prevProps, {
+              onClick(e) {
+                if (stopClickEventPropagation) {
+                  e.stopPropagation()
+                }
+                toggle(rowKey)
+              },
+              style: { cursor: 'pointer' },
+            })
+          }
+          return {
+            ...firstCol,
+            title: (
+              <span style={{ marginLeft: iconIndent + iconWidth + iconGap }}>
+                {internals.safeRenderHeader(firstCol)}
+              </span>
+            ),
+            render,
+            getCellProps: clickArea === 'cell' ? getCellProps : firstCol.getCellProps,
+          }
         },
-        ...others,
-      ]
+        opts.insetIndex,
+      )
     }
   }
 }

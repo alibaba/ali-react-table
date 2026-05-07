@@ -12,9 +12,11 @@ const config = (arg) => ({
   plugins: [
     typescript({
       tsconfig: 'tsconfig.json',
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
     }),
     resolve({
       extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
+      extensions: ['.mjs', '.js', '.jsx', '.ts', '.tsx', '.json', '.node'],
     }),
   ],
   external,
